@@ -1,0 +1,108 @@
+[versions]
+versionCode = "1"
+versionName = "1.0.0"
+compileSdk = "34"
+targetSdk = "34"
+minSdk = "24"
+kotlin = "1.9.20"
+gradle = "8.1.4"
+ktlint = "11.0.0"
+ktor = "2.2.2"
+logginInterceptor = "4.12.0"
+room = "2.6.0"
+composeCompiler = "1.5.4"
+composeBom = "2023.10.01"
+coilCompose = "2.4.0"
+junit = "4.+"
+testJunit = "1.1.5"
+testEspresso = "3.5.1"
+lifecycle = "2.6.2"
+koinCore = "3.5.2-RC1"
+koinCompose = "3.5.2-RC1"
+gson = "2.10.1"
+junit4 = "4.13.2"
+coroutines-test = "1.7.3"
+accompanist = "0.30.1"
+rebugger = "1.0.0-beta01"
+kotlinImmutable = "0.3.5"
+workManager = "2.8.1"
+lottieCompose = "6.0.0"
+core-ktx = "1.12.0"
+appcompat = "1.6.1"
+material = "1.10.0"
+ksp = "1.9.20-1.0.14"
+material3 = "1.2.0-alpha11"
+
+[libraries]
+
+androidx-compose-activity = "androidx.activity:activity-compose:1.8.1"
+androidx-compose-navigation = "androidx.navigation:navigation-compose:2.7.5"
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-ui-tooling-debug = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
+
+kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinImmutable" }
+
+compose-rebugger = { module = "com.github.theapache64:rebugger", version.ref = "rebugger" }
+
+accompanist-uiController = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-workmanager = { module = "androidx.work:work-runtime-ktx", version.ref = "workManager" }
+
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinCore" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinCompose" }
+koin-workmanager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koinCore" }
+
+ktor-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "logginInterceptor" }
+
+compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+compose-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
+junit = { module = "junit:junit", version.ref = "junit" }
+junit-junit = { module = "androidx.test.ext:junit", version.ref = "testJunit" }
+junit-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "testEspresso" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
+
+plugin-android = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+plugin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
+plugin-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+plugin-kotlin-ksp = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+[plugins]
+
+flowtime-android-application = { id = "flowtime.android.application", version = "unspecified" }
+flowtime-android-library = { id = "flowtime.android.library", version = "unspecified" }
+flowtime-android-compose-library = { id = "flowtime.compose.library", version = "unspecified" }
+flowtime-android-room-library = { id = "flowtime.room.library", version = "unspecified" }
+
+[bundles]
+
+unitTest = ["junit", "junit-junit", "coroutines-test"]
+instrumentationTest = ["junit", "junit-junit", "junit-espresso"]
