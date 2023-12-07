@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.design.theme.Button
-import com.baltajmn.flowtime.core.design.theme.FlowTimeTheme
 import com.baltajmn.flowtime.core.design.theme.Mint
 import com.baltajmn.flowtime.core.design.theme.White
 
@@ -62,7 +61,5 @@ fun ButtonIcon(
 @Preview
 @Composable
 fun PreviewButtonIcon() {
-    FlowTimeTheme {
-        ButtonIcon(text = "Share", icon = Icons.Filled.Share, onClick = {})
-    }
+    ButtonIcon(text = "Share", icon = Icons.Filled.Share, onClick = {})
 }

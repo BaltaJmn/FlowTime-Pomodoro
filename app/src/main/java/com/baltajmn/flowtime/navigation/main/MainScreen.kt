@@ -1,17 +1,21 @@
 package com.baltajmn.flowtime.navigation.main
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import com.baltajmn.flowtime.ui.FlowTimeState
+import androidx.compose.ui.platform.LocalConfiguration
+import com.baltajmn.flowtime.MainViewModel
 import com.baltajmn.flowtime.core.design.components.BottomNavBar
 import com.baltajmn.flowtime.core.design.components.isScrollingUp
+import com.baltajmn.flowtime.ui.FlowTimeAppState
+import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    appState: FlowTimeState
+    appState: FlowTimeAppState,
 ) {
     val currentRoute = appState.currentRoute
     val flowTimeState = rememberLazyListState()
@@ -22,7 +26,7 @@ fun MainScreen(
     val pomodoroStateScrolling = pomodoroState.isScrollingUp()
     val settingsStateScrolling = settingsState.isScrollingUp()
 
-    val shouldShow = (flowTimeStateScrolling || pomodoroStateScrolling || settingsStateScrolling)
+    val shouldShow = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
 
 
     Scaffold(

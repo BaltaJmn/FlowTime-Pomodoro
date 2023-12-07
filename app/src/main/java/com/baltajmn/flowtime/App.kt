@@ -19,7 +19,6 @@ class App : Application(), ImageLoaderFactory {
         startKoin {
             androidLogger()
             androidContext(this@App)
-            workManagerFactory()
             modules(
                 CoreModules,
                 FeaturesModule,

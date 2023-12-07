@@ -11,18 +11,18 @@ import com.baltajmn.flowtime.core.navigation.GRAPH
 
 @Composable
 fun FlowTimeNavHost(
-    flowTimeState: FlowTimeState
+    flowTimeAppState: FlowTimeAppState
 ) {
 
     NavHost(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
-        navController = flowTimeState.authNavController,
+        navController = flowTimeAppState.authNavController,
         route = GRAPH.Root,
         startDestination = GRAPH.Main,
     ) {
         composable(GRAPH.Main) {
             MainScreen(
-                appState = flowTimeState
+                appState = flowTimeAppState
             )
         }
     }

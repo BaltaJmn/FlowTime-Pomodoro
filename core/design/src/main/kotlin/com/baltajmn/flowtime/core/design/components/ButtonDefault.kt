@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.baltajmn.flowtime.core.design.theme.FlowTimeTheme
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
 
 @Composable
@@ -58,7 +57,5 @@ fun ButtonDefault(
 @Preview
 @Composable
 fun PreviewShareButton() {
-    FlowTimeTheme {
-        ButtonDefault(text = "Check your Top", icon = Icons.Filled.PlayArrow, onClick = {})
-    }
+    ButtonDefault(text = "Check your Top", icon = Icons.Filled.PlayArrow, onClick = {})
 }

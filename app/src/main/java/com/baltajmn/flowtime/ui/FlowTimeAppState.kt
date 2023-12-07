@@ -18,11 +18,11 @@ fun rememberAppState(
     mainNavController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current
 ) = remember(authNavController, mainNavController, context) {
-    FlowTimeState(authNavController, mainNavController, context)
+    FlowTimeAppState(authNavController, mainNavController, context)
 }
 
 @Stable
-class FlowTimeState(
+class FlowTimeAppState(
     val authNavController: NavHostController,
     val mainNavController: NavHostController,
     private val context: Context

@@ -46,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.Blue
 import com.baltajmn.flowtime.core.design.theme.DarkBlue
-import com.baltajmn.flowtime.core.design.theme.FlowTimeTheme
 import com.baltajmn.flowtime.core.design.theme.LightBlue
 import com.baltajmn.flowtime.core.navigation.MainGraph
 import kotlinx.coroutines.delay
@@ -202,13 +201,11 @@ fun BottomBarButton(
 @Preview
 @Composable
 fun BottomNavBarPreview() {
-    FlowTimeTheme {
-        BottomNavBar(
-            currentRoute = { BottomNavBarItem.FlowTime.getScreenRoute() },
-            onSelectedItem = {},
-            shouldShow = { true }
-        )
-    }
+    BottomNavBar(
+        currentRoute = { BottomNavBarItem.FlowTime.getScreenRoute() },
+        onSelectedItem = {},
+        shouldShow = { true }
+    )
 }
 
 enum class BottomNavBarItem(val icon: Int) {

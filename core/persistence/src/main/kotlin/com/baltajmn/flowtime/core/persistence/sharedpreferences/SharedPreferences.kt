@@ -1,9 +1,10 @@
 package com.baltajmn.flowtime.core.persistence.sharedpreferences
 
 import android.content.Context
+import com.baltajmn.flowtime.core.persistence.encrypted.CryptoManager
+import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.baltajmn.flowtime.core.persistence.encrypted.CryptoManager
 import java.lang.reflect.Type
 
 class SharedPreferencesProvider(
@@ -49,6 +50,21 @@ class SharedPreferencesProvider(
     }
 
     override fun setObject(key: SharedPreferencesItem, value: Any) {
+        val rawString = Gson().toJson(value)
+        sharedPreferences.edit().putString(key.name.lowercase(), rawString).apply()
+    }
+
+    override fun getRangeModel(key: SharedPreferencesItem): RangeModel? {
+        val rawString = sharedPreferences.getString(key.name.lowercase(), null) ?: return null
+        return Gson().fromJson(rawString, RangeModel::class.java)
+    }
+
+    override fun getRangeModelList(key: SharedPreferencesItem): MutableList<RangeModel>? {
+        val rawString = sharedPreferences.getString(key.name.lowercase(), null) ?: return null
+        val type: Type = object : TypeToken<MutableList<RangeModel>>() {}.type
+        return Gson().fromJson(rawString, type)    }
+
+    override fun setRangeModel(key: SharedPreferencesItem, value: RangeModel) {
         val rawString = Gson().toJson(value)
         sharedPreferences.edit().putString(key.name.lowercase(), rawString).apply()
     }

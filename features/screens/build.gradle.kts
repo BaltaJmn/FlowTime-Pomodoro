@@ -6,3 +6,8 @@ plugins {
 android {
     namespace = Config.Feature.Screens
 }
+
+dependencies {
+    implementation(projects.core.persistence)
+    implementation(libs.gson)
+}

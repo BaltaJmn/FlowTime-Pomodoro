@@ -1,60 +1,107 @@
 package com.baltajmn.flowtime.core.design.theme
 
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import com.baltajmn.flowtime.core.design.theme.Blue
-import com.baltajmn.flowtime.core.design.theme.DarkBlue
-import com.baltajmn.flowtime.core.design.theme.Surface
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-
-private val ColorPalette = ColorScheme(
-    primary = Blue,
-    secondary = DarkBlue,
-    tertiary = Surface,
-    error = DarkBlue,
-    background = Color.Black,
-    onBackground = Color.White,
-    primaryContainer = Color.Black,
-    onPrimaryContainer = Color.White,
-    secondaryContainer = Color.Black,
-    onSecondaryContainer = Color.White,
-    tertiaryContainer = Color.Black,
-    onTertiaryContainer = Color.White,
-    errorContainer = Color.Black,
-    onErrorContainer = Color.White,
-    surface = Color.White,
-    onSurface = Color.White,
-    surfaceVariant = Color.Black,
-    onSurfaceVariant = Color.White,
-    outline = Color.Black,
-    inverseOnSurface = Color.White,
-    inverseSurface = Color.Black,
-    inversePrimary = DarkBlue,
-    onError = DarkBlue,
-    onPrimary = Color.Black,
-    onSecondary = Color.Black,
-    onTertiary = Color.Black,
-    outlineVariant = Color.Black,
-    scrim = Color.Black,
-    surfaceTint = DarkBlue,
-)
 
 
 @Composable
-fun FlowTimeTheme(content: @Composable () -> Unit) {
+fun FlowTimeTheme(
+    appTheme: AppTheme,
+    content: @Composable () -> Unit
+) {
+
+    val colorScheme = when (appTheme) {
+        AppTheme.Blue -> BlueColorScheme
+        AppTheme.Pink -> PinkColorScheme
+        AppTheme.Orange -> OrangeColorScheme
+        AppTheme.Brown -> BrownColorScheme
+        AppTheme.Olive -> OliveColorScheme
+        AppTheme.Marine -> MarineColorScheme
+        AppTheme.Mint -> MintColorScheme
+    }
 
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
-        color = ColorPalette.background.copy(alpha = 0.5f),
+        color = colorScheme.background.copy(alpha = 0.5f),
         darkIcons = false
     )
 
     MaterialTheme(
-        colorScheme = ColorPalette,
+        colorScheme = colorScheme,
         shapes = Shapes,
         content = content
     )
-
 }
+
+val BlueColorScheme = lightColorScheme(
+    primary = LightBlue,
+    secondary = Blue,
+    tertiary = DarkBlue,
+    background = SurfaceBlue,
+    onPrimary = LightBlue,
+    onSecondary = Blue,
+    onTertiary = DarkBlue,
+    onBackground = SurfaceBlue
+)
+val PinkColorScheme = lightColorScheme(
+    primary = LightPink,
+    secondary = Pink,
+    tertiary = DarkPink,
+    background = SurfacePink,
+    onPrimary = LightPink,
+    onSecondary = Pink,
+    onTertiary = DarkPink,
+    onBackground = SurfacePink
+)
+val OrangeColorScheme = lightColorScheme(
+    primary = LightOrange,
+    secondary = Orange,
+    tertiary = DarkOrange,
+    background = SurfaceOrange,
+    onPrimary = LightOrange,
+    onSecondary = Orange,
+    onTertiary = DarkOrange,
+    onBackground = SurfaceOrange
+)
+val BrownColorScheme = lightColorScheme(
+    primary = LightBrown,
+    secondary = Brown,
+    tertiary = DarkBrown,
+    background = SurfaceBrown,
+    onPrimary = LightBrown,
+    onSecondary = Brown,
+    onTertiary = DarkBrown,
+    onBackground = SurfaceBrown
+)
+val OliveColorScheme = lightColorScheme(
+    primary = LightOlive,
+    secondary = Olive,
+    tertiary = DarkOlive,
+    background = SurfaceOlive,
+    onPrimary = LightOlive,
+    onSecondary = Olive,
+    onTertiary = DarkOlive,
+    onBackground = SurfaceOlive
+)
+val MarineColorScheme = lightColorScheme(
+    primary = LightMarine,
+    secondary = Marine,
+    tertiary = DarkMarine,
+    background = SurfaceMarine,
+    onPrimary = LightMarine,
+    onSecondary = Marine,
+    onTertiary = DarkMarine,
+    onBackground = SurfaceMarine
+)
+val MintColorScheme = lightColorScheme(
+    primary = LightMint,
+    secondary = Mint,
+    tertiary = DarkMint,
+    background = SurfaceMint,
+    onPrimary = LightMint,
+    onSecondary = Mint,
+    onTertiary = DarkMint,
+    onBackground = SurfaceMint
+)
