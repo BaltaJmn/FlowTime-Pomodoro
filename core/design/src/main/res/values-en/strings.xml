@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="flow_time_title">Flow Time Ready</string>
-    <string name="pomodoro_title">Flow Time Ready</string>
+    <string name="pomodoro_title">Pomodoro Ready</string>
     <string name="flow_time_settings_title">Flow Time Settings</string>
     <string name="flow_time_settings_in_the_first">In the first %1$s minutes</string>
     <string name="flow_time_settings_rest">I will rest</string>

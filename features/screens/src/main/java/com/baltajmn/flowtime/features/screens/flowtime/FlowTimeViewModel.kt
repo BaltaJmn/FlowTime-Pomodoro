@@ -107,7 +107,7 @@ class FlowTimeViewModel(
         _uiState.update { it.copy(seconds = 0) }
     }
 
-    private fun getFlowTimeConfig() {
+    fun getFlowTimeConfig() {
         var secondsBreak = 0
         val rangesList = dataProvider.getRangeModelList(FLOW_TIME_RANGE) ?: listOf(
             RangeModel(totalRange = 15, endRange = 15, rest = 5),

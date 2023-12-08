@@ -100,7 +100,7 @@ class PomodoroViewModel(
         }
     }
 
-    private fun getPomodoroConfig() {
+    fun getPomodoroConfig() {
         val range = dataProvider.getRangeModel(SharedPreferencesItem.POMODORO_RANGE)
             ?: RangeModel(
                 totalRange = 45,

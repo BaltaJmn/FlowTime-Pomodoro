@@ -24,8 +24,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.components.ComposableLifecycle
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.features.screens.components.ButtonsContent
@@ -39,6 +41,20 @@ fun FlowTimeScreen(
     listState: LazyListState
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ComposableLifecycle { source, event ->
+        when (event) {
+            Lifecycle.Event.ON_START -> {
+                viewModel.getFlowTimeConfig()
+            }
+
+            Lifecycle.Event.ON_PAUSE -> {
+                viewModel.stopTimer()
+            }
+
+            else -> {}
+        }
+    }
 
     AnimatedFlowTimeContent(
         state = state,

@@ -27,9 +27,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.CircularButton
+import com.baltajmn.flowtime.core.design.components.ComposableLifecycle
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.features.screens.components.TimeContent
@@ -41,6 +43,20 @@ fun PomodoroScreen(
     listState: LazyListState
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ComposableLifecycle { source, event ->
+        when (event) {
+            Lifecycle.Event.ON_START -> {
+                viewModel.getPomodoroConfig()
+            }
+
+            Lifecycle.Event.ON_PAUSE -> {
+                viewModel.stopTimer()
+            }
+
+            else -> {}
+        }
+    }
 
     AnimatedPomodoroContent(
         state = state,
