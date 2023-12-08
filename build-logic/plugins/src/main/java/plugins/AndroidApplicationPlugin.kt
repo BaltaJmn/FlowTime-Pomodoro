@@ -27,6 +27,8 @@ class AndroidApplicationPlugin : Plugin<Project> {
                 targetSdk = libs.versions.targetSdk.get().toInt()
                 minSdk = libs.versions.minSdk.get().toInt()
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                versionCode = Config.versionCode
+                versionName = Config.versionName
             }
 
             buildFeatures {

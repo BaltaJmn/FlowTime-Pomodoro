@@ -8,7 +8,7 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 class MainViewModel(dataProvider: DataProvider) : ViewModel() {
 
     private val appTheme =
-        AppTheme.valueOf(dataProvider.getObject(THEME_COLOR) ?: "Blue")
+        AppTheme.valueOf(dataProvider.getString(THEME_COLOR) ?: "Blue")
 
     fun getAppTheme(): AppTheme = appTheme
 

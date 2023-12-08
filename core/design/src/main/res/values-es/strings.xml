@@ -16,5 +16,5 @@
     <string name="settings_save">Guardar Cambios</string>
     <string name="time_title_working">Trabajando</string>
     <string name="time_title_resting">Descansando</string>
-    <string name="button_break">Pausa</string>
+    <string name="button_break">Descanso</string>
 </resources>

@@ -43,12 +43,6 @@ class SharedPreferencesProvider(
         sharedPreferences.edit().putLong(key.name.lowercase(), value).apply()
     }
 
-    override fun <T : Any> getObject(key: SharedPreferencesItem): T? {
-        val rawString = sharedPreferences.getString(key.name.lowercase(), null) ?: return null
-        val type: Type = object : TypeToken<T>() {}.type
-        return Gson().fromJson(rawString, type)
-    }
-
     override fun setObject(key: SharedPreferencesItem, value: Any) {
         val rawString = Gson().toJson(value)
         sharedPreferences.edit().putString(key.name.lowercase(), rawString).apply()

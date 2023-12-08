@@ -117,6 +117,6 @@ class SettingsViewModel(
     }
 
     fun saveColor(color: AppTheme) {
-        dataProvider.setObject(THEME_COLOR, color)
+        dataProvider.setString(THEME_COLOR, color.name)
     }
 }
