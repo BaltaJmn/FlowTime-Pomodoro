@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.core.design.theme
 
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 enum class AppTheme {

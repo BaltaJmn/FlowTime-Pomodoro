@@ -62,9 +62,8 @@ class SettingsViewModel(
     fun modifyRange(index: Int, range: RangeModel) {
         with(_uiState.value) {
             val rangesList = flowTimeRanges.toMutableList()
-
-            if (index > 0) {
-                for (i in index..<rangesList.size) {
+            for (i in index..<rangesList.size) {
+                if (i > 0) {
                     rangesList[i] = rangesList.toMutableList()[i].copy(
                         totalRange = if (i == index) {
                             rangesList[i - 1].totalRange + range.endRange
@@ -82,14 +81,15 @@ class SettingsViewModel(
                             rangesList[i].rest
                         },
                     )
+                } else {
+                    rangesList[index] = rangesList.toMutableList()[index].copy(
+                        totalRange = range.totalRange,
+                        endRange = range.endRange,
+                        rest = range.rest
+                    )
                 }
-            } else {
-                rangesList[index] = rangesList.toMutableList()[index].copy(
-                    totalRange = range.totalRange,
-                    endRange = range.endRange,
-                    rest = range.rest
-                )
             }
+
 
             _uiState.update {
                 it.copy(flowTimeRanges = rangesList.toMutableList())
