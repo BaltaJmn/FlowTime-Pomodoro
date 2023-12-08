@@ -3,10 +3,11 @@ package com.baltajmn.flowtime.features.screens.settings
 import androidx.lifecycle.ViewModel
 import com.baltajmn.flowtime.core.common.dispatchers.DispatcherProvider
 import com.baltajmn.flowtime.core.design.theme.AppTheme
+import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.FLOW_TIME_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
-import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.THEME_COLOR
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -26,15 +27,11 @@ class SettingsViewModel(
     private fun getRanges() {
         val flowTimeList =
             dataProvider.getRangeModelList(key = FLOW_TIME_RANGE)
-                ?: mutableListOf(
-                    RangeModel(totalRange = 15, endRange = 15, rest = 5),
-                    RangeModel(totalRange = 30, endRange = 15, rest = 10),
-                    RangeModel(totalRange = 15, endRange = 15, rest = 15)
-                )
+                ?: _uiState.value.flowTimeRanges
 
         val pomodoroList =
-            dataProvider.getObject(key = POMODORO_RANGE)
-                ?: RangeModel(totalRange = 45, endRange = 45, rest = 15)
+            dataProvider.getRangeModel(key = POMODORO_RANGE)
+                ?: _uiState.value.pomodoroRange
 
         _uiState.update {
             it.copy(
@@ -119,7 +116,7 @@ class SettingsViewModel(
         dataProvider.setObject(POMODORO_RANGE, _uiState.value.pomodoroRange)
     }
 
-    fun changeColor(){
-        _uiState.update { it.copy(theme = AppTheme.Brown) }
+    fun saveColor(color: AppTheme) {
+        dataProvider.setObject(THEME_COLOR, color)
     }
 }

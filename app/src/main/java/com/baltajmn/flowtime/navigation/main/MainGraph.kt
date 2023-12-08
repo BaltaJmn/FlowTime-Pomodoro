@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.baltajmn.flowtime.ui.FlowTimeAppState
+import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.GRAPH
 import com.baltajmn.flowtime.core.navigation.MainGraph.FlowTime
 import com.baltajmn.flowtime.core.navigation.MainGraph.Pomodoro
@@ -14,6 +14,7 @@ import com.baltajmn.flowtime.core.navigation.MainGraph.Settings
 import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeScreen
 import com.baltajmn.flowtime.features.screens.pomodoro.PomodoroScreen
 import com.baltajmn.flowtime.features.screens.settings.SettingsScreen
+import com.baltajmn.flowtime.ui.FlowTimeAppState
 
 @Composable
 fun MainGraph(
@@ -21,6 +22,7 @@ fun MainGraph(
     flowTimeState: LazyListState,
     pomodoroState: LazyListState,
     settingsState: LazyListState,
+    onThemeChanged: (AppTheme) -> Unit,
 ) {
 
     NavHost(
@@ -66,7 +68,8 @@ fun MainGraph(
             },
         ) {
             SettingsScreen(
-                listState = settingsState
+                listState = settingsState,
+                onThemeChanged = onThemeChanged,
             )
         }
     }

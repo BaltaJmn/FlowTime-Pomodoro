@@ -3,9 +3,9 @@ package com.baltajmn.flowtime.core.design.components
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.baltajmn.flowtime.core.design.theme.Blue
 
 @Composable
 fun CircularButton(
@@ -17,8 +17,8 @@ fun CircularButton(
         onClick = onClick,
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Blue,
-            contentColor = Blue
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.primary
         ),
         modifier = modifier
     ) {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="flow_time_title">प्रवाह समय तैयार</string>
+    <string name="pomodoro_title">पोमोडोरो तैयार</string>
+    <string name="flow_time_settings_title">प्रवाह समय सेटिंग</string>
+    <string name="flow_time_settings_in_the_first">पहले %1$s मिनट में</string>
+    <string name="flow_time_settings_rest">मैं आराम करूंगा</string>
+    <string name="flow_time_settings_range">#%d सीमा अवधि</string>
+    <string name="flow_time_settings_between">%d - %s के बीच</string>
+    <string name="flow_time_setting_after">और %d मिनटों के बाद, मैं आराम करूंगा</string>
+    <string name="flow_time_add_range">रेंज जोड़ें</string>
+    <string name="pomodoro_settings_title">पोमोडोरो सेटिंग्स</string>
+    <string name="pomodoro_settings_working">इसके लिए काम कर रहे हैं</string>
+    <string name="pomodoro_settings_resting">के लिए आराम कर रहे हैं</string>
+    <string name="theme_settings_title">थीम रंग</string>
+    <string name="settings_save">परिवर्तनों को सुरक्षित करें</string>
+    <string name="time_title_working">कार्यरत</string>
+    <string name="time_title_resting">आराम</string>
+    <string name="button_break">तोड़ना</string>
+</resources>

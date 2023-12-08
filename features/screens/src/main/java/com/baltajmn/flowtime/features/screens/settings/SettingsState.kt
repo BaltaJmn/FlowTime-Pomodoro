@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.features.screens.settings
 
-import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 
 data class SettingsState(
@@ -12,6 +11,4 @@ data class SettingsState(
         RangeModel(totalRange = 45, endRange = 15, rest = 15)
     ),
     val pomodoroRange: RangeModel = RangeModel(totalRange = 25, endRange = 25, rest = 5),
-
-    val theme: AppTheme = AppTheme.Blue,
 )

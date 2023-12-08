@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.theme.DarkBlue
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 
 @Composable
@@ -31,7 +31,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[0],
-                    style = LargeTitle.copy(fontSize = 100.sp, color = DarkBlue),
+                    style = LargeTitle.copy(fontSize = 100.sp, color = MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.End
                 )
             }
@@ -43,7 +43,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = ":",
-                    style = LargeTitle.copy(fontSize = 100.sp, color = DarkBlue),
+                    style = LargeTitle.copy(fontSize = 100.sp, color = MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.Center
                 )
             }
@@ -55,7 +55,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[1],
-                    style = LargeTitle.copy(fontSize = 100.sp, color = DarkBlue),
+                    style = LargeTitle.copy(fontSize = 100.sp, color = MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.Start
                 )
             }
@@ -74,7 +74,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[0],
-                    style = LargeTitle.copy(fontSize = 70.sp, color = DarkBlue),
+                    style = LargeTitle.copy(fontSize = 70.sp, color = MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.End
                 )
             }
@@ -86,7 +86,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = ":",
-                    style = LargeTitle.copy(fontSize = 70.sp, color = DarkBlue),
+                    style = LargeTitle.copy(fontSize = 70.sp, color = MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.Center
                 )
             }
@@ -98,7 +98,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[1],
-                    style = LargeTitle.copy(fontSize = 70.sp, color = DarkBlue),
+                    style = LargeTitle.copy(fontSize = 70.sp, color = MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.Center
                 )
             }
@@ -110,7 +110,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = ":",
-                    style = LargeTitle.copy(fontSize = 70.sp, color = DarkBlue),
+                    style = LargeTitle.copy(fontSize = 70.sp, color = MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.Center
                 )
             }
@@ -124,7 +124,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[2],
-                    style = LargeTitle.copy(fontSize = 70.sp, color = DarkBlue),
+                    style = LargeTitle.copy(fontSize = 70.sp, color = MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.Start
                 )
             }

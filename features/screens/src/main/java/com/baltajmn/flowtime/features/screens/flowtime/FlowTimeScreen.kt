@@ -13,20 +13,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.LoadingView
-import com.baltajmn.flowtime.core.design.theme.Blue
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
-import com.baltajmn.flowtime.core.design.theme.LightBlue
 import com.baltajmn.flowtime.features.screens.components.ButtonsContent
 import com.baltajmn.flowtime.features.screens.components.ButtonsContentLandscape
 import com.baltajmn.flowtime.features.screens.components.TimeContent
@@ -108,20 +109,20 @@ fun PortraitContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(LightBlue)
+            .background(MaterialTheme.colorScheme.secondary)
             .padding(PaddingValues(bottom = 120.dp)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = if (state.isBreakRunning.not() && state.isTimerRunning.not()) {
-                "Flow Time Ready"
+                LocalContext.current.getString(R.string.flow_time_title)
             } else if (state.isBreakRunning) {
-                "Resting"
+                LocalContext.current.getString(R.string.time_title_resting)
             } else {
-                "Working"
+                LocalContext.current.getString(R.string.time_title_working)
             },
-            style = LargeTitle.copy(fontSize = 30.sp, color = Blue)
+            style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary)
         )
         Spacer(modifier = Modifier.height(32.dp))
         TimeContent(secondsFormatted = state.secondsFormatted)
@@ -145,7 +146,7 @@ fun LandscapeContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(LightBlue)
+            .background(MaterialTheme.colorScheme.secondary)
             .padding(horizontal = 32.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -160,17 +161,18 @@ fun LandscapeContent(
             ) {
                 Text(
                     text = if (state.isBreakRunning.not() && state.isTimerRunning.not()) {
-                        "State Flow Ready"
+                        LocalContext.current.getString(R.string.flow_time_title)
                     } else if (state.isBreakRunning) {
-                        "Resting"
+                        LocalContext.current.getString(R.string.time_title_resting)
                     } else {
-                        "Working"
+                        LocalContext.current.getString(R.string.time_title_working)
                     },
-                    style = LargeTitle.copy(fontSize = 30.sp, color = Blue)
+                    style = LargeTitle.copy(
+                        fontSize = 30.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 )
-
                 Spacer(modifier = Modifier.height(8.dp))
-
                 TimeContent(secondsFormatted = state.secondsFormatted)
             }
 

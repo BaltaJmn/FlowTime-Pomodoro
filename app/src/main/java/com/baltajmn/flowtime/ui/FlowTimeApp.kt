@@ -8,10 +8,12 @@ import com.baltajmn.flowtime.core.design.theme.FlowTimeTheme
 fun FlowTimeApp(
     flowTimeAppState: FlowTimeAppState = rememberAppState(),
     appTheme: AppTheme,
+    onThemeChanged: (AppTheme) -> Unit,
 ) {
     FlowTimeTheme(appTheme = appTheme) {
         FlowTimeNavHost(
-            flowTimeAppState = flowTimeAppState
+            flowTimeAppState = flowTimeAppState,
+            onThemeChanged = onThemeChanged,
         )
     }
 }

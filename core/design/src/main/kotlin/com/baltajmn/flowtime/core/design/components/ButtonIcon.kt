@@ -14,12 +14,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.design.theme.Button
-import com.baltajmn.flowtime.core.design.theme.Mint
-import com.baltajmn.flowtime.core.design.theme.White
 
 @Composable
 fun ButtonIcon(
@@ -31,8 +30,8 @@ fun ButtonIcon(
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Mint,
-            contentColor = White
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.primary
         ),
         shape = RoundedCornerShape(33),
         onClick = onClick,

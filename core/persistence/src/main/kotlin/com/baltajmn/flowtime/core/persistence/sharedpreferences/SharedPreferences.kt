@@ -62,7 +62,8 @@ class SharedPreferencesProvider(
     override fun getRangeModelList(key: SharedPreferencesItem): MutableList<RangeModel>? {
         val rawString = sharedPreferences.getString(key.name.lowercase(), null) ?: return null
         val type: Type = object : TypeToken<MutableList<RangeModel>>() {}.type
-        return Gson().fromJson(rawString, type)    }
+        return Gson().fromJson(rawString, type)
+    }
 
     override fun setRangeModel(key: SharedPreferencesItem, value: RangeModel) {
         val rawString = Gson().toJson(value)

@@ -1,29 +1,15 @@
 package com.baltajmn.flowtime
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.baltajmn.flowtime.core.design.theme.AppTheme
-import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.THEME_COLOR
 
-class MainViewModel : ViewModel() {
+class MainViewModel(dataProvider: DataProvider) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MainState())
-    val uiState: StateFlow<MainState> = _uiState
+    private val appTheme =
+        AppTheme.valueOf(dataProvider.getObject(THEME_COLOR) ?: "Blue")
 
-    fun onEvent(event: MainEvent) {
-        when (event) {
-            is MainEvent.ThemeChange -> {
-                _uiState.update { it.copy(theme = event.theme) }
-            }
-        }
-    }
+    fun getAppTheme(): AppTheme = appTheme
 
-    sealed class MainEvent {
-        data class ThemeChange(val theme: AppTheme) : MainEvent()
-    }
 }

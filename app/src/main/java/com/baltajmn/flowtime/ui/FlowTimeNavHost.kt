@@ -6,12 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.baltajmn.flowtime.navigation.main.MainScreen
+import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.GRAPH
+import com.baltajmn.flowtime.navigation.main.MainScreen
 
 @Composable
 fun FlowTimeNavHost(
-    flowTimeAppState: FlowTimeAppState
+    flowTimeAppState: FlowTimeAppState,
+    onThemeChanged: (AppTheme) -> Unit
 ) {
 
     NavHost(
@@ -22,7 +24,8 @@ fun FlowTimeNavHost(
     ) {
         composable(GRAPH.Main) {
             MainScreen(
-                appState = flowTimeAppState
+                appState = flowTimeAppState,
+                onThemeChanged = onThemeChanged,
             )
         }
     }

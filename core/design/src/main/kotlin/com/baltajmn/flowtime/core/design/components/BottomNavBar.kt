@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,9 +45,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.design.R
-import com.baltajmn.flowtime.core.design.theme.Blue
-import com.baltajmn.flowtime.core.design.theme.DarkBlue
-import com.baltajmn.flowtime.core.design.theme.LightBlue
 import com.baltajmn.flowtime.core.navigation.MainGraph
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
@@ -64,7 +62,7 @@ fun BottomNavBar(
     }
 
     LaunchedEffect(Unit) {
-        delay(600)
+        delay(200)
         firstVisibility = true
     }
 
@@ -92,7 +90,7 @@ fun BottomNavBar(
             modifier = modifier
                 .height(IntrinsicSize.Min)
         ) {
-            BottomNavBarItem.values().forEach {
+            BottomNavBarItem.entries.forEach {
                 BottomBarButton(
                     navItem = it,
                     isSelected = { currentRoute().contains(it.getScreenRoute()) },
@@ -115,7 +113,7 @@ fun BottomBarSurface(
     ) {
         Surface(
             shadowElevation = 0.dp,
-            color = Blue,
+            color = MaterialTheme.colorScheme.primary,
             modifier = modifier
                 .shadow(
                     elevation = 5.dp,
@@ -142,14 +140,14 @@ fun BottomBarButton(
     onSelectedItem: (BottomNavBarItem) -> Unit,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
-    val primaryColor = DarkBlue
+    val primaryColor = MaterialTheme.colorScheme.tertiary
 
     val ripple = rememberRipple(bounded = false, color = primaryColor)
 
     val transition = updateTransition(targetState = isSelected, label = null)
 
     val iconColor by transition.animateColor(label = "") {
-        if (it()) primaryColor else LightBlue
+        if (it()) primaryColor else MaterialTheme.colorScheme.secondary
     }
 
     val dothAlpha by transition.animateFloat(label = "") {

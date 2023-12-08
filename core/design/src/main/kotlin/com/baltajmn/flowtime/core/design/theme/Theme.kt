@@ -19,7 +19,10 @@ fun FlowTimeTheme(
         AppTheme.Brown -> BrownColorScheme
         AppTheme.Olive -> OliveColorScheme
         AppTheme.Marine -> MarineColorScheme
-        AppTheme.Mint -> MintColorScheme
+        AppTheme.Green -> GreenColorScheme
+        AppTheme.Beige -> BeigeColorScheme
+        AppTheme.Grey -> GreyColorScheme
+        AppTheme.Purple -> PurpleColorScheme
     }
 
     val systemUiController = rememberSystemUiController()
@@ -36,8 +39,8 @@ fun FlowTimeTheme(
 }
 
 val BlueColorScheme = lightColorScheme(
-    primary = LightBlue,
-    secondary = Blue,
+    primary = Blue,
+    secondary = LightBlue,
     tertiary = DarkBlue,
     background = SurfaceBlue,
     onPrimary = LightBlue,
@@ -46,8 +49,8 @@ val BlueColorScheme = lightColorScheme(
     onBackground = SurfaceBlue
 )
 val PinkColorScheme = lightColorScheme(
-    primary = LightPink,
-    secondary = Pink,
+    primary = Pink,
+    secondary = LightPink,
     tertiary = DarkPink,
     background = SurfacePink,
     onPrimary = LightPink,
@@ -56,8 +59,8 @@ val PinkColorScheme = lightColorScheme(
     onBackground = SurfacePink
 )
 val OrangeColorScheme = lightColorScheme(
-    primary = LightOrange,
-    secondary = Orange,
+    primary = Orange,
+    secondary = LightOrange,
     tertiary = DarkOrange,
     background = SurfaceOrange,
     onPrimary = LightOrange,
@@ -66,8 +69,8 @@ val OrangeColorScheme = lightColorScheme(
     onBackground = SurfaceOrange
 )
 val BrownColorScheme = lightColorScheme(
-    primary = LightBrown,
-    secondary = Brown,
+    primary = Brown,
+    secondary = LightBrown,
     tertiary = DarkBrown,
     background = SurfaceBrown,
     onPrimary = LightBrown,
@@ -76,8 +79,8 @@ val BrownColorScheme = lightColorScheme(
     onBackground = SurfaceBrown
 )
 val OliveColorScheme = lightColorScheme(
-    primary = LightOlive,
-    secondary = Olive,
+    primary = Olive,
+    secondary = LightOlive,
     tertiary = DarkOlive,
     background = SurfaceOlive,
     onPrimary = LightOlive,
@@ -86,8 +89,8 @@ val OliveColorScheme = lightColorScheme(
     onBackground = SurfaceOlive
 )
 val MarineColorScheme = lightColorScheme(
-    primary = LightMarine,
-    secondary = Marine,
+    primary = Marine,
+    secondary = LightMarine,
     tertiary = DarkMarine,
     background = SurfaceMarine,
     onPrimary = LightMarine,
@@ -95,13 +98,43 @@ val MarineColorScheme = lightColorScheme(
     onTertiary = DarkMarine,
     onBackground = SurfaceMarine
 )
-val MintColorScheme = lightColorScheme(
-    primary = LightMint,
-    secondary = Mint,
-    tertiary = DarkMint,
-    background = SurfaceMint,
-    onPrimary = LightMint,
-    onSecondary = Mint,
-    onTertiary = DarkMint,
-    onBackground = SurfaceMint
+val GreenColorScheme = lightColorScheme(
+    primary = Green,
+    secondary = LightGreen,
+    tertiary = DarkGreen,
+    background = SurfaceGreen,
+    onPrimary = LightGreen,
+    onSecondary = Green,
+    onTertiary = DarkGreen,
+    onBackground = SurfaceGreen
+)
+val BeigeColorScheme = lightColorScheme(
+    primary = Beige,
+    secondary = LightBeige,
+    tertiary = DarkBeige,
+    background = SurfaceBeige,
+    onPrimary = LightBeige,
+    onSecondary = Beige,
+    onTertiary = DarkBeige,
+    onBackground = SurfaceBeige
+)
+val GreyColorScheme = lightColorScheme(
+    primary = Grey,
+    secondary = LightGrey,
+    tertiary = DarkGrey,
+    background = SurfaceGrey,
+    onPrimary = LightGrey,
+    onSecondary = Grey,
+    onTertiary = DarkGrey,
+    onBackground = SurfaceGrey
+)
+val PurpleColorScheme = lightColorScheme(
+    primary = Purple,
+    secondary = LightPurple,
+    tertiary = DarkPurple,
+    background = SurfacePurple,
+    onPrimary = LightPurple,
+    onSecondary = Purple,
+    onTertiary = DarkPurple,
+    onBackground = SurfacePurple
 )

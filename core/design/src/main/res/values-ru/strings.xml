@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="flow_time_title">Время потока Готовность</string>
+    <string name="pomodoro_title">Готовность Помодоро</string>
+    <string name="flow_time_settings_title">Настройки времени потока</string>
+    <string name="flow_time_settings_in_the_first">В первые %1$s минут</string>
+    <string name="flow_time_settings_rest">Я буду отдыхать</string>
+    <string name="flow_time_settings_range">#%d продолжительность диапазона</string>
+    <string name="flow_time_settings_between">Между %d - %s</string>
+    <string name="flow_time_setting_after">и через %d минут я отдохну.</string>
+    <string name="flow_time_add_range">Добавить диапазон</string>
+    <string name="pomodoro_settings_title">Параметры томатов</string>
+    <string name="pomodoro_settings_working">Работа для</string>
+    <string name="pomodoro_settings_resting">Отдых для</string>
+    <string name="theme_settings_title">Цвет темы</string>
+    <string name="settings_save">Сохранить изменения</string>
+    <string name="time_title_working">Работа</string>
+    <string name="time_title_resting">Отдых</string>
+    <string name="button_break">Перерыв</string>
+</resources>

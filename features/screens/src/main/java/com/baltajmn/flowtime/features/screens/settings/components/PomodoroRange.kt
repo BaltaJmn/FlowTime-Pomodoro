@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -14,15 +15,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.common.extensions.isNumeric
 import com.baltajmn.flowtime.core.common.extensions.isNumericOrBlank
-import com.baltajmn.flowtime.core.design.theme.Blue
-import com.baltajmn.flowtime.core.design.theme.DarkBlue
-import com.baltajmn.flowtime.core.design.theme.LightBlue
-import com.baltajmn.flowtime.core.design.theme.SubBody
+import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 
@@ -35,14 +33,14 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
         TextField(
             value = time,
             colors = TextFieldDefaults.colors(
-                focusedTextColor = DarkBlue,
-                unfocusedTextColor = Blue,
-                focusedContainerColor = LightBlue,
-                unfocusedContainerColor = LightBlue,
-                focusedIndicatorColor = DarkBlue,
-                unfocusedIndicatorColor = Blue,
-                focusedLabelColor = DarkBlue,
-                unfocusedLabelColor = Blue
+                focusedTextColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedTextColor = MaterialTheme.colorScheme.primary,
+                focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+                focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.primary
             ),
             onValueChange = {
                 if (it.isNumericOrBlank()) {
@@ -60,7 +58,7 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
             },
             label = {
                 Text(
-                    text = "Working for ...",
+                    text = LocalContext.current.getString(R.string.pomodoro_settings_working),
                     style = Title.copy(fontSize = 10.sp),
                     maxLines = 1
                 )
@@ -82,14 +80,14 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
         TextField(
             value = rest,
             colors = TextFieldDefaults.colors(
-                focusedTextColor = DarkBlue,
-                unfocusedTextColor = Blue,
-                focusedContainerColor = LightBlue,
-                unfocusedContainerColor = LightBlue,
-                focusedIndicatorColor = DarkBlue,
-                unfocusedIndicatorColor = Blue,
-                focusedLabelColor = DarkBlue,
-                unfocusedLabelColor = Blue
+                focusedTextColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedTextColor = MaterialTheme.colorScheme.primary,
+                focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+                focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.primary
             ),
             onValueChange = {
                 if (it.isNumericOrBlank()) {
@@ -107,7 +105,7 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
             },
             label = {
                 Text(
-                    text = "Resting for ...",
+                    text = LocalContext.current.getString(R.string.pomodoro_settings_resting),
                     style = Title.copy(fontSize = 10.sp),
                     maxLines = 1
                 )

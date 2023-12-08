@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="flow_time_title">Flow Time Listo</string>
+    <string name="pomodoro_title">Pomodoro Listo</string>
+    <string name="flow_time_settings_title">Ajustes del Flow Time</string>
+    <string name="flow_time_settings_in_the_first">En los primeros %1$s minutos</string>
+    <string name="flow_time_settings_rest">Descanso</string>
+    <string name="flow_time_settings_range">Duración del #%d rango</string>
+    <string name="flow_time_settings_between">Entre %d - %s</string>
+    <string name="flow_time_setting_after">y después de %d minutos, voy a descansar...</string>
+    <string name="flow_time_add_range">Añadir Rango</string>
+    <string name="pomodoro_settings_title">Ajustes del Pomodoro</string>
+    <string name="pomodoro_settings_working">Trabajando por...</string>
+    <string name="pomodoro_settings_resting">Descansando por...</string>
+    <string name="theme_settings_title">Color Del Tema</string>
+    <string name="settings_save">Guardar Cambios</string>
+    <string name="time_title_working">Trabajando</string>
+    <string name="time_title_resting">Descansando</string>
+    <string name="button_break">Pausa</string>
+</resources>

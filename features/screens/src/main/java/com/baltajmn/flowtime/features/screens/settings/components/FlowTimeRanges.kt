@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.baltajmn.flowtime.core.design.theme.LightBlue
+import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 
@@ -61,7 +63,10 @@ fun ButtonAddRange(onAddRangeClicked: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Button(onClick = { onAddRangeClicked.invoke() }) {
-            Text(text = "Add range", style = SubBody.copy(color = LightBlue))
+            Text(
+                text = LocalContext.current.getString(R.string.flow_time_add_range),
+                style = SubBody.copy(color = MaterialTheme.colorScheme.secondary)
+            )
         }
     }
 }

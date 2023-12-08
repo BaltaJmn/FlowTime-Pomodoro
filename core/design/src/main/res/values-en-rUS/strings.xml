@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="flow_time_title">Flow Time Ready</string>
+    <string name="pomodoro_title">Flow Time Ready</string>
+    <string name="flow_time_settings_title">Flow Time Settings</string>
+    <string name="flow_time_settings_in_the_first">In the first %1$s minutes</string>
+    <string name="flow_time_settings_rest">I will rest</string>
+    <string name="flow_time_settings_range">#%d range duration</string>
+    <string name="flow_time_settings_between">Between %d - %s</string>
+    <string name="flow_time_setting_after">and after %d minutes, I will rest</string>
+    <string name="flow_time_add_range">Add Range</string>
+    <string name="pomodoro_settings_title">Pomodoro Settings</string>
+    <string name="pomodoro_settings_working">Working for</string>
+    <string name="pomodoro_settings_resting">Resting for</string>
+    <string name="theme_settings_title">Theme Color</string>
+    <string name="settings_save">Save Changes</string>
+    <string name="time_title_working">Working</string>
+    <string name="time_title_resting">Resting</string>
+    <string name="button_break">Break</string>
+</resources>

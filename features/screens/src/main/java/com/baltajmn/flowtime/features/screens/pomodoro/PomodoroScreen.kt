@@ -16,12 +16,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,13 +31,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.CircularButton
 import com.baltajmn.flowtime.core.design.components.LoadingView
-import com.baltajmn.flowtime.core.design.theme.Blue
-import com.baltajmn.flowtime.core.design.theme.DarkBlue
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
-import com.baltajmn.flowtime.core.design.theme.LightBlue
-import com.baltajmn.flowtime.features.screens.components.ButtonsContent
 import com.baltajmn.flowtime.features.screens.components.TimeContent
-import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -107,7 +104,7 @@ fun LandscapeContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(LightBlue)
+            .background(MaterialTheme.colorScheme.secondary)
             .padding(horizontal = 32.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -122,13 +119,16 @@ fun LandscapeContent(
             ) {
                 Text(
                     text = if (state.isBreakRunning.not() && state.isTimerRunning.not()) {
-                        "Pomodoro Ready"
+                        LocalContext.current.getString(R.string.pomodoro_title)
                     } else if (state.isBreakRunning) {
-                        "Resting"
+                        LocalContext.current.getString(R.string.time_title_resting)
                     } else {
-                        "Working"
+                        LocalContext.current.getString(R.string.time_title_working)
                     },
-                    style = LargeTitle.copy(fontSize = 30.sp, color = Blue)
+                    style = LargeTitle.copy(
+                        fontSize = 30.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -172,7 +172,7 @@ fun ButtonsContentLandscape(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stop),
                     contentDescription = "Clear",
-                    tint = DarkBlue
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             }
         } else {
@@ -183,7 +183,7 @@ fun ButtonsContentLandscape(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),
                     contentDescription = "Add",
-                    tint = DarkBlue,
+                    tint = MaterialTheme.colorScheme.tertiary,
                 )
             }
         }
@@ -199,20 +199,20 @@ fun PortraitContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(LightBlue)
+            .background(MaterialTheme.colorScheme.secondary)
             .padding(PaddingValues(bottom = 120.dp)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = if (state.isBreakRunning.not() && state.isTimerRunning.not()) {
-                "Pomodoro Ready"
+                LocalContext.current.getString(R.string.pomodoro_title)
             } else if (state.isBreakRunning) {
-                "Resting"
+                LocalContext.current.getString(R.string.time_title_resting)
             } else {
-                "Working"
+                LocalContext.current.getString(R.string.time_title_working)
             },
-            style = LargeTitle.copy(fontSize = 30.sp, color = Blue)
+            style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary)
         )
         Spacer(modifier = Modifier.height(32.dp))
         TimeContent(secondsFormatted = state.secondsFormatted)
@@ -244,7 +244,7 @@ fun ButtonsContent(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stop),
                     contentDescription = "Clear",
-                    tint = DarkBlue
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             }
         } else {
@@ -255,7 +255,7 @@ fun ButtonsContent(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),
                     contentDescription = "Add",
-                    tint = DarkBlue,
+                    tint = MaterialTheme.colorScheme.tertiary,
                 )
             }
         }
