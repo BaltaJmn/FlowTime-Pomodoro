@@ -28,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -157,6 +159,7 @@ fun SettingsContent(
                         .background(color = getColorByName(color))
                         .aspectRatio(1f)
                         .size(32.dp)
+                        .semantics { contentDescription = "Color $color" }
                         .clickable {
                             onThemeChanged.invoke(color)
                             viewModel.saveColor(color)
@@ -171,7 +174,7 @@ fun SettingsContent(
                 viewModel.saveChanges()
             }
         }
-        item { Spacer(modifier = Modifier.height(128.dp)) }
+        item { Spacer(modifier = Modifier.height(96.dp)) }
     }
 }
 
