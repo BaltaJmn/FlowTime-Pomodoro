@@ -17,6 +17,8 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.baltajmn.flowtime.core.design.components.BottomNavBar
 import com.baltajmn.flowtime.core.design.components.isScrollingUp
 import com.baltajmn.flowtime.core.design.theme.AppTheme
+import com.baltajmn.flowtime.core.navigation.MainGraph.FlowTime
+import com.baltajmn.flowtime.core.navigation.MainGraph.Pomodoro
 import com.baltajmn.flowtime.ui.FlowTimeAppState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -37,8 +39,10 @@ fun MainScreen(
     val settingsStateScrolling = settingsState.isScrollingUp()
 
     val shouldShow =
-        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) && settingsStateScrolling
-
+        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+                && settingsStateScrolling
+                || currentRoute == FlowTime.route
+                || currentRoute == Pomodoro.route
 
     Scaffold(
         bottomBar = {
