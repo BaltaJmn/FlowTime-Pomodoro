@@ -54,8 +54,8 @@ class PomodoroViewModel(
     }
 
     private fun startBreak() {
-        soundService.playConfirmationSound()
         updateMinutesStudying()
+        soundService.playConfirmationSound()
 
         timerJob?.cancel()
         breakJob?.cancel()
@@ -78,6 +78,7 @@ class PomodoroViewModel(
     }
 
     fun stopTimer() {
+        updateMinutesStudying(fromConfig = false)
         breakJob?.cancel()
         timerJob?.cancel()
 
@@ -128,18 +129,26 @@ class PomodoroViewModel(
         }
     }
 
-    private fun updateMinutesStudying() {
-        val range = dataProvider.getRangeModel(SharedPreferencesItem.POMODORO_RANGE)
+    private fun updateMinutesStudying(fromConfig: Boolean = true) {
+        val endRange = dataProvider.getRangeModel(SharedPreferencesItem.POMODORO_RANGE)?.endRange
             ?: RangeModel(
                 totalRange = 45,
                 endRange = 45,
                 rest = 15
-            )
+            ).endRange
+
+        val time = if (fromConfig) {
+            endRange
+        } else if (_uiState.value.seconds < endRange * 60) {
+            0
+        } else {
+            endRange - _uiState.value.seconds / 60
+        }
 
         _uiState.update {
             it.copy(
                 minutesStudying =
-                dataProvider.updateMinutes(range.endRange.toLong()).formatMinutesStudying()
+                dataProvider.updateMinutes(time.toLong()).formatMinutesStudying()
             )
         }
     }

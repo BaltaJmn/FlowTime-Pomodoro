@@ -48,8 +48,8 @@ class FlowTimeViewModel(
     }
 
     fun continueWithBreak() {
-        soundService.playConfirmationSound()
         updateMinutesStudying()
+        soundService.playConfirmationSound()
         getFlowTimeConfig()
 
         timerJob?.cancel()
@@ -74,6 +74,8 @@ class FlowTimeViewModel(
     }
 
     fun stopTimer() {
+        updateMinutesStudying()
+
         breakJob?.cancel()
         timerJob?.cancel()
 
