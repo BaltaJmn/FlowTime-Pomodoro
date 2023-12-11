@@ -6,12 +6,16 @@ import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class SharedPreferencesProvider(
     context: Context
 ) : DataProvider {
 
     private val cryptoManager by lazy { CryptoManager() }
+    private val keyMinutes = SimpleDateFormat("ddMMyyyy", Locale.getDefault()).format(Date())
 
     companion object {
         const val SHARED_CONFIG = "shared_config"
@@ -62,6 +66,15 @@ class SharedPreferencesProvider(
     override fun setRangeModel(key: SharedPreferencesItem, value: RangeModel) {
         val rawString = Gson().toJson(value)
         sharedPreferences.edit().putString(key.name.lowercase(), rawString).apply()
+    }
+
+    override fun updateMinutes(minutes: Long): Long {
+        sharedPreferences.edit().putLong(keyMinutes, getMinutes() + minutes).apply()
+        return getMinutes()
+    }
+
+    private fun getMinutes(): Long {
+        return sharedPreferences.getLong(keyMinutes, 0L)
     }
 
 }

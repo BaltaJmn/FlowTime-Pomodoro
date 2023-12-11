@@ -11,4 +11,5 @@ interface DataProvider {
     fun getRangeModel(key: SharedPreferencesItem): RangeModel?
     fun getRangeModelList(key: SharedPreferencesItem): MutableList<RangeModel>?
     fun setRangeModel(key: SharedPreferencesItem, value: RangeModel)
+    fun updateMinutes(minutes: Long): Long
 }

@@ -2,6 +2,8 @@ package com.baltajmn.flowtime.features.screens.pomodoro
 
 import androidx.lifecycle.ViewModel
 import com.baltajmn.flowtime.core.common.dispatchers.DispatcherProvider
+import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
+import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.design.service.SoundService
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
@@ -43,7 +45,7 @@ class PomodoroViewModel(
                 _uiState.update {
                     it.copy(
                         seconds = seconds,
-                        secondsFormatted = formatSecondsToTime(seconds)
+                        secondsFormatted = seconds.formatSecondsToTime()
                     )
                 }
             } while (_uiState.value.seconds > 0)
@@ -53,6 +55,7 @@ class PomodoroViewModel(
 
     private fun startBreak() {
         soundService.playConfirmationSound()
+        updateMinutesStudying()
 
         timerJob?.cancel()
         breakJob?.cancel()
@@ -64,7 +67,7 @@ class PomodoroViewModel(
                 _uiState.update {
                     it.copy(
                         secondsBreak = seconds,
-                        secondsFormatted = formatSecondsToTime(seconds)
+                        secondsFormatted = seconds.formatSecondsToTime()
                     )
                 }
             } while (_uiState.value.secondsBreak > 0)
@@ -112,23 +115,32 @@ class PomodoroViewModel(
             it.copy(
                 seconds = (range.endRange * 60).toLong(),
                 secondsBreak = (range.rest * 60).toLong(),
-                secondsFormatted = formatSecondsToTime((range.endRange * 60).toLong())
+                secondsFormatted = (range.endRange * 60).toLong().formatSecondsToTime()
             )
         }
     }
 
-    private fun formatSecondsToTime(seconds: Long): String {
-        val hours = seconds / 3600
-        val minutes = (seconds % 3600) / 60
-        val remainingSeconds = seconds % 60
-
-        val formattedTime = if (hours > 0) {
-            String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
-        } else {
-            String.format("%02d:%02d", minutes, remainingSeconds)
+    fun getCurrentMinutes() {
+        _uiState.update {
+            it.copy(
+                minutesStudying = dataProvider.updateMinutes(0).formatMinutesStudying()
+            )
         }
-
-        return formattedTime
     }
 
+    private fun updateMinutesStudying() {
+        val range = dataProvider.getRangeModel(SharedPreferencesItem.POMODORO_RANGE)
+            ?: RangeModel(
+                totalRange = 45,
+                endRange = 45,
+                rest = 15
+            )
+
+        _uiState.update {
+            it.copy(
+                minutesStudying =
+                dataProvider.updateMinutes(range.endRange.toLong()).formatMinutesStudying()
+            )
+        }
+    }
 }

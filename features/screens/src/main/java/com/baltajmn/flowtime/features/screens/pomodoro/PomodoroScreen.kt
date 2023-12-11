@@ -34,6 +34,8 @@ import com.baltajmn.flowtime.core.design.components.CircularButton
 import com.baltajmn.flowtime.core.design.components.ComposableLifecycle
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
+import com.baltajmn.flowtime.features.screens.components.MinutesStudying
+import com.baltajmn.flowtime.features.screens.components.ScreenTitle
 import com.baltajmn.flowtime.features.screens.components.TimeContent
 import org.koin.androidx.compose.koinViewModel
 
@@ -48,6 +50,7 @@ fun PomodoroScreen(
         when (event) {
             Lifecycle.Event.ON_START -> {
                 viewModel.getPomodoroConfig()
+                viewModel.getCurrentMinutes()
             }
 
             Lifecycle.Event.ON_PAUSE -> {
@@ -220,18 +223,19 @@ fun PortraitContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
+        ScreenTitle(
             text = if (state.isBreakRunning.not() && state.isTimerRunning.not()) {
                 LocalContext.current.getString(R.string.pomodoro_title)
             } else if (state.isBreakRunning) {
                 LocalContext.current.getString(R.string.time_title_resting)
             } else {
                 LocalContext.current.getString(R.string.time_title_working)
-            },
-            style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary)
+            }
         )
         Spacer(modifier = Modifier.height(32.dp))
         TimeContent(secondsFormatted = state.secondsFormatted)
+        Spacer(modifier = Modifier.height(16.dp))
+        MinutesStudying(minutesStudying = state.minutesStudying)
         Spacer(modifier = Modifier.height(64.dp))
         ButtonsContent(
             state = state,

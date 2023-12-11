@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -32,6 +31,8 @@ import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.features.screens.components.ButtonsContent
 import com.baltajmn.flowtime.features.screens.components.ButtonsContentLandscape
+import com.baltajmn.flowtime.features.screens.components.MinutesStudying
+import com.baltajmn.flowtime.features.screens.components.ScreenTitle
 import com.baltajmn.flowtime.features.screens.components.TimeContent
 import org.koin.androidx.compose.koinViewModel
 
@@ -46,6 +47,7 @@ fun FlowTimeScreen(
         when (event) {
             Lifecycle.Event.ON_START -> {
                 viewModel.getFlowTimeConfig()
+                viewModel.getCurrentMinutes()
             }
 
             Lifecycle.Event.ON_PAUSE -> {
@@ -130,7 +132,7 @@ fun PortraitContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
+        ScreenTitle(
             text = if (state.isBreakRunning.not() && state.isTimerRunning.not()) {
                 LocalContext.current.getString(R.string.flow_time_title)
             } else if (state.isBreakRunning) {
@@ -138,10 +140,11 @@ fun PortraitContent(
             } else {
                 LocalContext.current.getString(R.string.time_title_working)
             },
-            style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary)
         )
         Spacer(modifier = Modifier.height(32.dp))
         TimeContent(secondsFormatted = state.secondsFormatted)
+        Spacer(modifier = Modifier.height(16.dp))
+        MinutesStudying(minutesStudying = state.minutesStudying)
         Spacer(modifier = Modifier.height(64.dp))
         ButtonsContent(
             state = state,
@@ -208,10 +211,4 @@ fun LandscapeContent(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun TimeContentPreview() {
-    TimeContent(secondsFormatted = "44:44:44")
 }

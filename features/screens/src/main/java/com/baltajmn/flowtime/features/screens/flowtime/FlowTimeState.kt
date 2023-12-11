@@ -9,4 +9,5 @@ data class FlowTimeState(
     var secondsBreak: Long = 0,
 
     var secondsFormatted: String = "00:00",
+    val minutesStudying: String = "0 m"
 )

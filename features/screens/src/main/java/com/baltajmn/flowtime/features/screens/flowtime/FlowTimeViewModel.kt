@@ -2,6 +2,8 @@ package com.baltajmn.flowtime.features.screens.flowtime
 
 import androidx.lifecycle.ViewModel
 import com.baltajmn.flowtime.core.common.dispatchers.DispatcherProvider
+import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
+import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.design.service.SoundService
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
@@ -38,7 +40,7 @@ class FlowTimeViewModel(
                 _uiState.update {
                     it.copy(
                         seconds = seconds,
-                        secondsFormatted = formatSecondsToTime(seconds)
+                        secondsFormatted = seconds.formatSecondsToTime()
                     )
                 }
             }
@@ -47,6 +49,7 @@ class FlowTimeViewModel(
 
     fun continueWithBreak() {
         soundService.playConfirmationSound()
+        updateMinutesStudying()
         getFlowTimeConfig()
 
         timerJob?.cancel()
@@ -60,7 +63,7 @@ class FlowTimeViewModel(
                 _uiState.update {
                     it.copy(
                         secondsBreak = seconds,
-                        secondsFormatted = formatSecondsToTime(seconds)
+                        secondsFormatted = seconds.formatSecondsToTime()
                     )
                 }
             } while (_uiState.value.secondsBreak > 0)
@@ -136,18 +139,21 @@ class FlowTimeViewModel(
         }
     }
 
-    private fun formatSecondsToTime(seconds: Long): String {
-        val hours = seconds / 3600
-        val minutes = (seconds % 3600) / 60
-        val remainingSeconds = seconds % 60
-
-        val formattedTime = if (hours > 0) {
-            String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
-        } else {
-            String.format("%02d:%02d", minutes, remainingSeconds)
+    fun getCurrentMinutes() {
+        _uiState.update {
+            it.copy(
+                minutesStudying = dataProvider.updateMinutes(0).formatMinutesStudying()
+            )
         }
+    }
 
-        return formattedTime
+    private fun updateMinutesStudying() {
+        _uiState.update {
+            it.copy(
+                minutesStudying =
+                dataProvider.updateMinutes((_uiState.value.seconds / 60)).formatMinutesStudying()
+            )
+        }
     }
 
 }
