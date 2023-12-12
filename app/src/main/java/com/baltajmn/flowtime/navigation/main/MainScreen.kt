@@ -9,12 +9,18 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.baltajmn.flowtime.core.design.components.BottomNavBar
+import com.baltajmn.flowtime.core.design.components.BottomNavBarItem
+import com.baltajmn.flowtime.core.design.components.TimerAlertDialog
 import com.baltajmn.flowtime.core.design.components.isScrollingUp
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.MainGraph.FlowTime
@@ -28,6 +34,10 @@ fun MainScreen(
     onThemeChanged: (AppTheme) -> Unit
 ) {
     HideSystemBars()
+
+    var screenRoute by remember { mutableStateOf(BottomNavBarItem.FlowTime) }
+    var isTimerRunning by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
     val configuration = LocalConfiguration.current
 
@@ -50,8 +60,13 @@ fun MainScreen(
                 shouldShow = { shouldShow },
                 currentRoute = { currentRoute },
                 onSelectedItem = {
+                    screenRoute = it
                     if (currentRoute != it.getScreenRoute()) {
-                        appState.bottomNavigationTo(it)
+                        if (isTimerRunning.not()) {
+                            appState.bottomNavigationTo(it)
+                        } else {
+                            showDialog = true
+                        }
                     }
                 }
             )
@@ -63,6 +78,20 @@ fun MainScreen(
             pomodoroState = pomodoroState,
             settingsState = settingsState,
             onThemeChanged = onThemeChanged,
+        ) { isRunning ->
+            isTimerRunning = isRunning
+        }
+    }
+
+    if (showDialog) {
+        TimerAlertDialog(
+            isOpen = showDialog,
+            onCloseDialog = {
+                showDialog = false
+                if (it){
+                    appState.bottomNavigationTo(screenRoute)
+                }
+            }
         )
     }
 }

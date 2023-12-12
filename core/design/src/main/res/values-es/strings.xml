@@ -7,14 +7,18 @@
     <string name="flow_time_settings_rest">Descanso</string>
     <string name="flow_time_settings_range">Duración del #%d rango</string>
     <string name="flow_time_settings_between">Entre %d - %s</string>
-    <string name="flow_time_setting_after">y después de %d minutos, voy a descansar...</string>
+    <string name="flow_time_setting_after">y después de %d minutos, voy a descansar…</string>
     <string name="flow_time_add_range">Añadir Rango</string>
     <string name="pomodoro_settings_title">Ajustes del Pomodoro</string>
-    <string name="pomodoro_settings_working">Trabajando por...</string>
-    <string name="pomodoro_settings_resting">Descansando por...</string>
+    <string name="pomodoro_settings_working">Trabajando por…</string>
+    <string name="pomodoro_settings_resting">Descansando por…</string>
     <string name="theme_settings_title">Color Del Tema</string>
     <string name="settings_save">Guardar Cambios</string>
     <string name="time_title_working">Trabajando</string>
     <string name="time_title_resting">Descansando</string>
     <string name="button_break">Descanso</string>
+    <string name="dialog_title">¿Seguro que quieres salir?</string>
+    <string name="dialog_subtitle">Tu contador se reseteará</string>
+    <string name="dialog_confirm">Confirmar</string>
+    <string name="dialog_cancel">Cancelar</string>
 </resources>

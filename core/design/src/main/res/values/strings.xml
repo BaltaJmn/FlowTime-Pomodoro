@@ -17,5 +17,8 @@
     <string name="time_title_resting">Resting</string>
     <string name="time_title_working">Working</string>
     <string name="button_break">Break</string>
-
+    <string name="dialog_title">Do you want to exit?</string>
+    <string name="dialog_subtitle">Your timer will be reset</string>
+    <string name="dialog_confirm">Confirm</string>
+    <string name="dialog_cancel">Cancel</string>
 </resources>

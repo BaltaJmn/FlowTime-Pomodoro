@@ -23,6 +23,7 @@ fun MainGraph(
     pomodoroState: LazyListState,
     settingsState: LazyListState,
     onThemeChanged: (AppTheme) -> Unit,
+    onTimerRunning: (Boolean) -> Unit,
 ) {
 
     NavHost(
@@ -40,7 +41,8 @@ fun MainGraph(
             },
         ) {
             FlowTimeScreen(
-                listState = flowTimeState
+                listState = flowTimeState,
+                onTimerRunning = onTimerRunning,
             )
         }
 
@@ -54,7 +56,8 @@ fun MainGraph(
             },
         ) {
             PomodoroScreen(
-                listState = pomodoroState
+                listState = pomodoroState,
+                onTimerRunning = onTimerRunning,
             )
         }
 

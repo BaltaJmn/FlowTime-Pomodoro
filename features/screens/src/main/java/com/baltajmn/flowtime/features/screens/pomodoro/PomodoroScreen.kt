@@ -42,11 +42,12 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun PomodoroScreen(
     viewModel: PomodoroViewModel = koinViewModel(),
-    listState: LazyListState
+    listState: LazyListState,
+    onTimerRunning: (Boolean) -> Unit,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    ComposableLifecycle { source, event ->
+    ComposableLifecycle { _, event ->
         when (event) {
             Lifecycle.Event.ON_START -> {
                 viewModel.getPomodoroConfig()
@@ -60,6 +61,8 @@ fun PomodoroScreen(
             else -> {}
         }
     }
+
+    onTimerRunning.invoke((state.isTimerRunning || state.isBreakRunning))
 
     AnimatedPomodoroContent(
         state = state,

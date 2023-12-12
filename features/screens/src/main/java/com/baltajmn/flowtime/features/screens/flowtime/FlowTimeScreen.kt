@@ -39,11 +39,12 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun FlowTimeScreen(
     viewModel: FlowTimeViewModel = koinViewModel(),
-    listState: LazyListState
+    listState: LazyListState,
+    onTimerRunning: (Boolean) -> Unit,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    ComposableLifecycle { source, event ->
+    ComposableLifecycle { _, event ->
         when (event) {
             Lifecycle.Event.ON_START -> {
                 viewModel.getFlowTimeConfig()
@@ -57,6 +58,8 @@ fun FlowTimeScreen(
             else -> {}
         }
     }
+
+    onTimerRunning.invoke((state.isTimerRunning || state.isBreakRunning))
 
     AnimatedFlowTimeContent(
         state = state,

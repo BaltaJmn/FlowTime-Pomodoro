@@ -17,4 +17,8 @@
     <string name="time_title_working">Lavoro</string>
     <string name="time_title_resting">Riposo</string>
     <string name="button_break">Pausa</string>
+    <string name="dialog_title">Do you want to exit?</string>
+    <string name="dialog_subtitle">Your timer will be reset</string>
+    <string name="dialog_confirm">Confirm</string>
+    <string name="dialog_cancel">Cancel</string>
 </resources>
