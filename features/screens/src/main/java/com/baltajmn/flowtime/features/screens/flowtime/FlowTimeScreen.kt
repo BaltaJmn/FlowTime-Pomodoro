@@ -136,12 +136,12 @@ fun PortraitContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ScreenTitle(
-            text = if (state.isBreakRunning.not() && state.isTimerRunning.not()) {
-                LocalContext.current.getString(R.string.flow_time_title)
-            } else if (state.isBreakRunning) {
+            text = if (state.isTimerRunning && state.isBreakRunning.not()) {
+                LocalContext.current.getString(R.string.time_title_working)
+            } else if (state.isTimerRunning.not() && state.isBreakRunning) {
                 LocalContext.current.getString(R.string.time_title_resting)
             } else {
-                LocalContext.current.getString(R.string.time_title_working)
+                LocalContext.current.getString(R.string.flow_time_title)
             },
         )
         Spacer(modifier = Modifier.height(32.dp))

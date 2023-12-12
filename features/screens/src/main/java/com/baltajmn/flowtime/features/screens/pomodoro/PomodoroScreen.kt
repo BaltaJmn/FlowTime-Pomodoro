@@ -140,12 +140,12 @@ fun LandscapeContent(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = if (state.isBreakRunning.not() && state.isTimerRunning.not()) {
-                        LocalContext.current.getString(R.string.pomodoro_title)
-                    } else if (state.isBreakRunning) {
+                    text = if (state.isTimerRunning && state.isBreakRunning.not()) {
+                        LocalContext.current.getString(R.string.time_title_working)
+                    } else if (state.isTimerRunning.not() && state.isBreakRunning) {
                         LocalContext.current.getString(R.string.time_title_resting)
                     } else {
-                        LocalContext.current.getString(R.string.time_title_working)
+                        LocalContext.current.getString(R.string.pomodoro_title)
                     },
                     style = LargeTitle.copy(
                         fontSize = 30.sp,

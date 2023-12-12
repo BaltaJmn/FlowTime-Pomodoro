@@ -33,12 +33,13 @@ class FlowTimeViewModel(
         breakJob?.cancel()
         timerJob?.cancel()
         timerJob = timerScope.launch {
-            isRunning()
             while (true) {
                 delay(1000)
                 val seconds = _uiState.value.seconds + 1
                 _uiState.update {
                     it.copy(
+                        isTimerRunning = true,
+                        isBreakRunning = false,
                         seconds = seconds,
                         secondsFormatted = seconds.formatSecondsToTime()
                     )
@@ -55,13 +56,14 @@ class FlowTimeViewModel(
         timerJob?.cancel()
         breakJob?.cancel()
         breakJob = timerScope.launch {
-            isRunning()
             resetTimer()
             do {
                 delay(1000)
                 val seconds = _uiState.value.secondsBreak - 1
                 _uiState.update {
                     it.copy(
+                        isTimerRunning = false,
+                        isBreakRunning = true,
                         secondsBreak = seconds,
                         secondsFormatted = seconds.formatSecondsToTime()
                     )
