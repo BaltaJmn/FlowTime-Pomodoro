@@ -29,12 +29,7 @@ class PomodoroViewModel(
     private var timerJob: Job? = null
     private var breakJob: Job? = null
 
-    init {
-        getPomodoroConfig()
-    }
-
     fun startTimer() {
-        getPomodoroConfig()
         breakJob?.cancel()
         timerJob?.cancel()
         timerJob = timerScope.launch {
@@ -57,6 +52,7 @@ class PomodoroViewModel(
     private fun startBreak() {
         updateMinutesStudying()
         soundService.playConfirmationSound()
+        getTime()
 
         timerJob?.cancel()
         breakJob?.cancel()
@@ -85,7 +81,7 @@ class PomodoroViewModel(
         timerJob?.cancel()
 
         isRunning()
-        getPomodoroConfig()
+        getTime()
     }
 
     private fun isRunning() {
@@ -107,13 +103,20 @@ class PomodoroViewModel(
     }
 
     fun getPomodoroConfig() {
-        val range = dataProvider.getRangeModel(SharedPreferencesItem.POMODORO_RANGE)
-            ?: RangeModel(
-                totalRange = 45,
-                endRange = 45,
-                rest = 15
+        _uiState.update {
+            it.copy(
+                range = dataProvider.getRangeModel(SharedPreferencesItem.POMODORO_RANGE)
+                    ?: RangeModel(
+                        totalRange = 45,
+                        endRange = 45,
+                        rest = 15
+                    )
             )
+        }
+    }
 
+    fun getTime() {
+        val range = _uiState.value.range
         _uiState.update {
             it.copy(
                 seconds = (range.endRange * 60).toLong(),
@@ -132,19 +135,15 @@ class PomodoroViewModel(
     }
 
     private fun updateMinutesStudying(fromConfig: Boolean = true) {
-        val endRange = dataProvider.getRangeModel(SharedPreferencesItem.POMODORO_RANGE)?.endRange
-            ?: RangeModel(
-                totalRange = 45,
-                endRange = 45,
-                rest = 15
-            ).endRange
+        val endRange = _uiState.value.range.endRange
+        val seconds = _uiState.value.seconds
 
         val time = if (fromConfig) {
             endRange
-        } else if (_uiState.value.seconds < endRange * 60) {
+        } else if (seconds < 60) {
             0
         } else {
-            endRange - _uiState.value.seconds / 60
+            (endRange * 60 - seconds) / 60
         }
 
         _uiState.update {

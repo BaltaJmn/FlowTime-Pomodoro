@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -51,11 +50,8 @@ fun PomodoroScreen(
         when (event) {
             Lifecycle.Event.ON_START -> {
                 viewModel.getPomodoroConfig()
+                viewModel.getTime()
                 viewModel.getCurrentMinutes()
-            }
-
-            Lifecycle.Event.ON_PAUSE -> {
-                viewModel.stopTimer()
             }
 
             else -> {}
@@ -154,8 +150,9 @@ fun LandscapeContent(
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
-
                 TimeContent(secondsFormatted = state.secondsFormatted)
+                Spacer(modifier = Modifier.height(8.dp))
+                MinutesStudying(minutesStudying = state.minutesStudying)
             }
 
             Column(
@@ -188,8 +185,7 @@ fun ButtonsContentLandscape(
     ) {
         if (state.isTimerRunning || state.isBreakRunning) {
             CircularButton(
-                onClick = { onFinishClick.invoke() },
-                modifier = Modifier.size(80.dp)
+                onClick = { onFinishClick.invoke() }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stop),
@@ -199,8 +195,7 @@ fun ButtonsContentLandscape(
             }
         } else {
             CircularButton(
-                onClick = { onStartClick.invoke() },
-                modifier = Modifier.size(80.dp)
+                onClick = { onStartClick.invoke() }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),
@@ -261,8 +256,7 @@ fun ButtonsContent(
     ) {
         if (state.isTimerRunning || state.isBreakRunning) {
             CircularButton(
-                onClick = { onFinishClick.invoke() },
-                modifier = Modifier.size(80.dp)
+                onClick = { onFinishClick.invoke() }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stop),
@@ -272,8 +266,7 @@ fun ButtonsContent(
             }
         } else {
             CircularButton(
-                onClick = { onStartClick.invoke() },
-                modifier = Modifier.size(80.dp)
+                onClick = { onStartClick.invoke() }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),

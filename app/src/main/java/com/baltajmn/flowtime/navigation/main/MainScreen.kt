@@ -1,23 +1,15 @@
 package com.baltajmn.flowtime.navigation.main
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.res.Configuration
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import com.baltajmn.flowtime.core.design.components.BottomNavBar
 import com.baltajmn.flowtime.core.design.components.BottomNavBarItem
 import com.baltajmn.flowtime.core.design.components.TimerAlertDialog
@@ -33,8 +25,6 @@ fun MainScreen(
     appState: FlowTimeAppState,
     onThemeChanged: (AppTheme) -> Unit
 ) {
-    HideSystemBars()
-
     var screenRoute by remember { mutableStateOf(BottomNavBarItem.FlowTime) }
     var isTimerRunning by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -57,7 +47,7 @@ fun MainScreen(
     Scaffold(
         bottomBar = {
             BottomNavBar(
-                shouldShow = { shouldShow },
+                shouldShow = { shouldShow && isTimerRunning.not() },
                 currentRoute = { currentRoute },
                 onSelectedItem = {
                     screenRoute = it
@@ -88,44 +78,10 @@ fun MainScreen(
             isOpen = showDialog,
             onCloseDialog = {
                 showDialog = false
-                if (it){
+                if (it) {
                     appState.bottomNavigationTo(screenRoute)
                 }
             }
         )
     }
-}
-
-@Composable
-fun HideSystemBars() {
-    val context = LocalContext.current
-
-    DisposableEffect(Unit) {
-        val window = context.findActivity()?.window ?: return@DisposableEffect onDispose {}
-        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
-
-        insetsController.apply {
-            hide(WindowInsetsCompat.Type.statusBars())
-            hide(WindowInsetsCompat.Type.navigationBars())
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
-
-        onDispose {
-            insetsController.apply {
-                show(WindowInsetsCompat.Type.statusBars())
-                show(WindowInsetsCompat.Type.navigationBars())
-                systemBarsBehavior =
-                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            }
-        }
-    }
-}
-
-fun Context.findActivity(): Activity? {
-    var context = this
-    while (context is ContextWrapper) {
-        if (context is Activity) return context
-        context = context.baseContext
-    }
-    return null
 }

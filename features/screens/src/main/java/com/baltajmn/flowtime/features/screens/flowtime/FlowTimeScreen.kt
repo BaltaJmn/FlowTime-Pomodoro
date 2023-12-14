@@ -51,10 +51,6 @@ fun FlowTimeScreen(
                 viewModel.getCurrentMinutes()
             }
 
-            Lifecycle.Event.ON_PAUSE -> {
-                viewModel.stopTimer()
-            }
-
             else -> {}
         }
     }
@@ -196,6 +192,8 @@ fun LandscapeContent(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TimeContent(secondsFormatted = state.secondsFormatted)
+                Spacer(modifier = Modifier.height(8.dp))
+                MinutesStudying(minutesStudying = state.minutesStudying)
             }
 
             Column(

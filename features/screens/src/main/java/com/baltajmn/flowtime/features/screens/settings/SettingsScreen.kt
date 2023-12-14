@@ -106,7 +106,7 @@ fun SettingsContent(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.secondary)
     ) {
-        item { Spacer(modifier = Modifier.height(64.dp)) }
+        item { Spacer(modifier = Modifier.height(16.dp)) }
         item {
             Text(
                 text = LocalContext.current.getString(R.string.flow_time_settings_title),

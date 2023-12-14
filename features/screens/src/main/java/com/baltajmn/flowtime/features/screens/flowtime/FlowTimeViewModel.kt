@@ -51,7 +51,7 @@ class FlowTimeViewModel(
     fun continueWithBreak() {
         updateMinutesStudying()
         soundService.playConfirmationSound()
-        getFlowTimeConfig()
+        getBreakTime()
 
         timerJob?.cancel()
         breakJob?.cancel()
@@ -115,19 +115,29 @@ class FlowTimeViewModel(
     }
 
     fun getFlowTimeConfig() {
+        _uiState.update {
+            it.copy(
+                rangesList = dataProvider.getRangeModelList(FLOW_TIME_RANGE) ?: listOf(
+                    RangeModel(totalRange = 15, endRange = 15, rest = 5),
+                    RangeModel(totalRange = 30, endRange = 15, rest = 10),
+                    RangeModel(totalRange = 15, endRange = 15, rest = 15)
+                )
+            )
+        }
+    }
+
+    private fun getBreakTime() {
         var secondsBreak = 0
-        val rangesList = dataProvider.getRangeModelList(FLOW_TIME_RANGE) ?: listOf(
-            RangeModel(totalRange = 15, endRange = 15, rest = 5),
-            RangeModel(totalRange = 30, endRange = 15, rest = 10),
-            RangeModel(totalRange = 15, endRange = 15, rest = 15)
-        )
+        val rangesList = _uiState.value.rangesList
+        val seconds = _uiState.value.seconds
+
         for (i in rangesList.indices) {
             if (i > 0) {
-                if (_uiState.value.seconds > rangesList[i - 1].totalRange * 60 && _uiState.value.seconds < rangesList[i].totalRange * 60) {
+                if (seconds > rangesList[i - 1].totalRange * 60 && seconds < rangesList[i].totalRange * 60) {
                     secondsBreak = rangesList[i].rest * 60
                 }
             } else {
-                if (_uiState.value.seconds < rangesList[i].totalRange * 60) {
+                if (seconds < rangesList[i].totalRange * 60) {
                     secondsBreak = rangesList[i].rest * 60
                 }
             }
