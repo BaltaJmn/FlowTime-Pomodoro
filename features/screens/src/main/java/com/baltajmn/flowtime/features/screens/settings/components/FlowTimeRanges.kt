@@ -23,7 +23,7 @@ fun FlowTimeRanges(
     ranges: MutableList<RangeModel>,
     onValueChanged: (Int, RangeModel) -> Unit,
     onDeleteClicked: (Int) -> Unit,
-    onAddRangeClicked: () -> Unit,
+    onAddRangeClicked: () -> Unit
 ) {
     itemsIndexed(ranges) { index, range ->
         val lastIndex = ranges.size - 1
@@ -34,8 +34,10 @@ fun FlowTimeRanges(
 
             lastIndex -> {
                 LastRangeItem(
-                    index = index, previousRange = ranges[index - 1],
-                    range = range, onValueChanged = onValueChanged
+                    index = index,
+                    previousRange = ranges[index - 1],
+                    range = range,
+                    onValueChanged = onValueChanged
                 )
             }
 

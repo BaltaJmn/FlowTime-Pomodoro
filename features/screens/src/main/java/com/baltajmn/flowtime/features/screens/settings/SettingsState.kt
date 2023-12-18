@@ -10,5 +10,5 @@ data class SettingsState(
         RangeModel(totalRange = 30, endRange = 15, rest = 10),
         RangeModel(totalRange = 45, endRange = 15, rest = 15)
     ),
-    val pomodoroRange: RangeModel = RangeModel(totalRange = 25, endRange = 25, rest = 5),
+    val pomodoroRange: RangeModel = RangeModel(totalRange = 25, endRange = 25, rest = 5)
 )

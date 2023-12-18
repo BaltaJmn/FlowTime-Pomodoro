@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class FlowTimeViewModel(
     dispatcherProvider: DispatcherProvider,
     private val dataProvider: DataProvider,
-    private val soundService: SoundService,
+    private val soundService: SoundService
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(FlowTimeState())
@@ -169,5 +169,4 @@ class FlowTimeViewModel(
             )
         }
     }
-
 }

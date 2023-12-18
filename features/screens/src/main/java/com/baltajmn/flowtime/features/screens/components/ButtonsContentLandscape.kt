@@ -21,7 +21,7 @@ fun ButtonsContentLandscape(
     state: FlowTimeState,
     onStartClick: () -> Unit,
     onBreakClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxHeight(),
@@ -29,7 +29,6 @@ fun ButtonsContentLandscape(
         verticalArrangement = Arrangement.Center
     ) {
         if (state.isTimerRunning || state.isBreakRunning) {
-
             CircularButton(
                 onClick = { onFinishClick.invoke() }
             ) {
@@ -53,7 +52,6 @@ fun ButtonsContentLandscape(
                     )
                 }
             }
-
         } else {
             CircularButton(
                 onClick = { onStartClick.invoke() }
@@ -61,7 +59,7 @@ fun ButtonsContentLandscape(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),
                     contentDescription = "Add",
-                    tint = MaterialTheme.colorScheme.tertiary,
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             }
         }

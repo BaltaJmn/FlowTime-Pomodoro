@@ -32,7 +32,6 @@ fun LastRangeItem(
     previousRange: RangeModel,
     onValueChanged: (Int, RangeModel) -> Unit
 ) {
-
     var rest by remember(range.rest) { mutableStateOf(range.rest.toString()) }
 
     Row {
@@ -57,7 +56,7 @@ fun LastRangeItem(
                             RangeModel(
                                 totalRange = range.totalRange,
                                 endRange = range.endRange,
-                                rest = it.toInt(),
+                                rest = it.toInt()
                             )
                         )
                     }

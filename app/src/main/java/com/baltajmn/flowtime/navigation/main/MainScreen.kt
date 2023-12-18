@@ -39,10 +39,7 @@ fun MainScreen(
     val settingsStateScrolling = settingsState.isScrollingUp()
 
     val shouldShow =
-        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                && settingsStateScrolling
-                || currentRoute == FlowTime.route
-                || currentRoute == Pomodoro.route
+        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) && settingsStateScrolling || currentRoute == FlowTime.route || currentRoute == Pomodoro.route
 
     Scaffold(
         bottomBar = {
@@ -67,7 +64,7 @@ fun MainScreen(
             flowTimeState = flowTimeState,
             pomodoroState = pomodoroState,
             settingsState = settingsState,
-            onThemeChanged = onThemeChanged,
+            onThemeChanged = onThemeChanged
         ) { isRunning ->
             isTimerRunning = isRunning
         }

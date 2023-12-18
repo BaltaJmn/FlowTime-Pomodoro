@@ -25,37 +25,46 @@ fun TimeContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                Modifier.weight(0.5f),
+                modifier = Modifier.weight(0.5f),
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[0],
-                    style = LargeTitle.copy(fontSize = 100.sp, color = MaterialTheme.colorScheme.tertiary),
+                    style = LargeTitle.copy(
+                        fontSize = 100.sp,
+                        color = MaterialTheme.colorScheme.tertiary
+                    ),
                     textAlign = TextAlign.End
                 )
             }
 
             Column(
-                Modifier.weight(0.1f),
+                modifier = Modifier.weight(0.1f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = ":",
-                    style = LargeTitle.copy(fontSize = 100.sp, color = MaterialTheme.colorScheme.tertiary),
+                    style = LargeTitle.copy(
+                        fontSize = 100.sp,
+                        color = MaterialTheme.colorScheme.tertiary
+                    ),
                     textAlign = TextAlign.Center
                 )
             }
 
             Column(
-                Modifier.weight(0.5f),
+                modifier = Modifier.weight(0.5f),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[1],
-                    style = LargeTitle.copy(fontSize = 100.sp, color = MaterialTheme.colorScheme.tertiary),
+                    style = LargeTitle.copy(
+                        fontSize = 100.sp,
+                        color = MaterialTheme.colorScheme.tertiary
+                    ),
                     textAlign = TextAlign.Start
                 )
             }
@@ -66,7 +75,7 @@ fun TimeContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                Modifier
+                modifier = Modifier
                     .weight(0.3f)
                     .padding(end = 8.dp),
                 horizontalAlignment = Alignment.End
@@ -74,49 +83,61 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[0],
-                    style = LargeTitle.copy(fontSize = 70.sp, color = MaterialTheme.colorScheme.tertiary),
+                    style = LargeTitle.copy(
+                        fontSize = 70.sp,
+                        color = MaterialTheme.colorScheme.tertiary
+                    ),
                     textAlign = TextAlign.End
                 )
             }
 
             Column(
-                Modifier.weight(0.05f),
-                horizontalAlignment = Alignment.End,
+                modifier = Modifier.weight(0.05f),
+                horizontalAlignment = Alignment.End
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = ":",
-                    style = LargeTitle.copy(fontSize = 70.sp, color = MaterialTheme.colorScheme.tertiary),
+                    style = LargeTitle.copy(
+                        fontSize = 70.sp,
+                        color = MaterialTheme.colorScheme.tertiary
+                    ),
                     textAlign = TextAlign.Center
                 )
             }
 
             Column(
-                Modifier.weight(0.25f),
+                modifier = Modifier.weight(0.25f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[1],
-                    style = LargeTitle.copy(fontSize = 70.sp, color = MaterialTheme.colorScheme.tertiary),
+                    style = LargeTitle.copy(
+                        fontSize = 70.sp,
+                        color = MaterialTheme.colorScheme.tertiary
+                    ),
                     textAlign = TextAlign.Center
                 )
             }
 
             Column(
-                Modifier.weight(0.05f),
+                modifier = Modifier.weight(0.05f),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = ":",
-                    style = LargeTitle.copy(fontSize = 70.sp, color = MaterialTheme.colorScheme.tertiary),
+                    style = LargeTitle.copy(
+                        fontSize = 70.sp,
+                        color = MaterialTheme.colorScheme.tertiary
+                    ),
                     textAlign = TextAlign.Center
                 )
             }
 
             Column(
-                Modifier
+                modifier = Modifier
                     .weight(0.3f)
                     .padding(start = 4.dp),
                 horizontalAlignment = Alignment.Start
@@ -124,7 +145,10 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[2],
-                    style = LargeTitle.copy(fontSize = 70.sp, color = MaterialTheme.colorScheme.tertiary),
+                    style = LargeTitle.copy(
+                        fontSize = 70.sp,
+                        color = MaterialTheme.colorScheme.tertiary
+                    ),
                     textAlign = TextAlign.Start
                 )
             }

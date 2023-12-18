@@ -18,7 +18,7 @@ fun ButtonsContent(
     state: FlowTimeState,
     onStartClick: () -> Unit,
     onBreakClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -26,9 +26,8 @@ fun ButtonsContent(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (state.isTimerRunning || state.isBreakRunning) {
-
             CircularButton(
-                onClick = { onFinishClick.invoke() },
+                onClick = { onFinishClick.invoke() }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stop),
@@ -48,16 +47,14 @@ fun ButtonsContent(
                     )
                 }
             }
-
         } else {
-
             CircularButton(
                 onClick = { onStartClick.invoke() }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),
                     contentDescription = "Add",
-                    tint = MaterialTheme.colorScheme.tertiary,
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             }
         }

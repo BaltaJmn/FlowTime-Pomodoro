@@ -27,7 +27,6 @@ import com.baltajmn.flowtime.core.persistence.model.RangeModel
 
 @Composable
 fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeModel) -> Unit) {
-
     var time by remember(range.endRange) { mutableStateOf(range.endRange.toString()) }
     var rest by remember(range.rest) { mutableStateOf(range.rest.toString()) }
 
@@ -53,7 +52,7 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
                             RangeModel(
                                 totalRange = it.toInt(),
                                 endRange = it.toInt(),
-                                rest = range.rest,
+                                rest = range.rest
                             )
                         )
                     }
@@ -61,8 +60,13 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
             },
             label = {
                 Text(
-                    text = LocalContext.current.getString(R.string.flow_time_settings_in_the_first, time),
-                    style = Title.copy(fontSize = 10.sp),
+                    text = LocalContext.current.getString(
+                        R.string.flow_time_settings_in_the_first,
+                        time
+                    ),
+                    style = Title.copy(
+                        fontSize = 10.sp
+                    ),
                     maxLines = 1
                 )
             },
@@ -101,7 +105,7 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
                             RangeModel(
                                 totalRange = range.totalRange,
                                 endRange = range.endRange,
-                                rest = it.toInt(),
+                                rest = it.toInt()
                             )
                         )
                     }

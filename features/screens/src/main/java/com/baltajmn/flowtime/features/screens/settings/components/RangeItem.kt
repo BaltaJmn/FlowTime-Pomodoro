@@ -39,7 +39,6 @@ fun RangeItem(
     onValueChanged: (Int, RangeModel) -> Unit,
     onDeleteClicked: (Int) -> Unit
 ) {
-
     var time by remember(range.endRange) { mutableStateOf(range.endRange.toString()) }
     var rest by remember(range.rest) { mutableStateOf(range.rest.toString()) }
 
@@ -76,7 +75,7 @@ fun RangeItem(
                             RangeModel(
                                 totalRange = previousRange.totalRange + it.toInt(),
                                 endRange = it.toInt(),
-                                rest = range.rest,
+                                rest = range.rest
                             )
                         )
                     }
@@ -132,7 +131,7 @@ fun RangeItem(
                             RangeModel(
                                 totalRange = range.totalRange,
                                 endRange = range.endRange,
-                                rest = it.toInt(),
+                                rest = it.toInt()
                             )
                         )
                     }

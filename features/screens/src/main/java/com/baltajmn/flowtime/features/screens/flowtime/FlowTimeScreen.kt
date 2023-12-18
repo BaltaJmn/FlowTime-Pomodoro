@@ -40,7 +40,7 @@ import org.koin.androidx.compose.koinViewModel
 fun FlowTimeScreen(
     viewModel: FlowTimeViewModel = koinViewModel(),
     listState: LazyListState,
-    onTimerRunning: (Boolean) -> Unit,
+    onTimerRunning: (Boolean) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -62,7 +62,7 @@ fun FlowTimeScreen(
         listState = listState,
         onStartClick = { viewModel.startTimer() },
         onBreakClick = { viewModel.continueWithBreak() },
-        onFinishClick = { viewModel.stopTimer() },
+        onFinishClick = { viewModel.stopTimer() }
     )
 }
 
@@ -72,7 +72,7 @@ fun AnimatedFlowTimeContent(
     listState: LazyListState,
     onStartClick: () -> Unit,
     onBreakClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     AnimatedContent(
         targetState = state.isLoading,
@@ -85,7 +85,7 @@ fun AnimatedFlowTimeContent(
                 listState = listState,
                 onStartClick = onStartClick,
                 onBreakClick = onBreakClick,
-                onFinishClick = onFinishClick,
+                onFinishClick = onFinishClick
             )
         }
     }
@@ -97,7 +97,7 @@ fun FLowTimeContent(
     listState: LazyListState,
     onStartClick: () -> Unit,
     onBreakClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) {
         LandscapeContent(
@@ -121,7 +121,7 @@ fun PortraitContent(
     state: FlowTimeState,
     onStartClick: () -> Unit,
     onBreakClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -129,7 +129,7 @@ fun PortraitContent(
             .background(MaterialTheme.colorScheme.secondary)
             .padding(PaddingValues(bottom = 120.dp)),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ScreenTitle(
             text = if (state.isTimerRunning && state.isBreakRunning.not()) {
@@ -138,7 +138,7 @@ fun PortraitContent(
                 LocalContext.current.getString(R.string.time_title_resting)
             } else {
                 LocalContext.current.getString(R.string.flow_time_title)
-            },
+            }
         )
         Spacer(modifier = Modifier.height(32.dp))
         TimeContent(secondsFormatted = state.secondsFormatted)
@@ -149,7 +149,7 @@ fun PortraitContent(
             state = state,
             onStartClick = onStartClick,
             onBreakClick = onBreakClick,
-            onFinishClick = onFinishClick,
+            onFinishClick = onFinishClick
         )
     }
 }
@@ -159,7 +159,7 @@ fun LandscapeContent(
     state: FlowTimeState,
     onStartClick: () -> Unit,
     onBreakClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -167,7 +167,7 @@ fun LandscapeContent(
             .background(MaterialTheme.colorScheme.secondary)
             .padding(horizontal = 32.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row {
             Column(
@@ -207,7 +207,7 @@ fun LandscapeContent(
                     state = state,
                     onStartClick = onStartClick,
                     onBreakClick = onBreakClick,
-                    onFinishClick = onFinishClick,
+                    onFinishClick = onFinishClick
                 )
             }
         }

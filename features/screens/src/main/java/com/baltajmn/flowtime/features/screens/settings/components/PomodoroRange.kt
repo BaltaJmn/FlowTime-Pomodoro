@@ -51,7 +51,7 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
                             RangeModel(
                                 totalRange = it.toInt(),
                                 endRange = it.toInt(),
-                                rest = range.rest,
+                                rest = range.rest
                             )
                         )
                     }
@@ -98,7 +98,7 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
                             RangeModel(
                                 totalRange = range.totalRange,
                                 endRange = range.endRange,
-                                rest = it.toInt(),
+                                rest = it.toInt()
                             )
                         )
                     }

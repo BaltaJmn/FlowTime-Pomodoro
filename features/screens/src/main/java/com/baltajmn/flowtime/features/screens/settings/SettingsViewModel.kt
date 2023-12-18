@@ -13,10 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class SettingsViewModel(
-    dispatcherProvider: DispatcherProvider,
     private val dataProvider: DataProvider
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState
 
@@ -62,7 +60,7 @@ class SettingsViewModel(
     fun modifyRange(index: Int, range: RangeModel) {
         with(_uiState.value) {
             val rangesList = flowTimeRanges.toMutableList()
-            for (i in index..<rangesList.size) {
+            for (i in index until rangesList.size) {
                 if (i > 0) {
                     rangesList[i] = rangesList.toMutableList()[i].copy(
                         totalRange = if (i == index) {
@@ -79,7 +77,7 @@ class SettingsViewModel(
                             range.rest
                         } else {
                             rangesList[i].rest
-                        },
+                        }
                     )
                 } else {
                     rangesList[index] = rangesList.toMutableList()[index].copy(
@@ -89,7 +87,6 @@ class SettingsViewModel(
                     )
                 }
             }
-
 
             _uiState.update {
                 it.copy(flowTimeRanges = rangesList.toMutableList())

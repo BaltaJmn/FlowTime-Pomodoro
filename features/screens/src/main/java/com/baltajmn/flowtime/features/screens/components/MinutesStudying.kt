@@ -23,5 +23,4 @@ fun MinutesStudying(minutesStudying: String) {
             style = SubBody.copy(fontSize = 18.sp, color = MaterialTheme.colorScheme.primary)
         )
     }
-
 }

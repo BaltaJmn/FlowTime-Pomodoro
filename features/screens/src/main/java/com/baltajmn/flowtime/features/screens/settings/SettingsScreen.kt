@@ -56,7 +56,7 @@ import org.koin.androidx.compose.koinViewModel
 fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     listState: LazyListState,
-    onThemeChanged: (AppTheme) -> Unit,
+    onThemeChanged: (AppTheme) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -73,7 +73,7 @@ fun AnimatedSettingsContent(
     state: SettingsState,
     listState: LazyListState,
     viewModel: SettingsViewModel,
-    onThemeChanged: (AppTheme) -> Unit,
+    onThemeChanged: (AppTheme) -> Unit
 ) {
     AnimatedContent(
         targetState = state.isLoading,
@@ -85,7 +85,7 @@ fun AnimatedSettingsContent(
                 state = state,
                 listState = listState,
                 viewModel = viewModel,
-                onThemeChanged = onThemeChanged,
+                onThemeChanged = onThemeChanged
             )
         }
     }
@@ -96,7 +96,7 @@ fun SettingsContent(
     state: SettingsState,
     listState: LazyListState,
     viewModel: SettingsViewModel,
-    onThemeChanged: (AppTheme) -> Unit,
+    onThemeChanged: (AppTheme) -> Unit
 ) {
     LazyColumn(
         state = listState,
@@ -155,15 +155,16 @@ fun SettingsContent(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(AppTheme.entries) { color ->
-                    Box(modifier = Modifier
-                        .background(color = getColorByName(color))
-                        .aspectRatio(1f)
-                        .size(32.dp)
-                        .semantics { contentDescription = "Color $color" }
-                        .clickable {
-                            onThemeChanged.invoke(color)
-                            viewModel.saveColor(color)
-                        }
+                    Box(
+                        modifier = Modifier
+                            .background(color = getColorByName(color))
+                            .aspectRatio(1f)
+                            .size(32.dp)
+                            .semantics { contentDescription = "Color $color" }
+                            .clickable {
+                                onThemeChanged.invoke(color)
+                                viewModel.saveColor(color)
+                            }
                     )
                 }
             }
@@ -191,7 +192,6 @@ private fun getColorByName(color: AppTheme): Color = when (color) {
     AppTheme.Purple -> Purple
 }
 
-
 @Composable
 fun ButtonSave(onSaveClicked: () -> Unit) {
     Row(
@@ -209,4 +209,3 @@ fun ButtonSave(onSaveClicked: () -> Unit) {
         }
     }
 }
-

@@ -15,19 +15,17 @@ fun FlowTimeNavHost(
     flowTimeAppState: FlowTimeAppState,
     onThemeChanged: (AppTheme) -> Unit
 ) {
-
     NavHost(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
         navController = flowTimeAppState.authNavController,
         route = GRAPH.Root,
-        startDestination = GRAPH.Main,
+        startDestination = GRAPH.Main
     ) {
         composable(GRAPH.Main) {
             MainScreen(
                 appState = flowTimeAppState,
-                onThemeChanged = onThemeChanged,
+                onThemeChanged = onThemeChanged
             )
         }
     }
-
 }

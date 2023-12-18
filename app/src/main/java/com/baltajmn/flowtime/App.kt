@@ -11,7 +11,6 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
 class App : Application(), ImageLoaderFactory {
-
     override fun onCreate() {
         super.onCreate()
 
@@ -20,7 +19,7 @@ class App : Application(), ImageLoaderFactory {
             androidContext(this@App)
             modules(
                 CoreModules,
-                FeaturesModule,
+                FeaturesModule
             )
         }
     }
@@ -37,5 +36,4 @@ class App : Application(), ImageLoaderFactory {
             )
             .build()
     }
-
 }

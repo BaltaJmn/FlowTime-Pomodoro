@@ -23,9 +23,8 @@ fun MainGraph(
     pomodoroState: LazyListState,
     settingsState: LazyListState,
     onThemeChanged: (AppTheme) -> Unit,
-    onTimerRunning: (Boolean) -> Unit,
+    onTimerRunning: (Boolean) -> Unit
 ) {
-
     NavHost(
         navController = appState.mainNavController,
         route = GRAPH.Main,
@@ -38,11 +37,11 @@ fun MainGraph(
                     towards = AnimatedContentTransitionScope.SlideDirection.Companion.Up,
                     animationSpec = tween(500)
                 )
-            },
+            }
         ) {
             FlowTimeScreen(
                 listState = flowTimeState,
-                onTimerRunning = onTimerRunning,
+                onTimerRunning = onTimerRunning
             )
         }
 
@@ -53,11 +52,11 @@ fun MainGraph(
                     towards = AnimatedContentTransitionScope.SlideDirection.Companion.Up,
                     animationSpec = tween(500)
                 )
-            },
+            }
         ) {
             PomodoroScreen(
                 listState = pomodoroState,
-                onTimerRunning = onTimerRunning,
+                onTimerRunning = onTimerRunning
             )
         }
 
@@ -68,11 +67,11 @@ fun MainGraph(
                     towards = AnimatedContentTransitionScope.SlideDirection.Companion.Up,
                     animationSpec = tween(500)
                 )
-            },
+            }
         ) {
             SettingsScreen(
                 listState = settingsState,
-                onThemeChanged = onThemeChanged,
+                onThemeChanged = onThemeChanged
             )
         }
     }

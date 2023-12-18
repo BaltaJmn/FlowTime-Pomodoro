@@ -42,7 +42,7 @@ import org.koin.androidx.compose.koinViewModel
 fun PomodoroScreen(
     viewModel: PomodoroViewModel = koinViewModel(),
     listState: LazyListState,
-    onTimerRunning: (Boolean) -> Unit,
+    onTimerRunning: (Boolean) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -64,7 +64,7 @@ fun PomodoroScreen(
         state = state,
         listState = listState,
         onStartClick = { viewModel.startTimer() },
-        onFinishClick = { viewModel.stopTimer() },
+        onFinishClick = { viewModel.stopTimer() }
     )
 }
 
@@ -73,7 +73,7 @@ fun AnimatedPomodoroContent(
     state: PomodoroState,
     listState: LazyListState,
     onStartClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     AnimatedContent(
         targetState = state.isLoading,
@@ -85,7 +85,7 @@ fun AnimatedPomodoroContent(
                 state = state,
                 listState = listState,
                 onStartClick = onStartClick,
-                onFinishClick = onFinishClick,
+                onFinishClick = onFinishClick
             )
         }
     }
@@ -96,7 +96,7 @@ fun PomodoroContent(
     state: PomodoroState,
     listState: LazyListState,
     onStartClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) {
         LandscapeContent(
@@ -117,7 +117,7 @@ fun PomodoroContent(
 fun LandscapeContent(
     state: PomodoroState,
     onStartClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -125,7 +125,7 @@ fun LandscapeContent(
             .background(MaterialTheme.colorScheme.secondary)
             .padding(horizontal = 32.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row {
             Column(
@@ -165,7 +165,7 @@ fun LandscapeContent(
                 ButtonsContentLandscape(
                     state = state,
                     onStartClick = onStartClick,
-                    onFinishClick = onFinishClick,
+                    onFinishClick = onFinishClick
                 )
             }
         }
@@ -176,7 +176,7 @@ fun LandscapeContent(
 fun ButtonsContentLandscape(
     state: PomodoroState,
     onStartClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxHeight(),
@@ -200,7 +200,7 @@ fun ButtonsContentLandscape(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),
                     contentDescription = "Add",
-                    tint = MaterialTheme.colorScheme.tertiary,
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             }
         }
@@ -211,7 +211,7 @@ fun ButtonsContentLandscape(
 fun PortraitContent(
     state: PomodoroState,
     onStartClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -219,7 +219,7 @@ fun PortraitContent(
             .background(MaterialTheme.colorScheme.secondary)
             .padding(PaddingValues(bottom = 120.dp)),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ScreenTitle(
             text = if (state.isBreakRunning.not() && state.isTimerRunning.not()) {
@@ -238,7 +238,7 @@ fun PortraitContent(
         ButtonsContent(
             state = state,
             onStartClick = onStartClick,
-            onFinishClick = onFinishClick,
+            onFinishClick = onFinishClick
         )
     }
 }
@@ -247,7 +247,7 @@ fun PortraitContent(
 fun ButtonsContent(
     state: PomodoroState,
     onStartClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onFinishClick: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -271,7 +271,7 @@ fun ButtonsContent(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),
                     contentDescription = "Add",
-                    tint = MaterialTheme.colorScheme.tertiary,
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             }
         }

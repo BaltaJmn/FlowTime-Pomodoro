@@ -20,7 +20,7 @@ import com.baltajmn.flowtime.core.design.theme.FlowTimeTheme
 fun FlowTimeApp(
     flowTimeAppState: FlowTimeAppState = rememberAppState(),
     appTheme: AppTheme,
-    onThemeChanged: (AppTheme) -> Unit,
+    onThemeChanged: (AppTheme) -> Unit
 ) {
     HideSystemBars()
     KeepScreenOn()
@@ -28,7 +28,7 @@ fun FlowTimeApp(
     FlowTimeTheme(appTheme = appTheme) {
         FlowTimeNavHost(
             flowTimeAppState = flowTimeAppState,
-            onThemeChanged = onThemeChanged,
+            onThemeChanged = onThemeChanged
         )
     }
 }

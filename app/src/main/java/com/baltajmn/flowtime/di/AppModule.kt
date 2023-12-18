@@ -25,7 +25,7 @@ val CoreModules: Module
             listOf(
                 DispatchersModule,
                 PersistenceModule,
-                DesignModule,
+                DesignModule
             )
         )
     }
