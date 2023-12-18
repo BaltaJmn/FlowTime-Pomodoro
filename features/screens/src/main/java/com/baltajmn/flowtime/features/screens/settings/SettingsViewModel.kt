@@ -84,7 +84,6 @@ class SettingsViewModel(
                     )
                 }
             }
-
             _uiState.update {
                 it.copy(flowTimeRanges = rangesList.toMutableList())
             }
