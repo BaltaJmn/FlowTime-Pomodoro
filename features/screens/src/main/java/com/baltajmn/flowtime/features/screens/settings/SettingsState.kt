@@ -4,7 +4,6 @@ import com.baltajmn.flowtime.core.persistence.model.RangeModel
 
 data class SettingsState(
     val isLoading: Boolean = false,
-
     val flowTimeRanges: MutableList<RangeModel> = mutableListOf(
         RangeModel(totalRange = 15, endRange = 15, rest = 5),
         RangeModel(totalRange = 30, endRange = 15, rest = 10),
