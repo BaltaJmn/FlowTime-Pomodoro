@@ -1,7 +1,6 @@
 package com.baltajmn.flowtime.features.screens.settings
 
 import androidx.lifecycle.ViewModel
-import com.baltajmn.flowtime.core.common.dispatchers.DispatcherProvider
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
