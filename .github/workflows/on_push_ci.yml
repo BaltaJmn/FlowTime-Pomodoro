@@ -2,17 +2,12 @@ name: On Push CI
 
 on:
   push:
-    branches:
-      - '*'
-      - '!master'
+    branches: [ "main", "develop" ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     steps:
       - uses: actions/checkout@v3
@@ -28,10 +23,3 @@ jobs:
       - name: Build with Gradle
         id: build
         run: ./gradlew build
-
-      - name: Notify on Slack
-        uses: act10ns/slack@v1
-        with:
-          status: ${{ job.status }}
-          steps: ${{ toJson(steps) }}
-        if: always()
