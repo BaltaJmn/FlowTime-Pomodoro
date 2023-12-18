@@ -25,11 +25,9 @@ class SettingsViewModel(
         val flowTimeList =
             dataProvider.getRangeModelList(key = FLOW_TIME_RANGE)
                 ?: _uiState.value.flowTimeRanges
-
         val pomodoroList =
             dataProvider.getRangeModel(key = POMODORO_RANGE)
                 ?: _uiState.value.pomodoroRange
-
         _uiState.update {
             it.copy(
                 flowTimeRanges = flowTimeList,
