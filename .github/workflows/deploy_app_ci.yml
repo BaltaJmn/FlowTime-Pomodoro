@@ -27,7 +27,7 @@ jobs:
 
       - name: Build with Gradle
         id: build
-        run: ./gradlew build
+        run: gradle build
 
       - name: Build Release AAB
         id: buildRelease
