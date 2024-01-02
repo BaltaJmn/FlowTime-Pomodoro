@@ -10,7 +10,7 @@ interface GetStudyTimeUseCase {
 }
 
 class GetStudyTime(
-    private val dataProvider: DataProvider,
+    private val dataProvider: DataProvider
 ) : GetStudyTimeUseCase {
 
     override suspend fun invoke(date: LocalDate): List<Long> {
@@ -23,5 +23,4 @@ class GetStudyTime(
 
         return studyList
     }
-
 }

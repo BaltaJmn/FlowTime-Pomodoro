@@ -42,12 +42,12 @@ import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.Title
-import org.koin.androidx.compose.koinViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.time.temporal.TemporalAdjusters
 import java.util.Locale
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HistoryScreen(
@@ -127,7 +127,7 @@ fun ScreenTitleWithBack(text: String, navigateUp: () -> Unit) {
                 indication = null
             ) { navigateUp.invoke() },
         horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             modifier = Modifier
@@ -135,12 +135,12 @@ fun ScreenTitleWithBack(text: String, navigateUp: () -> Unit) {
                 .size(40.dp),
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
             tint = MaterialTheme.colorScheme.primary,
-            contentDescription = null,
+            contentDescription = null
         )
         Text(
             text = text,
             style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary),
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -150,7 +150,7 @@ fun HistoryWeek(
     selectedDate: LocalDate,
     plusWeek: () -> Unit,
     minusWeek: () -> Unit,
-    studyTime: List<Long>,
+    studyTime: List<Long>
 ) {
     Column(
         modifier = Modifier
@@ -194,7 +194,6 @@ fun BarChart(studyTime: List<Long>) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()

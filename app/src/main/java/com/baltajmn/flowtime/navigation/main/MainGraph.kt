@@ -27,7 +27,7 @@ fun MainGraph(
     navigateToHistory: () -> Unit,
     navigateUp: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
-    onTimerRunning: (Boolean) -> Unit,
+    onTimerRunning: (Boolean) -> Unit
 ) {
     NavHost(
         navController = appState.mainNavController,

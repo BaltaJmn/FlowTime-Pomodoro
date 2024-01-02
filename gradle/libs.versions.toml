@@ -1,5 +1,5 @@
 [versions]
-playPublisher = "2.8.0-SNAPSHOT"
+playPublisher = "3.8.6"
 versionCode = "1"
 versionName = "1.0.0"
 compileSdk = "34"
@@ -8,7 +8,7 @@ minSdk = "26"
 kotlin = "1.9.20"
 gradle = "8.1.4"
 ktlint = "11.5.1"
-ktor = "2.2.2"
+ktor = "2.3.6"
 logginInterceptor = "4.12.0"
 room = "2.6.1"
 composeCompiler = "1.5.4"
@@ -25,19 +25,19 @@ junit4 = "4.13.2"
 coroutines-test = "1.7.3"
 accompanist = "0.32.0"
 rebugger = "1.0.0-beta01"
-kotlinImmutable = "0.3.5"
-workManager = "2.8.1"
+kotlinImmutable = "0.3.6"
+workManager = "2.9.0"
 lottieCompose = "6.0.0"
 core-ktx = "1.12.0"
 appcompat = "1.6.1"
-material = "1.10.0"
-ksp = "1.9.20-1.0.14"
-material3 = "1.2.0-alpha12"
+material = "1.11.0"
+ksp = "1.9.21-1.0.16"
+material3 = "1.2.0-beta01"
 
 [libraries]
 
-androidx-compose-activity = "androidx.activity:activity-compose:1.8.1"
-androidx-compose-navigation = "androidx.navigation:navigation-compose:2.7.5"
+androidx-compose-activity = "androidx.activity:activity-compose:1.8.2"
+androidx-compose-navigation = "androidx.navigation:navigation-compose:2.7.6"
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
@@ -103,7 +103,7 @@ flowtime-android-application = { id = "flowtime.android.application", version = 
 flowtime-android-library = { id = "flowtime.android.library", version = "unspecified" }
 flowtime-android-compose-library = { id = "flowtime.compose.library", version = "unspecified" }
 flowtime-android-room-library = { id = "flowtime.room.library", version = "unspecified" }
-flowtime-triplet-play = {id="com.github.triplet.play", version = "3.8.6"}
+flowtime-triplet-play = { id = "com.github.triplet.play", version = "3.8.6" }
 
 [bundles]
 
