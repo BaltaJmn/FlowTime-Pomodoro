@@ -24,4 +24,27 @@
     <string name="study_history">Study History</string>
     <string name="go_to_history">Go to History</string>
     <string name="others">Others</string>
+    <string name="total_minutes">Total minutes</string>
+    <string name="best_day">Best day</string>
+    <string name="remember">Remember</string>
+    <string name="mot_1">You can do it! :)</string>
+    <string name="mot_2">Don\'t stop, keep going :)</string>
+    <string name="mot_3">Determination conquers all :)</string>
+    <string name="mot_4">You\'re strong, keep going :)</string>
+    <string name="mot_5">Small steps, big success :)</string>
+    <string name="mot_6">No limits, only possibilities :)</string>
+    <string name="mot_7">You\'re the creator :)</string>
+    <string name="mot_8">Persist, you will triumph :)</string>
+    <string name="mot_9">Success is waiting for you :)</string>
+    <string name="mot_10">Stay strong, you\'ll achieve! :)</string>
+    <string name="mot_11">Go for it, you have the power :)</string>
+    <string name="mot_12">Every step counts, don\'t stop :)</string>
+    <string name="mot_13">Determination overcomes any obstacle :)</string>
+    <string name="mot_14">You\'re stronger than you imagine :)</string>
+    <string name="mot_15">Small efforts add up to great achievements :)</string>
+    <string name="mot_16">No limits, only possibilities :)</string>
+    <string name="mot_17">You\'re the architect of your destiny :)</string>
+    <string name="mot_18">Persist, you\'re closer to success :)</string>
+    <string name="mot_19">Success awaits you at the end of the road :)</string>
+    <string name="mot_20">Stay firm, triumph is yours! :)</string>
 </resources>

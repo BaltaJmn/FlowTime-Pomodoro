@@ -24,4 +24,27 @@
     <string name="study_history">Historial de Estudio</string>
     <string name="go_to_history">Ir al Historial</string>
     <string name="others">Otros</string>
+    <string name="total_minutes">Minutos totales</string>
+    <string name="best_day">Mejor día</string>
+    <string name="remember">Recuerda</string>
+    <string name="mot_1">¡Tú puedes hacerlo! :)</string>
+    <string name="mot_2">No te detengas, sigue :)</string>
+    <string name="mot_3">La determinación vence :)</string>
+    <string name="mot_4">Eres fuerte, sigue :)</string>
+    <string name="mot_5">Pequeños pasos, gran éxito :)</string>
+    <string name="mot_6">Sin límites, solo posibilidades :)</string>
+    <string name="mot_7">Eres el creador :)</string>
+    <string name="mot_8">Persiste, triunfarás :)</string>
+    <string name="mot_9">El éxito te espera :)</string>
+    <string name="mot_10">¡Sigue firme, lograrás! :)</string>
+    <string name="mot_11">¡A por todas, tú tienes el poder :)</string>
+    <string name="mot_12">Cada paso cuenta, no te detengas :)</string>
+    <string name="mot_13">La determinación supera cualquier obstáculo :)</string>
+    <string name="mot_14">Eres más fuerte de lo imaginas :)</string>
+    <string name="mot_15">Pequeños esfuerzos suman grandes logros :)</string>
+    <string name="mot_16">No hay límites, solo posibilidades :)</string>
+    <string name="mot_17">Eres el arquitecto de tu destino :)</string>
+    <string name="mot_18">Persiste, estás más cerca del éxito :)</string>
+    <string name="mot_19">El éxito te espera al final del camino :)</string>
+    <string name="mot_20">¡Sigue firme, el triunfo es tuyo! :)</string>
 </resources>
