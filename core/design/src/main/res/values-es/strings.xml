@@ -21,4 +21,7 @@
     <string name="dialog_subtitle">Tu contador se reseteará</string>
     <string name="dialog_confirm">Confirmar</string>
     <string name="dialog_cancel">Cancelar</string>
+    <string name="study_history">Historial de Estudio</string>
+    <string name="go_to_history">Ir al Historial</string>
+    <string name="others">Otros</string>
 </resources>

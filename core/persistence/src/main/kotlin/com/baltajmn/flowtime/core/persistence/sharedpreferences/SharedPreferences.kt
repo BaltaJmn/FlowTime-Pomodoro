@@ -7,6 +7,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
@@ -71,6 +73,15 @@ class SharedPreferencesProvider(
     override fun updateMinutes(minutes: Long): Long {
         sharedPreferences.edit().putLong(keyMinutes, getMinutes() + minutes).apply()
         return getMinutes()
+    }
+
+    override fun getMinutesByDate(date: LocalDate): Long {
+        return sharedPreferences.getLong(
+            date.format(
+                DateTimeFormatter.ofPattern("ddMMyyyy", Locale.getDefault())
+            ),
+            0L
+        )
     }
 
     private fun getMinutes(): Long {

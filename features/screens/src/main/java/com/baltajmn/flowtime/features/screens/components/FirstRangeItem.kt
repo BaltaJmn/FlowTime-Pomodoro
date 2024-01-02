@@ -1,4 +1,4 @@
-package com.baltajmn.flowtime.features.screens.settings.components
+package com.baltajmn.flowtime.features.screens.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
