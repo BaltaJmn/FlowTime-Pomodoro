@@ -24,4 +24,27 @@
     <string name="study_history">Studienverlauf</string>
     <string name="go_to_history">Zur Historie</string>
     <string name="others">Andere</string>
+    <string name="total_minutes">Gesamtminuten</string>
+    <string name="best_day">Bester Tag</string>
+    <string name="remember">Erinnern</string>
+    <string name="mot_1">Du schaffst das! :)</string>
+    <string name="mot_2">Hör nicht auf, mach weiter :)</string>
+    <string name="mot_3">Entschlossenheit besiegt alles :)</string>
+    <string name="mot_4">Du bist stark, mach weiter :)</string>
+    <string name="mot_5">Kleine Schritte, großer Erfolg :)</string>
+    <string name="mot_6">Keine Grenzen, nur Möglichkeiten :)</string>
+    <string name="mot_7">Du bist der Schöpfer :)</string>
+    <string name="mot_8">Halte durch, du wirst triumphieren :)</string>
+    <string name="mot_9">Erfolg wartet auf dich :)</string>
+    <string name="mot_10">Bleib stark, du wirst es schaffen! :)</string>
+    <string name="mot_11">Gib alles, du hast die Macht :)</string>
+    <string name="mot_12">Jeder Schritt zählt, hör nicht auf :)</string>
+    <string name="mot_13">Entschlossenheit überwindet jedes Hindernis :)</string>
+    <string name="mot_14">Du bist stärker, als du dir vorstellst :)</string>
+    <string name="mot_15">Kleine Anstrengungen summieren sich zu großen Erfolgen :)</string>
+    <string name="mot_16">Keine Grenzen, nur Möglichkeiten :)</string>
+    <string name="mot_17">Du bist der Architekt deines Schicksals :)</string>
+    <string name="mot_18">Halte durch, du bist dem Erfolg näher :)</string>
+    <string name="mot_19">Der Erfolg wartet am Ende des Weges :)</string>
+    <string name="mot_20">Bleib standhaft, der Triumph gehört dir! :)</string>
 </resources>

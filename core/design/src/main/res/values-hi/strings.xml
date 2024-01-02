@@ -24,4 +24,27 @@
     <string name="study_history">अध्ययन इतिहास</string>
     <string name="go_to_history">इतिहास पर जाएं</string>
     <string name="others">अन्य</string>
+    <string name="total_minutes">कुल मिनट</string>
+    <string name="best_day">सबसे अच्छा दिन</string>
+    <string name="remember">याद रखना</string>
+    <string name="mot_1">तुम कर सकते हो! :)</string>
+    <string name="mot_2">रुको मत, जारी रखो! :)</string>
+    <string name="mot_3">निश्चितता सभी को हराती है! :)</string>
+    <string name="mot_4">तुम मजबूत हो, जारी रखो! :)</string>
+    <string name="mot_5">छोटे कदम, बड़ा सफलता! :)</string>
+    <string name="mot_6">कोई सीमा नहीं, सिर्फ संभावनाएँ! :)</string>
+    <string name="mot_7">तुम सर्जक हो! :)</string>
+    <string name="mot_8">दृढ़ रहो, तुम जीतोगे! :)</string>
+    <string name="mot_9">सफलता तुम्हारा इंतजार कर रही है! :)</string>
+    <string name="mot_10">स्थिर रहो, तुम कर सकते हो! :)</string>
+    <string name="mot_11">आगे बढ़ो, तुम्हारे पास शक्ति है! :)</string>
+    <string name="mot_12">हर कदम मायने रखता है, रुको मत! :)</string>
+    <string name="mot_13">निश्चितता किसी भी रुकावट से अधिक है! :)</string>
+    <string name="mot_14">तुम सोचते से भी मजबूत हो! :)</string>
+    <string name="mot_15">छोटे प्रयास बड़े उपलब्धियों का हिस्सा होते हैं! :)</string>
+    <string name="mot_16">कोई सीमा नहीं, सिर्फ संभावनाएँ! :)</string>
+    <string name="mot_17">तुम अपने भविष्य का शिल्पकला हो! :)</string>
+    <string name="mot_18">दृढ़ रहो, सफलता के कदीबदी के पास हो! :)</string>
+    <string name="mot_19">सफलता तुम्हारे मार्ग के अंत में इंतजार कर रही है! :)</string>
+    <string name="mot_20">स्थिर रहो, जीत तुम्हारी है! :)</string>
 </resources>

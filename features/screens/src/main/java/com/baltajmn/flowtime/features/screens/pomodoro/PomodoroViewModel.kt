@@ -34,7 +34,7 @@ class PomodoroViewModel(
         timerJob?.cancel()
         timerJob = timerScope.launch {
             do {
-                delay(1000)
+                delay(1)
                 val seconds = _uiState.value.seconds - 1
                 _uiState.update {
                     it.copy(
@@ -58,7 +58,7 @@ class PomodoroViewModel(
         breakJob?.cancel()
         breakJob = timerScope.launch {
             do {
-                delay(1000)
+                delay(1)
                 val seconds = _uiState.value.secondsBreak - 1
                 _uiState.update {
                     it.copy(
@@ -140,7 +140,7 @@ class PomodoroViewModel(
 
         val time = if (fromConfig) {
             endRange
-        } else if (seconds < 60) {
+        } else if (seconds > (endRange * 60) - 60) {
             0
         } else {
             (endRange * 60 - seconds) / 60

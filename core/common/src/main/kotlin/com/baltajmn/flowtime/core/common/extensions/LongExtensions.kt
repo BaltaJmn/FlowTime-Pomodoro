@@ -29,12 +29,12 @@ fun Long.formatMinutesStudyingInHistory(): String {
 
     return if (hours > 0) {
         if (remainingMinutes > 0) {
-            "$hours h \n $remainingMinutes m"
+            "${hours}h \n ${remainingMinutes}m"
         } else {
             "$hours h"
         }
     } else {
-        "$remainingMinutes m"
+        "${remainingMinutes}m"
     }
 }
 
