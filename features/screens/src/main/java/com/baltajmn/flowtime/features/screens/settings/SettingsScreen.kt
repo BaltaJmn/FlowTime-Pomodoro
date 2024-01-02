@@ -48,14 +48,16 @@ import com.baltajmn.flowtime.core.design.theme.Orange
 import com.baltajmn.flowtime.core.design.theme.Pink
 import com.baltajmn.flowtime.core.design.theme.Purple
 import com.baltajmn.flowtime.core.design.theme.SubBody
-import com.baltajmn.flowtime.features.screens.settings.components.FlowTimeRanges
-import com.baltajmn.flowtime.features.screens.settings.components.PomodoroRange
+import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import com.baltajmn.flowtime.features.screens.components.FlowTimeRanges
+import com.baltajmn.flowtime.features.screens.components.PomodoroRange
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     listState: LazyListState,
+    navigateToHistory: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -64,6 +66,7 @@ fun SettingsScreen(
         state = state,
         listState = listState,
         viewModel = viewModel,
+        navigateToHistory = navigateToHistory,
         onThemeChanged = onThemeChanged
     )
 }
@@ -73,6 +76,7 @@ fun AnimatedSettingsContent(
     state: SettingsState,
     listState: LazyListState,
     viewModel: SettingsViewModel,
+    navigateToHistory: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit
 ) {
     AnimatedContent(
@@ -85,6 +89,7 @@ fun AnimatedSettingsContent(
                 state = state,
                 listState = listState,
                 viewModel = viewModel,
+                navigateToHistory = navigateToHistory,
                 onThemeChanged = onThemeChanged
             )
         }
@@ -96,6 +101,7 @@ fun SettingsContent(
     state: SettingsState,
     listState: LazyListState,
     viewModel: SettingsViewModel,
+    navigateToHistory: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit
 ) {
     LazyColumn(
@@ -115,13 +121,13 @@ fun SettingsContent(
         }
         FlowTimeRanges(
             ranges = state.flowTimeRanges,
-            onValueChanged = { index, range ->
+            onValueChanged = { index: Int, range: RangeModel ->
                 viewModel.modifyRange(
                     index = index,
                     range = range
                 )
             },
-            onDeleteClicked = { index -> viewModel.deleteRange(index = index) },
+            onDeleteClicked = { index: Int -> viewModel.deleteRange(index = index) },
             onAddRangeClicked = { viewModel.addRange() }
         )
         item { Spacer(modifier = Modifier.height(32.dp)) }
@@ -134,7 +140,7 @@ fun SettingsContent(
         item {
             PomodoroRange(
                 range = state.pomodoroRange,
-                onValueChanged = { range ->
+                onValueChanged = { range: RangeModel ->
                     viewModel.modifyPomodoro(range)
                 }
             )
@@ -175,6 +181,15 @@ fun SettingsContent(
                 viewModel.saveChanges()
             }
         }
+        item { Spacer(modifier = Modifier.height(16.dp)) }
+        item {
+            Text(
+                text = LocalContext.current.getString(R.string.others),
+                style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary)
+            )
+        }
+        item { Spacer(modifier = Modifier.height(8.dp)) }
+        item { ButtonHistory(navigateToHistory = navigateToHistory) }
         item { Spacer(modifier = Modifier.height(96.dp)) }
     }
 }
@@ -204,6 +219,31 @@ fun ButtonSave(onSaveClicked: () -> Unit) {
         Button(onClick = { onSaveClicked.invoke() }) {
             Text(
                 text = LocalContext.current.getString(R.string.settings_save),
+                style = SubBody.copy(color = MaterialTheme.colorScheme.secondary)
+            )
+        }
+    }
+}
+
+@Composable
+fun ButtonHistory(navigateToHistory: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp, end = 16.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = LocalContext.current.getString((R.string.study_history))
+        )
+        Button(
+            modifier = Modifier.weight(1f),
+            onClick = { navigateToHistory.invoke() }
+        ) {
+            Text(
+                text = LocalContext.current.getString(R.string.go_to_history),
                 style = SubBody.copy(color = MaterialTheme.colorScheme.secondary)
             )
         }

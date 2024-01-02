@@ -21,4 +21,7 @@
     <string name="dialog_subtitle">Your timer will be reset</string>
     <string name="dialog_confirm">Confirm</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="study_history">Studienverlauf</string>
+    <string name="go_to_history">Zur Historie</string>
+    <string name="others">Andere</string>
 </resources>

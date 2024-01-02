@@ -9,9 +9,11 @@ import androidx.navigation.compose.composable
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.GRAPH
 import com.baltajmn.flowtime.core.navigation.MainGraph.FlowTime
+import com.baltajmn.flowtime.core.navigation.MainGraph.History
 import com.baltajmn.flowtime.core.navigation.MainGraph.Pomodoro
 import com.baltajmn.flowtime.core.navigation.MainGraph.Settings
 import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeScreen
+import com.baltajmn.flowtime.features.screens.history.HistoryScreen
 import com.baltajmn.flowtime.features.screens.pomodoro.PomodoroScreen
 import com.baltajmn.flowtime.features.screens.settings.SettingsScreen
 import com.baltajmn.flowtime.ui.FlowTimeAppState
@@ -22,6 +24,8 @@ fun MainGraph(
     flowTimeState: LazyListState,
     pomodoroState: LazyListState,
     settingsState: LazyListState,
+    navigateToHistory: () -> Unit,
+    navigateUp: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
     onTimerRunning: (Boolean) -> Unit
 ) {
@@ -71,7 +75,22 @@ fun MainGraph(
         ) {
             SettingsScreen(
                 listState = settingsState,
+                navigateToHistory = navigateToHistory,
                 onThemeChanged = onThemeChanged
+            )
+        }
+
+        composable(
+            route = History.route,
+            enterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Up,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            HistoryScreen(
+                navigateUp = navigateUp
             )
         }
     }
