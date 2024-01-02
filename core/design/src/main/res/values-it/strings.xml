@@ -24,4 +24,27 @@
     <string name="study_history">Cronologia di Studio</string>
     <string name="go_to_history">Vai alla Cronologia</string>
     <string name="others">Altro</string>
+    <string name="total_minutes">Minuti totali</string>
+    <string name="best_day">Il miglior giorno</string>
+    <string name="remember">Ricorda</string>
+    <string name="mot_1">Puoi farcela! :)</string>
+    <string name="mot_2">Non fermarti, continua :)</string>
+    <string name="mot_3">La determinazione vince :)</string>
+    <string name="mot_4">Sei forte, continua :)</string>
+    <string name="mot_5">Piccoli passi, grande successo :)</string>
+    <string name="mot_6">Senza limiti, solo possibilità :)</string>
+    <string name="mot_7">Sei il creatore :)</string>
+    <string name="mot_8">Persisti, trionferai :)</string>
+    <string name="mot_9">Il successo ti aspetta :)</string>
+    <string name="mot_10">Sta\' forte, raggiungerai! :)</string>
+    <string name="mot_11">Dai tutto, hai il potere :)</string>
+    <string name="mot_12">Ogni passo conta, non fermarti :)</string>
+    <string name="mot_13">La determinazione supera ogni ostacolo :)</string>
+    <string name="mot_14">Sei più forte di quanto immagini :)</string>
+    <string name="mot_15">Piccoli sforzi sommano grandi successi :)</string>
+    <string name="mot_16">Nessun limite, solo possibilità :)</string>
+    <string name="mot_17">Sei l\'architetto del tuo destino :)</string>
+    <string name="mot_18">Persisti, sei più vicino al successo :)</string>
+    <string name="mot_19">Il successo ti attende alla fine del percorso :)</string>
+    <string name="mot_20">Sta\' saldo, il trionfo è tuo! :)</string>
 </resources>

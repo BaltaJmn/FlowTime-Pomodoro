@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -36,16 +34,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.baltajmn.flowtime.core.common.extensions.capitalizeFirst
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudyingInHistory
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
+import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.Title
 import java.time.DayOfWeek
-import java.time.LocalDate
 import java.time.format.TextStyle
-import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 import org.koin.androidx.compose.koinViewModel
 
@@ -108,7 +106,7 @@ fun HistoryContent(
         item { Spacer(modifier = Modifier.height(64.dp)) }
         item {
             HistoryWeek(
-                selectedDate = state.selectedDate,
+                selectedDate = state.selectedDateToShow,
                 plusWeek = { viewModel.plusWeek() },
                 minusWeek = { viewModel.minusWeek() },
                 studyTime = state.studyTime
@@ -130,14 +128,13 @@ fun ScreenTitleWithBack(text: String, navigateUp: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier
-                .width(50.dp)
-                .size(40.dp),
+            modifier = Modifier.weight(0.1f),
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
             tint = MaterialTheme.colorScheme.primary,
             contentDescription = null
         )
         Text(
+            modifier = Modifier.weight(0.9f),
             text = text,
             style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary),
             color = MaterialTheme.colorScheme.primary
@@ -147,7 +144,7 @@ fun ScreenTitleWithBack(text: String, navigateUp: () -> Unit) {
 
 @Composable
 fun HistoryWeek(
-    selectedDate: LocalDate,
+    selectedDate: String,
     plusWeek: () -> Unit,
     minusWeek: () -> Unit,
     studyTime: List<Long>
@@ -166,7 +163,7 @@ fun HistoryWeek(
             }
 
             Text(
-                text = buildWeekLabel(selectedDate),
+                text = selectedDate,
                 modifier = Modifier
                     .weight(1f)
                     .padding(8.dp),
@@ -246,26 +243,93 @@ fun BarChart(studyTime: List<Long>) {
             }
         }
 
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 32.dp)
+                .padding(top = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Total minutes: ${studyTime.sum().formatMinutesStudying()}",
+                text = LocalContext.current.getString(R.string.total_minutes),
                 textAlign = TextAlign.Center,
-                style = Title,
-                modifier = Modifier.weight(1f)
+                style = Title
+            )
+            Text(
+                text = studyTime.sum().formatMinutesStudying(),
+                textAlign = TextAlign.Center,
+                style = SmallTitle
+            )
+        }
+
+        if (studyTime.sum() > 0) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = LocalContext.current.getString(R.string.best_day),
+                    textAlign = TextAlign.Center,
+                    style = Title
+                )
+                Text(
+                    text = DayOfWeek.entries[studyTime.indexOf(studyTime.maxOf { it })].getDisplayName(
+                        TextStyle.FULL,
+                        Locale.getDefault()
+                    ).capitalizeFirst(),
+                    textAlign = TextAlign.Center,
+                    style = SmallTitle
+                )
+            }
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = LocalContext.current.getString(R.string.remember),
+                textAlign = TextAlign.Center,
+                style = Title
+            )
+            Text(
+                text = LocalContext.current.getString(
+                    MotivationalPhrases.entries[
+                        (MotivationalPhrases.entries.toTypedArray().indices).random()
+                    ].resourceId
+                ),
+                textAlign = TextAlign.Center,
+                style = SmallTitle
             )
         }
     }
 }
 
-private fun buildWeekLabel(date: LocalDate): String {
-    val startOfWeek = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
-    val endOfWeek = startOfWeek.plusDays(6)
-    val startMonth = startOfWeek.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-    val endMonth = endOfWeek.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-
-    return "${startOfWeek.dayOfMonth} $startMonth - ${endOfWeek.dayOfMonth} $endMonth"
+enum class MotivationalPhrases(val resourceId: Int) {
+    MOT_1(R.string.mot_1),
+    MOT_2(R.string.mot_2),
+    MOT_3(R.string.mot_3),
+    MOT_4(R.string.mot_4),
+    MOT_5(R.string.mot_5),
+    MOT_6(R.string.mot_6),
+    MOT_7(R.string.mot_7),
+    MOT_8(R.string.mot_8),
+    MOT_9(R.string.mot_9),
+    MOT_10(R.string.mot_10),
+    MOT_11(R.string.mot_11),
+    MOT_12(R.string.mot_12),
+    MOT_13(R.string.mot_13),
+    MOT_14(R.string.mot_14),
+    MOT_15(R.string.mot_15),
+    MOT_16(R.string.mot_16),
+    MOT_17(R.string.mot_17),
+    MOT_18(R.string.mot_18),
+    MOT_19(R.string.mot_19),
+    MOT_20(R.string.mot_20)
 }

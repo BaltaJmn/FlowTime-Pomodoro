@@ -2,6 +2,7 @@ package com.baltajmn.flowtime.features.screens.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.baltajmn.flowtime.core.common.extensions.toShowInSelector
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeUseCase
 import java.time.LocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +31,7 @@ class HistoryViewModel(
             _uiState.update {
                 it.copy(
                     selectedDate = selectedDate,
+                    selectedDateToShow = selectedDate.toShowInSelector(),
                     studyTime = getStudyTime(selectedDate)
                 )
             }
@@ -42,6 +44,7 @@ class HistoryViewModel(
             _uiState.update {
                 it.copy(
                     selectedDate = selectedDate,
+                    selectedDateToShow = selectedDate.toShowInSelector(),
                     studyTime = getStudyTime(selectedDate)
                 )
             }
@@ -51,8 +54,7 @@ class HistoryViewModel(
 
 data class HistoryState(
     val isLoading: Boolean = false,
-
     val selectedDate: LocalDate = LocalDate.now(),
+    val selectedDateToShow: String = LocalDate.now().toShowInSelector(),
     val studyTime: List<Long> = listOf()
-
 )

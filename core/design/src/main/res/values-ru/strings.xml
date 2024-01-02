@@ -24,4 +24,27 @@
     <string name="study_history">История учебы</string>
     <string name="go_to_history">Перейти в историю</string>
     <string name="others">Другие</string>
+    <string name="total_minutes">Общее количество минут</string>
+    <string name="best_day">Лучший день</string>
+    <string name="remember">Помнить</string>
+    <string name="mot_1">Ты сможешь! :)</string>
+    <string name="mot_2">Не останавливайся, продолжай! :)</string>
+    <string name="mot_3">Решимость побеждает! :)</string>
+    <string name="mot_4">Ты сильный, продолжай! :)</string>
+    <string name="mot_5">Маленькие шаги, большой успех! :)</string>
+    <string name="mot_6">Нет предела, только возможности! :)</string>
+    <string name="mot_7">Ты создатель! :)</string>
+    <string name="mot_8">Устоявшийся, ты победишь! :)</string>
+    <string name="mot_9">Успех ждет тебя! :)</string>
+    <string name="mot_10">Будь стойким, ты достигнешь цели! :)</string>
+    <string name="mot_11">Вперед, у тебя есть сила! :)</string>
+    <string name="mot_12">Каждый шаг важен, не останавливайся! :)</string>
+    <string name="mot_13">Решимость преодолевает любые преграды! :)</string>
+    <string name="mot_14">Ты сильнее, чем думаешь! :)</string>
+    <string name="mot_15">Маленькие усилия приводят к большим достижениям! :)</string>
+    <string name="mot_16">Нет предела, только возможности! :)</string>
+    <string name="mot_17">Ты архитектор своей судьбы! :)</string>
+    <string name="mot_18">Устоявшийся, ты ближе к успеху! :)</string>
+    <string name="mot_19">Успех ждет тебя в конце пути! :)</string>
+    <string name="mot_20">Будь стойким, победа твоя! :)</string>
 </resources>
