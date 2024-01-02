@@ -64,6 +64,8 @@ fun MainScreen(
             flowTimeState = flowTimeState,
             pomodoroState = pomodoroState,
             settingsState = settingsState,
+            navigateToHistory = { appState.navigateToHistory() },
+            navigateUp = { appState.navigateUp() },
             onThemeChanged = onThemeChanged
         ) { isRunning ->
             isTimerRunning = isRunning

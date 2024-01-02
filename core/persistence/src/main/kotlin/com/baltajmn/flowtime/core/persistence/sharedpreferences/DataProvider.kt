@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.core.persistence.sharedpreferences
 
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import java.time.LocalDate
 
 interface DataProvider {
     fun getString(key: SharedPreferencesItem, decrypt: Boolean = false): String?
@@ -12,4 +13,5 @@ interface DataProvider {
     fun getRangeModelList(key: SharedPreferencesItem): MutableList<RangeModel>?
     fun setRangeModel(key: SharedPreferencesItem, value: RangeModel)
     fun updateMinutes(minutes: Long): Long
+    fun getMinutesByDate(date: LocalDate): Long
 }

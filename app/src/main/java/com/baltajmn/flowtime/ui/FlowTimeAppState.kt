@@ -55,4 +55,8 @@ class FlowTimeAppState(
     private fun navigateToSettings() {
         mainNavController.navigatePoppingUpToStartDestination(MainGraph.Settings.route)
     }
+
+    fun navigateToHistory() {
+        mainNavController.navigatePoppingUpToStartDestination(MainGraph.History.route)
+    }
 }
