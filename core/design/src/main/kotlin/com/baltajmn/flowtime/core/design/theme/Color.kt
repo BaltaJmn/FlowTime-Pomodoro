@@ -2,8 +2,17 @@ package com.baltajmn.flowtime.core.design.theme
 
 import androidx.compose.ui.graphics.Color
 
-enum class AppTheme {
-    Grey, Beige, Brown, Olive, Marine, Green, Blue, Purple, Pink, Orange,
+enum class AppTheme(val color: Color) {
+    Grey(com.baltajmn.flowtime.core.design.theme.Grey),
+    Beige(com.baltajmn.flowtime.core.design.theme.Beige),
+    Brown(com.baltajmn.flowtime.core.design.theme.Brown),
+    Olive(com.baltajmn.flowtime.core.design.theme.Olive),
+    Marine(com.baltajmn.flowtime.core.design.theme.Marine),
+    Green(com.baltajmn.flowtime.core.design.theme.Green),
+    Blue(com.baltajmn.flowtime.core.design.theme.Blue),
+    Purple(com.baltajmn.flowtime.core.design.theme.Purple),
+    Pink(com.baltajmn.flowtime.core.design.theme.Pink),
+    Orange(com.baltajmn.flowtime.core.design.theme.Orange),
 }
 
 val LightBlue = Color(0xFFabcfe1)
@@ -55,9 +64,3 @@ val LightPurple = Color(0xFFecdfec)
 val Purple = Color(0xFFc6a9c6)
 val DarkPurple = Color(0xFFa481a4)
 val SurfacePurple = Color(0xFFdfdfdf)
-
-val LightWhite = Color(0xFFffffff)
-val White = Color(0xFFf9f9f9)
-val DarkWhite = Color(0xFFc7c7c7)
-val SurfaceWhite = Color(0xFFf9f9f9)
-
