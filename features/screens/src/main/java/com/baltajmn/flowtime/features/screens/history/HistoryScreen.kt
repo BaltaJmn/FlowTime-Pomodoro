@@ -42,10 +42,10 @@ import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.Title
+import org.koin.androidx.compose.koinViewModel
 import java.time.DayOfWeek
 import java.time.format.TextStyle
 import java.util.Locale
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HistoryScreen(
@@ -159,7 +159,11 @@ fun HistoryWeek(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IconButton(onClick = { minusWeek.invoke() }) {
-                Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = null)
+                Icon(
+                    Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
             }
 
             Text(
@@ -167,11 +171,16 @@ fun HistoryWeek(
                 modifier = Modifier
                     .weight(1f)
                     .padding(8.dp),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary
             )
 
             IconButton(onClick = { plusWeek.invoke() }) {
-                Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
+                Icon(
+                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
             }
         }
 
@@ -200,7 +209,8 @@ fun BarChart(studyTime: List<Long>) {
                 Text(
                     text = time.formatMinutesStudyingInHistory(),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -238,7 +248,8 @@ fun BarChart(studyTime: List<Long>) {
                 Text(
                     text = day,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -253,12 +264,14 @@ fun BarChart(studyTime: List<Long>) {
             Text(
                 text = LocalContext.current.getString(R.string.total_minutes),
                 textAlign = TextAlign.Center,
-                style = Title
+                style = Title,
+                color = MaterialTheme.colorScheme.primary
             )
             Text(
                 text = studyTime.sum().formatMinutesStudying(),
                 textAlign = TextAlign.Center,
-                style = SmallTitle
+                style = SmallTitle,
+                color = MaterialTheme.colorScheme.primary
             )
         }
 
@@ -273,7 +286,8 @@ fun BarChart(studyTime: List<Long>) {
                 Text(
                     text = LocalContext.current.getString(R.string.best_day),
                     textAlign = TextAlign.Center,
-                    style = Title
+                    style = Title,
+                    color = MaterialTheme.colorScheme.primary
                 )
                 Text(
                     text = DayOfWeek.entries[studyTime.indexOf(studyTime.maxOf { it })].getDisplayName(
@@ -281,7 +295,8 @@ fun BarChart(studyTime: List<Long>) {
                         Locale.getDefault()
                     ).capitalizeFirst(),
                     textAlign = TextAlign.Center,
-                    style = SmallTitle
+                    style = SmallTitle,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -296,7 +311,8 @@ fun BarChart(studyTime: List<Long>) {
             Text(
                 text = LocalContext.current.getString(R.string.remember),
                 textAlign = TextAlign.Center,
-                style = Title
+                style = Title,
+                color = MaterialTheme.colorScheme.primary
             )
             Text(
                 text = LocalContext.current.getString(
@@ -305,7 +321,8 @@ fun BarChart(studyTime: List<Long>) {
                     ].resourceId
                 ),
                 textAlign = TextAlign.Center,
-                style = SmallTitle
+                style = SmallTitle,
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }
