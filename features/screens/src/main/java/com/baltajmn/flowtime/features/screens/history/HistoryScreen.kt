@@ -42,10 +42,10 @@ import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.Title
-import org.koin.androidx.compose.koinViewModel
 import java.time.DayOfWeek
 import java.time.format.TextStyle
 import java.util.Locale
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HistoryScreen(
