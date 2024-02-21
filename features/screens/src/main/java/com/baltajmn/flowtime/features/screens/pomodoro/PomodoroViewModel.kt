@@ -137,7 +137,6 @@ class PomodoroViewModel(
         )
     }
 
-
     fun changeSwitch(value: Boolean) {
         dataProvider.setCheckValue(value)
         _uiState.update {
