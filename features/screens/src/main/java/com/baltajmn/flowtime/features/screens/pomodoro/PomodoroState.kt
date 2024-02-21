@@ -8,6 +8,8 @@ data class PomodoroState(
     var isTimerRunning: Boolean = false,
     var isBreakRunning: Boolean = false,
 
+    var continueAfterBreak: Boolean = true,
+
     val range: RangeModel = RangeModel(totalRange = 45, endRange = 45, rest = 15),
 
     var seconds: Long = 0,

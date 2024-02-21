@@ -71,7 +71,11 @@ class PomodoroViewModel(
             } while (_uiState.value.secondsBreak > 0)
 
             soundService.playStartSound()
-            startTimer()
+            if (_uiState.value.continueAfterBreak) {
+                startTimer()
+            } else {
+                stopTimer()
+            }
         }
     }
 
@@ -110,7 +114,8 @@ class PomodoroViewModel(
                         totalRange = 45,
                         endRange = 45,
                         rest = 15
-                    )
+                    ),
+                continueAfterBreak = dataProvider.getCheckValue()
             )
         }
     }
@@ -126,10 +131,18 @@ class PomodoroViewModel(
         }
     }
 
-    fun getCurrentMinutes() {
+    fun getCurrentMinutes() = _uiState.update {
+        it.copy(
+            minutesStudying = dataProvider.updateMinutes(0).formatMinutesStudying()
+        )
+    }
+
+
+    fun changeSwitch(value: Boolean) {
+        dataProvider.setCheckValue(value)
         _uiState.update {
             it.copy(
-                minutesStudying = dataProvider.updateMinutes(0).formatMinutesStudying()
+                continueAfterBreak = value
             )
         }
     }

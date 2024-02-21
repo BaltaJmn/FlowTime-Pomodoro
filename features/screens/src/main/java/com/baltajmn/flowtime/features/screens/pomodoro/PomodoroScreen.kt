@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +35,7 @@ import com.baltajmn.flowtime.core.design.components.CircularButton
 import com.baltajmn.flowtime.core.design.components.ComposableLifecycle
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
+import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.features.screens.components.MinutesStudying
 import com.baltajmn.flowtime.features.screens.components.ScreenTitle
 import com.baltajmn.flowtime.features.screens.components.TimeContent
@@ -64,7 +67,8 @@ fun PomodoroScreen(
         state = state,
         listState = listState,
         onStartClick = { viewModel.startTimer() },
-        onFinishClick = { viewModel.stopTimer() }
+        onFinishClick = { viewModel.stopTimer() },
+        onSwitchChanged = { viewModel.changeSwitch(it) }
     )
 }
 
@@ -73,7 +77,8 @@ fun AnimatedPomodoroContent(
     state: PomodoroState,
     listState: LazyListState,
     onStartClick: () -> Unit,
-    onFinishClick: () -> Unit
+    onFinishClick: () -> Unit,
+    onSwitchChanged: (Boolean) -> Unit
 ) {
     AnimatedContent(
         targetState = state.isLoading,
@@ -85,7 +90,8 @@ fun AnimatedPomodoroContent(
                 state = state,
                 listState = listState,
                 onStartClick = onStartClick,
-                onFinishClick = onFinishClick
+                onFinishClick = onFinishClick,
+                onSwitchChanged = onSwitchChanged
             )
         }
     }
@@ -96,19 +102,22 @@ fun PomodoroContent(
     state: PomodoroState,
     listState: LazyListState,
     onStartClick: () -> Unit,
-    onFinishClick: () -> Unit
+    onFinishClick: () -> Unit,
+    onSwitchChanged: (Boolean) -> Unit
 ) {
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) {
         LandscapeContent(
             state = state,
             onStartClick = onStartClick,
-            onFinishClick = onFinishClick
+            onFinishClick = onFinishClick,
+            onSwitchChanged = onSwitchChanged
         )
     } else {
         PortraitContent(
             state = state,
             onStartClick = onStartClick,
-            onFinishClick = onFinishClick
+            onFinishClick = onFinishClick,
+            onSwitchChanged = onSwitchChanged
         )
     }
 }
@@ -117,7 +126,8 @@ fun PomodoroContent(
 fun LandscapeContent(
     state: PomodoroState,
     onStartClick: () -> Unit,
-    onFinishClick: () -> Unit
+    onFinishClick: () -> Unit,
+    onSwitchChanged: (Boolean) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -167,6 +177,29 @@ fun LandscapeContent(
                     onStartClick = onStartClick,
                     onFinishClick = onFinishClick
                 )
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                Text(
+                    text = LocalContext.current.getString(R.string.pomodoro_continue_after_break),
+                    style = Title.copy(
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                )
+                Switch(
+                    checked = state.continueAfterBreak,
+                    onCheckedChange = { onSwitchChanged.invoke(it) },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = MaterialTheme.colorScheme.tertiary,
+                        checkedTrackColor = MaterialTheme.colorScheme.primary,
+                        checkedBorderColor = MaterialTheme.colorScheme.tertiary,
+                        uncheckedThumbColor = MaterialTheme.colorScheme.tertiary,
+                        uncheckedTrackColor = MaterialTheme.colorScheme.secondary,
+                        uncheckedBorderColor = MaterialTheme.colorScheme.tertiary
+
+                    )
+                )
             }
         }
     }
@@ -179,7 +212,7 @@ fun ButtonsContentLandscape(
     onFinishClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxHeight(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -211,7 +244,8 @@ fun ButtonsContentLandscape(
 fun PortraitContent(
     state: PomodoroState,
     onStartClick: () -> Unit,
-    onFinishClick: () -> Unit
+    onFinishClick: () -> Unit,
+    onSwitchChanged: (Boolean) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -239,6 +273,27 @@ fun PortraitContent(
             state = state,
             onStartClick = onStartClick,
             onFinishClick = onFinishClick
+        )
+        Spacer(modifier = Modifier.height(64.dp))
+        Text(
+            text = LocalContext.current.getString(R.string.pomodoro_continue_after_break),
+            style = Title.copy(
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.tertiary
+            )
+        )
+        Switch(
+            checked = state.continueAfterBreak,
+            onCheckedChange = { onSwitchChanged.invoke(it) },
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = MaterialTheme.colorScheme.tertiary,
+                checkedTrackColor = MaterialTheme.colorScheme.primary,
+                checkedBorderColor = MaterialTheme.colorScheme.tertiary,
+                uncheckedThumbColor = MaterialTheme.colorScheme.tertiary,
+                uncheckedTrackColor = MaterialTheme.colorScheme.secondary,
+                uncheckedBorderColor = MaterialTheme.colorScheme.tertiary
+
+            )
         )
     }
 }

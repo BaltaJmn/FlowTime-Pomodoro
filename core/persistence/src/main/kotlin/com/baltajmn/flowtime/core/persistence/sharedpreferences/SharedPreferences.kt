@@ -84,6 +84,19 @@ class SharedPreferencesProvider(
         )
     }
 
+    override fun setCheckValue(value: Boolean) {
+        sharedPreferences.edit()
+            .putBoolean(SharedPreferencesItem.CONTINUE_AFTER_BREAK.name.lowercase(), value)
+            .apply()
+    }
+
+    override fun getCheckValue(): Boolean {
+        return sharedPreferences.getBoolean(
+            SharedPreferencesItem.CONTINUE_AFTER_BREAK.name.lowercase(),
+            true
+        )
+    }
+
     private fun getMinutes(): Long {
         return sharedPreferences.getLong(keyMinutes, 0L)
     }

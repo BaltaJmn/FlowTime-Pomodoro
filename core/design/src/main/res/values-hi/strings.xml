@@ -12,6 +12,7 @@
     <string name="pomodoro_settings_title">पोमोडोरो सेटिंग्स</string>
     <string name="pomodoro_settings_working">इसके लिए काम कर रहे हैं</string>
     <string name="pomodoro_settings_resting">के लिए आराम कर रहे हैं</string>
+    <string name="pomodoro_continue_after_break">ब्रेक के बाद जारी रखें</string>
     <string name="theme_settings_title">थीम रंग</string>
     <string name="settings_save">परिवर्तनों को सुरक्षित करें</string>
     <string name="time_title_working">कार्यरत</string>
