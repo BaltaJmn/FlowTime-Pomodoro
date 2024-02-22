@@ -13,6 +13,7 @@ enum class AppTheme(val color: Color) {
     Purple(com.baltajmn.flowtime.core.design.theme.Purple),
     Pink(com.baltajmn.flowtime.core.design.theme.Pink),
     Orange(com.baltajmn.flowtime.core.design.theme.Orange),
+    Black(com.baltajmn.flowtime.core.design.theme.Black),
 }
 
 val LightBlue = Color(0xFFabcfe1)
@@ -64,3 +65,8 @@ val LightPurple = Color(0xFFecdfec)
 val Purple = Color(0xFFc6a9c6)
 val DarkPurple = Color(0xFFa481a4)
 val SurfacePurple = Color(0xFFdfdfdf)
+
+val LightBlack = Color(0xFFd0d0d2)
+val Black = Color(0xFF737377)
+val DarkBlack = Color(0xFF16161d)
+val SurfaceBlack = Color(0xFFd0d0d2)

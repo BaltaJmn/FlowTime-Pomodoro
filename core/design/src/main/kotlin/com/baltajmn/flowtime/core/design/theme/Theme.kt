@@ -23,6 +23,7 @@ fun FlowTimeTheme(
         AppTheme.Beige -> BeigeColorScheme
         AppTheme.Grey -> GreyColorScheme
         AppTheme.Purple -> PurpleColorScheme
+        AppTheme.Black -> BlackColorScheme
     }
 
     val systemUiController = rememberSystemUiController()
@@ -137,4 +138,14 @@ val PurpleColorScheme = lightColorScheme(
     onSecondary = Purple,
     onTertiary = DarkPurple,
     onBackground = SurfacePurple
+)
+val BlackColorScheme = lightColorScheme(
+    primary = Black,
+    secondary = LightBlack,
+    tertiary = DarkBlack,
+    background = SurfaceBlack,
+    onPrimary = LightBlack,
+    onSecondary = Black,
+    onTertiary = DarkBlack,
+    onBackground = SurfaceBlack
 )
