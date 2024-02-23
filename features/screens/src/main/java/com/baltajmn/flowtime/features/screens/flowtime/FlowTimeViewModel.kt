@@ -7,6 +7,7 @@ import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.design.service.SoundService
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.CONTINUE_AFTER_BREAK_FLOW_TIME
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.FLOW_TIME_RANGE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -71,7 +72,11 @@ class FlowTimeViewModel(
             } while (_uiState.value.secondsBreak > 0)
 
             soundService.playStartSound()
-            startTimer()
+            if (_uiState.value.continueAfterBreak) {
+                startTimer()
+            } else {
+                stopTimer()
+            }
         }
     }
 
@@ -121,7 +126,8 @@ class FlowTimeViewModel(
                     RangeModel(totalRange = 15, endRange = 15, rest = 5),
                     RangeModel(totalRange = 30, endRange = 15, rest = 10),
                     RangeModel(totalRange = 15, endRange = 15, rest = 15)
-                )
+                ),
+                continueAfterBreak = dataProvider.getCheckValue(CONTINUE_AFTER_BREAK_FLOW_TIME)
             )
         }
     }
@@ -157,6 +163,15 @@ class FlowTimeViewModel(
         _uiState.update {
             it.copy(
                 minutesStudying = dataProvider.updateMinutes(0).formatMinutesStudying()
+            )
+        }
+    }
+
+    fun changeSwitch(value: Boolean) {
+        dataProvider.setCheckValue(key = CONTINUE_AFTER_BREAK_FLOW_TIME, value = value)
+        _uiState.update {
+            it.copy(
+                continueAfterBreak = value
             )
         }
     }

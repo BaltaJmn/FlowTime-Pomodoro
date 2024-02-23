@@ -8,6 +8,7 @@ import com.baltajmn.flowtime.core.design.service.SoundService
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.CONTINUE_AFTER_BREAK_POMODORO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -115,7 +116,7 @@ class PomodoroViewModel(
                         endRange = 45,
                         rest = 15
                     ),
-                continueAfterBreak = dataProvider.getCheckValue()
+                continueAfterBreak = dataProvider.getCheckValue(CONTINUE_AFTER_BREAK_POMODORO)
             )
         }
     }
@@ -138,7 +139,10 @@ class PomodoroViewModel(
     }
 
     fun changeSwitch(value: Boolean) {
-        dataProvider.setCheckValue(value)
+        dataProvider.setCheckValue(
+            key = CONTINUE_AFTER_BREAK_POMODORO,
+            value = value
+        )
         _uiState.update {
             it.copy(
                 continueAfterBreak = value

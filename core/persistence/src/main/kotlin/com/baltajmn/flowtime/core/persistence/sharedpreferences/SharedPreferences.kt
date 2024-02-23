@@ -84,15 +84,15 @@ class SharedPreferencesProvider(
         )
     }
 
-    override fun setCheckValue(value: Boolean) {
+    override fun setCheckValue(key: SharedPreferencesItem, value: Boolean) {
         sharedPreferences.edit()
-            .putBoolean(SharedPreferencesItem.CONTINUE_AFTER_BREAK.name.lowercase(), value)
+            .putBoolean(key.name.lowercase(), value)
             .apply()
     }
 
-    override fun getCheckValue(): Boolean {
+    override fun getCheckValue(key: SharedPreferencesItem): Boolean {
         return sharedPreferences.getBoolean(
-            SharedPreferencesItem.CONTINUE_AFTER_BREAK.name.lowercase(),
+            key.name.lowercase(),
             true
         )
     }
