@@ -1,7 +1,7 @@
 object Config {
     const val baseApplicationId = "com.baltajmn.flowtime"
-    const val versionCode = 22
-    const val versionName = "1.0.22"
+    const val versionCode = 23
+    const val versionName = "1.0.23"
 
     object Feature {
         const val Screens = "$baseApplicationId.features.screens"
