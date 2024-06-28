@@ -1,7 +1,5 @@
 [versions]
 playPublisher = "3.8.6"
-versionCode = "1"
-versionName = "1.0.0"
 compileSdk = "34"
 targetSdk = "34"
 minSdk = "26"

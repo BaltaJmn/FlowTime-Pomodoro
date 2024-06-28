@@ -213,7 +213,7 @@ fun ButtonHistory(navigateToHistory: () -> Unit) {
         Text(
             modifier = Modifier.weight(1f),
             text = LocalContext.current.getString((R.string.study_history)),
-            style = SubBody.copy(color = MaterialTheme.colorScheme.tertiary)
+            style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
         )
         Button(
             modifier = Modifier.weight(1f),
