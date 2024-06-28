@@ -241,30 +241,30 @@ fun LandscapeContent(
                     onBreakClick = onBreakClick,
                     onFinishClick = onFinishClick
                 )
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                Text(
+                    text = LocalContext.current.getString(R.string.pomodoro_continue_after_break),
+                    style = Title.copy(
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                )
+                Switch(
+                    checked = state.continueAfterBreak,
+                    onCheckedChange = { onSwitchChanged.invoke(it) },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = MaterialTheme.colorScheme.tertiary,
+                        checkedTrackColor = MaterialTheme.colorScheme.primary,
+                        checkedBorderColor = MaterialTheme.colorScheme.tertiary,
+                        uncheckedThumbColor = MaterialTheme.colorScheme.tertiary,
+                        uncheckedTrackColor = MaterialTheme.colorScheme.secondary,
+                        uncheckedBorderColor = MaterialTheme.colorScheme.tertiary
+
+                    )
+                )
             }
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Text(
-                text = LocalContext.current.getString(R.string.pomodoro_continue_after_break),
-                style = Title.copy(
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-            )
-            Switch(
-                checked = state.continueAfterBreak,
-                onCheckedChange = { onSwitchChanged.invoke(it) },
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = MaterialTheme.colorScheme.tertiary,
-                    checkedTrackColor = MaterialTheme.colorScheme.primary,
-                    checkedBorderColor = MaterialTheme.colorScheme.tertiary,
-                    uncheckedThumbColor = MaterialTheme.colorScheme.tertiary,
-                    uncheckedTrackColor = MaterialTheme.colorScheme.secondary,
-                    uncheckedBorderColor = MaterialTheme.colorScheme.tertiary
-
-                )
-            )
         }
     }
 }

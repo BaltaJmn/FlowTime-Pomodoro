@@ -158,7 +158,6 @@ fun LandscapeContent(
                         color = MaterialTheme.colorScheme.primary
                     )
                 )
-
                 Spacer(modifier = Modifier.height(8.dp))
                 TimeContent(secondsFormatted = state.secondsFormatted)
                 Spacer(modifier = Modifier.height(8.dp))
