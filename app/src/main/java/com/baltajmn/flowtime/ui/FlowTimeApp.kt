@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.PowerManager
+import android.view.WindowManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
@@ -37,11 +38,12 @@ fun FlowTimeApp(
 fun KeepScreenOn() {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
-
+    val window = context.findActivity()?.window ?: return
     val powerManager =
         context.getSystemService(Context.POWER_SERVICE) as PowerManager
     val wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp:WakeLockTag")
 
+    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     DisposableEffect(lifecycleOwner) {
         val lifecycleObserver = LifecycleEventObserver { _, event ->
             when (event) {
