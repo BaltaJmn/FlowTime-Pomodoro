@@ -120,7 +120,9 @@ class PercentageViewModel(
         _uiState.update {
             it.copy(
                 percentage = dataProvider.getLong(SharedPreferencesItem.PERCENTAGE_RANGE),
-                continueAfterBreak = dataProvider.getCheckValue(SharedPreferencesItem.CONTINUE_AFTER_BREAK_PERCENTAGE)
+                continueAfterBreak = dataProvider.getCheckValue(
+                    SharedPreferencesItem.CONTINUE_AFTER_BREAK_PERCENTAGE
+                )
             )
         }
     }
@@ -163,8 +165,8 @@ class PercentageViewModel(
     private fun updateMinutesStudying() {
         _uiState.update {
             it.copy(
-                minutesStudying =
-                dataProvider.updateMinutes((_uiState.value.seconds / 60)).formatMinutesStudying()
+                minutesStudying = dataProvider.updateMinutes((_uiState.value.seconds / 60))
+                    .formatMinutesStudying()
             )
         }
     }

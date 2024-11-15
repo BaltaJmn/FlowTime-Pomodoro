@@ -27,7 +27,7 @@ fun PercentageRange(percentage: Long, onPercentageChange: (Long) -> Unit) {
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
                 activeTrackColor = MaterialTheme.colorScheme.primary,
-                inactiveTrackColor = MaterialTheme.colorScheme.tertiary,
+                inactiveTrackColor = MaterialTheme.colorScheme.tertiary
             )
         )
         Text(
