@@ -40,6 +40,7 @@ class FlowTimeAppState(
         when (bottomNavBarItem) {
             BottomNavBarItem.FlowTime -> navigateToFlowTime()
             BottomNavBarItem.Pomodoro -> navigateToPomodoro()
+            BottomNavBarItem.Percentage -> navigateToPercentage()
             BottomNavBarItem.Settings -> navigateToSettings()
         }
     }
@@ -50,6 +51,10 @@ class FlowTimeAppState(
 
     private fun navigateToPomodoro() {
         mainNavController.navigatePoppingUpToStartDestination(MainGraph.Pomodoro.route)
+    }
+
+    private fun navigateToPercentage() {
+        mainNavController.navigatePoppingUpToStartDestination(MainGraph.Percentage.route)
     }
 
     private fun navigateToSettings() {

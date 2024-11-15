@@ -209,11 +209,13 @@ fun BottomNavBarPreview() {
 enum class BottomNavBarItem(val icon: Int) {
     FlowTime(icon = R.drawable.ic_flowtime),
     Pomodoro(icon = R.drawable.ic_pomodoro),
+    Percentage(icon = R.drawable.ic_percentage),
     Settings(icon = R.drawable.ic_settings);
 
     fun getScreenRoute() = when (this) {
         FlowTime -> MainGraph.FlowTime.route
         Pomodoro -> MainGraph.Pomodoro.route
+        Percentage -> MainGraph.Percentage.route
         Settings -> MainGraph.Settings.route
     }
 

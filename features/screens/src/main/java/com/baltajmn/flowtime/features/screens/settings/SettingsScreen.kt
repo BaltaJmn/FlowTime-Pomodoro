@@ -39,6 +39,7 @@ import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.features.screens.components.FlowTimeRanges
+import com.baltajmn.flowtime.features.screens.components.PercentageRange
 import com.baltajmn.flowtime.features.screens.components.PomodoroRange
 import org.koin.androidx.compose.koinViewModel
 
@@ -131,6 +132,21 @@ fun SettingsContent(
                 range = state.pomodoroRange,
                 onValueChanged = { range: RangeModel ->
                     viewModel.modifyPomodoro(range)
+                }
+            )
+        }
+        item { Spacer(modifier = Modifier.height(32.dp)) }
+        item {
+            Text(
+                text = LocalContext.current.getString(R.string.percentage_settings_title),
+                style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary)
+            )
+        }
+        item {
+            PercentageRange(
+                percentage = state.percentage,
+                onPercentageChange = { percentage ->
+                    viewModel.modifyPercentage(percentage)
                 }
             )
         }
