@@ -16,21 +16,52 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.design.theme.FlowTimeTheme
+import com.google.android.gms.tasks.Task
+import com.google.android.play.core.review.ReviewInfo
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 
 @Composable
 fun FlowTimeApp(
     flowTimeAppState: FlowTimeAppState = rememberAppState(),
     appTheme: AppTheme,
-    onThemeChanged: (AppTheme) -> Unit
+    showRating: Boolean,
+    onThemeChanged: (AppTheme) -> Unit,
+    onShowRatingChanged: (Boolean) -> Unit
 ) {
+    val context = LocalContext.current
+    val activity = LocalContext.current as Activity
+
     HideSystemBars()
     KeepScreenOn()
-    /*KeepOrientationLock(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)*/
+
+    if (showRating) {
+        initiateReviewFlow(context, activity, onShowRatingChanged)
+    }
+
     FlowTimeTheme(appTheme = appTheme) {
         FlowTimeNavHost(
             flowTimeAppState = flowTimeAppState,
             onThemeChanged = onThemeChanged
         )
+    }
+}
+
+fun initiateReviewFlow(
+    context: Context,
+    activity: Activity,
+    onShowRatingChanged: (Boolean) -> Unit
+) {
+    val manager: ReviewManager = ReviewManagerFactory.create(context)
+    val request: Task<ReviewInfo> = manager.requestReviewFlow()
+    request.addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            val reviewInfo: ReviewInfo = task.result
+            val flow: Task<Void> = manager.launchReviewFlow(activity, reviewInfo)
+            flow.addOnCompleteListener { _ ->
+                onShowRatingChanged.invoke(false)
+            }
+        }
     }
 }
 
@@ -57,20 +88,6 @@ fun KeepScreenOn() {
 
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
-        }
-    }
-}
-
-@Composable
-fun KeepOrientationLock(orientation: Int) {
-    val context = LocalContext.current
-    DisposableEffect(Unit) {
-        val activity = context.findActivity() ?: return@DisposableEffect onDispose {}
-        val originalOrientation = activity.requestedOrientation
-        activity.requestedOrientation = orientation
-        onDispose {
-            // restore original orientation when view disappears
-            activity.requestedOrientation = originalOrientation
         }
     }
 }

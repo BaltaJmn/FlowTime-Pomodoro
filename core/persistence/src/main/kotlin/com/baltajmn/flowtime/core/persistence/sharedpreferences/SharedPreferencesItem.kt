@@ -6,4 +6,5 @@ enum class SharedPreferencesItem {
     THEME_COLOR,
     CONTINUE_AFTER_BREAK_POMODORO,
     CONTINUE_AFTER_BREAK_FLOW_TIME,
+    SHOW_RATING
 }

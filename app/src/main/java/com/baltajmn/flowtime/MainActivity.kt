@@ -26,8 +26,11 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             FlowTimeApp(
-                appTheme = theme.value
-            ) { it: AppTheme -> theme.value = it }
+                appTheme = theme.value,
+                showRating = viewModel.getShowRating(),
+                onThemeChanged = { it: AppTheme -> theme.value = it },
+                onShowRatingChanged = { it: Boolean -> viewModel.setShowRating(it) }
+            )
         }
     }
 }
