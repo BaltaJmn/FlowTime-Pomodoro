@@ -5,6 +5,7 @@ import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.FLOW_TIME_RANGE
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.PERCENTAGE_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.THEME_COLOR
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,20 +19,23 @@ class SettingsViewModel(
     val uiState: StateFlow<SettingsState> = _uiState
 
     init {
-        getRanges()
+        getConfig()
     }
 
-    private fun getRanges() {
+    private fun getConfig() {
         val flowTimeList =
             dataProvider.getRangeModelList(key = FLOW_TIME_RANGE)
                 ?: _uiState.value.flowTimeRanges
         val pomodoroList =
             dataProvider.getRangeModel(key = POMODORO_RANGE)
                 ?: _uiState.value.pomodoroRange
+        val percentage =
+            dataProvider.getLong(key = PERCENTAGE_RANGE)
         _uiState.update {
             it.copy(
                 flowTimeRanges = flowTimeList,
-                pomodoroRange = pomodoroList
+                pomodoroRange = pomodoroList,
+                percentage = percentage
             )
         }
     }
@@ -104,9 +108,14 @@ class SettingsViewModel(
         _uiState.update { it.copy(pomodoroRange = range) }
     }
 
+    fun modifyPercentage(percentage: Long) {
+        _uiState.update { it.copy(percentage = percentage) }
+    }
+
     fun saveChanges() {
         dataProvider.setObject(FLOW_TIME_RANGE, _uiState.value.flowTimeRanges.toMutableList())
         dataProvider.setObject(POMODORO_RANGE, _uiState.value.pomodoroRange)
+        dataProvider.setLong(PERCENTAGE_RANGE, _uiState.value.percentage)
     }
 
     fun saveColor(color: AppTheme) {

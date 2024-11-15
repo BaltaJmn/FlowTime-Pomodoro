@@ -34,6 +34,7 @@ fun MainScreen(
     val currentRoute = appState.currentRoute
     val flowTimeState = rememberLazyListState()
     val pomodoroState = rememberLazyListState()
+    val percentageState = rememberLazyListState()
     val settingsState = rememberLazyListState()
 
     val settingsStateScrolling = settingsState.isScrollingUp()
@@ -63,6 +64,7 @@ fun MainScreen(
             appState = appState,
             flowTimeState = flowTimeState,
             pomodoroState = pomodoroState,
+            percentageState = percentageState,
             settingsState = settingsState,
             navigateToHistory = { appState.navigateToHistory() },
             navigateUp = { appState.navigateUp() },

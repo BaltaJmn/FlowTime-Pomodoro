@@ -14,6 +14,7 @@ enum class AuthGraph(val route: String) {
 enum class MainGraph(val route: String) {
     FlowTime("flowTime"),
     Pomodoro("pomodoro"),
+    Percentage("percentage"),
     Settings("settings"),
     History("history"),
 }

@@ -4,6 +4,7 @@ import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeViewModel
 import com.baltajmn.flowtime.features.screens.history.HistoryViewModel
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeUseCase
+import com.baltajmn.flowtime.features.screens.percentage.PercentageViewModel
 import com.baltajmn.flowtime.features.screens.pomodoro.PomodoroViewModel
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -21,8 +22,7 @@ val ScreensModule = module {
 }
 
 private val ScreensDataModule: Module
-    get() = module {
-    }
+    get() = module {}
 
 private val ScreensDomainModule: Module
     get() = module {
@@ -34,5 +34,6 @@ private val ScreensPresentationModule: Module
         viewModelOf(::FlowTimeViewModel)
         viewModelOf(::PomodoroViewModel)
         viewModelOf(::SettingsViewModel)
+        viewModelOf(::PercentageViewModel)
         viewModelOf(::HistoryViewModel)
     }
