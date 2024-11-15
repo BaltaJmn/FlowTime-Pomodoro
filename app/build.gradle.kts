@@ -18,4 +18,5 @@ dependencies {
     implementation(projects.features.screens)
 
     implementation(libs.androidx.workmanager)
+    implementation(libs.review.ktx)
 }

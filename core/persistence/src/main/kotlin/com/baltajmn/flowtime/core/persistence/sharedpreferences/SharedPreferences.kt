@@ -41,6 +41,14 @@ class SharedPreferencesProvider(
         sharedPreferences.edit().putString(key.name.lowercase(), finalValue).apply()
     }
 
+    override fun getBoolean(key: SharedPreferencesItem): Boolean {
+        return sharedPreferences.getBoolean(key.name.lowercase(), true)
+    }
+
+    override fun setBoolean(key: SharedPreferencesItem, value: Boolean) {
+        sharedPreferences.edit().putBoolean(key.name.lowercase(), value).apply()
+    }
+
     override fun getLong(key: SharedPreferencesItem): Long {
         return sharedPreferences.getLong(key.name.lowercase(), 0L)
     }
