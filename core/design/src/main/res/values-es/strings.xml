@@ -48,4 +48,6 @@
     <string name="mot_18">Persiste, estás más cerca del éxito :)</string>
     <string name="mot_19">El éxito te espera al final del camino :)</string>
     <string name="mot_20">¡Sigue firme, el triunfo es tuyo! :)</string>
+    <string name="percentage_title">Estudio por porcentaje Listo</string>
+    <string name="percentage_settings_title">Porcentaje de descanso</string>
 </resources>

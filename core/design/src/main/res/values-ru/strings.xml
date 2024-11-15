@@ -48,4 +48,6 @@
     <string name="mot_18">Устоявшийся, ты ближе к успеху! :)</string>
     <string name="mot_19">Успех ждет тебя в конце пути! :)</string>
     <string name="mot_20">Будь стойким, победа твоя! :)</string>
+    <string name="percentage_title">Процент Готовность к обучению</string>
+    <string name="percentage_settings_title">Процент отдыха</string>
 </resources>

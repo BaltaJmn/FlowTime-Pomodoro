@@ -48,4 +48,6 @@
     <string name="mot_18">Halte durch, du bist dem Erfolg näher :)</string>
     <string name="mot_19">Der Erfolg wartet am Ende des Weges :)</string>
     <string name="mot_20">Bleib standhaft, der Triumph gehört dir! :)</string>
+    <string name="percentage_title">Prozentsatz Studierfähig</string>
+    <string name="percentage_settings_title">Prozentsatz des Restes</string>
 </resources>
