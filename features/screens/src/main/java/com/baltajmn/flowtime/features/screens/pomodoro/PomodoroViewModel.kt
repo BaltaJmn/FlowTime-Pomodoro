@@ -8,6 +8,7 @@ import com.baltajmn.flowtime.core.design.service.SoundService
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.CONTINUE_AFTER_BREAK_POMODORO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -34,7 +35,7 @@ class PomodoroViewModel(
         timerJob?.cancel()
         timerJob = timerScope.launch {
             do {
-                delay(1)
+                delay(1000)
                 val seconds = _uiState.value.seconds - 1
                 _uiState.update {
                     it.copy(
@@ -58,7 +59,7 @@ class PomodoroViewModel(
         breakJob?.cancel()
         breakJob = timerScope.launch {
             do {
-                delay(1)
+                delay(1000)
                 val seconds = _uiState.value.secondsBreak - 1
                 _uiState.update {
                     it.copy(
@@ -71,7 +72,11 @@ class PomodoroViewModel(
             } while (_uiState.value.secondsBreak > 0)
 
             soundService.playStartSound()
-            startTimer()
+            if (_uiState.value.continueAfterBreak) {
+                startTimer()
+            } else {
+                stopTimer()
+            }
         }
     }
 
@@ -110,7 +115,8 @@ class PomodoroViewModel(
                         totalRange = 45,
                         endRange = 45,
                         rest = 15
-                    )
+                    ),
+                continueAfterBreak = dataProvider.getCheckValue(CONTINUE_AFTER_BREAK_POMODORO)
             )
         }
     }
@@ -126,10 +132,20 @@ class PomodoroViewModel(
         }
     }
 
-    fun getCurrentMinutes() {
+    fun getCurrentMinutes() = _uiState.update {
+        it.copy(
+            minutesStudying = dataProvider.updateMinutes(0).formatMinutesStudying()
+        )
+    }
+
+    fun changeSwitch(value: Boolean) {
+        dataProvider.setCheckValue(
+            key = CONTINUE_AFTER_BREAK_POMODORO,
+            value = value
+        )
         _uiState.update {
             it.copy(
-                minutesStudying = dataProvider.updateMinutes(0).formatMinutesStudying()
+                continueAfterBreak = value
             )
         }
     }

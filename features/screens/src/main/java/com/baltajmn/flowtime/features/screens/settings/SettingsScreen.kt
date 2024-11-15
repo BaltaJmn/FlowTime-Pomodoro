@@ -26,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -36,17 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.AppTheme
-import com.baltajmn.flowtime.core.design.theme.Beige
-import com.baltajmn.flowtime.core.design.theme.Blue
-import com.baltajmn.flowtime.core.design.theme.Brown
-import com.baltajmn.flowtime.core.design.theme.Green
-import com.baltajmn.flowtime.core.design.theme.Grey
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
-import com.baltajmn.flowtime.core.design.theme.Marine
-import com.baltajmn.flowtime.core.design.theme.Olive
-import com.baltajmn.flowtime.core.design.theme.Orange
-import com.baltajmn.flowtime.core.design.theme.Pink
-import com.baltajmn.flowtime.core.design.theme.Purple
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.features.screens.components.FlowTimeRanges
@@ -163,7 +152,7 @@ fun SettingsContent(
                 items(AppTheme.entries) { color ->
                     Box(
                         modifier = Modifier
-                            .background(color = getColorByName(color))
+                            .background(color = color.color)
                             .aspectRatio(1f)
                             .size(32.dp)
                             .semantics { contentDescription = "Color $color" }
@@ -192,19 +181,6 @@ fun SettingsContent(
         item { ButtonHistory(navigateToHistory = navigateToHistory) }
         item { Spacer(modifier = Modifier.height(96.dp)) }
     }
-}
-
-private fun getColorByName(color: AppTheme): Color = when (color) {
-    AppTheme.Blue -> Blue
-    AppTheme.Pink -> Pink
-    AppTheme.Orange -> Orange
-    AppTheme.Brown -> Brown
-    AppTheme.Olive -> Olive
-    AppTheme.Marine -> Marine
-    AppTheme.Green -> Green
-    AppTheme.Beige -> Beige
-    AppTheme.Grey -> Grey
-    AppTheme.Purple -> Purple
 }
 
 @Composable
@@ -236,7 +212,8 @@ fun ButtonHistory(navigateToHistory: () -> Unit) {
     ) {
         Text(
             modifier = Modifier.weight(1f),
-            text = LocalContext.current.getString((R.string.study_history))
+            text = LocalContext.current.getString((R.string.study_history)),
+            style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
         )
         Button(
             modifier = Modifier.weight(1f),

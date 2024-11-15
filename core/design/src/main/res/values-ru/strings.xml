@@ -12,6 +12,7 @@
     <string name="pomodoro_settings_title">Параметры томатов</string>
     <string name="pomodoro_settings_working">Работа для</string>
     <string name="pomodoro_settings_resting">Отдых для</string>
+    <string name="pomodoro_continue_after_break">Продолжение после перерыва</string>
     <string name="theme_settings_title">Цвет темы</string>
     <string name="settings_save">Сохранить изменения</string>
     <string name="time_title_working">Работа</string>

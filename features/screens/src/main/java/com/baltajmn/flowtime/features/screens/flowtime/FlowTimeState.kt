@@ -8,6 +8,8 @@ data class FlowTimeState(
     var isTimerRunning: Boolean = false,
     var isBreakRunning: Boolean = false,
 
+    var continueAfterBreak: Boolean = true,
+
     val rangesList: List<RangeModel> = listOf(),
 
     var seconds: Long = 0,

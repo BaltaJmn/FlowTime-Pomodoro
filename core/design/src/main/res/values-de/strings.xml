@@ -12,6 +12,7 @@
     <string name="pomodoro_settings_title">Pomodoro-Einstellungen</string>
     <string name="pomodoro_settings_working">Arbeiten für</string>
     <string name="pomodoro_settings_resting">Ausruhen für</string>
+    <string name="pomodoro_continue_after_break">Weiter nach der Pause</string>
     <string name="theme_settings_title">Thema Farbe</string>
     <string name="settings_save">Änderungen speichern</string>
     <string name="time_title_working">Arbeiten</string>

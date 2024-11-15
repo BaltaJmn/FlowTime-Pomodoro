@@ -12,6 +12,7 @@
     <string name="pomodoro_settings_title">Pomodoro Settings</string>
     <string name="pomodoro_settings_working">Working for</string>
     <string name="pomodoro_settings_resting">Resting for</string>
+    <string name="pomodoro_continue_after_break">Continue after break</string>
     <string name="theme_settings_title">Theme Color</string>
     <string name="settings_save">Save Changes</string>
     <string name="time_title_resting">Resting</string>
