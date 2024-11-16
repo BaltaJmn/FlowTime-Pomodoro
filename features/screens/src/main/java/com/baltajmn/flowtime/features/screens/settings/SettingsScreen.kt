@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,11 +38,14 @@ import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
+import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
+import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.features.screens.components.FlowTimeRanges
 import com.baltajmn.flowtime.features.screens.components.PercentageRange
 import com.baltajmn.flowtime.features.screens.components.PomodoroRange
+import com.baltajmn.flowtime.features.screens.settings.enum.MotivationalPhrases
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -195,6 +200,33 @@ fun SettingsContent(
         }
         item { Spacer(modifier = Modifier.height(8.dp)) }
         item { ButtonHistory(navigateToHistory = navigateToHistory) }
+        item { Spacer(modifier = Modifier.height(16.dp)) }
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = LocalContext.current.getString(R.string.remember),
+                    textAlign = TextAlign.Center,
+                    style = Title,
+                    color = MaterialTheme.colorScheme.tertiary
+                )
+                Text(
+                    text = LocalContext.current.getString(
+                        MotivationalPhrases.entries[
+                            (MotivationalPhrases.entries.toTypedArray().indices).random()
+                        ].resourceId
+                    ),
+                    textAlign = TextAlign.Center,
+                    style = SmallTitle,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
         item { Spacer(modifier = Modifier.height(96.dp)) }
     }
 }
