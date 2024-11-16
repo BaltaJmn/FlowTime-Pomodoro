@@ -13,6 +13,6 @@ class GetAllStudyTime(
     override suspend fun invoke(): Long {
         val allDates = dataProvider.getAllDates()
         return allDates.sumOf { date -> dataProvider.getMinutesByDate(date) }
-
     }
+
 }
