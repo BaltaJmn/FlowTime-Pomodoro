@@ -14,5 +14,4 @@ class GetAllStudyTime(
         val allDates = dataProvider.getAllDates()
         return allDates.sumOf { date -> dataProvider.getMinutesByDate(date) }
     }
-
 }
