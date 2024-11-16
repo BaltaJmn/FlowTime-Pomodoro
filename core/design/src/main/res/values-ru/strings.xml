@@ -25,7 +25,7 @@
     <string name="study_history">История учебы</string>
     <string name="go_to_history">Перейти в историю</string>
     <string name="others">Другие</string>
-    <string name="total_minutes">Общее количество минут</string>
+    <string name="total_minutes">Всего выбранных минут за неделю</string>
     <string name="best_day">Лучший день</string>
     <string name="remember">Помнить</string>
     <string name="mot_1">Ты сможешь! :)</string>
@@ -50,4 +50,5 @@
     <string name="mot_20">Будь стойким, победа твоя! :)</string>
     <string name="percentage_title">Процент Готовность к обучению</string>
     <string name="percentage_settings_title">Процент отдыха</string>
+    <string name="all_minutes_studying">Всего вы учились у нас %s</string>
 </resources>

@@ -32,7 +32,7 @@ class PercentageViewModel(
         timerJob?.cancel()
         timerJob = timerScope.launch {
             while (true) {
-                delay(1000)
+                delay(1)
                 val seconds = _uiState.value.seconds + 1
                 _uiState.update {
                     it.copy(
@@ -69,6 +69,7 @@ class PercentageViewModel(
             } while (_uiState.value.secondsBreak > 0)
 
             soundService.playStartSound()
+
             if (_uiState.value.continueAfterBreak) {
                 startTimer()
             } else {

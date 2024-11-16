@@ -16,6 +16,7 @@ interface DataProvider {
     fun setRangeModel(key: SharedPreferencesItem, value: RangeModel)
     fun updateMinutes(minutes: Long): Long
     fun getMinutesByDate(date: LocalDate): Long
+    fun getAllDates(): List<LocalDate>
     fun setCheckValue(key: SharedPreferencesItem, value: Boolean)
     fun getCheckValue(key: SharedPreferencesItem): Boolean
 }

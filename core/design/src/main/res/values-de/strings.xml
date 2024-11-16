@@ -25,7 +25,7 @@
     <string name="study_history">Studienverlauf</string>
     <string name="go_to_history">Zur Historie</string>
     <string name="others">Andere</string>
-    <string name="total_minutes">Gesamtminuten</string>
+    <string name="total_minutes">Gesamtminuten der ausgewählten Woche</string>
     <string name="best_day">Bester Tag</string>
     <string name="remember">Erinnern</string>
     <string name="mot_1">Du schaffst das! :)</string>
@@ -50,4 +50,5 @@
     <string name="mot_20">Bleib standhaft, der Triumph gehört dir! :)</string>
     <string name="percentage_title">Prozentsatz Studierfähig</string>
     <string name="percentage_settings_title">Prozentsatz des Restes</string>
+    <string name="all_minutes_studying">" Du lernst seit insgesamt %s bei uns"</string>
 </resources>

@@ -2,6 +2,8 @@ package com.baltajmn.flowtime.features.screens.di
 
 import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeViewModel
 import com.baltajmn.flowtime.features.screens.history.HistoryViewModel
+import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
+import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeUseCase
 import com.baltajmn.flowtime.features.screens.percentage.PercentageViewModel
@@ -27,6 +29,7 @@ private val ScreensDataModule: Module
 private val ScreensDomainModule: Module
     get() = module {
         factoryOf(::GetStudyTime) bind GetStudyTimeUseCase::class
+        factoryOf(::GetAllStudyTime) bind GetAllStudyTimeUseCase::class
     }
 
 private val ScreensPresentationModule: Module

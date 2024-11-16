@@ -92,6 +92,18 @@ class SharedPreferencesProvider(
         )
     }
 
+    override fun getAllDates(): List<LocalDate> {
+        val allKeys = sharedPreferences.all.keys
+        val dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy", Locale.getDefault())
+        return allKeys.mapNotNull { key ->
+            try {
+                LocalDate.parse(key, dateFormatter)
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
     override fun setCheckValue(key: SharedPreferencesItem, value: Boolean) {
         sharedPreferences.edit()
             .putBoolean(key.name.lowercase(), value)

@@ -42,10 +42,10 @@ import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.Title
+import org.koin.androidx.compose.koinViewModel
 import java.time.DayOfWeek
 import java.time.format.TextStyle
 import java.util.Locale
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HistoryScreen(
@@ -103,13 +103,14 @@ fun HistoryContent(
                 navigateUp = navigateUp
             )
         }
-        item { Spacer(modifier = Modifier.height(64.dp)) }
+        item { Spacer(modifier = Modifier.height(32.dp)) }
         item {
             HistoryWeek(
                 selectedDate = state.selectedDateToShow,
                 plusWeek = { viewModel.plusWeek() },
                 minusWeek = { viewModel.minusWeek() },
-                studyTime = state.studyTime
+                studyTime = state.studyTime,
+                allStudyTime = state.allStudyTime
             )
         }
     }
@@ -143,11 +144,30 @@ fun ScreenTitleWithBack(text: String, navigateUp: () -> Unit) {
 }
 
 @Composable
+fun AllMinutes(
+    allMinutes: String
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = LocalContext.current.getString(R.string.all_minutes_studying, allMinutes),
+            textAlign = TextAlign.Center,
+            style = SmallTitle,
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+@Composable
 fun HistoryWeek(
     selectedDate: String,
     plusWeek: () -> Unit,
     minusWeek: () -> Unit,
-    studyTime: List<Long>
+    studyTime: List<Long>,
+    allStudyTime: String
 ) {
     Column(
         modifier = Modifier
@@ -184,12 +204,12 @@ fun HistoryWeek(
             }
         }
 
-        BarChart(studyTime)
+        BarChart(studyTime = studyTime, allStudyTime = allStudyTime)
     }
 }
 
 @Composable
-fun BarChart(studyTime: List<Long>) {
+fun BarChart(studyTime: List<Long>, allStudyTime: String) {
     val daysOfWeek: List<String> = DayOfWeek.entries
         .map { it.getDisplayName(TextStyle.SHORT, Locale.getDefault()) }
         .toList()
@@ -265,7 +285,7 @@ fun BarChart(studyTime: List<Long>) {
                 text = LocalContext.current.getString(R.string.total_minutes),
                 textAlign = TextAlign.Center,
                 style = Title,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.tertiary
             )
             Text(
                 text = studyTime.sum().formatMinutesStudying(),
@@ -274,6 +294,8 @@ fun BarChart(studyTime: List<Long>) {
                 color = MaterialTheme.colorScheme.primary
             )
         }
+
+        AllMinutes(allMinutes = allStudyTime)
 
         if (studyTime.sum() > 0) {
             Column(
@@ -287,7 +309,7 @@ fun BarChart(studyTime: List<Long>) {
                     text = LocalContext.current.getString(R.string.best_day),
                     textAlign = TextAlign.Center,
                     style = Title,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.tertiary
                 )
                 Text(
                     text = DayOfWeek.entries[studyTime.indexOf(studyTime.maxOf { it })].getDisplayName(
@@ -312,7 +334,7 @@ fun BarChart(studyTime: List<Long>) {
                 text = LocalContext.current.getString(R.string.remember),
                 textAlign = TextAlign.Center,
                 style = Title,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.tertiary
             )
             Text(
                 text = LocalContext.current.getString(

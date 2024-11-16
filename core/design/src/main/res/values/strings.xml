@@ -25,7 +25,7 @@
     <string name="study_history">Study History</string>
     <string name="go_to_history">Go to History</string>
     <string name="others">Others</string>
-    <string name="total_minutes">Total minutes</string>
+    <string name="total_minutes">Total selected week minutes</string>
     <string name="best_day">Best day</string>
     <string name="remember">Remember</string>
     <string name="mot_1">You can do it! :)</string>
@@ -50,4 +50,5 @@
     <string name="mot_20">Stay firm, triumph is yours! :)</string>
     <string name="percentage_title">Percentage Study Ready</string>
     <string name="percentage_settings_title">Percentage of rest</string>
+    <string name="all_minutes_studying">You have been studying for a total of %s with us</string>
 </resources>

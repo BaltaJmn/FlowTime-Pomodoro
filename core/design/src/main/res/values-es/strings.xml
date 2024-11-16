@@ -25,7 +25,7 @@
     <string name="study_history">Historial de Estudio</string>
     <string name="go_to_history">Ir al Historial</string>
     <string name="others">Otros</string>
-    <string name="total_minutes">Minutos totales</string>
+    <string name="total_minutes">Minutos totales de la semana seleccionada</string>
     <string name="best_day">Mejor día</string>
     <string name="remember">Recuerda</string>
     <string name="mot_1">¡Tú puedes hacerlo! :)</string>
@@ -50,4 +50,5 @@
     <string name="mot_20">¡Sigue firme, el triunfo es tuyo! :)</string>
     <string name="percentage_title">Estudio por porcentaje Listo</string>
     <string name="percentage_settings_title">Porcentaje de descanso</string>
+    <string name="all_minutes_studying">Has estado estudiando un total de %s con nosotros</string>
 </resources>
