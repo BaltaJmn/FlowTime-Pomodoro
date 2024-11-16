@@ -51,4 +51,6 @@
     <string name="percentage_title">Percentuale di studio pronto</string>
     <string name="percentage_settings_title">Percentuale di riposo</string>
     <string name="all_minutes_studying">Hai studiato con noi per un totale di %s</string>
+    <string name="export">Esportare</string>
+    <string name="import_button">Importare</string>
 </resources>

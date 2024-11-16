@@ -1,5 +1,8 @@
 package com.baltajmn.flowtime.features.screens.history
 
+import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.Context
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,11 +18,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,7 +35,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -88,6 +97,9 @@ fun HistoryContent(
     viewModel: HistoryViewModel,
     navigateUp: () -> Unit
 ) {
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+
     LazyColumn(
         state = rememberLazyListState(),
         verticalArrangement = Arrangement.Top,
@@ -110,7 +122,17 @@ fun HistoryContent(
                 plusWeek = { viewModel.plusWeek() },
                 minusWeek = { viewModel.minusWeek() },
                 studyTime = state.studyTime,
-                allStudyTime = state.allStudyTime
+                allStudyTime = state.allStudyTime,
+                onExportStudyTime = {
+                    viewModel.exportStudyTime {
+                        clipboardManager.setText(AnnotatedString(it))
+                    }
+                },
+                onImportStudyTime = {
+                    clipboardManager.getText()?.text?.let { text ->
+                        viewModel.importStudyTime(text)
+                    }
+                }
             )
         }
     }
@@ -145,7 +167,9 @@ fun ScreenTitleWithBack(text: String, navigateUp: () -> Unit) {
 
 @Composable
 fun AllMinutes(
-    allMinutes: String
+    allMinutes: String,
+    onExportStudyTime: () -> Unit,
+    onImportStudyTime: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -158,6 +182,42 @@ fun AllMinutes(
             style = SmallTitle,
             color = MaterialTheme.colorScheme.primary
         )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = LocalContext.current.getString(R.string.export),
+                color = MaterialTheme.colorScheme.primary
+            )
+            IconButton(
+                onClick = onExportStudyTime
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Share,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            Spacer(modifier = Modifier.width(24.dp))
+
+            Text(
+                text = LocalContext.current.getString(R.string.import_button),
+                color = MaterialTheme.colorScheme.primary
+            )
+            IconButton(
+                onClick = onImportStudyTime
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.KeyboardArrowDown,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
     }
 }
 
@@ -167,7 +227,9 @@ fun HistoryWeek(
     plusWeek: () -> Unit,
     minusWeek: () -> Unit,
     studyTime: List<Long>,
-    allStudyTime: String
+    allStudyTime: String,
+    onExportStudyTime: () -> Unit,
+    onImportStudyTime: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -204,12 +266,21 @@ fun HistoryWeek(
             }
         }
 
-        BarChart(studyTime = studyTime, allStudyTime = allStudyTime)
+        BarChart(
+            studyTime = studyTime,
+            allStudyTime = allStudyTime,
+            onExportStudyTime = onExportStudyTime,
+            onImportStudyTime = onImportStudyTime
+        )
     }
 }
 
 @Composable
-fun BarChart(studyTime: List<Long>, allStudyTime: String) {
+fun BarChart(
+    studyTime: List<Long>, allStudyTime: String,
+    onExportStudyTime: () -> Unit,
+    onImportStudyTime: () -> Unit
+) {
     val daysOfWeek: List<String> = DayOfWeek.entries
         .map { it.getDisplayName(TextStyle.SHORT, Locale.getDefault()) }
         .toList()
@@ -295,7 +366,11 @@ fun BarChart(studyTime: List<Long>, allStudyTime: String) {
             )
         }
 
-        AllMinutes(allMinutes = allStudyTime)
+        AllMinutes(
+            allMinutes = allStudyTime,
+            onExportStudyTime = onExportStudyTime,
+            onImportStudyTime = onImportStudyTime
+        )
 
         if (studyTime.sum() > 0) {
             Column(

@@ -51,4 +51,6 @@
     <string name="percentage_title">Percentage Study Ready</string>
     <string name="percentage_settings_title">Rest Percentage</string>
     <string name="all_minutes_studying">You have been studying for a total of %s with us</string>
+    <string name="export">Export</string>
+    <string name="import_button">Import</string>
 </resources>

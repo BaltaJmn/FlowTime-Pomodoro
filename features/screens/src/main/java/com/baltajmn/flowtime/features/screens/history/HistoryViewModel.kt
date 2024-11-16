@@ -5,7 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.baltajmn.flowtime.core.common.extensions.formatAllStudyTime
 import com.baltajmn.flowtime.core.common.extensions.toShowInSelector
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
+import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboardUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeUseCase
+import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboard
+import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboardUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -14,7 +17,9 @@ import java.time.LocalDate
 
 class HistoryViewModel(
     private val getStudyTime: GetStudyTimeUseCase,
-    private val getAllStudyTimeUseCase: GetAllStudyTimeUseCase
+    private val getAllStudyTimeUseCase: GetAllStudyTimeUseCase,
+    private val getStudyTimeToClipboard: GetStudyTimeToClipboardUseCase,
+    private val setStudyTimeFromClipboard: SetStudyTimeFromClipboardUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HistoryState())
@@ -52,6 +57,24 @@ class HistoryViewModel(
                     selectedDate = selectedDate,
                     selectedDateToShow = selectedDate.toShowInSelector(),
                     studyTime = getStudyTime(selectedDate)
+                )
+            }
+        }
+    }
+
+    fun exportStudyTime(onStringGenerated: (String) -> Unit) {
+        viewModelScope.launch {
+            onStringGenerated.invoke(getStudyTimeToClipboard())
+        }
+    }
+
+    fun importStudyTime(data: String) {
+        viewModelScope.launch {
+            setStudyTimeFromClipboard(data)
+
+            _uiState.update {
+                it.copy(
+                    studyTime = getStudyTime(_uiState.value.selectedDate),
                 )
             }
         }

@@ -51,4 +51,6 @@
     <string name="percentage_title">Процент Готовность к обучению</string>
     <string name="percentage_settings_title">Процент отдыха</string>
     <string name="all_minutes_studying">Всего вы учились у нас %s</string>
+    <string name="export">Экспорт</string>
+    <string name="import_button">Импорт</string>
 </resources>

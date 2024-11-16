@@ -51,4 +51,6 @@
     <string name="percentage_title">प्रतिशत अध्ययन तैयार</string>
     <string name="percentage_settings_title">आराम का प्रतिशत</string>
     <string name="all_minutes_studying">" आप हमारे साथ कुल %s तक अध्ययन कर रहे हैं"</string>
+    <string name="export">निर्यात</string>
+    <string name="import_button">आयात</string>
 </resources>

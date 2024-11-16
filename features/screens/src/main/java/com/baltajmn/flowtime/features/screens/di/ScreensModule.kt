@@ -5,6 +5,10 @@ import com.baltajmn.flowtime.features.screens.history.HistoryViewModel
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTime
+import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboard
+import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboardUseCase
+import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboard
+import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboardUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeUseCase
 import com.baltajmn.flowtime.features.screens.percentage.PercentageViewModel
 import com.baltajmn.flowtime.features.screens.pomodoro.PomodoroViewModel
@@ -30,6 +34,8 @@ private val ScreensDomainModule: Module
     get() = module {
         factoryOf(::GetStudyTime) bind GetStudyTimeUseCase::class
         factoryOf(::GetAllStudyTime) bind GetAllStudyTimeUseCase::class
+        factoryOf(::SetStudyTimeFromClipboard) bind SetStudyTimeFromClipboardUseCase::class
+        factoryOf(::GetStudyTimeToClipboard) bind GetStudyTimeToClipboardUseCase::class
     }
 
 private val ScreensPresentationModule: Module

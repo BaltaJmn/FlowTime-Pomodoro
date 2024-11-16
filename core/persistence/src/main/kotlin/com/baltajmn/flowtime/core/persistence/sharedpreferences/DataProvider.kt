@@ -17,6 +17,8 @@ interface DataProvider {
     fun updateMinutes(minutes: Long): Long
     fun getMinutesByDate(date: LocalDate): Long
     fun getAllDates(): List<LocalDate>
+    fun getStudyTimeMap(): Map<String, Long>
+    fun setStudyTimeMap(map: Map<String, Long>)
     fun setCheckValue(key: SharedPreferencesItem, value: Boolean)
     fun getCheckValue(key: SharedPreferencesItem): Boolean
 }
