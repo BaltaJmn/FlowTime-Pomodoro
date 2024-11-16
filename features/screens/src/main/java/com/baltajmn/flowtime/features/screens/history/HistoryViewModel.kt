@@ -73,7 +73,7 @@ class HistoryViewModel(
 
             _uiState.update {
                 it.copy(
-                    studyTime = getStudyTime(_uiState.value.selectedDate),
+                    studyTime = getStudyTime(_uiState.value.selectedDate)
                 )
             }
         }

@@ -1,8 +1,5 @@
 package com.baltajmn.flowtime.features.screens.history
 
-import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.Context
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,7 +32,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
@@ -169,7 +165,7 @@ fun ScreenTitleWithBack(text: String, navigateUp: () -> Unit) {
 fun AllMinutes(
     allMinutes: String,
     onExportStudyTime: () -> Unit,
-    onImportStudyTime: () -> Unit,
+    onImportStudyTime: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -277,7 +273,8 @@ fun HistoryWeek(
 
 @Composable
 fun BarChart(
-    studyTime: List<Long>, allStudyTime: String,
+    studyTime: List<Long>,
+    allStudyTime: String,
     onExportStudyTime: () -> Unit,
     onImportStudyTime: () -> Unit
 ) {
