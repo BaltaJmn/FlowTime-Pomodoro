@@ -54,7 +54,8 @@ fun Project.configureKtlint() {
             setOf(
                 "final-newline",
                 "no-wildcard-imports",
-                "max-line-length"
+                "max-line-length",
+                "import-ordering"
             )
         )
         reporters {
