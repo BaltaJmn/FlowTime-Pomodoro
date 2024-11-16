@@ -7,7 +7,6 @@ import com.baltajmn.flowtime.core.common.extensions.toShowInSelector
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboardUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeUseCase
-import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboard
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboardUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
