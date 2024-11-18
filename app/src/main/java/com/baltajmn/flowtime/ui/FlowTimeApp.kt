@@ -51,7 +51,7 @@ fun FlowTimeApp(
     rememberShowRating: Boolean,
     onThemeChanged: (AppTheme) -> Unit,
     onShowRatingChanged: (Boolean) -> Unit,
-    onRememberShowRating: (Boolean) -> Unit,
+    onRememberShowRating: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
     val activity = LocalContext.current as Activity
@@ -61,7 +61,6 @@ fun FlowTimeApp(
     KeepScreenOn()
 
     FlowTimeTheme(appTheme = appTheme) {
-
         if (showDialog) {
             RatingDialog(
                 onRateNow = {
@@ -127,8 +126,7 @@ fun RatingDialog(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
-            )
-            {
+            ) {
                 Button(onClick = onRateNow) {
                     Text(
                         text = LocalContext.current.getString(R.string.rate_now),
@@ -156,7 +154,7 @@ fun RatingDialog(
                 )
             }
         },
-        onDismissRequest = { onNeverRemind.invoke() },
+        onDismissRequest = { onNeverRemind.invoke() }
     )
 }
 
