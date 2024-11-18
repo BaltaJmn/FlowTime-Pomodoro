@@ -16,6 +16,7 @@ import com.baltajmn.flowtime.core.design.components.TimerAlertDialog
 import com.baltajmn.flowtime.core.design.components.isScrollingUp
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.MainGraph.FlowTime
+import com.baltajmn.flowtime.core.navigation.MainGraph.Percentage
 import com.baltajmn.flowtime.core.navigation.MainGraph.Pomodoro
 import com.baltajmn.flowtime.ui.FlowTimeAppState
 
@@ -40,7 +41,7 @@ fun MainScreen(
     val settingsStateScrolling = settingsState.isScrollingUp()
 
     val shouldShow =
-        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) && settingsStateScrolling || currentRoute == FlowTime.route || currentRoute == Pomodoro.route
+        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) && settingsStateScrolling || currentRoute == FlowTime.route || currentRoute == Pomodoro.route || currentRoute == Percentage.route
 
     Scaffold(
         bottomBar = {
