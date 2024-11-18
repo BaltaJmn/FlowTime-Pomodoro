@@ -28,8 +28,10 @@ class MainActivity : ComponentActivity() {
             FlowTimeApp(
                 appTheme = theme.value,
                 showRating = viewModel.getShowRating(),
+                rememberShowRating = viewModel.getRememberShowRating(),
                 onThemeChanged = { it: AppTheme -> theme.value = it },
-                onShowRatingChanged = { it: Boolean -> viewModel.setShowRating(it) }
+                onShowRatingChanged = { it: Boolean -> viewModel.setShowRating(it) },
+                onRememberShowRating = { it: Boolean -> viewModel.setRememberShowRating(it) }
             )
         }
     }

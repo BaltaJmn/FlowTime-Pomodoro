@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rating_dialog_title">Вы хотите оценить приложение?</string>
+    <string name="rating_dialog_message">Ваше мнение важно для нас.</string>
+    <string name="rate_now">Оценить сейчас</string>
+    <string name="remind_later">Напомнить позже</string>
+    <string name="never_remind">Не напоминать</string>
+</resources>

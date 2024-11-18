@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">FlowTime &amp; Pomodoro</string>
     <string name="rating_dialog_title">Do you want to rate the app?</string>
     <string name="rating_dialog_message">Your opinion is important to us.</string>
     <string name="rate_now">Rate now</string>
