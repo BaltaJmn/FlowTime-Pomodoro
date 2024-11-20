@@ -31,7 +31,6 @@ class MainActivity : ComponentActivity() {
         theme.value = viewModel.getAppTheme()
 
         setContent {
-
             val purchasesUpdatedListener =
                 PurchasesUpdatedListener { billingResult, purchases ->
                     // To be implemented in a later section.
@@ -52,11 +51,8 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                override fun onBillingServiceDisconnected() {
-
-                }
+                override fun onBillingServiceDisconnected() {}
             })
-
             val queryProductDetailsParams =
                 QueryProductDetailsParams.newBuilder()
                     .setProductList(
@@ -69,17 +65,17 @@ class MainActivity : ComponentActivity() {
                     )
                     .build()
 
-            billingClient
-                .queryProductDetailsAsync(queryProductDetailsParams) { billingResult,
-                                                                       productDetailsList ->
-                    when (billingResult.responseCode) {
-                        BillingClient.BillingResponseCode.OK -> {
-                            Log.d("MainActivity", "onBillingSetupFinished: ")
-                        }
-
-                        else -> {}
+            billingClient.queryProductDetailsAsync(
+                queryProductDetailsParams
+            ) { billingResult, productDetailsList ->
+                when (billingResult.responseCode) {
+                    BillingClient.BillingResponseCode.OK -> {
+                        Log.d("MainActivity", "onBillingSetupFinished: ")
                     }
+
+                    else -> {}
                 }
+            }
 
             FlowTimeApp(
                 appTheme = theme.value,
