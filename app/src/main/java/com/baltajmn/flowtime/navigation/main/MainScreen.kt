@@ -24,7 +24,8 @@ import com.baltajmn.flowtime.ui.FlowTimeAppState
 @Composable
 fun MainScreen(
     appState: FlowTimeAppState,
-    onThemeChanged: (AppTheme) -> Unit
+    onThemeChanged: (AppTheme) -> Unit,
+    onSupportDeveloperClick: () -> Unit
 ) {
     var screenRoute by remember { mutableStateOf(BottomNavBarItem.FlowTime) }
     var isTimerRunning by remember { mutableStateOf(false) }
@@ -69,7 +70,8 @@ fun MainScreen(
             settingsState = settingsState,
             navigateToHistory = { appState.navigateToHistory() },
             navigateUp = { appState.navigateUp() },
-            onThemeChanged = onThemeChanged
+            onThemeChanged = onThemeChanged,
+            onSupportDeveloperClick = onSupportDeveloperClick
         ) { isRunning ->
             isTimerRunning = isRunning
         }

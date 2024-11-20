@@ -19,5 +19,6 @@ dependencies {
 
     implementation(libs.androidx.workmanager)
     implementation(libs.review.ktx)
+    implementation(libs.billing)
     implementation(libs.billing.ktx)
 }

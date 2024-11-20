@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime
 
 import androidx.lifecycle.ViewModel
+import com.android.billingclient.api.ProductDetails
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.REMEMBER_SHOW_RATING
@@ -12,6 +13,7 @@ class MainViewModel(private val dataProvider: DataProvider) : ViewModel() {
     private val appTheme = AppTheme.valueOf(dataProvider.getString(THEME_COLOR) ?: "Blue")
     private var showRating = dataProvider.getBoolean(SHOW_RATING)
     private var rememberShowRating = dataProvider.getBoolean(REMEMBER_SHOW_RATING)
+    private var productDetailsList = emptyList<ProductDetails>()
 
     fun getAppTheme(): AppTheme = appTheme
 
@@ -25,5 +27,10 @@ class MainViewModel(private val dataProvider: DataProvider) : ViewModel() {
     fun setRememberShowRating(remember: Boolean) {
         rememberShowRating = remember
         dataProvider.setBoolean(REMEMBER_SHOW_RATING, rememberShowRating)
+    }
+
+    fun getProductDetailsList(): ProductDetails = productDetailsList.first()
+    fun setProductDetailsList(list: List<ProductDetails>) {
+        productDetailsList = list
     }
 }

@@ -53,4 +53,5 @@
     <string name="all_minutes_studying">Hai studiato con noi per un totale di %s</string>
     <string name="export">Esportare</string>
     <string name="import_button">Importare</string>
+    <string name="support_developer">Supporta lo sviluppatore</string>
 </resources>

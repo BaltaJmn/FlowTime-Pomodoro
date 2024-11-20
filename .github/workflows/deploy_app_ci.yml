@@ -61,4 +61,5 @@ jobs:
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           #          track: production
           track: alpha
-#          track: production
+#          track: beta
+#          track: closed

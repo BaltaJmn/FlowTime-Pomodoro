@@ -50,6 +50,7 @@ fun FlowTimeApp(
     showRating: Boolean,
     rememberShowRating: Boolean,
     onThemeChanged: (AppTheme) -> Unit,
+    onSupportDeveloperClick: () -> Unit,
     onShowRatingChanged: (Boolean) -> Unit,
     onRememberShowRating: (Boolean) -> Unit
 ) {
@@ -80,7 +81,8 @@ fun FlowTimeApp(
 
         FlowTimeNavHost(
             flowTimeAppState = flowTimeAppState,
-            onThemeChanged = onThemeChanged
+            onThemeChanged = onThemeChanged,
+            onSupportDeveloperClick = onSupportDeveloperClick
         )
     }
 }

@@ -13,7 +13,8 @@ import com.baltajmn.flowtime.navigation.main.MainScreen
 @Composable
 fun FlowTimeNavHost(
     flowTimeAppState: FlowTimeAppState,
-    onThemeChanged: (AppTheme) -> Unit
+    onThemeChanged: (AppTheme) -> Unit,
+    onSupportDeveloperClick: () -> Unit
 ) {
     NavHost(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
@@ -24,7 +25,8 @@ fun FlowTimeNavHost(
         composable(GRAPH.Main) {
             MainScreen(
                 appState = flowTimeAppState,
-                onThemeChanged = onThemeChanged
+                onThemeChanged = onThemeChanged,
+                onSupportDeveloperClick = onSupportDeveloperClick
             )
         }
     }

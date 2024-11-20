@@ -53,7 +53,8 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     listState: LazyListState,
     navigateToHistory: () -> Unit,
-    onThemeChanged: (AppTheme) -> Unit
+    onThemeChanged: (AppTheme) -> Unit,
+    onSupportDeveloperClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -62,7 +63,8 @@ fun SettingsScreen(
         listState = listState,
         viewModel = viewModel,
         navigateToHistory = navigateToHistory,
-        onThemeChanged = onThemeChanged
+        onThemeChanged = onThemeChanged,
+        onSupportDeveloperClick = onSupportDeveloperClick
     )
 }
 
@@ -72,7 +74,8 @@ fun AnimatedSettingsContent(
     listState: LazyListState,
     viewModel: SettingsViewModel,
     navigateToHistory: () -> Unit,
-    onThemeChanged: (AppTheme) -> Unit
+    onThemeChanged: (AppTheme) -> Unit,
+    onSupportDeveloperClick: () -> Unit
 ) {
     AnimatedContent(
         targetState = state.isLoading,
@@ -85,7 +88,8 @@ fun AnimatedSettingsContent(
                 listState = listState,
                 viewModel = viewModel,
                 navigateToHistory = navigateToHistory,
-                onThemeChanged = onThemeChanged
+                onThemeChanged = onThemeChanged,
+                onSupportDeveloperClick = onSupportDeveloperClick
             )
         }
     }
@@ -97,7 +101,8 @@ fun SettingsContent(
     listState: LazyListState,
     viewModel: SettingsViewModel,
     navigateToHistory: () -> Unit,
-    onThemeChanged: (AppTheme) -> Unit
+    onThemeChanged: (AppTheme) -> Unit,
+    onSupportDeveloperClick: () -> Unit
 ) {
     LazyColumn(
         state = listState,
@@ -201,32 +206,9 @@ fun SettingsContent(
         item { Spacer(modifier = Modifier.height(8.dp)) }
         item { ButtonHistory(navigateToHistory = navigateToHistory) }
         item { Spacer(modifier = Modifier.height(16.dp)) }
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 32.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = LocalContext.current.getString(R.string.remember),
-                    textAlign = TextAlign.Center,
-                    style = Title,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-                Text(
-                    text = LocalContext.current.getString(
-                        MotivationalPhrases.entries[
-                            (MotivationalPhrases.entries.toTypedArray().indices).random()
-                        ].resourceId
-                    ),
-                    textAlign = TextAlign.Center,
-                    style = SmallTitle,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-        }
+        item { SupportButton(onSupportDeveloperClick = onSupportDeveloperClick) }
+        item { Spacer(modifier = Modifier.height(16.dp)) }
+        item { PositiveText() }
         item { Spacer(modifier = Modifier.height(96.dp)) }
     }
 }
@@ -269,6 +251,55 @@ fun ButtonHistory(navigateToHistory: () -> Unit) {
         ) {
             Text(
                 text = LocalContext.current.getString(R.string.go_to_history),
+                style = SubBody.copy(color = MaterialTheme.colorScheme.secondary)
+            )
+        }
+    }
+}
+
+@Composable
+fun PositiveText() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = LocalContext.current.getString(R.string.remember),
+            textAlign = TextAlign.Center,
+            style = Title,
+            color = MaterialTheme.colorScheme.tertiary
+        )
+        Text(
+            text = LocalContext.current.getString(
+                MotivationalPhrases.entries[
+                    (MotivationalPhrases.entries.toTypedArray().indices).random()
+                ].resourceId
+            ),
+            textAlign = TextAlign.Center,
+            style = SmallTitle,
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+@Composable
+fun SupportButton(onSupportDeveloperClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp, end = 16.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Button(
+            modifier = Modifier.weight(1f),
+            onClick = onSupportDeveloperClick
+        ) {
+            Text(
+                text = LocalContext.current.getString((R.string.support_developer)),
                 style = SubBody.copy(color = MaterialTheme.colorScheme.secondary)
             )
         }

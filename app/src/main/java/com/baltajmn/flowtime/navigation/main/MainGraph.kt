@@ -30,6 +30,7 @@ fun MainGraph(
     navigateToHistory: () -> Unit,
     navigateUp: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
+    onSupportDeveloperClick: () -> Unit,
     onTimerRunning: (Boolean) -> Unit
 ) {
     NavHost(
@@ -94,7 +95,8 @@ fun MainGraph(
             SettingsScreen(
                 listState = settingsState,
                 navigateToHistory = navigateToHistory,
-                onThemeChanged = onThemeChanged
+                onThemeChanged = onThemeChanged,
+                onSupportDeveloperClick = onSupportDeveloperClick
             )
         }
 

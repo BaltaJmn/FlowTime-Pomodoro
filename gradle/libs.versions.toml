@@ -33,6 +33,7 @@ ksp = "1.9.21-1.0.16"
 material3 = "1.2.0-beta01"
 firebase = "32.7.0"
 reviewKtx = "2.0.2"
+billing = "5.0.0"
 billingKtx = "7.1.1"
 
 [libraries]
@@ -99,6 +100,7 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 review-ktx = { group = "com.google.android.play", name = "review-ktx", version.ref = "reviewKtx" }
+billing = { group = "com.android.billingclient", name = "billing", version.ref = "billing" }
 billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billingKtx" }
 
 firebase = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }

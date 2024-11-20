@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.core.view.WindowCompat
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
@@ -22,6 +23,40 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel = inject<MainViewModel>().value
     private val theme: MutableState<AppTheme> = mutableStateOf(AppTheme.Blue)
 
+    private val queryProductDetailsParams =
+        QueryProductDetailsParams.newBuilder()
+            .setProductList(
+                listOf(
+                    QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId("support_developer")
+                        .setProductType(BillingClient.ProductType.INAPP)
+                        .build()
+                )
+            )
+            .build()
+
+    private val purchasesUpdatedListener =
+        PurchasesUpdatedListener { billingResult, purchases ->
+            when (billingResult.responseCode) {
+                BillingClient.BillingResponseCode.OK -> {
+                    purchases?.forEach { purchase ->
+                        // Handle the purchase (e.g., grant the user the purchased item)
+                        Log.d("MainActivity", "Purchase successful: ${purchase.products}")
+                    }
+                }
+
+                BillingClient.BillingResponseCode.USER_CANCELED -> {
+                    Log.d("MainActivity", "Purchase canceled by user")
+                }
+
+                else -> {
+                    Log.e("MainActivity", "Purchase failed: ${billingResult.debugMessage}")
+                }
+            }
+        }
+
+    private lateinit var billingClient: BillingClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,61 +65,74 @@ class MainActivity : ComponentActivity() {
 
         theme.value = viewModel.getAppTheme()
 
+        billingClient = BillingClient.newBuilder(this)
+            .setListener(purchasesUpdatedListener)
+            .enablePendingPurchases()
+            .build()
+
+        connectBillingClient()
+
         setContent {
-            val purchasesUpdatedListener =
-                PurchasesUpdatedListener { billingResult, purchases ->
-                    // To be implemented in a later section.
-                }
-
-            var billingClient = BillingClient.newBuilder(this)
-                .setListener(purchasesUpdatedListener)
-                .build()
-
-            billingClient.startConnection(object : BillingClientStateListener {
-                override fun onBillingSetupFinished(billingResult: BillingResult) {
-                    when (billingResult.responseCode) {
-                        BillingClient.BillingResponseCode.OK -> {
-                            Log.d("MainActivity", "onBillingSetupFinished: ")
-                        }
-
-                        else -> {}
-                    }
-                }
-
-                override fun onBillingServiceDisconnected() {}
-            })
-            val queryProductDetailsParams =
-                QueryProductDetailsParams.newBuilder()
-                    .setProductList(
-                        listOf(
-                            QueryProductDetailsParams.Product.newBuilder()
-                                .setProductId("product_id_example")
-                                .setProductType(BillingClient.ProductType.SUBS)
-                                .build()
-                        )
-                    )
-                    .build()
-
-            billingClient.queryProductDetailsAsync(
-                queryProductDetailsParams
-            ) { billingResult, productDetailsList ->
-                when (billingResult.responseCode) {
-                    BillingClient.BillingResponseCode.OK -> {
-                        Log.d("MainActivity", "onBillingSetupFinished: ")
-                    }
-
-                    else -> {}
-                }
-            }
-
             FlowTimeApp(
                 appTheme = theme.value,
                 showRating = viewModel.getShowRating(),
                 rememberShowRating = viewModel.getRememberShowRating(),
                 onThemeChanged = { it: AppTheme -> theme.value = it },
                 onShowRatingChanged = { it: Boolean -> viewModel.setShowRating(it) },
+                onSupportDeveloperClick = { initiatePurchase() },
                 onRememberShowRating = { it: Boolean -> viewModel.setRememberShowRating(it) }
             )
         }
+    }
+
+    private fun connectBillingClient() {
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    queryProductDetails()
+                } else {
+                    Log.e(
+                        "MainActivity",
+                        "Billing client setup failed: ${billingResult.debugMessage}"
+                    )
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+                connectBillingClient()
+            }
+        })
+    }
+
+    private fun queryProductDetails() {
+        billingClient.queryProductDetailsAsync(
+            queryProductDetailsParams
+        ) { billingResult, productDetailsList ->
+            when (billingResult.responseCode) {
+                BillingClient.BillingResponseCode.OK -> {
+                    viewModel.setProductDetailsList(productDetailsList)
+                }
+
+                else -> {
+                    Log.e(
+                        "MainActivity",
+                        "Product details query failed: ${billingResult.debugMessage}"
+                    )
+                }
+            }
+        }
+    }
+
+    private fun initiatePurchase() {
+        val billingFlowParams = BillingFlowParams.newBuilder()
+            .setProductDetailsParamsList(
+                listOf(
+                    BillingFlowParams.ProductDetailsParams.newBuilder()
+                        .setProductDetails(viewModel.getProductDetailsList())
+                        .build()
+                )
+            )
+            .build()
+        billingClient.launchBillingFlow(this, billingFlowParams)
     }
 }
