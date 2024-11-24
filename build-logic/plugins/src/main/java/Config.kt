@@ -9,6 +9,8 @@ object Config {
 
     object Core {
         const val Persistence = "$baseApplicationId.core.persistence"
+        const val Database = "$baseApplicationId.core.database"
+        const val Data = "$baseApplicationId.core.data"
         const val Navigation = "$baseApplicationId.core.navigation"
         const val Common = "$baseApplicationId.core.common"
         const val Design = "$baseApplicationId.core.design"

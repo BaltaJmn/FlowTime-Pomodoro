@@ -22,6 +22,8 @@ include(
     ":core:design",
     ":core:navigation",
     ":core:persistence",
+    ":core:data",
+    ":core:database"
 )
 
 //Features

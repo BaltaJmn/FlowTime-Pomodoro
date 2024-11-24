@@ -15,6 +15,7 @@ enum class MainGraph(val route: String) {
     FlowTime("flowTime"),
     Pomodoro("pomodoro"),
     Percentage("percentage"),
+    TodoList("todoList"),
     Settings("settings"),
     History("history"),
 }
