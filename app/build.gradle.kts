@@ -12,6 +12,8 @@ android {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.persistence)
+    implementation(projects.core.data)
+    implementation(projects.core.database)
     implementation(projects.core.navigation)
     implementation(projects.core.design)
 

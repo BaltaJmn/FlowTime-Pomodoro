@@ -13,11 +13,13 @@ import com.baltajmn.flowtime.core.navigation.MainGraph.History
 import com.baltajmn.flowtime.core.navigation.MainGraph.Percentage
 import com.baltajmn.flowtime.core.navigation.MainGraph.Pomodoro
 import com.baltajmn.flowtime.core.navigation.MainGraph.Settings
+import com.baltajmn.flowtime.core.navigation.MainGraph.TodoList
 import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeScreen
 import com.baltajmn.flowtime.features.screens.history.HistoryScreen
 import com.baltajmn.flowtime.features.screens.percentage.PercentageScreen
 import com.baltajmn.flowtime.features.screens.pomodoro.PomodoroScreen
 import com.baltajmn.flowtime.features.screens.settings.SettingsScreen
+import com.baltajmn.flowtime.features.screens.todoList.TodoListScreen
 import com.baltajmn.flowtime.ui.FlowTimeAppState
 
 @Composable
@@ -26,6 +28,7 @@ fun MainGraph(
     flowTimeState: LazyListState,
     pomodoroState: LazyListState,
     percentageState: LazyListState,
+    todoListState: LazyListState,
     settingsState: LazyListState,
     navigateToHistory: () -> Unit,
     navigateUp: () -> Unit,
@@ -80,6 +83,20 @@ fun MainGraph(
             PercentageScreen(
                 listState = percentageState,
                 onTimerRunning = onTimerRunning
+            )
+        }
+
+        composable(
+            route = TodoList.route,
+            enterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Up,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            TodoListScreen(
+                listState = todoListState
             )
         }
 

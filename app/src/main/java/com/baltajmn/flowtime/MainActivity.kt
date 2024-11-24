@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
             when (billingResult.responseCode) {
                 BillingClient.BillingResponseCode.OK -> {
                     purchases?.forEach { purchase ->
-                        // Handle the purchase (e.g., grant the user the purchased item)
                         Log.d("MainActivity", "Purchase successful: ${purchase.products}")
                     }
                 }

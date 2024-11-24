@@ -18,6 +18,8 @@ import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.MainGraph.FlowTime
 import com.baltajmn.flowtime.core.navigation.MainGraph.Percentage
 import com.baltajmn.flowtime.core.navigation.MainGraph.Pomodoro
+import com.baltajmn.flowtime.core.navigation.MainGraph.Settings
+import com.baltajmn.flowtime.core.navigation.MainGraph.TodoList
 import com.baltajmn.flowtime.ui.FlowTimeAppState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -37,12 +39,19 @@ fun MainScreen(
     val flowTimeState = rememberLazyListState()
     val pomodoroState = rememberLazyListState()
     val percentageState = rememberLazyListState()
+    val todoListState = rememberLazyListState()
     val settingsState = rememberLazyListState()
 
     val settingsStateScrolling = settingsState.isScrollingUp()
 
     val shouldShow =
-        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) && settingsStateScrolling || currentRoute == FlowTime.route || currentRoute == Pomodoro.route || currentRoute == Percentage.route
+        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+                && settingsStateScrolling
+                || currentRoute == FlowTime.route
+                || currentRoute == Pomodoro.route
+                || currentRoute == Percentage.route
+                || currentRoute == TodoList.route
+                || currentRoute == Settings.route
 
     Scaffold(
         bottomBar = {
@@ -67,6 +76,7 @@ fun MainScreen(
             flowTimeState = flowTimeState,
             pomodoroState = pomodoroState,
             percentageState = percentageState,
+            todoListState = todoListState,
             settingsState = settingsState,
             navigateToHistory = { appState.navigateToHistory() },
             navigateUp = { appState.navigateUp() },
