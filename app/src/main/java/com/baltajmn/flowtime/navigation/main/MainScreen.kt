@@ -45,13 +45,7 @@ fun MainScreen(
     val settingsStateScrolling = settingsState.isScrollingUp()
 
     val shouldShow =
-        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                && settingsStateScrolling
-                || currentRoute == FlowTime.route
-                || currentRoute == Pomodoro.route
-                || currentRoute == Percentage.route
-                || currentRoute == TodoList.route
-                || currentRoute == Settings.route
+        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) && settingsStateScrolling || currentRoute == FlowTime.route || currentRoute == Pomodoro.route || currentRoute == Percentage.route || currentRoute == TodoList.route || currentRoute == Settings.route
 
     Scaffold(
         bottomBar = {
