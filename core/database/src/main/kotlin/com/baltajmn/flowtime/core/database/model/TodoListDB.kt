@@ -10,7 +10,7 @@ data class TodoListDB(
 )
 
 data class ListItemDb(
-    val id: Int,
+    val id: Long,
     val title: String,
     val description: String,
     val done: Boolean

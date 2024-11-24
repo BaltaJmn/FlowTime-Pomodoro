@@ -3,6 +3,7 @@ package com.baltajmn.flowtime.features.screens.todoList
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,20 +20,32 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.common.model.ListItem
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
+import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.Title
 import org.koin.androidx.compose.koinViewModel
 
@@ -77,6 +90,30 @@ fun TodoListContent(
     listState: LazyListState,
     viewModel: TodoListViewModel
 ) {
+    var showDialog by remember { mutableStateOf(false) }
+    var isEdit by remember { mutableStateOf(false) }
+    var currentListItem by remember { mutableStateOf(ListItem()) }
+
+    if (showDialog) {
+        ItemDialog(
+            item = currentListItem,
+            onDismiss = { showDialog = false },
+            onSave = { title, description ->
+                showDialog = false
+                if (isEdit) {
+                    viewModel.onUpdateItem(
+                        currentListItem.copy(
+                            title = title,
+                            description = description
+                        )
+                    )
+                } else {
+                    viewModel.onAddItem(title, description)
+                }
+            }
+        )
+    }
+
     LazyColumn(
         state = listState,
         verticalArrangement = Arrangement.Top,
@@ -87,13 +124,13 @@ fun TodoListContent(
     ) {
         item { Spacer(modifier = Modifier.height(16.dp)) }
         item {
-            Text(
+            ScreenTitleWithIcon(
                 text = "Todo List",
-                style = LargeTitle.copy(
-                    fontSize = 30.sp,
-                    color = MaterialTheme.colorScheme.primary
-                ),
-                color = MaterialTheme.colorScheme.primary
+                onIconClick = {
+                    currentListItem = ListItem()
+                    isEdit = false
+                    showDialog = true
+                }
             )
         }
         item { Spacer(modifier = Modifier.height(16.dp)) }
@@ -108,7 +145,17 @@ fun TodoListContent(
         item {
             TodoItemList(
                 itemList = state.currentTodoList.todoList,
-                onItemClick = { /*TODO*/ }
+                onItemClick = {
+                    viewModel.markAsDone(it)
+                },
+                onEditClick = {
+                    currentListItem = it
+                    isEdit = true
+                    showDialog = true
+                },
+                onDeleteClick = {
+                    viewModel.onDeleteItem(it)
+                }
             )
         }
 
@@ -119,12 +166,16 @@ context(LazyListScope)
 @Composable
 fun TodoItemList(
     itemList: List<ListItem>,
-    onItemClick: (ListItem) -> Unit
+    onItemClick: (ListItem) -> Unit,
+    onEditClick: (ListItem) -> Unit,
+    onDeleteClick: (ListItem) -> Unit
 ) {
     items(itemList) { item ->
         TodoItem(
             item = item,
-            onItemClick = onItemClick
+            onItemClick = onItemClick,
+            onEditClick = onEditClick,
+            onDeleteClick = onDeleteClick
         )
     }
 }
@@ -132,8 +183,28 @@ fun TodoItemList(
 @Composable
 fun TodoItem(
     item: ListItem,
-    onItemClick: (ListItem) -> Unit
+    onItemClick: (ListItem) -> Unit,
+    onEditClick: (ListItem) -> Unit,
+    onDeleteClick: (ListItem) -> Unit
 ) {
+    val textStyle = if (item.done) {
+        Title.copy(textDecoration = TextDecoration.LineThrough)
+    } else {
+        Title
+    }
+
+    val textStyleDescription = if (item.done) {
+        SubBody.copy(textDecoration = TextDecoration.LineThrough)
+    } else {
+        SubBody
+    }
+
+    val textColor = if (item.done) {
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+    } else {
+        MaterialTheme.colorScheme.primary
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -141,14 +212,39 @@ fun TodoItem(
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = item.title,
-            style = Title,
-            color = MaterialTheme.colorScheme.primary
-        )
-        IconButton(onClick = { /*TODO*/ }) {
+        Column(
+            modifier = Modifier.weight(0.8f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = item.title,
+                style = textStyle,
+                color = textColor
+            )
+            Text(
+                text = item.description,
+                style = textStyleDescription,
+                color = textColor
+            )
+        }
+
+        IconButton(
+            modifier = Modifier.weight(0.1f),
+            onClick = { onEditClick.invoke(item) }
+        ) {
             Icon(
-                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                imageVector = Icons.Filled.Edit,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
+        IconButton(
+            modifier = Modifier.weight(0.1f),
+            onClick = { onDeleteClick.invoke(item) }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Delete,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary
             )
@@ -197,4 +293,72 @@ fun TodoListDay(
             }
         }
     }
+}
+
+@Composable
+fun ScreenTitleWithIcon(text: String, onIconClick: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(modifier = Modifier.weight(0.1f))
+        Text(
+            modifier = Modifier.weight(0.8f),
+            text = text,
+            style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary),
+            color = MaterialTheme.colorScheme.primary,
+            textAlign = TextAlign.Center
+        )
+        Icon(
+            modifier = Modifier
+                .weight(0.1f)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) { onIconClick.invoke() },
+            imageVector = Icons.Filled.Add,
+            tint = MaterialTheme.colorScheme.primary,
+            contentDescription = null
+        )
+    }
+}
+
+@Composable
+fun ItemDialog(
+    item: ListItem = ListItem(),
+    onDismiss: () -> Unit,
+    onSave: (String, String) -> Unit
+) {
+    var title by remember { mutableStateOf(item.title) }
+    var description by remember { mutableStateOf(item.description) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = "Add Item") },
+        text = {
+            Column {
+                TextField(
+                    value = title,
+                    onValueChange = { title = it },
+                    label = { Text("Title") }
+                )
+                TextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description") }
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = { onSave(title, description) }) {
+                Text("Save")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
 }

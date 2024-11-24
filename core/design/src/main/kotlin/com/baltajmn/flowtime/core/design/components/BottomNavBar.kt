@@ -210,7 +210,7 @@ enum class BottomNavBarItem(val icon: Int) {
     FlowTime(icon = R.drawable.ic_flowtime),
     Pomodoro(icon = R.drawable.ic_pomodoro),
     Percentage(icon = R.drawable.ic_percentage),
-    TodoList(icon = R.drawable.ic_percentage),
+    TodoList(icon = R.drawable.ic_list),
     Settings(icon = R.drawable.ic_settings);
 
     fun getScreenRoute() = when (this) {

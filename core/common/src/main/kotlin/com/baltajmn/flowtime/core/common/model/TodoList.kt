@@ -10,7 +10,7 @@ data class TodoList(
 }
 
 data class ListItem(
-    val id: Int = 0,
+    val id: Long = 0,
     val title: String = "",
     val description: String = "",
     val done: Boolean = false
