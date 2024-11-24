@@ -54,4 +54,6 @@
     <string name="export">निर्यात</string>
     <string name="import_button">आयात</string>
     <string name="support_developer">डेवलपर का समर्थन करें</string>
+    <string name="support_developer_title">हमारे विकास का समर्थन करें</string>
+    <string name="support_developer_description">आपका योगदान हमें सुधारने और नई सुविधाएँ जोड़ने में मदद करता है। हमारा समर्थन करें और हमें बढ़ने में मदद करें!</string>
 </resources>

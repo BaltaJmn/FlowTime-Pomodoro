@@ -114,6 +114,14 @@ fun SettingsContent(
     ) {
         item { Spacer(modifier = Modifier.height(16.dp)) }
         item {
+            SupportButton(
+                title = LocalContext.current.getString(R.string.support_developer_title),
+                description = LocalContext.current.getString(R.string.support_developer_description),
+                onSupportDeveloperClick = onSupportDeveloperClick
+            )
+        }
+        item { Spacer(modifier = Modifier.height(16.dp)) }
+        item {
             Text(
                 text = LocalContext.current.getString(R.string.flow_time_settings_title),
                 style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary)
@@ -206,8 +214,6 @@ fun SettingsContent(
         item { Spacer(modifier = Modifier.height(8.dp)) }
         item { ButtonHistory(navigateToHistory = navigateToHistory) }
         item { Spacer(modifier = Modifier.height(16.dp)) }
-        item { SupportButton(onSupportDeveloperClick = onSupportDeveloperClick) }
-        item { Spacer(modifier = Modifier.height(16.dp)) }
         item { PositiveText() }
         item { Spacer(modifier = Modifier.height(96.dp)) }
     }
@@ -286,20 +292,36 @@ fun PositiveText() {
 }
 
 @Composable
-fun SupportButton(onSupportDeveloperClick: () -> Unit) {
-    Row(
+fun SupportButton(
+    title: String,
+    description: String,
+    onSupportDeveloperClick: () -> Unit
+) {
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 12.dp, end = 16.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
+        Text(
+            text = title,
+            style = SubBody,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = description,
+            style = Title,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         Button(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.fillMaxWidth(),
             onClick = onSupportDeveloperClick
         ) {
             Text(
-                text = LocalContext.current.getString((R.string.support_developer)),
+                text = LocalContext.current.getString(R.string.support_developer),
                 style = SubBody.copy(color = MaterialTheme.colorScheme.secondary)
             )
         }

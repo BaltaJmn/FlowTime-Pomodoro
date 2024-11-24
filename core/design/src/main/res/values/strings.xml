@@ -54,4 +54,6 @@
     <string name="export">Export</string>
     <string name="import_button">Import</string>
     <string name="support_developer">Support Developer</string>
+    <string name="support_developer_title">Support Our Development</string>
+    <string name="support_developer_description">Your contribution helps us to keep improving and adding new features. Support us and help us grow!</string>
 </resources>
