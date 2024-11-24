@@ -120,7 +120,7 @@ fun SettingsContent(
                 onSupportDeveloperClick = onSupportDeveloperClick
             )
         }
-        item { Spacer(modifier = Modifier.height(16.dp)) }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
             Text(
                 text = LocalContext.current.getString(R.string.flow_time_settings_title),
@@ -298,22 +298,18 @@ fun SupportButton(
     onSupportDeveloperClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = title,
-            style = SubBody,
-            color = MaterialTheme.colorScheme.primary
+            style = LargeTitle.copy(fontSize = 25.sp, color = MaterialTheme.colorScheme.primary)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = description,
-            style = Title,
-            color = MaterialTheme.colorScheme.primary
+            style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
