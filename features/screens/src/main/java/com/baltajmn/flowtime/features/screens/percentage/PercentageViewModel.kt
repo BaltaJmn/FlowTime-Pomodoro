@@ -32,7 +32,7 @@ class PercentageViewModel(
         timerJob?.cancel()
         timerJob = timerScope.launch {
             while (true) {
-                delay(1)
+                delay(1000)
                 val seconds = _uiState.value.seconds + 1
                 _uiState.update {
                     it.copy(
