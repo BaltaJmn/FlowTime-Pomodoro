@@ -69,4 +69,5 @@
     <string name="on_board_skip">Saltar</string>
     <string name="on_board_next">Siguiente</string>
     <string name="on_board_finish">Finalizar</string>
+    <string name="user_progression_level">Nivel de Progresión del Usuario</string>
 </resources>

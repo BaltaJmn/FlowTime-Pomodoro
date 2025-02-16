@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.features.screens.settings
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
@@ -8,18 +9,22 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.PERCENTAGE_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.THEME_COLOR
+import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-    private val dataProvider: DataProvider
+    private val dataProvider: DataProvider,
+    private val getAllStudyTimeUseCase: GetAllStudyTimeUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState
 
     init {
         getConfig()
+        getUserLevel()
     }
 
     private fun getConfig() {
@@ -37,6 +42,36 @@ class SettingsViewModel(
                 pomodoroRange = pomodoroList,
                 percentage = percentage
             )
+        }
+    }
+
+    private fun getUserLevel() {
+        viewModelScope.launch {
+            val userLevel = getAllStudyTimeUseCase()
+            val xpBase = 100
+            val xpPerHour = 50
+            val xpTotal = (userLevel * xpPerHour).toInt()
+
+            var level = 0
+            var xpRequiredForCurrentLevel = 0
+            var xpRequiredForNextLevel = xpBase
+
+            while (xpTotal >= xpRequiredForNextLevel) {
+                level++
+                xpRequiredForCurrentLevel = xpRequiredForNextLevel
+                xpRequiredForNextLevel = xpBase * (level + 1) * (level + 1)
+            }
+
+            val xpInCurrentLevel = xpTotal - xpRequiredForCurrentLevel
+            val xpNeededInThisLevel = xpRequiredForNextLevel - xpRequiredForCurrentLevel
+            val progressPercentage = (xpInCurrentLevel.toDouble() / xpNeededInThisLevel) * 100
+
+            _uiState.update {
+                it.copy(
+                    userLevel = level.toLong(),
+                    progressPercentage = progressPercentage.toLong()
+                )
+            }
         }
     }
 

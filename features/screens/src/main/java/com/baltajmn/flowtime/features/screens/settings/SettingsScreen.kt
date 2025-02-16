@@ -1,10 +1,17 @@
 package com.baltajmn.flowtime.features.screens.settings
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -20,16 +27,23 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -118,6 +132,13 @@ fun SettingsContent(
                 title = LocalContext.current.getString(R.string.support_developer_title),
                 description = LocalContext.current.getString(R.string.support_developer_description),
                 onSupportDeveloperClick = onSupportDeveloperClick
+            )
+        }
+        item { Spacer(modifier = Modifier.height(16.dp)) }
+        item {
+            ProgressLevel(
+                userLevel = state.userLevel,
+                progressPercentage = state.progressPercentage
             )
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
@@ -319,6 +340,75 @@ fun SupportButton(
             Text(
                 text = LocalContext.current.getString(R.string.support_developer),
                 style = SubBody.copy(color = MaterialTheme.colorScheme.secondary)
+            )
+        }
+    }
+}
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Composable
+fun ProgressLevel(
+    userLevel: Long,
+    progressPercentage: Long
+) {
+    Text(
+        text = LocalContext.current.getString(R.string.user_progression_level),
+        style = LargeTitle.copy(fontSize = 26.sp, color = MaterialTheme.colorScheme.primary)
+    )
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        var animateWidth by rememberSaveable {
+            mutableStateOf(false)
+        }
+
+        LaunchedEffect(key1 = Unit) {
+            if (animateWidth) return@LaunchedEffect
+            animateWidth = true
+        }
+
+        val width by animateFloatAsState(
+            if (animateWidth) progressPercentage.toFloat() else 0f,
+            label = "",
+            animationSpec = tween(
+                durationMillis = 1000,
+                delayMillis = 100,
+                easing = LinearOutSlowInEasing
+            )
+        )
+
+        BoxWithConstraints(
+            Modifier
+                .padding(vertical = 8.dp)
+                .clip(RoundedCornerShape(30))
+                .border(1.dp, MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(30))
+                .height(24.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.tertiary)
+        ) {
+            Box(
+                modifier = Modifier
+                    .animateContentSize()
+                    .clip(RoundedCornerShape(30))
+                    .height(24.dp)
+                    .fillMaxWidth(fraction = width / 100)
+                    .background(color = MaterialTheme.colorScheme.secondary)
+            )
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .align(Alignment.CenterStart),
+                text = "Lvl. $userLevel",
+                style = SubBody.copy(
+                    fontWeight = FontWeight.W700,
+                    color = if (progressPercentage.toInt() == 0) {
+                        MaterialTheme.colorScheme.secondary
+                    } else {
+                        MaterialTheme.colorScheme.primary
+                    }
+                )
             )
         }
     }
