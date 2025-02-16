@@ -56,4 +56,17 @@
     <string name="support_developer">Support Developer</string>
     <string name="support_developer_title">Support Our Development</string>
     <string name="support_developer_description">Your contribution helps us to keep improving and adding new features. Support us and help us grow!</string>
+    <string name="on_board_title_1">FlowTime</string>
+    <string name="on_board_title_2">Pomodoro</string>
+    <string name="on_board_title_3">Percentage</string>
+    <string name="on_board_title_4">List</string>
+    <string name="on_board_title_5">Settings</string>
+    <string name="on_board_subtitle_1">Track your time efficiently with FlowTime.</string>
+    <string name="on_board_subtitle_2">Boost productivity with the Pomodoro technique.</string>
+    <string name="on_board_subtitle_3">Adjust your rest in percentage of the worked time.</string>
+    <string name="on_board_subtitle_4">Organize your tasks with a comprehensive list.</string>
+    <string name="on_board_subtitle_5">Customize your app preferences and settings.</string>
+    <string name="on_board_skip">Skip</string>
+    <string name="on_board_next">Next</string>
+    <string name="on_board_finish">Finish</string>
 </resources>

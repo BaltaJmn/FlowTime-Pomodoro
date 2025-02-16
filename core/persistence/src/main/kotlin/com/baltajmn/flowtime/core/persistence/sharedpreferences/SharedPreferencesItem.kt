@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.core.persistence.sharedpreferences
 
 enum class SharedPreferencesItem {
+    SHOW_ON_BOARD,
     FLOW_TIME_RANGE,
     POMODORO_RANGE,
     PERCENTAGE_RANGE,

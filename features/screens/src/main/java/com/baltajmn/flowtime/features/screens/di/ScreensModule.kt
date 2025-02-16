@@ -10,9 +10,11 @@ import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToCli
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboard
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboardUseCase
+import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel
 import com.baltajmn.flowtime.features.screens.percentage.PercentageViewModel
 import com.baltajmn.flowtime.features.screens.pomodoro.PomodoroViewModel
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
+import com.baltajmn.flowtime.features.screens.splash.SplashViewModel
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
 import com.baltajmn.flowtime.features.screens.todoList.domain.GetTodoListByDate
 import com.baltajmn.flowtime.features.screens.todoList.domain.GetTodoListByDateUseCase
@@ -56,4 +58,6 @@ private val ScreensPresentationModule: Module
         viewModelOf(::PercentageViewModel)
         viewModelOf(::TodoListViewModel)
         viewModelOf(::HistoryViewModel)
+        viewModelOf(::OnBoardViewModel)
+        viewModelOf(::SplashViewModel)
     }

@@ -47,6 +47,7 @@ import com.google.android.play.core.review.ReviewManagerFactory
 fun FlowTimeApp(
     flowTimeAppState: FlowTimeAppState = rememberAppState(),
     appTheme: AppTheme,
+    showOnBoard: Boolean,
     showRating: Boolean,
     rememberShowRating: Boolean,
     onThemeChanged: (AppTheme) -> Unit,
@@ -56,7 +57,11 @@ fun FlowTimeApp(
 ) {
     val context = LocalContext.current
     val activity = LocalContext.current as Activity
-    var showDialog by remember { mutableStateOf(showRating && rememberShowRating) }
+    var showDialog by remember {
+        mutableStateOf(
+            showRating && rememberShowRating && showOnBoard.not()
+        )
+    }
 
     HideSystemBars()
     KeepScreenOn()
