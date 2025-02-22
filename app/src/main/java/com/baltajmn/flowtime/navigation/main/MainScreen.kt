@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import com.baltajmn.flowtime.core.design.components.BottomNavBar
 import com.baltajmn.flowtime.core.design.components.BottomNavBarItem
 import com.baltajmn.flowtime.core.design.components.TimerAlertDialog
+import com.baltajmn.flowtime.core.design.components.TopNavBar
 import com.baltajmn.flowtime.core.design.components.isScrollingUp
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.MainGraph.FlowTime
@@ -48,6 +49,9 @@ fun MainScreen(
         (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) && settingsStateScrolling || currentRoute == FlowTime.route || currentRoute == Pomodoro.route || currentRoute == Percentage.route || currentRoute == TodoList.route || currentRoute == Settings.route
 
     Scaffold(
+        topBar = {
+            TopNavBar(shouldShow = { shouldShow })
+        },
         bottomBar = {
             BottomNavBar(
                 shouldShow = { shouldShow && isTimerRunning.not() },

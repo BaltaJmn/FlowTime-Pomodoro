@@ -4,7 +4,7 @@ compileSdk = "34"
 targetSdk = "34"
 minSdk = "26"
 kotlin = "1.9.20"
-gradle = "8.1.4"
+gradle = "8.8.0"
 ktlint = "11.5.1"
 ktor = "2.3.6"
 logginInterceptor = "4.12.0"
@@ -35,6 +35,7 @@ firebase = "32.7.0"
 reviewKtx = "2.0.2"
 billing = "5.0.0"
 billingKtx = "7.1.1"
+foundationLayoutAndroid = "1.5.4"
 
 [libraries]
 
@@ -105,6 +106,7 @@ billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", versi
 
 firebase = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "material" }
+androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
 
 [plugins]
 

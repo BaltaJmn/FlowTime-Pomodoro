@@ -23,4 +23,5 @@ dependencies {
     implementation(libs.review.ktx)
     implementation(libs.billing)
     implementation(libs.billing.ktx)
+    implementation(libs.androidx.foundation.layout.android)
 }

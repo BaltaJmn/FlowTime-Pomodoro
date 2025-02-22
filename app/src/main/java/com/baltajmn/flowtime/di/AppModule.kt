@@ -4,6 +4,7 @@ import com.baltajmn.flowtime.MainViewModel
 import com.baltajmn.flowtime.core.common.dispatchers.DispatchersModule
 import com.baltajmn.flowtime.core.database.di.DatabaseModule
 import com.baltajmn.flowtime.core.design.module.DesignModule
+import com.baltajmn.flowtime.core.design.service.SoundViewModel
 import com.baltajmn.flowtime.core.persistence.di.PersistenceModule
 import com.baltajmn.flowtime.data.di.DataModule
 import com.baltajmn.flowtime.features.screens.di.ScreensModule
@@ -23,6 +24,7 @@ val FeaturesModule: Module
 val CoreModules: Module
     get() = module {
         viewModelOf(::MainViewModel)
+        viewModelOf(::SoundViewModel)
         includes(
             listOf(
                 DispatchersModule,
