@@ -3,7 +3,6 @@ package com.baltajmn.flowtime.core.design.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 @Composable
@@ -26,12 +25,6 @@ fun FlowTimeTheme(
         AppTheme.Black -> BlackColorScheme
         AppTheme.White -> WhiteColorScheme
     }
-
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(
-        color = colorScheme.background.copy(alpha = 0.5f),
-        darkIcons = false
-    )
 
     MaterialTheme(
         colorScheme = colorScheme,
