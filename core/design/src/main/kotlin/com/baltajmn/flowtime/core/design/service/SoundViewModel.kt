@@ -38,128 +38,168 @@ class SoundViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(SoundState())
     val uiState: StateFlow<SoundState> = _uiState
 
+    fun getItems(): MutableMap<PlayerType, PlayerState> {
+        return _uiState.value.soundMap
+    }
+
     fun controlSounds(playerType: PlayerType, playing: Boolean) {
         when (playerType) {
             RAIN -> {
-                rain?.let { startStop(rain, playing) }
+                rain?.let { startStop(playerType, rain, playing) }
                     ?: run {
                         rain = getSoundPlayer(RAIN)
                         rain?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             FIRE -> {
-                fire?.let { startStop(fire, playing) }
+                fire?.let { startStop(playerType, fire, playing) }
                     ?: run {
                         fire = getSoundPlayer(FIRE)
                         fire?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             WAVE -> {
-                wave?.let { startStop(wave, playing) }
+                wave?.let { startStop(playerType, wave, playing) }
                     ?: run {
                         wave = getSoundPlayer(WAVE)
                         wave?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             THUNDER -> {
-                thunder?.let { startStop(thunder, playing) }
+                thunder?.let { startStop(playerType, thunder, playing) }
                     ?: run {
                         thunder = getSoundPlayer(THUNDER)
                         thunder?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             BIRDS -> {
-                birds?.let { startStop(birds, playing) }
+                birds?.let { startStop(playerType, birds, playing) }
                     ?: run {
                         birds = getSoundPlayer(BIRDS)
                         birds?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             HEAT -> {
-                heat?.let { startStop(heat, playing) }
+                heat?.let { startStop(playerType, heat, playing) }
                     ?: run {
                         heat = getSoundPlayer(HEAT)
                         heat?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             COFFEE_HOUSE -> {
-                coffeeHouse?.let { startStop(coffeeHouse, playing) }
+                coffeeHouse?.let { startStop(playerType, coffeeHouse, playing) }
                     ?: run {
                         coffeeHouse = getSoundPlayer(COFFEE_HOUSE)
                         coffeeHouse?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             MEDITATION -> {
-                meditation?.let { startStop(meditation, playing) }
+                meditation?.let { startStop(playerType, meditation, playing) }
                     ?: run {
                         meditation = getSoundPlayer(MEDITATION)
                         meditation?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             WIND -> {
-                wind?.let { startStop(wind, playing) }
+                wind?.let { startStop(playerType, wind, playing) }
                     ?: run {
                         wind = getSoundPlayer(WIND)
                         wind?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             BROWN -> {
-                brown?.let { startStop(brown, playing) }
+                brown?.let { startStop(playerType, brown, playing) }
                     ?: run {
                         brown = getSoundPlayer(BROWN)
                         brown?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             PINK -> {
-                pink?.let { startStop(pink, playing) }
+                pink?.let { startStop(playerType, pink, playing) }
                     ?: run {
                         pink = getSoundPlayer(PINK)
                         pink?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
 
             WHITE -> {
-                white?.let { startStop(white, playing) }
+                white?.let { startStop(playerType, white, playing) }
                     ?: run {
                         white = getSoundPlayer(WHITE)
                         white?.start()
+
+                        updateIsPlaying(playerType, playing)
                     }
             }
         }
     }
 
-    private fun startStop(player: MediaPlayer?, playing: Boolean) {
-        player?.let {
-            if (playing) {
-                it.start()
-            } else {
-                it.pause()
-            }
-        }
-    }
-
-    fun setVolume(player: PlayerType, volume: Float) {
+    private fun updateIsPlaying(playerType: PlayerType, playing: Boolean) {
         _uiState.update {
             it.copy(
                 soundMap = it.soundMap.apply {
-                    this[player] = volume
+                    this[playerType]?.isPlaying = playing
+                }
+            )
+        }
+    }
+
+    private fun startStop(playerType: PlayerType, mediaPlayer: MediaPlayer?, playing: Boolean) {
+        mediaPlayer?.let { player ->
+            if (playing) {
+                player.start()
+            } else {
+                player.pause()
+            }
+
+            updateIsPlaying(playerType, playing)
+        }
+    }
+
+    fun setVolume(type: PlayerType, volume: Float) {
+        _uiState.update {
+            it.copy(
+                soundMap = it.soundMap.apply {
+                    this[type]?.volume = volume
                 }
             )
         }
 
-        val selectedVolume = _uiState.value.soundMap[player] ?: 0f
+        val selectedVolume = _uiState.value.soundMap[type]?.volume ?: 0f
 
-        when (player) {
+        when (type) {
             RAIN -> rain?.setVolume(selectedVolume, selectedVolume)
             FIRE -> fire?.setVolume(selectedVolume, selectedVolume)
             WAVE -> wave?.setVolume(selectedVolume, selectedVolume)
@@ -176,7 +216,7 @@ class SoundViewModel : ViewModel() {
     }
 
     private fun getSoundPlayer(type: PlayerType) = MediaPlayer().apply {
-        val selectedVolume = _uiState.value.soundMap[type] ?: 0f
+        val selectedVolume = _uiState.value.soundMap[type]?.volume ?: 0f
 
         isLooping = true
 
@@ -193,20 +233,25 @@ class SoundViewModel : ViewModel() {
 }
 
 data class SoundState(
-    val soundMap: MutableMap<PlayerType, Float> = mutableMapOf(
-        RAIN to 0f,
-        FIRE to 0f,
-        WAVE to 0f,
-        THUNDER to 0f,
-        BIRDS to 0f,
-        HEAT to 0f,
-        COFFEE_HOUSE to 0f,
-        MEDITATION to 0f,
-        WIND to 0f,
-        BROWN to 0f,
-        PINK to 0f,
-        WHITE to 0f
+    val soundMap: MutableMap<PlayerType, PlayerState> = mutableMapOf(
+        RAIN to PlayerState(),
+        FIRE to PlayerState(),
+        WAVE to PlayerState(),
+        THUNDER to PlayerState(),
+        BIRDS to PlayerState(),
+        HEAT to PlayerState(),
+        COFFEE_HOUSE to PlayerState(),
+        MEDITATION to PlayerState(),
+        WIND to PlayerState(),
+        BROWN to PlayerState(),
+        PINK to PlayerState(),
+        WHITE to PlayerState()
     )
+)
+
+data class PlayerState(
+    var volume: Float = 0f,
+    var isPlaying: Boolean = false
 )
 
 enum class PlayerType(@DrawableRes val icon: Int, val sound: String) {

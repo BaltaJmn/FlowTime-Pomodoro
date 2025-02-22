@@ -45,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.service.PlayerState
 import com.baltajmn.flowtime.core.design.service.PlayerType
 import com.baltajmn.flowtime.core.design.service.PlayerType.BROWN
 import com.baltajmn.flowtime.core.design.service.PlayerType.PINK
@@ -56,8 +57,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TopNavBar(
-    viewModel: SoundViewModel = koinViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: SoundViewModel = koinViewModel(),
     shouldShow: () -> Boolean
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -117,12 +118,13 @@ fun TopNavBar(
 
             if (expanded) {
                 ExpandedContent(
+                    items = viewModel.getItems(),
                     onPlayClicked = { playerType, playing ->
                         viewModel.controlSounds(playerType = playerType, playing = playing)
                     },
                     onVolumeChanged = { itemPlayer, volume ->
                         viewModel.setVolume(
-                            player = itemPlayer,
+                            type = itemPlayer,
                             volume = volume
                         )
                     }
@@ -161,15 +163,21 @@ fun CurrentlyPlaying(
 
 @Composable
 fun ExpandedContent(
+    items: MutableMap<PlayerType, PlayerState>,
     onPlayClicked: (PlayerType, Boolean) -> Unit,
     onVolumeChanged: (PlayerType, Float) -> Unit
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.Top
     ) {
-        items(PlayerType.entries) {
+        items(
+            items = PlayerType.entries,
+            key = { it.sound }
+        ) {
             SliderItem(
                 type = it,
+                playing = items[it]?.isPlaying ?: false,
+                volume = items[it]?.volume ?: 0f,
                 onPlayClicked = onPlayClicked,
                 onVolumeChanged = onVolumeChanged
             )
@@ -180,11 +188,13 @@ fun ExpandedContent(
 @Composable
 fun SliderItem(
     type: PlayerType,
+    playing: Boolean,
+    volume: Float,
     onPlayClicked: (PlayerType, Boolean) -> Unit,
     onVolumeChanged: (PlayerType, Float) -> Unit
 ) {
-    var isPlaying by rememberSaveable { mutableStateOf(false) }
-    var sliderValue by rememberSaveable { mutableFloatStateOf(0f) }
+    var sliderPlaying by rememberSaveable(playing) { mutableStateOf(playing) }
+    var sliderVolume by rememberSaveable(volume) { mutableFloatStateOf(volume) }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -208,9 +218,9 @@ fun SliderItem(
             modifier = Modifier
                 .padding(10.dp)
                 .weight(1f),
-            value = sliderValue,
+            value = sliderVolume,
             onValueChange = {
-                sliderValue = it
+                sliderVolume = it
                 onVolumeChanged(type, it)
             },
             colors = SliderDefaults.colors(
@@ -223,12 +233,12 @@ fun SliderItem(
 
         IconButton(
             onClick = {
-                isPlaying = !isPlaying
-                onPlayClicked(type, isPlaying)
+                sliderPlaying = !sliderPlaying
+                onPlayClicked(type, sliderPlaying)
             }
         ) {
             Icon(
-                painter = painterResource(if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play),
+                painter = painterResource(if (sliderPlaying) R.drawable.ic_pause else R.drawable.ic_play),
                 tint = MaterialTheme.colorScheme.secondary,
                 contentDescription = "Play/Pause Button"
             )

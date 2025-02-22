@@ -50,7 +50,7 @@ fun MainScreen(
 
     Scaffold(
         topBar = {
-            TopNavBar(shouldShow = { shouldShow })
+            TopNavBar(shouldShow = { shouldShow && isTimerRunning.not() })
         },
         bottomBar = {
             BottomNavBar(
