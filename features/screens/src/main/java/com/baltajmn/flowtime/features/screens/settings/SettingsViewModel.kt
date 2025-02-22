@@ -8,6 +8,7 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.FLOW_TIME_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.PERCENTAGE_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.THEME_COLOR
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -155,5 +156,9 @@ class SettingsViewModel(
 
     fun saveColor(color: AppTheme) {
         dataProvider.setString(THEME_COLOR, color.name)
+    }
+
+    fun saveSound(showSound: Boolean) {
+        dataProvider.setBoolean(SHOW_SOUND, showSound)
     }
 }

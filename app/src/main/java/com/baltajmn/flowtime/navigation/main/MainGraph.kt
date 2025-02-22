@@ -30,8 +30,10 @@ fun MainGraph(
     percentageState: LazyListState,
     todoListState: LazyListState,
     settingsState: LazyListState,
-    navigateToHistory: () -> Unit,
+    showSound: Boolean,
+    onSoundChange: (Boolean) -> Unit,
     navigateUp: () -> Unit,
+    navigateToHistory: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit,
     onTimerRunning: (Boolean) -> Unit
@@ -112,6 +114,8 @@ fun MainGraph(
             SettingsScreen(
                 listState = settingsState,
                 navigateToHistory = navigateToHistory,
+                showSound = showSound,
+                onSoundChange = onSoundChange,
                 onThemeChanged = onThemeChanged,
                 onSupportDeveloperClick = onSupportDeveloperClick
             )

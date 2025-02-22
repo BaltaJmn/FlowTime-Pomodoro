@@ -18,6 +18,8 @@ import com.baltajmn.flowtime.navigation.main.MainScreen
 @Composable
 fun FlowTimeNavHost(
     flowTimeAppState: FlowTimeAppState,
+    showSound: Boolean,
+    onSoundChange: (Boolean) -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
@@ -32,6 +34,8 @@ fun FlowTimeNavHost(
         composable(GRAPH.Main) {
             MainScreen(
                 appState = flowTimeAppState,
+                showSound = showSound,
+                onSoundChange = onSoundChange,
                 onThemeChanged = onThemeChanged,
                 onSupportDeveloperClick = onSupportDeveloperClick
             )

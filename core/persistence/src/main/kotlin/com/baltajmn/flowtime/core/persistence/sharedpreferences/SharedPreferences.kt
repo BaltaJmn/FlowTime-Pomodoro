@@ -41,8 +41,8 @@ class SharedPreferencesProvider(
         sharedPreferences.edit().putString(key.name.lowercase(), finalValue).apply()
     }
 
-    override fun getBoolean(key: SharedPreferencesItem): Boolean {
-        return sharedPreferences.getBoolean(key.name.lowercase(), true)
+    override fun getBoolean(key: SharedPreferencesItem, defValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(key.name.lowercase(), defValue)
     }
 
     override fun setBoolean(key: SharedPreferencesItem, value: Boolean) {

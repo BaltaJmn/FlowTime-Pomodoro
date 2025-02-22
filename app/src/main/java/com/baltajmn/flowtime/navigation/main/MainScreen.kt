@@ -27,6 +27,8 @@ import com.baltajmn.flowtime.ui.FlowTimeAppState
 @Composable
 fun MainScreen(
     appState: FlowTimeAppState,
+    showSound: Boolean,
+    onSoundChange: (Boolean) -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
@@ -50,7 +52,7 @@ fun MainScreen(
 
     Scaffold(
         topBar = {
-            TopNavBar(shouldShow = { shouldShow && isTimerRunning.not() })
+            TopNavBar(shouldShow = { shouldShow && showSound })
         },
         bottomBar = {
             BottomNavBar(
@@ -79,6 +81,8 @@ fun MainScreen(
             navigateToHistory = { appState.navigateToHistory() },
             navigateUp = { appState.navigateUp() },
             onThemeChanged = onThemeChanged,
+            showSound = showSound,
+            onSoundChange = onSoundChange,
             onSupportDeveloperClick = onSupportDeveloperClick
         ) { isRunning ->
             isTimerRunning = isRunning

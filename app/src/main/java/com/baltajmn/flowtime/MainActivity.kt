@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel = inject<MainViewModel>().value
     private val theme: MutableState<AppTheme> = mutableStateOf(AppTheme.Blue)
+    private val showSound: MutableState<Boolean> = mutableStateOf(true)
 
     private val queryProductDetailsParams =
         QueryProductDetailsParams.newBuilder()
@@ -63,6 +64,7 @@ class MainActivity : ComponentActivity() {
         window.addFlags(FLAG_KEEP_SCREEN_ON)
 
         theme.value = viewModel.getAppTheme()
+        showSound.value = viewModel.getShowSound()
 
         billingClient = BillingClient.newBuilder(this)
             .setListener(purchasesUpdatedListener)
@@ -77,6 +79,8 @@ class MainActivity : ComponentActivity() {
                 showOnBoard = viewModel.getShowOnBoard(),
                 showRating = viewModel.getShowRating(),
                 rememberShowRating = viewModel.getRememberShowRating(),
+                showSound = showSound.value,
+                onSoundChange = { it: Boolean -> showSound.value = it },
                 onThemeChanged = { it: AppTheme -> theme.value = it },
                 onShowRatingChanged = { it: Boolean -> viewModel.setShowRating(it) },
                 onSupportDeveloperClick = { initiatePurchase() },

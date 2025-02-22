@@ -29,6 +29,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,6 +67,8 @@ import org.koin.androidx.compose.koinViewModel
 fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     listState: LazyListState,
+    showSound: Boolean,
+    onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
@@ -76,6 +79,8 @@ fun SettingsScreen(
         state = state,
         listState = listState,
         viewModel = viewModel,
+        showSound = showSound,
+        onSoundChange = onSoundChange,
         navigateToHistory = navigateToHistory,
         onThemeChanged = onThemeChanged,
         onSupportDeveloperClick = onSupportDeveloperClick
@@ -87,6 +92,8 @@ fun AnimatedSettingsContent(
     state: SettingsState,
     listState: LazyListState,
     viewModel: SettingsViewModel,
+    showSound: Boolean,
+    onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
@@ -101,6 +108,8 @@ fun AnimatedSettingsContent(
                 state = state,
                 listState = listState,
                 viewModel = viewModel,
+                showSound = showSound,
+                onSoundChange = onSoundChange,
                 navigateToHistory = navigateToHistory,
                 onThemeChanged = onThemeChanged,
                 onSupportDeveloperClick = onSupportDeveloperClick
@@ -114,6 +123,8 @@ fun SettingsContent(
     state: SettingsState,
     listState: LazyListState,
     viewModel: SettingsViewModel,
+    showSound: Boolean,
+    onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
@@ -234,6 +245,16 @@ fun SettingsContent(
         }
         item { Spacer(modifier = Modifier.height(8.dp)) }
         item { ButtonHistory(navigateToHistory = navigateToHistory) }
+        item { Spacer(modifier = Modifier.height(8.dp)) }
+        item {
+            ButtonSound(
+                showSound = showSound,
+                onCheckedChange = {
+                    onSoundChange.invoke(it)
+                    viewModel.saveSound(it)
+                }
+            )
+        }
         item { Spacer(modifier = Modifier.height(16.dp)) }
         item { PositiveText() }
         item { Spacer(modifier = Modifier.height(96.dp)) }
@@ -281,6 +302,36 @@ fun ButtonHistory(navigateToHistory: () -> Unit) {
                 style = SubBody.copy(color = MaterialTheme.colorScheme.secondary)
             )
         }
+    }
+}
+
+@Composable
+fun ButtonSound(
+    showSound: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    val hasToShow by rememberSaveable(showSound) {
+        mutableStateOf(showSound)
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp, end = 16.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            //text = LocalContext.current.getString((R.string.show_sound)),
+            text = "Enable Background Sound",
+            style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
+        )
+        Checkbox(
+            modifier = Modifier.weight(1f),
+            checked = hasToShow,
+            onCheckedChange = onCheckedChange
+        )
     }
 }
 

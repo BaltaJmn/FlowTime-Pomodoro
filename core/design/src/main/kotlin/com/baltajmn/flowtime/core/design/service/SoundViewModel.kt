@@ -30,6 +30,12 @@ class SoundViewModel : ViewModel() {
 
     fun getItems(): MutableMap<PlayerType, PlayerState> = _uiState.value.soundMap
 
+    fun muteAll() {
+        PlayerType.entries.forEach { type ->
+            controlSounds(type, false)
+        }
+    }
+
     fun controlSounds(playerType: PlayerType, playing: Boolean) {
         val player = players.getOrPut(playerType) {
             getSoundPlayer(playerType)

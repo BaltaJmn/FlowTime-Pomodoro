@@ -49,6 +49,8 @@ fun FlowTimeApp(
     appTheme: AppTheme,
     showOnBoard: Boolean,
     showRating: Boolean,
+    showSound: Boolean,
+    onSoundChange: (Boolean) -> Unit,
     rememberShowRating: Boolean,
     onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit,
@@ -86,6 +88,8 @@ fun FlowTimeApp(
 
         FlowTimeNavHost(
             flowTimeAppState = flowTimeAppState,
+            showSound = showSound,
+            onSoundChange = onSoundChange,
             onThemeChanged = onThemeChanged,
             onSupportDeveloperClick = onSupportDeveloperClick
         )

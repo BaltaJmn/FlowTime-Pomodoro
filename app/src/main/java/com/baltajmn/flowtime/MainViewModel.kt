@@ -7,11 +7,13 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.REMEMBER_SHOW_RATING
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_ON_BOARD
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_RATING
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.THEME_COLOR
 
 class MainViewModel(private val dataProvider: DataProvider) : ViewModel() {
 
     private val appTheme = AppTheme.valueOf(dataProvider.getString(THEME_COLOR) ?: "Blue")
+    private val showSound = dataProvider.getBoolean(SHOW_SOUND)
     private var showOnBoard = dataProvider.getCheckValue(SHOW_ON_BOARD)
     private var showRating = dataProvider.getBoolean(SHOW_RATING)
     private var rememberShowRating = dataProvider.getBoolean(REMEMBER_SHOW_RATING)
@@ -20,6 +22,8 @@ class MainViewModel(private val dataProvider: DataProvider) : ViewModel() {
     fun getAppTheme(): AppTheme = appTheme
 
     fun getShowOnBoard(): Boolean = showOnBoard
+
+    fun getShowSound(): Boolean = showSound
 
     fun getShowRating(): Boolean = showRating
     fun setShowRating(hasRate: Boolean) {

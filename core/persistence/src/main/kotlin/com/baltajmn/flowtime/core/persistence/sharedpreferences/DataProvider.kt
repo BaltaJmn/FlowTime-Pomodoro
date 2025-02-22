@@ -6,7 +6,7 @@ import java.time.LocalDate
 interface DataProvider {
     fun getString(key: SharedPreferencesItem, decrypt: Boolean = false): String?
     fun setString(key: SharedPreferencesItem, value: String, encrypt: Boolean = false)
-    fun getBoolean(key: SharedPreferencesItem): Boolean
+    fun getBoolean(key: SharedPreferencesItem, defValue: Boolean = true): Boolean
     fun setBoolean(key: SharedPreferencesItem, value: Boolean)
     fun getLong(key: SharedPreferencesItem): Long
     fun setLong(key: SharedPreferencesItem, value: Long)

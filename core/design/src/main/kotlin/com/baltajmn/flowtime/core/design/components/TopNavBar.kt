@@ -71,9 +71,7 @@ fun TopNavBar(
     ComposableLifecycle { _, event ->
         when (event) {
             Lifecycle.Event.ON_PAUSE -> {
-                PlayerType.entries.forEach {
-                    viewModel.controlSounds(it, false)
-                }
+                viewModel.muteAll()
             }
 
             else -> {}
