@@ -323,8 +323,7 @@ fun ButtonSound(
     ) {
         Text(
             modifier = Modifier.weight(1f),
-            //text = LocalContext.current.getString((R.string.show_sound)),
-            text = "Enable Background Sound",
+            text = LocalContext.current.getString((R.string.show_sound)),
             style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
         )
         Checkbox(

@@ -70,4 +70,5 @@
     <string name="on_board_next">Weiter</string>
     <string name="on_board_finish">Fertig</string>
     <string name="user_progression_level">Benutzerfortschrittsstufe</string>
+    <string name="show_sound">Hintergrundgeräusch anzeigen</string>
 </resources>

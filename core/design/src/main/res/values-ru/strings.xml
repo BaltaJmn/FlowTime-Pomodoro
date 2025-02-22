@@ -70,4 +70,5 @@
     <string name="on_board_next">Далее</string>
     <string name="on_board_finish">Завершить</string>
     <string name="user_progression_level">Уровень Прогресса Пользователя</string>
+    <string name="show_sound">Показать фоновый звук</string>
 </resources>

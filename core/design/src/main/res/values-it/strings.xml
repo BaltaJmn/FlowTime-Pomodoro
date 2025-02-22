@@ -70,4 +70,5 @@
     <string name="on_board_next">Avanti</string>
     <string name="on_board_finish">Fine</string>
     <string name="user_progression_level">Livello di Progressione dell\'Utente</string>
+    <string name="show_sound">Mostra suono di sottofondo</string>
 </resources>

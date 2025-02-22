@@ -70,4 +70,5 @@
     <string name="on_board_next">Next</string>
     <string name="on_board_finish">Finish</string>
     <string name="user_progression_level">User Progression Level</string>
+    <string name="show_sound">Show Background Sound</string>
 </resources>

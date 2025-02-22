@@ -70,4 +70,5 @@
     <string name="on_board_next">अगला</string>
     <string name="on_board_finish">समाप्त</string>
     <string name="user_progression_level">उपयोगकर्ता प्रगति स्तर</string>
+    <string name="show_sound">पृष्ठभूमि ध्वनि दिखाएँ</string>
 </resources>
