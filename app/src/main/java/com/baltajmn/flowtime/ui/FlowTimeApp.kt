@@ -30,9 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.baltajmn.flowtime.R
@@ -65,7 +62,6 @@ fun FlowTimeApp(
         )
     }
 
-    HideSystemBars()
     KeepScreenOn()
 
     FlowTimeTheme(appTheme = appTheme) {
@@ -192,31 +188,6 @@ fun KeepScreenOn() {
 
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
-        }
-    }
-}
-
-@Composable
-fun HideSystemBars() {
-    val context = LocalContext.current
-
-    DisposableEffect(Unit) {
-        val window = context.findActivity()?.window ?: return@DisposableEffect onDispose {}
-        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
-
-        insetsController.apply {
-            hide(WindowInsetsCompat.Type.statusBars())
-            hide(WindowInsetsCompat.Type.navigationBars())
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
-
-        onDispose {
-            insetsController.apply {
-                show(WindowInsetsCompat.Type.statusBars())
-                show(WindowInsetsCompat.Type.navigationBars())
-                systemBarsBehavior =
-                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            }
         }
     }
 }
