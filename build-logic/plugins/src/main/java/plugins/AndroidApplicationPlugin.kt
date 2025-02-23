@@ -38,7 +38,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
             buildTypes {
 
                 release {
-                    isShrinkResources = true
+                    isShrinkResources = false
                     isMinifyEnabled = false
                     proguardFiles(
                         getDefaultProguardFile("proguard-android-optimize.txt"),
