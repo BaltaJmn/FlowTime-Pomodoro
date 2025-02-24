@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baltajmn.flowtime.core.design.R.drawable.ic_flowtime
 import com.baltajmn.flowtime.core.design.R.drawable.ic_list
+import com.baltajmn.flowtime.core.design.R.drawable.ic_music
 import com.baltajmn.flowtime.core.design.R.drawable.ic_percentage
 import com.baltajmn.flowtime.core.design.R.drawable.ic_pomodoro
 import com.baltajmn.flowtime.core.design.R.drawable.ic_settings
@@ -43,11 +44,13 @@ import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_2
 import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_3
 import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_4
 import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_5
+import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_6
 import com.baltajmn.flowtime.core.design.R.string.on_board_title_1
 import com.baltajmn.flowtime.core.design.R.string.on_board_title_2
 import com.baltajmn.flowtime.core.design.R.string.on_board_title_3
 import com.baltajmn.flowtime.core.design.R.string.on_board_title_4
 import com.baltajmn.flowtime.core.design.R.string.on_board_title_5
+import com.baltajmn.flowtime.core.design.R.string.on_board_title_6
 import com.baltajmn.flowtime.core.design.components.collectEvents
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.Title
@@ -98,6 +101,11 @@ fun OnboardingContent(
             title = LocalContext.current.getString(on_board_title_4),
             description = LocalContext.current.getString(on_board_subtitle_4),
             imageRes = ic_list
+        ),
+        OnBoardModel(
+            title = LocalContext.current.getString(on_board_title_6),
+            description = LocalContext.current.getString(on_board_subtitle_6),
+            imageRes = ic_music
         ),
         OnBoardModel(
             title = LocalContext.current.getString(on_board_title_5),
