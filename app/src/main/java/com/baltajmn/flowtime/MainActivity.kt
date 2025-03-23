@@ -128,13 +128,14 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initiatePurchase() {
-        val billingFlowParams = BillingFlowParams.newBuilder()
+        val billingFlowParams = BillingFlowParams
+            .newBuilder()
             .setProductDetailsParamsList(
-                listOf(
+                viewModel.getProductDetailsList().map {
                     BillingFlowParams.ProductDetailsParams.newBuilder()
-                        .setProductDetails(viewModel.getProductDetailsList())
+                        .setProductDetails(it)
                         .build()
-                )
+                }
             )
             .build()
         billingClient.launchBillingFlow(this, billingFlowParams)

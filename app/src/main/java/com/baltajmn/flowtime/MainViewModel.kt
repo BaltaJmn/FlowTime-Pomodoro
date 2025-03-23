@@ -37,7 +37,7 @@ class MainViewModel(private val dataProvider: DataProvider) : ViewModel() {
         dataProvider.setBoolean(REMEMBER_SHOW_RATING, rememberShowRating)
     }
 
-    fun getProductDetailsList(): ProductDetails = productDetailsList.first()
+    fun getProductDetailsList(): List<ProductDetails> = productDetailsList
     fun setProductDetailsList(list: List<ProductDetails>) {
         productDetailsList = list
     }
