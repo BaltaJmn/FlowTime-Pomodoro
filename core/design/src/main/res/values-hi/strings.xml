@@ -73,4 +73,6 @@
     <string name="on_board_finish">समाप्त</string>
     <string name="user_progression_level">उपयोगकर्ता प्रगति स्तर</string>
     <string name="show_sound">पृष्ठभूमि ध्वनि दिखाएँ</string>
+    <string name="alert_google_play">Google Play से कनेक्ट करने में त्रुटि</string>
+    <string name="alert_google_play_desc">आवश्यक डेटा प्राप्त करने के लिए सुनिश्चित करें कि आपके पास सक्रिय इंटरनेट कनेक्शन है।</string>
 </resources>

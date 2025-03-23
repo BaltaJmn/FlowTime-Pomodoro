@@ -73,4 +73,6 @@
     <string name="on_board_finish">Fertig</string>
     <string name="user_progression_level">Benutzerfortschrittsstufe</string>
     <string name="show_sound">Hintergrundgeräusch anzeigen</string>
+    <string name="alert_google_play">Fehler beim Verbinden mit Google Play</string>
+    <string name="alert_google_play_desc">Stellen Sie sicher, dass Sie eine aktive Internetverbindung haben, um die erforderlichen Daten abzurufen.</string>
 </resources>

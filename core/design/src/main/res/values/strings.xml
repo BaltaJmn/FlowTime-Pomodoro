@@ -73,4 +73,6 @@
     <string name="on_board_finish">Finish</string>
     <string name="user_progression_level">User Progression Level</string>
     <string name="show_sound">Show Background Sound</string>
+    <string name="alert_google_play">Error connecting to Google Play</string>
+    <string name="alert_google_play_desc">Make sure you have an active internet connection to retrieve the necessary data.</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
@@ -14,6 +15,7 @@ import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
+import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.ui.FlowTimeApp
 import org.koin.android.ext.android.inject
@@ -128,16 +130,35 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initiatePurchase() {
-        val billingFlowParams = BillingFlowParams
-            .newBuilder()
-            .setProductDetailsParamsList(
-                viewModel.getProductDetailsList().map {
-                    BillingFlowParams.ProductDetailsParams.newBuilder()
-                        .setProductDetails(it)
-                        .build()
-                }
-            )
-            .build()
-        billingClient.launchBillingFlow(this, billingFlowParams)
+        viewModel
+            .getProductDetailsList()
+            .takeIf { it.isNotEmpty() }
+            ?.let {
+                val billingFlowParams = BillingFlowParams
+                    .newBuilder()
+                    .setProductDetailsParamsList(
+                        it.map {
+                            BillingFlowParams.ProductDetailsParams.newBuilder()
+                                .setProductDetails(it)
+                                .build()
+                        }
+                    )
+                    .build()
+                billingClient.launchBillingFlow(this, billingFlowParams)
+            } ?: launchAlert()
+    }
+
+    private fun launchAlert() {
+        AlertDialog
+            .Builder(this)
+            .setTitle(applicationContext.getString(R.string.alert_google_play))
+            .setMessage(applicationContext.getString(R.string.alert_google_play_desc))
+            .setPositiveButton(applicationContext.getString(R.string.dialog_confirm)) { dialog, which ->
+                connectBillingClient()
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+
     }
 }

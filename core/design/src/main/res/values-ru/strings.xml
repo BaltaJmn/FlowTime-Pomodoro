@@ -73,4 +73,6 @@
     <string name="on_board_finish">Завершить</string>
     <string name="user_progression_level">Уровень Прогресса Пользователя</string>
     <string name="show_sound">Показать фоновый звук</string>
+    <string name="alert_google_play">Ошибка подключения к Google Play</string>
+    <string name="alert_google_play_desc">Убедитесь, что у вас есть активное интернет-соединение для получения необходимых данных.</string>
 </resources>
