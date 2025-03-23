@@ -61,11 +61,13 @@
     <string name="on_board_title_3">Percentuale</string>
     <string name="on_board_title_4">Lista</string>
     <string name="on_board_title_5">Impostazioni</string>
+    <string name="on_board_title_6">Musica di Sottofondo</string>
     <string name="on_board_subtitle_1">Traccia il tuo tempo in modo efficiente con FlowTime.</string>
     <string name="on_board_subtitle_2">Aumenta la produttività con la tecnica Pomodoro.</string>
     <string name="on_board_subtitle_3">Regola il tuo riposo in percentuale del tempo lavorato.</string>
     <string name="on_board_subtitle_4">Organizza i tuoi compiti con una lista completa.</string>
     <string name="on_board_subtitle_5">Personalizza le preferenze e le impostazioni della tua app.</string>
+    <string name="on_board_subtitle_6">Ascolta musica di sottofondo mentre studi</string>
     <string name="on_board_skip">Salta</string>
     <string name="on_board_next">Avanti</string>
     <string name="on_board_finish">Fine</string>

@@ -61,11 +61,13 @@
     <string name="on_board_title_3">Процент</string>
     <string name="on_board_title_4">Список</string>
     <string name="on_board_title_5">Настройки</string>
+    <string name="on_board_title_6">Фоновая Музыка</string>
     <string name="on_board_subtitle_1">Эффективно отслеживайте свое время с Время потока.</string>
     <string name="on_board_subtitle_2">Повышайте продуктивность с помощью техники Готовность.</string>
     <string name="on_board_subtitle_3">Настройте свой отдых в процентах от рабочего времени.</string>
     <string name="on_board_subtitle_4">Организуйте свои задачи с помощью полного списка.</string>
     <string name="on_board_subtitle_5">Настройте предпочтения и параметры вашего приложения.</string>
+    <string name="on_board_subtitle_6">Слушайте фоновую музыку во время учебы</string>
     <string name="on_board_skip">Пропустить</string>
     <string name="on_board_next">Далее</string>
     <string name="on_board_finish">Завершить</string>
