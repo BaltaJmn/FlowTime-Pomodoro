@@ -159,6 +159,5 @@ class MainActivity : ComponentActivity() {
             }
             .create()
             .show()
-
     }
 }
