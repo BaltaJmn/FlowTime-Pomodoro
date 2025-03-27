@@ -12,6 +12,7 @@ enum class PreMainGraph(val route: String) {
 }
 
 enum class MainGraph(val route: String) {
+    Home("home"),
     FlowTime("flowTime"),
     Pomodoro("pomodoro"),
     Percentage("percentage"),

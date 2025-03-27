@@ -1,4 +1,4 @@
-package com.baltajmn.flowtime.features.screens.components
+package com.baltajmn.flowtime.features.screens.common.composable.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme

@@ -10,12 +10,15 @@ import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.GRAPH
 import com.baltajmn.flowtime.core.navigation.MainGraph.FlowTime
 import com.baltajmn.flowtime.core.navigation.MainGraph.History
+import com.baltajmn.flowtime.core.navigation.MainGraph.Home
 import com.baltajmn.flowtime.core.navigation.MainGraph.Percentage
 import com.baltajmn.flowtime.core.navigation.MainGraph.Pomodoro
 import com.baltajmn.flowtime.core.navigation.MainGraph.Settings
 import com.baltajmn.flowtime.core.navigation.MainGraph.TodoList
+import com.baltajmn.flowtime.features.screens.common.ScreenType
 import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeScreen
 import com.baltajmn.flowtime.features.screens.history.HistoryScreen
+import com.baltajmn.flowtime.features.screens.home.HomeScreen
 import com.baltajmn.flowtime.features.screens.percentage.PercentageScreen
 import com.baltajmn.flowtime.features.screens.pomodoro.PomodoroScreen
 import com.baltajmn.flowtime.features.screens.settings.SettingsScreen
@@ -43,6 +46,20 @@ fun MainGraph(
         route = GRAPH.Main,
         startDestination = FlowTime.route
     ) {
+        composable(
+            route = Home.route
+        ) {
+            HomeScreen {
+                appState.mainNavController.navigate(
+                    when (it) {
+                        ScreenType.Pomodoro -> FlowTime.route
+                        ScreenType.FlowTime -> Pomodoro.route
+                        ScreenType.Percentage -> Percentage.route
+                    }
+                )
+            }
+        }
+
         composable(
             route = FlowTime.route,
             enterTransition = {

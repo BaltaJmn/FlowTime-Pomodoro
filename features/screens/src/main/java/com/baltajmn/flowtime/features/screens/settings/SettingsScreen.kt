@@ -57,9 +57,9 @@ import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
-import com.baltajmn.flowtime.features.screens.components.FlowTimeRanges
-import com.baltajmn.flowtime.features.screens.components.PercentageRange
-import com.baltajmn.flowtime.features.screens.components.PomodoroRange
+import com.baltajmn.flowtime.features.screens.common.composable.components.FlowTimeRanges
+import com.baltajmn.flowtime.features.screens.common.composable.components.PercentageRange
+import com.baltajmn.flowtime.features.screens.common.composable.components.PomodoroRange
 import com.baltajmn.flowtime.features.screens.settings.enum.MotivationalPhrases
 import org.koin.androidx.compose.koinViewModel
 
