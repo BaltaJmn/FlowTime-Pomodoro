@@ -1,7 +1,9 @@
 package com.baltajmn.flowtime.core.design.module
 
 import android.media.MediaPlayer
+import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.service.SoundService
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
@@ -12,16 +14,22 @@ val DesignModule: Module
         single(named("startPlayer")) {
             MediaPlayer.create(
                 androidContext(),
-                com.baltajmn.flowtime.core.design.R.raw.start
+                R.raw.start
             )
         }
 
         single(named("confirmationPlayer")) {
             MediaPlayer.create(
                 androidContext(),
-                com.baltajmn.flowtime.core.design.R.raw.confirmation
+                R.raw.confirmation
             )
         }
 
-        single { SoundService(get(named("startPlayer")), get(named("confirmationPlayer"))) }
+        single {
+            SoundService(
+                get() as DataProvider,
+                get(named("startPlayer")),
+                get(named("confirmationPlayer"))
+            )
+        }
     }

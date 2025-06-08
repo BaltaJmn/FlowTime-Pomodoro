@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.CircularButton
+import com.baltajmn.flowtime.features.screens.common.FlowTimeState
 import com.baltajmn.flowtime.features.screens.common.TimerState
 
 @Composable
@@ -30,7 +32,7 @@ fun <T : TimerState<T>> ButtonsContent(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stop),
                     contentDescription = "Detener temporizador",
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.colorScheme.surface
                 )
             }
             if (!state.isBreakRunning && onBreakClick != null) {
@@ -38,7 +40,7 @@ fun <T : TimerState<T>> ButtonsContent(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_next),
                         contentDescription = "Iniciar descanso",
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.colorScheme.surface
                     )
                 }
             }
@@ -47,9 +49,30 @@ fun <T : TimerState<T>> ButtonsContent(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),
                     contentDescription = "Iniciar temporizador",
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.colorScheme.surface
                 )
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ButtonsContentRunningPreview() {
+    ButtonsContent(
+        state = FlowTimeState().copyTimer(isTimerRunning = true),
+        onStartClick = {},
+        onFinishClick = {},
+        onBreakClick = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ButtonsContentStoppedPreview() {
+    ButtonsContent(
+        state = FlowTimeState(),
+        onStartClick = {},
+        onFinishClick = {}
+    )
 }

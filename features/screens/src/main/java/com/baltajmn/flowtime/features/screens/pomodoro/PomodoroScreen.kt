@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.features.screens.pomodoro
 
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.Lifecycle
@@ -15,7 +14,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun PomodoroScreen(
     viewModel: PomodoroViewModel = koinViewModel(),
-    listState: LazyListState,
     onTimerRunning: (Boolean) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -30,10 +28,9 @@ fun PomodoroScreen(
 
     onTimerRunning(state.isTimerRunning || state.isBreakRunning)
 
-    AnimatedTimerContent(state, listState) { timerState ->
+    AnimatedTimerContent(state) { timerState ->
         TimerBaseScreen(
             state = timerState,
-            listState = listState,
             titleProvider = { s: PomodoroState, ctx ->
                 when {
                     !s.isTimerRunning && !s.isBreakRunning -> ctx.getString(R.string.pomodoro_title)

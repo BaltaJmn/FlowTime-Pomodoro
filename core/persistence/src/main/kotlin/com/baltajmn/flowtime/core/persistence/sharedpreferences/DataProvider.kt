@@ -10,6 +10,8 @@ interface DataProvider {
     fun setBoolean(key: SharedPreferencesItem, value: Boolean)
     fun getLong(key: SharedPreferencesItem): Long
     fun setLong(key: SharedPreferencesItem, value: Long)
+    fun getFloat(key: String, defValue: Float): Float
+    fun setFloat(key: String, value: Float)
     fun setObject(key: SharedPreferencesItem, value: Any)
     fun getRangeModel(key: SharedPreferencesItem): RangeModel?
     fun getRangeModelList(key: SharedPreferencesItem): MutableList<RangeModel>?

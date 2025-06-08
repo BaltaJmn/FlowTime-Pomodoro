@@ -1,7 +1,6 @@
 package com.baltajmn.flowtime.features.screens.common.composable.screen
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.features.screens.common.TimerState
@@ -9,7 +8,6 @@ import com.baltajmn.flowtime.features.screens.common.TimerState
 @Composable
 fun <T : TimerState<T>> AnimatedTimerContent(
     state: T,
-    listState: LazyListState,
     content: @Composable (T) -> Unit
 ) {
     AnimatedContent(

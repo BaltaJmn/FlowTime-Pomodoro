@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.features.screens.di
 
+import com.baltajmn.flowtime.features.screens.edit.EditViewModel
 import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeViewModel
 import com.baltajmn.flowtime.features.screens.history.HistoryViewModel
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
@@ -54,8 +55,9 @@ private val ScreensPresentationModule: Module
     get() = module {
         viewModelOf(::FlowTimeViewModel)
         viewModelOf(::PomodoroViewModel)
-        viewModelOf(::SettingsViewModel)
         viewModelOf(::PercentageViewModel)
+        viewModelOf(::EditViewModel)
+        viewModelOf(::SettingsViewModel)
         viewModelOf(::TodoListViewModel)
         viewModelOf(::HistoryViewModel)
         viewModelOf(::OnBoardViewModel)

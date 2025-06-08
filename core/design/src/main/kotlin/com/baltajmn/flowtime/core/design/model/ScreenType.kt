@@ -1,4 +1,4 @@
-package com.baltajmn.flowtime.features.screens.common
+package com.baltajmn.flowtime.core.design.model
 
 enum class ScreenType {
     Pomodoro,

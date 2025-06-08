@@ -86,7 +86,7 @@ fun TopNavBar(
     AnimatedVisibility(
         modifier = modifier
             .navigationBarsPadding()
-            .padding(top = 24.dp, start = 24.dp, end = 24.dp, bottom = 96.dp),
+            .padding(top = 40.dp, start = 24.dp, end = 24.dp, bottom = 96.dp),
         visible = shouldShow() && firstVisibility,
         enter = slideInHorizontally(
             initialOffsetX = { 1000 },
@@ -143,7 +143,7 @@ fun CurrentlyPlaying(
         LottieImage(
             modifier = Modifier.size(30.dp),
             animation = R.raw.equalizer,
-            tintColor = MaterialTheme.colorScheme.secondary
+            tintColor = MaterialTheme.colorScheme.primary
         )
 
         IconButton(
@@ -152,7 +152,7 @@ fun CurrentlyPlaying(
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowDropDown,
-                tint = MaterialTheme.colorScheme.secondary,
+                tint = MaterialTheme.colorScheme.primary,
                 contentDescription = "Drop-Down Arrow"
             )
         }
@@ -174,7 +174,7 @@ fun ExpandedContent(
         ) {
             SliderItem(
                 type = it,
-                playing = items[it]?.isPlaying ?: false,
+                playing = items[it]?.isPlaying == true,
                 volume = items[it]?.volume ?: 0f,
                 onPlayClicked = onPlayClicked,
                 onVolumeChanged = onVolumeChanged
@@ -254,7 +254,7 @@ fun TopBarSurface(
         modifier = Modifier.fillMaxWidth()
     ) {
         Surface(
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.primaryContainer,
             modifier = modifier
                 .shadow(
                     elevation = 5.dp,

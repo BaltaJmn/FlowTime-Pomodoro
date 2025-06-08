@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.features.screens.percentage
 
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.Lifecycle
@@ -15,7 +14,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun PercentageScreen(
     viewModel: PercentageViewModel = koinViewModel(),
-    listState: LazyListState,
     onTimerRunning: (Boolean) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -29,14 +27,19 @@ fun PercentageScreen(
 
     onTimerRunning(state.isTimerRunning || state.isBreakRunning)
 
-    AnimatedTimerContent(state, listState) { timerState ->
+    AnimatedTimerContent(state) { timerState ->
         TimerBaseScreen(
             state = timerState,
-            listState = listState,
             titleProvider = { s: PercentageState, ctx ->
                 when {
-                    s.isTimerRunning && !s.isBreakRunning -> ctx.getString(R.string.time_title_working)
-                    !s.isTimerRunning && s.isBreakRunning -> ctx.getString(R.string.time_title_resting)
+                    s.isTimerRunning && !s.isBreakRunning -> ctx.getString(
+                        R.string.time_title_working
+                    )
+
+                    !s.isTimerRunning && s.isBreakRunning -> ctx.getString(
+                        R.string.time_title_resting
+                    )
+
                     else -> ctx.getString(R.string.percentage_title)
                 }
             },

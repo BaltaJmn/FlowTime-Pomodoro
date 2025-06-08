@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.features.screens.common.TimerState
@@ -78,11 +79,14 @@ fun <T : TimerState<T>> TimerLandscapeContent(
                         onBreakClick = onBreakClick
                     )
                 }
+
                 Spacer(modifier = Modifier.height(32.dp))
+
                 Text(
-                    text = context.getString(com.baltajmn.flowtime.core.design.R.string.pomodoro_continue_after_break),
+                    text = context.getString(R.string.pomodoro_continue_after_break),
                     style = Title.copy(fontSize = 12.sp, color = MaterialTheme.colorScheme.tertiary)
                 )
+
                 Switch(
                     checked = state.continueAfterBreak,
                     onCheckedChange = onSwitchChanged,

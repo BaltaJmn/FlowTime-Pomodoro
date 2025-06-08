@@ -100,7 +100,7 @@ class PercentageViewModel(
         timerJob?.isActive.let { isActive ->
             _uiState.update {
                 it.copy(
-                    isTimerRunning = isActive ?: false
+                    isTimerRunning = isActive == true
                 )
             }
         }
@@ -108,7 +108,7 @@ class PercentageViewModel(
         breakJob?.isActive.let { isActive ->
             _uiState.update {
                 it.copy(
-                    isBreakRunning = isActive ?: false
+                    isBreakRunning = isActive == true
                 )
             }
         }
@@ -154,7 +154,7 @@ class PercentageViewModel(
 
     fun changeSwitch(value: Boolean) {
         dataProvider.setCheckValue(
-            key = SharedPreferencesItem.CONTINUE_AFTER_BREAK_FLOW_TIME,
+            key = SharedPreferencesItem.CONTINUE_AFTER_BREAK_PERCENTAGE,
             value = value
         )
         _uiState.update {

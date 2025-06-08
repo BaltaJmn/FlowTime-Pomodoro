@@ -2,7 +2,6 @@ package com.baltajmn.flowtime.features.screens.common.composable.screen
 
 import android.content.Context
 import android.content.res.Configuration
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import com.baltajmn.flowtime.features.screens.common.TimerState
@@ -10,7 +9,6 @@ import com.baltajmn.flowtime.features.screens.common.TimerState
 @Composable
 fun <T : TimerState<T>> TimerBaseScreen(
     state: T,
-    listState: LazyListState,
     titleProvider: (T, Context) -> String,
     onStartClick: () -> Unit,
     onFinishClick: () -> Unit,

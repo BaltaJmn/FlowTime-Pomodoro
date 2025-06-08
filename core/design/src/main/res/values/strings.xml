@@ -73,6 +73,12 @@
     <string name="on_board_finish">Finish</string>
     <string name="user_progression_level">User Progression Level</string>
     <string name="show_sound">Show Background Sound</string>
+    <string name="show_alert">Enable sound when timer ends</string>
     <string name="alert_google_play">Error connecting to Google Play</string>
     <string name="alert_google_play_desc">Make sure you have an active internet connection to retrieve the necessary data.</string>
+    <string name="advantage_title">Advantages</string>
+    <string name="pomodoro_advantages">Improves focus, reduces mental fatigue, and encourages regular breaks to maintain productivity.</string>
+    <string name="flow_time_advantages">Allows flexible work sessions, adapts to your pace, and helps achieve deep focus states.</string>
+    <string name="percentage_advantages">Adjusts breaks based on work time, balances effort and recovery, and personalizes your study experience.</string>
+
 </resources>

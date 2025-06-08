@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -28,13 +29,13 @@ import com.baltajmn.flowtime.core.design.R.string.flow_time_title
 import com.baltajmn.flowtime.core.design.R.string.percentage_title
 import com.baltajmn.flowtime.core.design.R.string.pomodoro_title
 import com.baltajmn.flowtime.core.design.extensions.noRippleClickable
+import com.baltajmn.flowtime.core.design.model.ScreenType
+import com.baltajmn.flowtime.core.design.model.ScreenType.FlowTime
+import com.baltajmn.flowtime.core.design.model.ScreenType.Percentage
+import com.baltajmn.flowtime.core.design.model.ScreenType.Pomodoro
 import com.baltajmn.flowtime.core.design.theme.Body
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
-import com.baltajmn.flowtime.features.screens.common.ScreenType
-import com.baltajmn.flowtime.features.screens.common.ScreenType.FlowTime
-import com.baltajmn.flowtime.features.screens.common.ScreenType.Percentage
-import com.baltajmn.flowtime.features.screens.common.ScreenType.Pomodoro
 
 @Composable
 fun HomeScreen(navigateToScreen: (ScreenType) -> Unit) =
@@ -50,10 +51,11 @@ fun HomeContent(
             .fillMaxSize()
             .padding(32.dp)
     ) {
-        item { Spacer(modifier = Modifier.height(24.dp)) }
+        item { Spacer(modifier = Modifier.height(32.dp)) }
         item { HomeTitle() }
+        item { Spacer(modifier = Modifier.height(32.dp)) }
         items(ScreenType.entries) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             ScreenCard(screenType = it, navigateToScreen = navigateToScreen)
         }
     }
@@ -69,7 +71,10 @@ fun ScreenCard(screenType: ScreenType, navigateToScreen: (ScreenType) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .noRippleClickable { navigateToScreen.invoke(screenType) }
+            .noRippleClickable { navigateToScreen.invoke(screenType) },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
     ) {
         Column(
             modifier = Modifier
@@ -88,7 +93,6 @@ fun ScreenCard(screenType: ScreenType, navigateToScreen: (ScreenType) -> Unit) {
             )
             Text(text = stringResource(getTitle(screenType = screenType)), style = SmallTitle)
             Text(text = stringResource(getDescription(screenType = screenType)), style = Body)
-
         }
     }
 }
