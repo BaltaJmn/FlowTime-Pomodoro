@@ -49,7 +49,7 @@
     <string name="mot_19">Успех ждет тебя в конце пути! :)</string>
     <string name="mot_20">Будь стойким, победа твоя! :)</string>
     <string name="percentage_title">Процент Готовность к обучению</string>
-    <strpre-ing name="percentage_settings_title">Процент отдыха</strpre-ing>
+    <string name="percentage_settings_title">Процент отдыха</string>
     <string name="all_minutes_studying">Всего вы учились у нас %s</string>
     <string name="export">Экспорт</string>
     <string name="import_button">Импорт</string>
