@@ -56,12 +56,14 @@
     <string name="support_developer">डेवलपर का समर्थन करें</string>
     <string name="support_developer_title">हमारे विकास का समर्थन करें</string>
     <string name="support_developer_description">आपका योगदान हमें सुधारने और नई सुविधाएँ जोड़ने में मदद करता है। हमारा समर्थन करें और हमें बढ़ने में मदद करें!</string>
+    <string name="on_board_title_0">सबसे अच्छी टाइमर ऐप</string>
     <string name="on_board_title_1">प्रवाह समय</string>
     <string name="on_board_title_2">पोमोडोरो</string>
     <string name="on_board_title_3">प्रतिशत</string>
     <string name="on_board_title_4">सूची</string>
     <string name="on_board_title_5">सेटिंग्स</string>
     <string name="on_board_title_6">पृष्ठभूमि संगीत</string>
+    <string name="on_board_subtitle_0">ऐप को अग्रभूमि में रखने के लिए डिज़ाइन किया गया है।</string>
     <string name="on_board_subtitle_1">प्रवाह समय के साथ अपने समय को कुशलतापूर्वक ट्रैक करें।</string>
     <string name="on_board_subtitle_2">पोमोडोरो तकनीक के साथ उत्पादकता बढ़ाएं।</string>
     <string name="on_board_subtitle_3">काम किए गए समय के प्रतिशत में अपने आराम को समायोजित करें।</string>

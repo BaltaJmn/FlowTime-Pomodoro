@@ -88,6 +88,11 @@ fun OnboardingContent(
             imageRes = ic_flowtime
         ),
         OnBoardModel(
+            title = LocalContext.current.getString(on_board_title_1),
+            description = LocalContext.current.getString(on_board_subtitle_1),
+            imageRes = ic_flowtime
+        ),
+        OnBoardModel(
             title = LocalContext.current.getString(on_board_title_2),
             description = LocalContext.current.getString(on_board_subtitle_2),
             imageRes = ic_pomodoro

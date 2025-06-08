@@ -56,12 +56,14 @@
     <string name="support_developer">Entwickler unterstützen</string>
     <string name="support_developer_title">Unterstützen Sie unsere Entwicklung</string>
     <string name="support_developer_description">Ihr Beitrag hilft uns, uns weiter zu verbessern und neue Funktionen hinzuzufügen. Unterstützen Sie uns und helfen Sie uns zu wachsen!</string>
+    <string name="on_board_title_0">Die beste Timer-App</string>
     <string name="on_board_title_1">FlowTime</string>
     <string name="on_board_title_2">Pomodoro</string>
     <string name="on_board_title_3">Prozentsatz</string>
     <string name="on_board_title_4">Liste</string>
     <string name="on_board_title_5">Einstellungen</string>
     <string name="on_board_title_6">Hintergrundmusik</string>
+    <string name="on_board_subtitle_0">App, die für den Vordergrundbetrieb entwickelt wurde.</string>
     <string name="on_board_subtitle_1">Verfolge deine Zeit effizient mit FlowTime.</string>
     <string name="on_board_subtitle_2">Steigere die Produktivität mit der Pomodoro-Technik.</string>
     <string name="on_board_subtitle_3">Passe deine Ruhezeit prozentual zur Arbeitszeit an.</string>
