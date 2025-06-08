@@ -1,0 +1,6 @@
+#!/bin/sh
+./gradlew ktlintMainSourceSetCheck
+if [ $? -ne 0 ]; then
+  echo "ktlint check failed. Commit aborted."
+  exit 1
+fi

@@ -7,6 +7,7 @@ import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
 fun LocalDate.toShowInSelector() = buildWeekLabel(this)
+fun LocalDate.toShowInList() = buildTodayLabel(this)
 
 private fun buildWeekLabel(date: LocalDate): String {
     val startOfWeek = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
@@ -15,4 +16,12 @@ private fun buildWeekLabel(date: LocalDate): String {
     val endMonth = endOfWeek.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
 
     return "${startOfWeek.dayOfMonth} $startMonth - ${endOfWeek.dayOfMonth} $endMonth"
+}
+
+private fun buildTodayLabel(date: LocalDate): String {
+    val day = date.dayOfMonth
+    val month = date.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+    val dayOfWeek = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+
+    return "$day $month, $dayOfWeek"
 }

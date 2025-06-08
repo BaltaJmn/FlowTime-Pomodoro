@@ -12,6 +12,8 @@ android {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.persistence)
+    implementation(projects.core.data)
+    implementation(projects.core.database)
     implementation(projects.core.navigation)
     implementation(projects.core.design)
 
@@ -19,4 +21,7 @@ dependencies {
 
     implementation(libs.androidx.workmanager)
     implementation(libs.review.ktx)
+    implementation(libs.billing)
+    implementation(libs.billing.ktx)
+    implementation(libs.androidx.foundation.layout.android)
 }

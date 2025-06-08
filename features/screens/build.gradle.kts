@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.persistence)
     implementation(libs.gson)
+    implementation(projects.core.persistence)
+    implementation(projects.core.data)
 }

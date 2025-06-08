@@ -14,7 +14,6 @@ import com.baltajmn.flowtime.core.design.R
 fun LoadingView(
     modifier: Modifier = Modifier
 ) {
-
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -26,5 +25,4 @@ fun LoadingView(
             tintColor = MaterialTheme.colorScheme.primary
         )
     }
-
 }

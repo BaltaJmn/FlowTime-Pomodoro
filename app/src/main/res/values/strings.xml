@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">FlowTime &amp; Pomodoro</string>
+    <string name="app_name" translatable="false">FlowTime &amp; Pomodoro</string>
+    <string name="rating_dialog_title">Do you want to rate the app?</string>
+    <string name="rating_dialog_message">Your opinion is important to us.</string>
+    <string name="rate_now">Rate now</string>
+    <string name="remind_later">Remind me later</string>
+    <string name="never_remind">Don\'t remind me</string>
 </resources>

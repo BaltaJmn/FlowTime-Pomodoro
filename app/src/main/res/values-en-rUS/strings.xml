@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rating_dialog_title">Do you want to rate the app?</string>
+    <string name="rating_dialog_message">Your opinion is important to us.</string>
+    <string name="rate_now">Rate now</string>
+    <string name="remind_later">Remind me later</string>
+    <string name="never_remind">Don\'t remind me</string>
+</resources>

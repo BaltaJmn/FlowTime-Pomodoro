@@ -34,7 +34,8 @@ class AndroidLibraryPlugin : Plugin<Project> {
 
             buildTypes {
                 release {
-                    isMinifyEnabled = true
+                    isShrinkResources = false
+                    isMinifyEnabled = false
                     consumerProguardFiles("proguard-rules.pro")
                 }
 

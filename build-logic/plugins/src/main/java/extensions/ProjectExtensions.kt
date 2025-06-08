@@ -16,7 +16,7 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 val Project.libs get() = the<LibrariesForLibs>()
 
 internal fun Project.configureKotlinAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     commonExtension.apply {
         compileOptions {
@@ -54,7 +54,8 @@ fun Project.configureKtlint() {
             setOf(
                 "final-newline",
                 "no-wildcard-imports",
-                "max-line-length"
+                "max-line-length",
+                "import-ordering"
             )
         )
         reporters {

@@ -25,7 +25,7 @@
     <string name="study_history">Study History</string>
     <string name="go_to_history">Go to History</string>
     <string name="others">Others</string>
-    <string name="total_minutes">Total minutes</string>
+    <string name="total_minutes">Total selected week minutes</string>
     <string name="best_day">Best day</string>
     <string name="remember">Remember</string>
     <string name="mot_1">You can do it! :)</string>
@@ -48,4 +48,37 @@
     <string name="mot_18">Persist, you\'re closer to success :)</string>
     <string name="mot_19">Success awaits you at the end of the road :)</string>
     <string name="mot_20">Stay firm, triumph is yours! :)</string>
+    <string name="percentage_title">Percentage Study Ready</string>
+    <string name="percentage_settings_title">Rest Percentage</string>
+    <string name="all_minutes_studying">You have been studying for a total of %s with us</string>
+    <string name="export">Export</string>
+    <string name="import_button">Import</string>
+    <string name="support_developer">Support Developer</string>
+    <string name="support_developer_title">Support Our Development</string>
+    <string name="support_developer_description">Your contribution helps us to keep improving and adding new features. Support us and help us grow!</string>
+    <string name="on_board_title_1">FlowTime</string>
+    <string name="on_board_title_2">Pomodoro</string>
+    <string name="on_board_title_3">Percentage</string>
+    <string name="on_board_title_4">List</string>
+    <string name="on_board_title_5">Settings</string>
+    <string name="on_board_title_6">Background Music</string>
+    <string name="on_board_subtitle_1">Track your time efficiently with FlowTime.</string>
+    <string name="on_board_subtitle_2">Boost productivity with the Pomodoro technique.</string>
+    <string name="on_board_subtitle_3">Adjust your rest in percentage of the worked time.</string>
+    <string name="on_board_subtitle_4">Organize your tasks with a comprehensive list.</string>
+    <string name="on_board_subtitle_5">Customize your app preferences and settings.</string>
+    <string name="on_board_subtitle_6">Listen to background music while you study</string>
+    <string name="on_board_skip">Skip</string>
+    <string name="on_board_next">Next</string>
+    <string name="on_board_finish">Finish</string>
+    <string name="user_progression_level">User Progression Level</string>
+    <string name="show_sound">Show Background Sound</string>
+    <string name="show_alert">Enable sound when timer ends</string>
+    <string name="alert_google_play">Error connecting to Google Play</string>
+    <string name="alert_google_play_desc">Make sure you have an active internet connection to retrieve the necessary data.</string>
+    <string name="advantage_title">Advantages</string>
+    <string name="pomodoro_advantages">Improves focus, reduces mental fatigue, and encourages regular breaks to maintain productivity.</string>
+    <string name="flow_time_advantages">Allows flexible work sessions, adapts to your pace, and helps achieve deep focus states.</string>
+    <string name="percentage_advantages">Adjusts breaks based on work time, balances effort and recovery, and personalizes your study experience.</string>
+
 </resources>

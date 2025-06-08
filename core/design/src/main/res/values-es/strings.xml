@@ -25,7 +25,7 @@
     <string name="study_history">Historial de Estudio</string>
     <string name="go_to_history">Ir al Historial</string>
     <string name="others">Otros</string>
-    <string name="total_minutes">Minutos totales</string>
+    <string name="total_minutes">Minutos totales de la semana seleccionada</string>
     <string name="best_day">Mejor día</string>
     <string name="remember">Recuerda</string>
     <string name="mot_1">¡Tú puedes hacerlo! :)</string>
@@ -48,4 +48,37 @@
     <string name="mot_18">Persiste, estás más cerca del éxito :)</string>
     <string name="mot_19">El éxito te espera al final del camino :)</string>
     <string name="mot_20">¡Sigue firme, el triunfo es tuyo! :)</string>
+    <string name="percentage_title">Estudio por porcentaje Listo</string>
+    <string name="percentage_settings_title">Porcentaje de descanso</string>
+    <string name="all_minutes_studying">Has estado estudiando un total de %s con nosotros</string>
+    <string name="export">Exportar</string>
+    <string name="import_button">Importar</string>
+    <string name="support_developer">Apoyar al desarrollador</string>
+    <string name="support_developer_title">Apoya Nuestro Desarrollo</string>
+    <string name="support_developer_description">Tu contribución nos ayuda a seguir mejorando y añadiendo nuevas funciones. ¡Apóyanos y ayúdanos a crecer!</string>
+    <string name="on_board_title_1">FlowTime</string>
+    <string name="on_board_title_2">Pomodoro</string>
+    <string name="on_board_title_3">Porcentaje</string>
+    <string name="on_board_title_4">Lista</string>
+    <string name="on_board_title_5">Configuración</string>
+    <string name="on_board_title_6">Música de Fondo</string>
+    <string name="on_board_subtitle_1">Rastrea tu tiempo eficientemente con FlowTime.</string>
+    <string name="on_board_subtitle_2">Aumenta la productividad con la técnica Pomodoro.</string>
+    <string name="on_board_subtitle_3">Ajusta tu descanso en porcentaje del tiempo trabajado.</string>
+    <string name="on_board_subtitle_4">Organiza tus tareas con una lista completa.</string>
+    <string name="on_board_subtitle_5">Personaliza las preferencias y configuraciones de tu aplicación.</string>
+    <string name="on_board_subtitle_6">Escucha música de fondo mientras estudias</string>
+    <string name="on_board_skip">Saltar</string>
+    <string name="on_board_next">Siguiente</string>
+    <string name="on_board_finish">Finalizar</string>
+    <string name="user_progression_level">Nivel de Progresión del Usuario</string>
+    <string name="show_sound">Mostrar sonido de fondo</string>
+    <string name="show_alert">Activar sonido al terminar temporizador</string>
+    <string name="alert_google_play">Error al contectar con Google Play</string>
+    <string name="alert_google_play_desc">Asegúrate que tiene el internet activo para poder obtener los datos necesarios</string>
+    <string name="advantage_title">Ventajas</string>
+    <string name="pomodoro_advantages">Mejora la concentración, reduce la fatiga mental y fomenta descansos regulares para mantener la productividad.</string>
+    <string name="flow_time_advantages">Permite sesiones de trabajo flexibles, se adapta a tu ritmo y ayuda a alcanzar estados de máxima concentración.</string>
+    <string name="percentage_advantages">Ajusta los descansos según el tiempo trabajado, equilibra esfuerzo y recuperación, y personaliza tu experiencia de estudio.</string>
+
 </resources>

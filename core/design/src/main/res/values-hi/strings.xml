@@ -25,7 +25,7 @@
     <string name="study_history">अध्ययन इतिहास</string>
     <string name="go_to_history">इतिहास पर जाएं</string>
     <string name="others">अन्य</string>
-    <string name="total_minutes">कुल मिनट</string>
+    <string name="total_minutes">कुल चयनित सप्ताह मिनट</string>
     <string name="best_day">सबसे अच्छा दिन</string>
     <string name="remember">याद रखना</string>
     <string name="mot_1">तुम कर सकते हो! :)</string>
@@ -48,4 +48,37 @@
     <string name="mot_18">दृढ़ रहो, सफलता के कदीबदी के पास हो! :)</string>
     <string name="mot_19">सफलता तुम्हारे मार्ग के अंत में इंतजार कर रही है! :)</string>
     <string name="mot_20">स्थिर रहो, जीत तुम्हारी है! :)</string>
+    <string name="percentage_title">प्रतिशत अध्ययन तैयार</string>
+    <string name="percentage_settings_title">आराम का प्रतिशत</string>
+    <string name="all_minutes_studying">" आप हमारे साथ कुल %s तक अध्ययन कर रहे हैं"</string>
+    <string name="export">निर्यात</string>
+    <string name="import_button">आयात</string>
+    <string name="support_developer">डेवलपर का समर्थन करें</string>
+    <string name="support_developer_title">हमारे विकास का समर्थन करें</string>
+    <string name="support_developer_description">आपका योगदान हमें सुधारने और नई सुविधाएँ जोड़ने में मदद करता है। हमारा समर्थन करें और हमें बढ़ने में मदद करें!</string>
+    <string name="on_board_title_1">प्रवाह समय</string>
+    <string name="on_board_title_2">पोमोडोरो</string>
+    <string name="on_board_title_3">प्रतिशत</string>
+    <string name="on_board_title_4">सूची</string>
+    <string name="on_board_title_5">सेटिंग्स</string>
+    <string name="on_board_title_6">पृष्ठभूमि संगीत</string>
+    <string name="on_board_subtitle_1">प्रवाह समय के साथ अपने समय को कुशलतापूर्वक ट्रैक करें।</string>
+    <string name="on_board_subtitle_2">पोमोडोरो तकनीक के साथ उत्पादकता बढ़ाएं।</string>
+    <string name="on_board_subtitle_3">काम किए गए समय के प्रतिशत में अपने आराम को समायोजित करें।</string>
+    <string name="on_board_subtitle_4">एक व्यापक सूची के साथ अपने कार्यों को व्यवस्थित करें।</string>
+    <string name="on_board_subtitle_5">अपनी ऐप की प्राथमिकताओं और सेटिंग्स को अनुकूलित करें।</string>
+    <string name="on_board_subtitle_6">पढ़ाई करते समय बैकग्राउंड म्यूजिक सुनें</string>
+    <string name="on_board_skip">छोड़ें</string>
+    <string name="on_board_next">अगला</string>
+    <string name="on_board_finish">समाप्त</string>
+    <string name="user_progression_level">उपयोगकर्ता प्रगति स्तर</string>
+    <string name="show_sound">पृष्ठभूमि ध्वनि दिखाएँ</string>
+    <string name="show_alert">टाइमर समाप्त होने पर ध्वनि सक्रिय करें</string>
+    <string name="alert_google_play">Google Play से कनेक्ट करने में त्रुटि</string>
+    <string name="alert_google_play_desc">आवश्यक डेटा प्राप्त करने के लिए सुनिश्चित करें कि आपके पास सक्रिय इंटरनेट कनेक्शन है।</string>
+    <string name="advantage_title">लाभ</string>
+    <string name="pomodoro_advantages">एकाग्रता बढ़ाता है, मानसिक थकान को कम करता है और उत्पादकता बनाए रखने के लिए नियमित ब्रेक को प्रोत्साहित करता है।</string>
+    <string name="flow_time_advantages">लचीले कार्य सत्रों की अनुमति देता है, आपकी गति के अनुसार अनुकूलित होता है और गहरी एकाग्रता प्राप्त करने में मदद करता है।</string>
+    <string name="percentage_advantages">काम के समय के अनुसार ब्रेक समायोजित करता है, प्रयास और पुनर्प्राप्ति को संतुलित करता है, और आपके अध्ययन अनुभव को वैयक्तिकृत करता है।</string>
+
 </resources>

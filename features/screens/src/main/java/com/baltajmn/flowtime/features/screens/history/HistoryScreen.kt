@@ -15,11 +15,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,7 +32,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,10 +47,10 @@ import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.Title
+import org.koin.androidx.compose.koinViewModel
 import java.time.DayOfWeek
 import java.time.format.TextStyle
 import java.util.Locale
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HistoryScreen(
@@ -88,6 +93,9 @@ fun HistoryContent(
     viewModel: HistoryViewModel,
     navigateUp: () -> Unit
 ) {
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+
     LazyColumn(
         state = rememberLazyListState(),
         verticalArrangement = Arrangement.Top,
@@ -103,13 +111,24 @@ fun HistoryContent(
                 navigateUp = navigateUp
             )
         }
-        item { Spacer(modifier = Modifier.height(64.dp)) }
+        item { Spacer(modifier = Modifier.height(32.dp)) }
         item {
             HistoryWeek(
                 selectedDate = state.selectedDateToShow,
                 plusWeek = { viewModel.plusWeek() },
                 minusWeek = { viewModel.minusWeek() },
-                studyTime = state.studyTime
+                studyTime = state.studyTime,
+                allStudyTime = state.allStudyTime,
+                onExportStudyTime = {
+                    viewModel.exportStudyTime {
+                        clipboardManager.setText(AnnotatedString(it))
+                    }
+                },
+                onImportStudyTime = {
+                    clipboardManager.getText()?.text?.let { text ->
+                        viewModel.importStudyTime(text)
+                    }
+                }
             )
         }
     }
@@ -143,11 +162,70 @@ fun ScreenTitleWithBack(text: String, navigateUp: () -> Unit) {
 }
 
 @Composable
+fun AllMinutes(
+    allMinutes: String,
+    onExportStudyTime: () -> Unit,
+    onImportStudyTime: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = LocalContext.current.getString(R.string.all_minutes_studying, allMinutes),
+            textAlign = TextAlign.Center,
+            style = SmallTitle,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = LocalContext.current.getString(R.string.export),
+                color = MaterialTheme.colorScheme.primary
+            )
+            IconButton(
+                onClick = onExportStudyTime
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Share,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            Spacer(modifier = Modifier.width(24.dp))
+
+            Text(
+                text = LocalContext.current.getString(R.string.import_button),
+                color = MaterialTheme.colorScheme.primary
+            )
+            IconButton(
+                onClick = onImportStudyTime
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.KeyboardArrowDown,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun HistoryWeek(
     selectedDate: String,
     plusWeek: () -> Unit,
     minusWeek: () -> Unit,
-    studyTime: List<Long>
+    studyTime: List<Long>,
+    allStudyTime: String,
+    onExportStudyTime: () -> Unit,
+    onImportStudyTime: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -184,12 +262,22 @@ fun HistoryWeek(
             }
         }
 
-        BarChart(studyTime)
+        BarChart(
+            studyTime = studyTime,
+            allStudyTime = allStudyTime,
+            onExportStudyTime = onExportStudyTime,
+            onImportStudyTime = onImportStudyTime
+        )
     }
 }
 
 @Composable
-fun BarChart(studyTime: List<Long>) {
+fun BarChart(
+    studyTime: List<Long>,
+    allStudyTime: String,
+    onExportStudyTime: () -> Unit,
+    onImportStudyTime: () -> Unit
+) {
     val daysOfWeek: List<String> = DayOfWeek.entries
         .map { it.getDisplayName(TextStyle.SHORT, Locale.getDefault()) }
         .toList()
@@ -265,7 +353,7 @@ fun BarChart(studyTime: List<Long>) {
                 text = LocalContext.current.getString(R.string.total_minutes),
                 textAlign = TextAlign.Center,
                 style = Title,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.tertiary
             )
             Text(
                 text = studyTime.sum().formatMinutesStudying(),
@@ -274,6 +362,14 @@ fun BarChart(studyTime: List<Long>) {
                 color = MaterialTheme.colorScheme.primary
             )
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        AllMinutes(
+            allMinutes = allStudyTime,
+            onExportStudyTime = onExportStudyTime,
+            onImportStudyTime = onImportStudyTime
+        )
 
         if (studyTime.sum() > 0) {
             Column(
@@ -287,7 +383,7 @@ fun BarChart(studyTime: List<Long>) {
                     text = LocalContext.current.getString(R.string.best_day),
                     textAlign = TextAlign.Center,
                     style = Title,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.tertiary
                 )
                 Text(
                     text = DayOfWeek.entries[studyTime.indexOf(studyTime.maxOf { it })].getDisplayName(
@@ -300,53 +396,5 @@ fun BarChart(studyTime: List<Long>) {
                 )
             }
         }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = LocalContext.current.getString(R.string.remember),
-                textAlign = TextAlign.Center,
-                style = Title,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Text(
-                text = LocalContext.current.getString(
-                    MotivationalPhrases.entries[
-                        (MotivationalPhrases.entries.toTypedArray().indices).random()
-                    ].resourceId
-                ),
-                textAlign = TextAlign.Center,
-                style = SmallTitle,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
     }
-}
-
-enum class MotivationalPhrases(val resourceId: Int) {
-    MOT_1(R.string.mot_1),
-    MOT_2(R.string.mot_2),
-    MOT_3(R.string.mot_3),
-    MOT_4(R.string.mot_4),
-    MOT_5(R.string.mot_5),
-    MOT_6(R.string.mot_6),
-    MOT_7(R.string.mot_7),
-    MOT_8(R.string.mot_8),
-    MOT_9(R.string.mot_9),
-    MOT_10(R.string.mot_10),
-    MOT_11(R.string.mot_11),
-    MOT_12(R.string.mot_12),
-    MOT_13(R.string.mot_13),
-    MOT_14(R.string.mot_14),
-    MOT_15(R.string.mot_15),
-    MOT_16(R.string.mot_16),
-    MOT_17(R.string.mot_17),
-    MOT_18(R.string.mot_18),
-    MOT_19(R.string.mot_19),
-    MOT_20(R.string.mot_20)
 }

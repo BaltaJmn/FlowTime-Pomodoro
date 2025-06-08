@@ -41,8 +41,8 @@ class SharedPreferencesProvider(
         sharedPreferences.edit().putString(key.name.lowercase(), finalValue).apply()
     }
 
-    override fun getBoolean(key: SharedPreferencesItem): Boolean {
-        return sharedPreferences.getBoolean(key.name.lowercase(), true)
+    override fun getBoolean(key: SharedPreferencesItem, defValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(key.name.lowercase(), defValue)
     }
 
     override fun setBoolean(key: SharedPreferencesItem, value: Boolean) {
@@ -55,6 +55,14 @@ class SharedPreferencesProvider(
 
     override fun setLong(key: SharedPreferencesItem, value: Long) {
         sharedPreferences.edit().putLong(key.name.lowercase(), value).apply()
+    }
+
+    override fun getFloat(key: String, defValue: Float): Float {
+        return sharedPreferences.getFloat(key, defValue)
+    }
+
+    override fun setFloat(key: String, value: Float) {
+        sharedPreferences.edit().putFloat(key, value).apply()
     }
 
     override fun setObject(key: SharedPreferencesItem, value: Any) {
@@ -90,6 +98,44 @@ class SharedPreferencesProvider(
             ),
             0L
         )
+    }
+
+    override fun getAllDates(): List<LocalDate> {
+        val allKeys = sharedPreferences.all.keys
+        val dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy", Locale.getDefault())
+        return allKeys.mapNotNull { key ->
+            try {
+                LocalDate.parse(key, dateFormatter)
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
+    override fun getStudyTimeMap(): Map<String, Long> {
+        val allKeys = sharedPreferences.all.keys
+        val dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy", Locale.getDefault())
+        val studyTimeMap = mutableMapOf<String, Long>()
+
+        allKeys.mapNotNull { key ->
+            try {
+                LocalDate.parse(key, dateFormatter)
+                val value = sharedPreferences.getLong(key, 0L)
+                studyTimeMap[key] = value
+            } catch (e: Exception) {
+                null
+            }
+        }
+
+        return studyTimeMap
+    }
+
+    override fun setStudyTimeMap(map: Map<String, Long>) {
+        val editor = sharedPreferences.edit()
+        map.forEach { (key, value) ->
+            editor.putLong(key, value)
+        }
+        editor.apply()
     }
 
     override fun setCheckValue(key: SharedPreferencesItem, value: Boolean) {

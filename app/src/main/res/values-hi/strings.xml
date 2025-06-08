@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rating_dialog_title">क्या आप ऐप को रेट करना चाहते हैं?</string>
+    <string name="rating_dialog_message">आपकी राय हमारे लिए महत्वपूर्ण है।</string>
+    <string name="rate_now">अभी रेट करें</string>
+    <string name="remind_later">बाद में याद दिलाएं</string>
+    <string name="never_remind">याद न दिलाएं</string>
+</resources>
