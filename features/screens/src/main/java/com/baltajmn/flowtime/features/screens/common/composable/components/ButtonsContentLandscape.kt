@@ -1,4 +1,4 @@
-package com.baltajmn.flowtime.features.screens.components
+package com.baltajmn.flowtime.features.screens.common.composable.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,11 +14,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.CircularButton
-import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeState
+import com.baltajmn.flowtime.features.screens.common.TimerState
 
 @Composable
-fun ButtonsContentLandscape(
-    state: FlowTimeState,
+fun <T : TimerState<T>> ButtonsContentLandscape(
+    state: T,
     onStartClick: () -> Unit,
     onBreakClick: () -> Unit,
     onFinishClick: () -> Unit

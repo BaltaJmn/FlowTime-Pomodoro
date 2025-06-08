@@ -75,6 +75,12 @@
     <string name="on_board_finish">Finalizar</string>
     <string name="user_progression_level">Nivel de Progresión del Usuario</string>
     <string name="show_sound">Mostrar sonido de fondo</string>
+    <string name="show_alert">Activar sonido al terminar temporizador</string>
     <string name="alert_google_play">Error al contectar con Google Play</string>
     <string name="alert_google_play_desc">Asegúrate que tiene el internet activo para poder obtener los datos necesarios</string>
+    <string name="advantage_title">Ventajas</string>
+    <string name="pomodoro_advantages">Mejora la concentración, reduce la fatiga mental y fomenta descansos regulares para mantener la productividad.</string>
+    <string name="flow_time_advantages">Permite sesiones de trabajo flexibles, se adapta a tu ritmo y ayuda a alcanzar estados de máxima concentración.</string>
+    <string name="percentage_advantages">Ajusta los descansos según el tiempo trabajado, equilibra esfuerzo y recuperación, y personaliza tu experiencia de estudio.</string>
+
 </resources>

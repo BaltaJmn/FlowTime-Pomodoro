@@ -57,6 +57,14 @@ class SharedPreferencesProvider(
         sharedPreferences.edit().putLong(key.name.lowercase(), value).apply()
     }
 
+    override fun getFloat(key: String, defValue: Float): Float {
+        return sharedPreferences.getFloat(key, defValue)
+    }
+
+    override fun setFloat(key: String, value: Float) {
+        sharedPreferences.edit().putFloat(key, value).apply()
+    }
+
     override fun setObject(key: SharedPreferencesItem, value: Any) {
         val rawString = Gson().toJson(value)
         sharedPreferences.edit().putString(key.name.lowercase(), rawString).apply()

@@ -75,6 +75,11 @@
     <string name="on_board_finish">Завершить</string>
     <string name="user_progression_level">Уровень Прогресса Пользователя</string>
     <string name="show_sound">Показать фоновый звук</string>
+    <string name="show_alert">Включить звук по окончании таймера</string>
     <string name="alert_google_play">Ошибка подключения к Google Play</string>
     <string name="alert_google_play_desc">Убедитесь, что у вас есть активное интернет-соединение для получения необходимых данных.</string>
+    <string name="advantage_title">Преимущества</string>
+    <string name="pomodoro_advantages">Улучшает концентрацию, снижает умственную усталость и способствует регулярным перерывам для поддержания продуктивности.</string>
+    <string name="flow_time_advantages">Позволяет гибко планировать рабочие сессии, подстраивается под ваш ритм и помогает достичь состояния глубокого фокуса.</string>
+    <string name="percentage_advantages">Регулирует перерывы в зависимости от времени работы, балансирует усилия и восстановление, персонализирует ваш опыт обучения.</string>
 </resources>

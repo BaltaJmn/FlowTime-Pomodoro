@@ -1,9 +1,9 @@
 package com.baltajmn.flowtime.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,7 +24,7 @@ fun FlowTimeNavHost(
     onSupportDeveloperClick: () -> Unit
 ) {
     NavHost(
-        modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
+        modifier = Modifier.background(color = Color.White),
         navController = flowTimeAppState.preMainNavController,
         route = GRAPH.Root,
         startDestination = GRAPH.PreMain
