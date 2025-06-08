@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = Config.Core.Design
 }
+
+dependencies {
+    implementation(projects.core.persistence)
+}

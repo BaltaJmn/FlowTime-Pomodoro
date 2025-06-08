@@ -1,4 +1,4 @@
-package com.baltajmn.flowtime.features.screens.components
+package com.baltajmn.flowtime.features.screens.common.composable.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
@@ -19,6 +20,11 @@ import com.baltajmn.flowtime.core.design.theme.LargeTitle
 fun TimeContent(
     secondsFormatted: String
 ) {
+    val textStyle = LargeTitle.copy(
+        fontSize = 100.sp,
+        color = MaterialTheme.colorScheme.primary
+    )
+
     if (secondsFormatted.split(":").size == 2) {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -31,10 +37,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[0],
-                    style = LargeTitle.copy(
-                        fontSize = 100.sp,
-                        color = MaterialTheme.colorScheme.tertiary
-                    ),
+                    style = textStyle,
                     textAlign = TextAlign.End
                 )
             }
@@ -46,10 +49,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = ":",
-                    style = LargeTitle.copy(
-                        fontSize = 100.sp,
-                        color = MaterialTheme.colorScheme.tertiary
-                    ),
+                    style = textStyle,
                     textAlign = TextAlign.Center
                 )
             }
@@ -61,10 +61,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[1],
-                    style = LargeTitle.copy(
-                        fontSize = 100.sp,
-                        color = MaterialTheme.colorScheme.tertiary
-                    ),
+                    style = textStyle,
                     textAlign = TextAlign.Start
                 )
             }
@@ -83,10 +80,7 @@ fun TimeContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = secondsFormatted.split(":")[0],
-                    style = LargeTitle.copy(
-                        fontSize = 70.sp,
-                        color = MaterialTheme.colorScheme.tertiary
-                    ),
+                    style = textStyle,
                     textAlign = TextAlign.End
                 )
             }
@@ -154,4 +148,10 @@ fun TimeContent(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun TimeContentPreview() {
+    TimeContent("00:00")
 }

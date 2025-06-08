@@ -17,16 +17,32 @@ import com.baltajmn.flowtime.core.design.service.PlayerType.THUNDER
 import com.baltajmn.flowtime.core.design.service.PlayerType.WAVE
 import com.baltajmn.flowtime.core.design.service.PlayerType.WHITE
 import com.baltajmn.flowtime.core.design.service.PlayerType.WIND
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class SoundViewModel : ViewModel() {
+class SoundViewModel(
+    private val dataProvider: DataProvider
+) : ViewModel() {
 
     private val players: MutableMap<PlayerType, MediaPlayer> = mutableMapOf()
 
     private val _uiState = MutableStateFlow(SoundState())
     val uiState: StateFlow<SoundState> = _uiState
+
+    init {
+        PlayerType.entries.forEach { type ->
+            val volume = dataProvider.getFloat(type.name, 0f)
+            _uiState.update { state ->
+                state.copy(
+                    soundMap = state.soundMap.apply {
+                        this[type] = PlayerState(volume = volume, isPlaying = false)
+                    }
+                )
+            }
+        }
+    }
 
     fun getItems(): MutableMap<PlayerType, PlayerState> = _uiState.value.soundMap
 
@@ -59,6 +75,7 @@ class SoundViewModel : ViewModel() {
             )
         }
         players[type]?.setVolume(volume, volume)
+        dataProvider.setFloat(type.name, volume)
     }
 
     private fun updateIsPlaying(playerType: PlayerType, playing: Boolean) {

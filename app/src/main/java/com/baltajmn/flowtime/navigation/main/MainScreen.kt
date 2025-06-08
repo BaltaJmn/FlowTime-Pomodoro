@@ -15,12 +15,9 @@ import com.baltajmn.flowtime.core.design.components.BottomNavBarItem
 import com.baltajmn.flowtime.core.design.components.TimerAlertDialog
 import com.baltajmn.flowtime.core.design.components.TopNavBar
 import com.baltajmn.flowtime.core.design.components.isScrollingUp
+import com.baltajmn.flowtime.core.design.model.ScreenType
 import com.baltajmn.flowtime.core.design.theme.AppTheme
-import com.baltajmn.flowtime.core.navigation.MainGraph.FlowTime
-import com.baltajmn.flowtime.core.navigation.MainGraph.Percentage
-import com.baltajmn.flowtime.core.navigation.MainGraph.Pomodoro
-import com.baltajmn.flowtime.core.navigation.MainGraph.Settings
-import com.baltajmn.flowtime.core.navigation.MainGraph.TodoList
+import com.baltajmn.flowtime.core.navigation.MainGraph
 import com.baltajmn.flowtime.ui.FlowTimeAppState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -32,23 +29,22 @@ fun MainScreen(
     onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
-    var screenRoute by remember { mutableStateOf(BottomNavBarItem.FlowTime) }
+    var screenRoute by remember { mutableStateOf(BottomNavBarItem.Home) }
     var isTimerRunning by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
 
     val configuration = LocalConfiguration.current
 
     val currentRoute = appState.currentRoute
-    val flowTimeState = rememberLazyListState()
-    val pomodoroState = rememberLazyListState()
-    val percentageState = rememberLazyListState()
+
     val todoListState = rememberLazyListState()
     val settingsState = rememberLazyListState()
 
     val settingsStateScrolling = settingsState.isScrollingUp()
 
-    val shouldShow =
-        (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) && settingsStateScrolling || currentRoute == FlowTime.route || currentRoute == Pomodoro.route || currentRoute == Percentage.route || currentRoute == TodoList.route || currentRoute == Settings.route
+    val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
+    val shouldShow = !isTimerRunning || (isPortrait && settingsStateScrolling)
 
     Scaffold(
         topBar = {
@@ -58,11 +54,15 @@ fun MainScreen(
             BottomNavBar(
                 shouldShow = { shouldShow && isTimerRunning.not() },
                 currentRoute = { currentRoute },
-                onSelectedItem = {
-                    screenRoute = it
-                    if (currentRoute != it.getScreenRoute()) {
+                onSelectedItem = { navBarItem, screenType ->
+                    screenRoute = navBarItem
+                    if (currentRoute != navBarItem.getScreenRoute()) {
                         if (isTimerRunning.not()) {
-                            appState.bottomNavigationTo(it)
+                            if (currentRoute == MainGraph.Edit.route) {
+                                appState.navigateUp()
+                            } else {
+                                appState.bottomNavigationTo(navBarItem, screenType)
+                            }
                         } else {
                             showDialog = true
                         }
@@ -73,9 +73,6 @@ fun MainScreen(
     ) { _ ->
         MainGraph(
             appState = appState,
-            flowTimeState = flowTimeState,
-            pomodoroState = pomodoroState,
-            percentageState = percentageState,
             todoListState = todoListState,
             settingsState = settingsState,
             navigateToHistory = { appState.navigateToHistory() },
@@ -95,7 +92,10 @@ fun MainScreen(
             onCloseDialog = {
                 showDialog = false
                 if (it) {
-                    appState.bottomNavigationTo(screenRoute)
+                    appState.bottomNavigationTo(
+                        bottomNavBarItem = screenRoute,
+                        type = ScreenType.FlowTime
+                    )
                 }
             }
         )

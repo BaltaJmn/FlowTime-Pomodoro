@@ -1,7 +1,6 @@
 package com.baltajmn.flowtime.features.screens.todoList
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +24,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -118,9 +118,7 @@ fun TodoListContent(
         state = listState,
         verticalArrangement = Arrangement.Top,
         contentPadding = PaddingValues(24.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.secondary)
+        modifier = Modifier.fillMaxSize()
     ) {
         item { Spacer(modifier = Modifier.height(16.dp)) }
         item {
@@ -204,51 +202,55 @@ fun TodoItem(
         MaterialTheme.colorScheme.primary
     }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onItemClick.invoke(item) }
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(
-            modifier = Modifier.weight(0.8f),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start
+    Card {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onItemClick.invoke(item) }
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = item.title,
-                style = textStyle,
-                color = textColor
-            )
-            Text(
-                text = item.description,
-                style = textStyleDescription,
-                color = textColor
-            )
-        }
+            Column(
+                modifier = Modifier.weight(0.8f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = item.title,
+                    style = textStyle,
+                    color = textColor
+                )
+                Text(
+                    text = item.description,
+                    style = textStyleDescription,
+                    color = textColor
+                )
+            }
 
-        IconButton(
-            modifier = Modifier.weight(0.1f),
-            onClick = { onEditClick.invoke(item) }
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Edit,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
-        IconButton(
-            modifier = Modifier.weight(0.1f),
-            onClick = { onDeleteClick.invoke(item) }
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Delete,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
+            IconButton(
+                modifier = Modifier.weight(0.1f),
+                onClick = { onEditClick.invoke(item) }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Edit,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+            IconButton(
+                modifier = Modifier.weight(0.1f),
+                onClick = { onDeleteClick.invoke(item) }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
+
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable
@@ -257,38 +259,43 @@ fun TodoListDay(
     plusWeek: () -> Unit,
     minusWeek: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+    Card {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
-            IconButton(onClick = { minusWeek.invoke() }) {
-                Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                IconButton(onClick = { minusWeek.invoke() }) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
 
-            Text(
-                text = selectedDate,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(8.dp),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            IconButton(onClick = { plusWeek.invoke() }) {
-                Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                Text(
+                    text = selectedDate,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp),
+                    style = LargeTitle.copy(
+                        fontSize = 18.sp,
+                        color = MaterialTheme.colorScheme.primary,
+                        textAlign = TextAlign.Center
+                    )
                 )
+
+                IconButton(onClick = { plusWeek.invoke() }) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
         }
     }

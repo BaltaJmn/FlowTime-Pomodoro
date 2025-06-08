@@ -45,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.model.ScreenType
 import com.baltajmn.flowtime.core.navigation.MainGraph
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
@@ -53,12 +54,41 @@ import kotlin.math.roundToInt
 fun BottomNavBar(
     modifier: Modifier = Modifier,
     currentRoute: () -> String,
-    onSelectedItem: (BottomNavBarItem) -> Unit,
+    onSelectedItem: (BottomNavBarItem, ScreenType) -> Unit,
     shouldShow: () -> Boolean
 ) {
 
     var firstVisibility by rememberSaveable {
         mutableStateOf(false)
+    }
+
+    var isTimerScreen = currentRoute() in setOf(
+        MainGraph.Pomodoro.route,
+        MainGraph.FlowTime.route,
+        MainGraph.Percentage.route
+    )
+
+    var isEditScreen = currentRoute() == MainGraph.Edit.route
+
+    var itemsToShow = when {
+        isTimerScreen -> {
+            listOf(
+                BottomNavBarItem.Back,
+                BottomNavBarItem.Edit
+            )
+        }
+
+        isEditScreen -> {
+            listOf(
+                BottomNavBarItem.Back
+            )
+        }
+
+        else -> listOf(
+            BottomNavBarItem.Home,
+            BottomNavBarItem.TodoList,
+            BottomNavBarItem.Settings
+        )
     }
 
     LaunchedEffect(Unit) {
@@ -87,12 +117,12 @@ fun BottomNavBar(
         )
     ) {
         BottomBarSurface(
-            modifier = modifier
-                .height(IntrinsicSize.Min)
+            modifier = modifier.height(IntrinsicSize.Min)
         ) {
-            BottomNavBarItem.entries.forEach {
+            itemsToShow.forEach {
                 BottomBarButton(
                     navItem = it,
+                    currentRoute = currentRoute(),
                     isSelected = { currentRoute().contains(it.getScreenRoute()) },
                     onSelectedItem = onSelectedItem
                 )
@@ -113,7 +143,7 @@ fun BottomBarSurface(
     ) {
         Surface(
             shadowElevation = 0.dp,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.primaryContainer,
             modifier = modifier
                 .shadow(
                     elevation = 5.dp,
@@ -136,11 +166,12 @@ fun BottomBarSurface(
 fun BottomBarButton(
     modifier: Modifier = Modifier,
     navItem: BottomNavBarItem,
+    currentRoute: String,
     isSelected: () -> Boolean,
-    onSelectedItem: (BottomNavBarItem) -> Unit,
+    onSelectedItem: (BottomNavBarItem, ScreenType) -> Unit,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
-    val primaryColor = MaterialTheme.colorScheme.tertiary
+    val primaryColor = MaterialTheme.colorScheme.primary
 
     val ripple = rememberRipple(bounded = false, color = primaryColor)
 
@@ -159,7 +190,7 @@ fun BottomBarButton(
             .padding(10.dp)
             .selectable(
                 selected = isSelected(),
-                onClick = { onSelectedItem(navItem) },
+                onClick = { onSelectedItem(navItem, currentRoute.toScreenType()) },
                 enabled = true,
                 role = Role.Tab,
                 interactionSource = interactionSource,
@@ -196,29 +227,40 @@ fun BottomBarButton(
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun BottomNavBarPreview() {
     BottomNavBar(
-        currentRoute = { BottomNavBarItem.FlowTime.getScreenRoute() },
-        onSelectedItem = {},
+        currentRoute = { BottomNavBarItem.Home.getScreenRoute() },
+        onSelectedItem = { _, _ -> },
         shouldShow = { true }
     )
 }
 
 enum class BottomNavBarItem(val icon: Int) {
-    FlowTime(icon = R.drawable.ic_flowtime),
-    Pomodoro(icon = R.drawable.ic_pomodoro),
-    Percentage(icon = R.drawable.ic_percentage),
+    Edit(icon = R.drawable.ic_edit),
+    Back(icon = R.drawable.ic_back),
+    Home(icon = R.drawable.ic_home),
     TodoList(icon = R.drawable.ic_list),
     Settings(icon = R.drawable.ic_settings);
 
     fun getScreenRoute() = when (this) {
-        FlowTime -> MainGraph.FlowTime.route
-        Pomodoro -> MainGraph.Pomodoro.route
-        Percentage -> MainGraph.Percentage.route
+        Edit -> MainGraph.Edit.route
+
+        Back,
+        Home -> MainGraph.Home.route
+
         TodoList -> MainGraph.TodoList.route
         Settings -> MainGraph.Settings.route
     }
 
+}
+
+fun String.toScreenType(): ScreenType {
+    return when (this) {
+        MainGraph.Pomodoro.route -> ScreenType.Pomodoro
+        MainGraph.FlowTime.route -> ScreenType.FlowTime
+        MainGraph.Percentage.route -> ScreenType.Percentage
+        else -> ScreenType.Pomodoro
+    }
 }

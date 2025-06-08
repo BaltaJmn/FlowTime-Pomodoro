@@ -1,4 +1,4 @@
-package com.baltajmn.flowtime.features.screens.components
+package com.baltajmn.flowtime.features.screens.common.composable.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,15 +26,64 @@ import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 
 @Composable
-fun LastRangeItem(
-    index: Int,
-    range: RangeModel,
-    previousRange: RangeModel,
-    onValueChanged: (Int, RangeModel) -> Unit
-) {
+fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeModel) -> Unit) {
+    var time by remember(range.endRange) { mutableStateOf(range.endRange.toString()) }
     var rest by remember(range.rest) { mutableStateOf(range.rest.toString()) }
 
     Row {
+        TextField(
+            value = time,
+            colors = TextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedTextColor = MaterialTheme.colorScheme.primary,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.primary
+            ),
+            onValueChange = {
+                if (it.isNumericOrBlank()) {
+                    time = it
+                    if (it.isNotBlank()) {
+                        onValueChanged.invoke(
+                            index,
+                            RangeModel(
+                                totalRange = it.toInt(),
+                                endRange = it.toInt(),
+                                rest = range.rest
+                            )
+                        )
+                    }
+                }
+            },
+            label = {
+                Text(
+                    text = LocalContext.current.getString(
+                        R.string.flow_time_settings_in_the_first,
+                        time
+                    ),
+                    style = Title.copy(
+                        fontSize = 10.sp
+                    ),
+                    maxLines = 1
+                )
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .weight(0.6f)
+                .onFocusChanged { focus ->
+                    if (!focus.hasFocus && time.isBlank()) {
+                        time = 1.toString()
+                    }
+                }
+        )
+
         TextField(
             value = rest,
             colors = TextFieldDefaults.colors(
@@ -64,10 +113,7 @@ fun LastRangeItem(
             },
             label = {
                 Text(
-                    text = LocalContext.current.getString(
-                        R.string.flow_time_setting_after,
-                        previousRange.totalRange
-                    ),
+                    text = LocalContext.current.getString(R.string.flow_time_settings_rest),
                     style = Title.copy(fontSize = 10.sp),
                     maxLines = 1
                 )
@@ -78,6 +124,7 @@ fun LastRangeItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .weight(0.4f)
                 .onFocusChanged { focus ->
                     if (!focus.hasFocus && rest.isBlank()) {
                         rest = 1.toString()

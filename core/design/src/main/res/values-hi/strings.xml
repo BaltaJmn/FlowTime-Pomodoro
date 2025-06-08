@@ -73,6 +73,12 @@
     <string name="on_board_finish">समाप्त</string>
     <string name="user_progression_level">उपयोगकर्ता प्रगति स्तर</string>
     <string name="show_sound">पृष्ठभूमि ध्वनि दिखाएँ</string>
+    <string name="show_alert">टाइमर समाप्त होने पर ध्वनि सक्रिय करें</string>
     <string name="alert_google_play">Google Play से कनेक्ट करने में त्रुटि</string>
     <string name="alert_google_play_desc">आवश्यक डेटा प्राप्त करने के लिए सुनिश्चित करें कि आपके पास सक्रिय इंटरनेट कनेक्शन है।</string>
+    <string name="advantage_title">लाभ</string>
+    <string name="pomodoro_advantages">एकाग्रता बढ़ाता है, मानसिक थकान को कम करता है और उत्पादकता बनाए रखने के लिए नियमित ब्रेक को प्रोत्साहित करता है।</string>
+    <string name="flow_time_advantages">लचीले कार्य सत्रों की अनुमति देता है, आपकी गति के अनुसार अनुकूलित होता है और गहरी एकाग्रता प्राप्त करने में मदद करता है।</string>
+    <string name="percentage_advantages">काम के समय के अनुसार ब्रेक समायोजित करता है, प्रयास और पुनर्प्राप्ति को संतुलित करता है, और आपके अध्ययन अनुभव को वैयक्तिकृत करता है।</string>
+
 </resources>
