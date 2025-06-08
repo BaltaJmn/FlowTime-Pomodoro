@@ -1,11 +1,13 @@
 plugins {
     alias(libs.plugins.flowtime.android.application)
+    alias(libs.plugins.flowtime.kotlin.plugin.compose) apply false
 }
 
 android {
-    defaultConfig {
-        manifestPlaceholders["redirectSchemeName"] = "flowtime"
-        manifestPlaceholders["redirectHostName"] = "auth"
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 

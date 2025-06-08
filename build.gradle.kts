@@ -7,7 +7,3 @@ allprojects {
         }
     }
 }
-
-tasks.register("clean").configure {
-    delete("build")
-}

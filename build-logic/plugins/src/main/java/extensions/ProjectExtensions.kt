@@ -5,7 +5,6 @@ import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.the
 import org.gradle.kotlin.dsl.withType
@@ -20,14 +19,14 @@ internal fun Project.configureKotlinAndroid(
 ) {
     commonExtension.apply {
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
     }
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.toString()
+            jvmTarget = JavaVersion.VERSION_17.toString()
             val warningsAsErrors: String? by project
             allWarningsAsErrors = warningsAsErrors.toBoolean()
             freeCompilerArgs = freeCompilerArgs + listOf(
@@ -37,10 +36,6 @@ internal fun Project.configureKotlinAndroid(
             )
             freeCompilerArgs = freeCompilerArgs + listOf("-Xcontext-receivers")
         }
-    }
-
-    dependencies {
-        implementation(libs.kotlin.immutable)
     }
 }
 

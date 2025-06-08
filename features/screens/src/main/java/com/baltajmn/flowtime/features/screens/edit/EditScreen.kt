@@ -62,14 +62,11 @@ fun EditScreen(
 
         item { Spacer(modifier = Modifier.height(32.dp)) }
 
-        item {
-            Advantages(screenType = state.screenType)
-        }
+        Advantages(screenType = state.screenType)
     }
 }
 
-context(LazyListScope)
-fun PomodoroSettings(state: EditState, viewModel: EditViewModel) {
+fun LazyListScope.PomodoroSettings(state: EditState, viewModel: EditViewModel) {
     item {
         Text(
             text = LocalContext.current.getString(R.string.pomodoro_settings_title),
@@ -86,8 +83,7 @@ fun PomodoroSettings(state: EditState, viewModel: EditViewModel) {
     }
 }
 
-context(LazyListScope)
-fun FlowTimeSettings(state: EditState, viewModel: EditViewModel) {
+fun LazyListScope.FlowTimeSettings(state: EditState, viewModel: EditViewModel) {
     item {
         Text(
             text = LocalContext.current.getString(R.string.flow_time_settings_title),
@@ -107,8 +103,7 @@ fun FlowTimeSettings(state: EditState, viewModel: EditViewModel) {
     )
 }
 
-context(LazyListScope)
-fun PercentageSettings(state: EditState, viewModel: EditViewModel) {
+fun LazyListScope.PercentageSettings(state: EditState, viewModel: EditViewModel) {
     item {
         Text(
             text = LocalContext.current.getString(R.string.percentage_settings_title),
@@ -143,8 +138,7 @@ fun ButtonSave(onSaveClicked: () -> Unit) {
     }
 }
 
-context(LazyListScope)
-fun Advantages(screenType: ScreenType) {
+fun LazyListScope.Advantages(screenType: ScreenType) {
     item {
         Text(
             text = LocalContext.current.getString(R.string.advantage_title),

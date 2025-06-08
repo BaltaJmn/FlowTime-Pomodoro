@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.core.design.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -15,7 +16,9 @@ fun LoadingView(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.primaryContainer),
     ) {
         LottieImage(
             modifier = Modifier

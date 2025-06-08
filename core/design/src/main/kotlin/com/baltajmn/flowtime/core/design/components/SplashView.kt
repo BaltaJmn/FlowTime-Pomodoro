@@ -18,14 +18,14 @@ fun SplashView(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary)
+            .background(MaterialTheme.colorScheme.primaryContainer)
     ) {
         LottieImage(
             modifier = Modifier
                 .size(120.dp)
                 .align(Alignment.Center),
             animation = R.raw.loading,
-            tintColor = MaterialTheme.colorScheme.secondary
+            tintColor = MaterialTheme.colorScheme.primary
         )
     }
 }

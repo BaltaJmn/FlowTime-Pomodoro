@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -140,9 +139,9 @@ fun TodoListContent(
             )
         }
         item { Spacer(modifier = Modifier.height(16.dp)) }
-        item {
-            TodoItemList(
-                itemList = state.currentTodoList.todoList,
+        items(state.currentTodoList.todoList) { item ->
+            TodoItem(
+                item = item,
                 onItemClick = {
                     viewModel.markAsDone(it)
                 },
@@ -156,24 +155,6 @@ fun TodoListContent(
                 }
             )
         }
-    }
-}
-
-context(LazyListScope)
-@Composable
-fun TodoItemList(
-    itemList: List<ListItem>,
-    onItemClick: (ListItem) -> Unit,
-    onEditClick: (ListItem) -> Unit,
-    onDeleteClick: (ListItem) -> Unit
-) {
-    items(itemList) { item ->
-        TodoItem(
-            item = item,
-            onItemClick = onItemClick,
-            onEditClick = onEditClick,
-            onDeleteClick = onDeleteClick
-        )
     }
 }
 

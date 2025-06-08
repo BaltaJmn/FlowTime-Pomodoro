@@ -22,9 +22,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -173,7 +173,7 @@ fun BottomBarButton(
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
 
-    val ripple = rememberRipple(bounded = false, color = primaryColor)
+    val ripple = ripple(bounded = false, color = primaryColor)
 
     val transition = updateTransition(targetState = isSelected, label = null)
 
