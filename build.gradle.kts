@@ -7,3 +7,11 @@ allprojects {
         }
     }
 }
+
+tasks.named("testDebugUnitTest") {
+    finalizedBy(tasks.named("jacocoTestReport"))
+}
+
+tasks.named("jacocoTestReport") {
+    dependsOn(tasks.named("testDebugUnitTest"))
+}
