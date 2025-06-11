@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.os.PowerManager
 import android.view.WindowManager
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -55,7 +56,7 @@ fun FlowTimeApp(
     onRememberShowRating: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
-    val activity = LocalContext.current as Activity
+    val activity = LocalActivity.current
     var showDialog by remember {
         mutableStateOf(
             showRating && rememberShowRating && showOnBoard.not()
@@ -68,7 +69,9 @@ fun FlowTimeApp(
         if (showDialog) {
             RatingDialog(
                 onRateNow = {
-                    initiateReviewFlow(context, activity, onShowRatingChanged)
+                    activity?.let {
+                        initiateReviewFlow(context, it, onShowRatingChanged)
+                    }
                     showDialog = false
                 },
                 onRemindLater = {
