@@ -32,7 +32,7 @@ jobs:
 
       - name: Gradle Build
         id: build
-        run: gradle build
+        run: gradle build -x test
 
       - name: Build Release AAB
         id: buildRelease

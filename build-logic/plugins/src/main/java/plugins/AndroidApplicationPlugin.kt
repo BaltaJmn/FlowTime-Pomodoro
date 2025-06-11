@@ -39,6 +39,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
             buildTypes {
 
                 release {
+                    isTestCoverageEnabled = false
                     isShrinkResources = false
                     isMinifyEnabled = false
                     proguardFiles(
