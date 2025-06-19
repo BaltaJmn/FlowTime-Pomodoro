@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.common.extensions.isNumericOrBlank
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
@@ -44,14 +43,15 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
                 unfocusedLabelColor = MaterialTheme.colorScheme.primary
             ),
             onValueChange = {
-                if (it.isNumericOrBlank()) {
+                if (it.isBlank() || it.toIntOrNull()?.let { v -> v > 0 } == true) {
                     time = it
-                    if (it.isNotBlank()) {
-                        onValueChanged.invoke(
+                    val newTime = it.toIntOrNull()
+                    if (newTime != null) {
+                        onValueChanged(
                             index,
                             RangeModel(
-                                totalRange = it.toInt(),
-                                endRange = it.toInt(),
+                                totalRange = newTime,
+                                endRange = newTime,
                                 rest = range.rest
                             )
                         )
@@ -97,15 +97,16 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
                 unfocusedLabelColor = MaterialTheme.colorScheme.primary
             ),
             onValueChange = {
-                if (it.isNumericOrBlank()) {
+                if (it.isBlank() || it.toIntOrNull()?.let { v -> v > 0 } == true) {
                     rest = it
-                    if (it.isNotBlank()) {
-                        onValueChanged.invoke(
+                    val newRest = it.toIntOrNull()
+                    if (newRest != null) {
+                        onValueChanged(
                             index,
                             RangeModel(
                                 totalRange = range.totalRange,
                                 endRange = range.endRange,
-                                rest = it.toInt()
+                                rest = newRest
                             )
                         )
                     }

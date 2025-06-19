@@ -12,7 +12,9 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 
 class MainViewModel(private val dataProvider: DataProvider) : ViewModel() {
 
-    private val appTheme = AppTheme.valueOf(dataProvider.getString(THEME_COLOR) ?: "Blue")
+    private val appTheme = enumValues<AppTheme>()
+        .firstOrNull { it.name == dataProvider.getString(THEME_COLOR) }
+        ?: AppTheme.Blue
     private val showSound = dataProvider.getBoolean(SHOW_SOUND)
     private var showOnBoard = dataProvider.getCheckValue(SHOW_ON_BOARD)
     private var showRating = dataProvider.getBoolean(SHOW_RATING)
