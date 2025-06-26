@@ -21,7 +21,6 @@ fun LottieImage(
     animation: Int,
     tintColor: Color
 ) {
-
     val dynamicProperties = rememberLottieDynamicProperties(
         rememberLottieDynamicProperty(
             property = LottieProperty.COLOR,
@@ -42,5 +41,4 @@ fun LottieImage(
         dynamicProperties = dynamicProperties,
         contentScale = ContentScale.Crop
     )
-
 }

@@ -11,15 +11,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Icon
@@ -30,9 +29,10 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,9 +41,11 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.service.PlayerState
 import com.baltajmn.flowtime.core.design.service.PlayerType
@@ -54,6 +56,32 @@ import com.baltajmn.flowtime.core.design.service.SoundViewModel
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
+// Constants for better maintainability and performance
+private object TopNavBarConstants {
+    const val ANIMATION_DURATION_MS = 400
+    const val INITIAL_DELAY_MS = 200L
+    const val ROTATION_EXPANDED = 180f
+    const val ROTATION_COLLAPSED = 0f
+    const val SLIDE_OFFSET = 1000
+    const val CORNER_RADIUS_EXPANDED = 5
+    const val CORNER_RADIUS_COLLAPSED = 20
+    const val ELEVATION = 5
+
+    object Padding {
+        val TOP = 40.dp
+        val START = 24.dp
+        val END = 24.dp
+        val BOTTOM = 96.dp
+        val CONTENT = 10.dp
+        val SLIDER = 10.dp
+        val SPACER = 10.dp
+    }
+
+    object Sizes {
+        val EQUALIZER = 30.dp
+        val SPACER = 10.dp
+    }
+}
 
 @Composable
 fun TopNavBar(
@@ -61,70 +89,109 @@ fun TopNavBar(
     viewModel: SoundViewModel = koinViewModel(),
     shouldShow: () -> Boolean
 ) {
+    // State management with performance optimizations
     var expanded by rememberSaveable { mutableStateOf(false) }
     var firstVisibility by rememberSaveable { mutableStateOf(false) }
 
+    // Collect state efficiently to avoid unnecessary recompositions
+    val soundState by viewModel.uiState.collectAsState()
+
+    // Optimized animation state
     val rotationState by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f
+        targetValue = if (expanded) TopNavBarConstants.ROTATION_EXPANDED else TopNavBarConstants.ROTATION_COLLAPSED,
+        animationSpec = tween(
+            durationMillis = TopNavBarConstants.ANIMATION_DURATION_MS,
+            easing = LinearEasing
+        ),
+        label = "rotation_animation"
     )
 
-    ComposableLifecycle { _, event ->
-        when (event) {
-            Lifecycle.Event.ON_PAUSE -> {
-                viewModel.muteAll()
-            }
+    // Lifecycle handling with proper cleanup
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_PAUSE -> {
+                    viewModel.pauseAllPlayers()
+                }
 
-            else -> {}
+                Lifecycle.Event.ON_RESUME -> {
+                    viewModel.resumePlayingPlayers()
+                }
+
+                else -> {}
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        // Cleanup when the effect leaves the composition
+        try {
+            kotlinx.coroutines.awaitCancellation()
+        } finally {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 
+    // Initial visibility delay
     LaunchedEffect(Unit) {
-        delay(200)
+        delay(TopNavBarConstants.INITIAL_DELAY_MS)
         firstVisibility = true
     }
 
+    // Optimized AnimatedVisibility with proper semantics
     AnimatedVisibility(
         modifier = modifier
             .navigationBarsPadding()
-            .padding(top = 40.dp, start = 24.dp, end = 24.dp, bottom = 96.dp),
+            .padding(
+                top = TopNavBarConstants.Padding.TOP,
+                start = TopNavBarConstants.Padding.START,
+                end = TopNavBarConstants.Padding.END,
+                bottom = TopNavBarConstants.Padding.BOTTOM
+            )
+            .semantics {
+                contentDescription = "Sound control panel"
+            },
         visible = shouldShow() && firstVisibility,
         enter = slideInHorizontally(
-            initialOffsetX = { 1000 },
+            initialOffsetX = { TopNavBarConstants.SLIDE_OFFSET },
             animationSpec = tween(
-                durationMillis = 400,
+                durationMillis = TopNavBarConstants.ANIMATION_DURATION_MS,
                 easing = LinearEasing
             )
         ),
         exit = slideOutHorizontally(
-            targetOffsetX = { 1000 },
+            targetOffsetX = { TopNavBarConstants.SLIDE_OFFSET },
             animationSpec = tween(
-                durationMillis = 400,
+                durationMillis = TopNavBarConstants.ANIMATION_DURATION_MS,
                 easing = LinearEasing
             )
         )
     ) {
         TopBarSurface(
             modifier = modifier
-                .animateContentSize()
+                .animateContentSize(
+                    animationSpec = tween(
+                        durationMillis = TopNavBarConstants.ANIMATION_DURATION_MS,
+                        easing = LinearEasing
+                    )
+                )
                 .wrapContentWidth(),
             expanded = expanded
         ) {
             CurrentlyPlaying(
                 onExpandedClick = { expanded = !expanded },
-                rotationState = rotationState
+                rotationState = rotationState,
+                hasActivePlayers = soundState.soundMap.values.any { it.isPlaying }
             )
 
             if (expanded) {
                 ExpandedContent(
-                    items = viewModel.getItems(),
+                    items = soundState.soundMap,
                     onPlayClicked = { playerType, playing ->
                         viewModel.controlSounds(playerType = playerType, playing = playing)
                     },
                     onVolumeChanged = { itemPlayer, volume ->
-                        viewModel.setVolume(
-                            type = itemPlayer,
-                            volume = volume
-                        )
+                        viewModel.setVolume(type = itemPlayer, volume = volume)
                     }
                 )
             }
@@ -135,25 +202,38 @@ fun TopNavBar(
 @Composable
 fun CurrentlyPlaying(
     onExpandedClick: () -> Unit,
-    rotationState: Float
+    rotationState: Float,
+    hasActivePlayers: Boolean = false
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.semantics {
+            contentDescription = if (hasActivePlayers) {
+                "Sound controls - Currently playing audio"
+            } else {
+                "Sound controls - No audio playing"
+            }
+        }
     ) {
         LottieImage(
-            modifier = Modifier.size(30.dp),
+            modifier = Modifier.size(TopNavBarConstants.Sizes.EQUALIZER),
             animation = R.raw.equalizer,
-            tintColor = MaterialTheme.colorScheme.primary
+            tintColor = if (hasActivePlayers) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            }
         )
 
         IconButton(
-            modifier = Modifier.rotate(rotationState),
+            modifier = Modifier
+                .rotate(rotationState),
             onClick = onExpandedClick
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowDropDown,
                 tint = MaterialTheme.colorScheme.primary,
-                contentDescription = "Drop-Down Arrow"
+                contentDescription = null
             )
         }
     }
@@ -161,24 +241,28 @@ fun CurrentlyPlaying(
 
 @Composable
 fun ExpandedContent(
-    items: MutableMap<PlayerType, PlayerState>,
+    items: Map<PlayerType, PlayerState>,
     onPlayClicked: (PlayerType, Boolean) -> Unit,
     onVolumeChanged: (PlayerType, Float) -> Unit
 ) {
-    LazyColumn(
-        verticalArrangement = Arrangement.Top
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .semantics {
+                contentDescription = "Sound mixer controls"
+            }
     ) {
-        items(
-            items = PlayerType.entries,
-            key = { it.sound }
-        ) {
-            SliderItem(
-                type = it,
-                playing = items[it]?.isPlaying == true,
-                volume = items[it]?.volume ?: 0f,
-                onPlayClicked = onPlayClicked,
-                onVolumeChanged = onVolumeChanged
-            )
+        PlayerType.entries.forEach { playerType ->
+            val playerState = items[playerType]
+            if (playerState != null) {
+                SliderItem(
+                    type = playerType,
+                    playerState = playerState,
+                    onPlayClicked = onPlayClicked,
+                    onVolumeChanged = onVolumeChanged
+                )
+            }
         }
     }
 }
@@ -186,59 +270,67 @@ fun ExpandedContent(
 @Composable
 fun SliderItem(
     type: PlayerType,
-    playing: Boolean,
-    volume: Float,
+    playerState: PlayerState,
     onPlayClicked: (PlayerType, Boolean) -> Unit,
     onVolumeChanged: (PlayerType, Float) -> Unit
 ) {
-    var sliderPlaying by rememberSaveable(playing) { mutableStateOf(playing) }
-    var sliderVolume by rememberSaveable(volume) { mutableFloatStateOf(volume) }
+    val isPlaying = playerState.isPlaying
+    val volume = playerState.volume
+
+    val iconTint = remember(type) {
+        when (type) {
+            BROWN, PINK, WHITE -> Color.Unspecified
+            else -> null
+        }
+    }
+
+    val soundName = remember(type) {
+        type.name.lowercase().replaceFirstChar { it.uppercase() }
+    }
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.spacedBy(TopNavBarConstants.Padding.SPACER)
     ) {
-
         Icon(
             painter = painterResource(type.icon),
-            contentDescription = "",
-            tint = if (type != BROWN && type != PINK && type != WHITE) {
-                MaterialTheme.colorScheme.secondary
-            } else {
-                Color.Unspecified
+            contentDescription = "$soundName sound",
+            tint = iconTint ?: MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.semantics {
+                contentDescription = "$soundName sound icon"
             }
         )
-
-        Spacer(modifier = Modifier.size(10.dp))
 
         Slider(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(horizontal = TopNavBarConstants.Padding.SLIDER)
                 .weight(1f),
-            value = sliderVolume,
-            onValueChange = {
-                sliderVolume = it
-                onVolumeChanged(type, it)
+            value = volume,
+            onValueChange = { newVolume ->
+                onVolumeChanged(type, newVolume)
             },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.secondary,
-                activeTrackColor = MaterialTheme.colorScheme.secondary
-            )
+                activeTrackColor = MaterialTheme.colorScheme.secondary,
+                inactiveTrackColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
+            ),
+            valueRange = 0f..1f
         )
-
-        Spacer(modifier = Modifier.size(10.dp))
 
         IconButton(
             onClick = {
-                sliderPlaying = !sliderPlaying
-                onPlayClicked(type, sliderPlaying)
+                onPlayClicked(type, !isPlaying)
             }
         ) {
             Icon(
-                painter = painterResource(if (sliderPlaying) R.drawable.ic_pause else R.drawable.ic_play),
+                painter = painterResource(
+                    if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play
+                ),
                 tint = MaterialTheme.colorScheme.secondary,
-                contentDescription = "Play/Pause Button"
+                contentDescription = null // Handled by parent semantics
             )
         }
     }
@@ -250,31 +342,31 @@ fun TopBarSurface(
     expanded: Boolean,
     content: @Composable () -> Unit
 ) {
+    val cornerRadius = remember(expanded) {
+        if (expanded) TopNavBarConstants.CORNER_RADIUS_EXPANDED
+        else TopNavBarConstants.CORNER_RADIUS_COLLAPSED
+    }
+
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
     ) {
         Surface(
             color = MaterialTheme.colorScheme.primaryContainer,
             modifier = modifier
                 .shadow(
-                    elevation = 5.dp,
-                    shape = RoundedCornerShape(if (expanded) 5 else 20)
+                    elevation = TopNavBarConstants.ELEVATION.dp,
+                    shape = RoundedCornerShape(cornerRadius.dp)
                 )
-                .align(Alignment.Center)
+                .align(Alignment.Center),
+            shape = RoundedCornerShape(cornerRadius.dp)
         ) {
             Column(
-                modifier = Modifier
-                    .padding(10.dp),
-                verticalArrangement = Arrangement.Top,
+                modifier = Modifier.padding(TopNavBarConstants.Padding.CONTENT),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 content()
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun TopNavBarPreview() {
-    TopNavBar(shouldShow = { true })
 }

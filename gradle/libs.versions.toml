@@ -63,6 +63,7 @@ accompanist-uiController = { module = "com.google.accompanist:accompanist-system
 
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "lifecycle" }
 androidx-workmanager = { module = "androidx.work:work-runtime-ktx", version.ref = "workManager" }
 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
