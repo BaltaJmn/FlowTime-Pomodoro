@@ -84,13 +84,21 @@ fun <T : TimerState<T>> TimerPortraitContent(
             text = context.getString(R.string.pomodoro_continue_after_break),
             style = Title.copy(
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
         )
 
+        Spacer(modifier = Modifier.height(8.dp))
+
         Switch(
             checked = state.continueAfterBreak,
-            onCheckedChange = onSwitchChanged
+            onCheckedChange = onSwitchChanged,
+            colors = androidx.compose.material3.SwitchDefaults.colors(
+                checkedThumbColor = MaterialTheme.colorScheme.primary,
+                checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                uncheckedThumbColor = MaterialTheme.colorScheme.outline,
+                uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
+            )
         )
     }
 }

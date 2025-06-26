@@ -98,11 +98,12 @@ fun AnimatedSettingsContent(
 ) {
     AnimatedContent(
         targetState = state.isLoading,
-        label = ""
-    ) {
-        when (it) {
-            true -> LoadingView()
-            false -> SettingsContent(
+        label = "settings_loading"
+    ) { isLoading ->
+        if (isLoading) {
+            LoadingView()
+        } else {
+            SettingsContent(
                 state = state,
                 listState = listState,
                 viewModel = viewModel,

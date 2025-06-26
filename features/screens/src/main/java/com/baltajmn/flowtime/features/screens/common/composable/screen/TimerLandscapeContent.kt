@@ -71,30 +71,31 @@ fun <T : TimerState<T>> TimerLandscapeContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                if (onBreakClick != null) {
-                    ButtonsContentLandscape(
-                        state = state,
-                        onStartClick = onStartClick,
-                        onFinishClick = onFinishClick,
-                        onBreakClick = onBreakClick
-                    )
-                }
+                ButtonsContentLandscape(
+                    state = state,
+                    onStartClick = onStartClick,
+                    onFinishClick = onFinishClick,
+                    onBreakClick = onBreakClick
+                )
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
                     text = context.getString(R.string.pomodoro_continue_after_break),
-                    style = Title.copy(fontSize = 12.sp, color = MaterialTheme.colorScheme.tertiary)
+                    style = Title.copy(
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    )
                 )
 
                 Switch(
                     checked = state.continueAfterBreak,
                     onCheckedChange = onSwitchChanged,
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colorScheme.tertiary,
-                        checkedTrackColor = MaterialTheme.colorScheme.primary,
-                        uncheckedThumbColor = MaterialTheme.colorScheme.tertiary,
-                        uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+                        checkedThumbColor = MaterialTheme.colorScheme.primary,
+                        checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                        uncheckedThumbColor = MaterialTheme.colorScheme.outline,
+                        uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
                     )
                 )
             }

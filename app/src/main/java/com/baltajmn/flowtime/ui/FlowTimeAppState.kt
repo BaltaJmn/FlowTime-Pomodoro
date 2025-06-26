@@ -18,11 +18,11 @@ import com.baltajmn.flowtime.core.navigation.extensions.navigatePoppingUpToStart
 
 @Composable
 fun rememberAppState(
-    authNavController: NavHostController = rememberNavController(),
+    preMainNavController: NavHostController = rememberNavController(),
     mainNavController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current
-) = remember(authNavController, mainNavController, context) {
-    FlowTimeAppState(authNavController, mainNavController, context)
+) = remember(preMainNavController, mainNavController, context) {
+    FlowTimeAppState(preMainNavController, mainNavController, context)
 }
 
 @Stable
@@ -51,13 +51,8 @@ class FlowTimeAppState(
 
     fun bottomNavigationTo(bottomNavBarItem: BottomNavBarItem, type: ScreenType) {
         when (bottomNavBarItem) {
-            BottomNavBarItem.Edit -> navigateToEdit(
-                type = type
-            )
-
-            BottomNavBarItem.Back,
-            BottomNavBarItem.Home -> navigateToHome()
-
+            BottomNavBarItem.Edit -> navigateToEdit(type)
+            BottomNavBarItem.Back, BottomNavBarItem.Home -> navigateToHome()
             BottomNavBarItem.TodoList -> navigateToTodoList()
             BottomNavBarItem.Settings -> navigateToSettings()
         }
@@ -80,12 +75,8 @@ class FlowTimeAppState(
     }
 
     private fun navigateToEdit(type: ScreenType) {
-        mainNavController.navigate(
-            MainGraph.Edit.route.replace(
-                "{type}",
-                type.name
-            )
-        )
+        val route = MainGraph.Edit.route.replace("{type}", type.name)
+        mainNavController.navigate(route)
     }
 
     fun navigateToTodoList() {

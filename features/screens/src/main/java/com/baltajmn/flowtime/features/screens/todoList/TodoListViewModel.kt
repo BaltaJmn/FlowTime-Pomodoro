@@ -9,6 +9,7 @@ import com.baltajmn.flowtime.features.screens.todoList.domain.InsertTodoListUseC
 import com.baltajmn.flowtime.features.screens.todoList.domain.UpdateTodoListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -19,7 +20,7 @@ class TodoListViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TodoListState())
-    val uiState: StateFlow<TodoListState> = _uiState
+    val uiState: StateFlow<TodoListState> = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {

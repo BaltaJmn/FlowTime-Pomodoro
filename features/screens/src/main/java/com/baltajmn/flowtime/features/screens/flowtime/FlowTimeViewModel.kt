@@ -12,10 +12,14 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.features.screens.common.FlowTimeState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class FlowTimeViewModel(
@@ -25,25 +29,24 @@ class FlowTimeViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(FlowTimeState())
-    val uiState: StateFlow<FlowTimeState> = _uiState
+    val uiState: StateFlow<FlowTimeState> = _uiState.asStateFlow()
 
-    private val timerScope = CoroutineScope(dispatcherProvider.io)
+    private val timerScope = CoroutineScope(dispatcherProvider.io + SupervisorJob())
     private var timerJob: Job? = null
     private var breakJob: Job? = null
 
     fun startTimer() {
-        breakJob?.cancel()
-        timerJob?.cancel()
+        cancelAllJobs()
         timerJob = timerScope.launch {
-            while (true) {
+            _uiState.update { it.copy(isTimerRunning = true, isBreakRunning = false) }
+
+            while (currentCoroutineContext().isActive) {
                 delay(1000)
-                val seconds = _uiState.value.seconds + 1
-                _uiState.update {
-                    it.copy(
-                        isTimerRunning = true,
-                        isBreakRunning = false,
-                        seconds = seconds,
-                        secondsFormatted = seconds.formatSecondsToTime()
+                _uiState.update { currentState ->
+                    val newSeconds = currentState.seconds + 1
+                    currentState.copy(
+                        seconds = newSeconds,
+                        secondsFormatted = newSeconds.formatSecondsToTime()
                     )
                 }
             }
@@ -55,47 +58,54 @@ class FlowTimeViewModel(
         soundService.playConfirmationSound()
         getBreakTime()
 
-        timerJob?.cancel()
-        breakJob?.cancel()
+        cancelAllJobs()
         breakJob = timerScope.launch {
             resetTimer()
-            do {
+            _uiState.update { it.copy(isTimerRunning = false, isBreakRunning = true) }
+
+            while (currentCoroutineContext().isActive && _uiState.value.secondsBreak > 0) {
                 delay(1000)
-                val seconds = _uiState.value.secondsBreak - 1
-                _uiState.update {
-                    it.copy(
-                        isTimerRunning = false,
-                        isBreakRunning = true,
-                        secondsBreak = seconds,
-                        secondsFormatted = seconds.formatSecondsToTime()
+                _uiState.update { currentState ->
+                    val newSeconds = currentState.secondsBreak - 1
+                    currentState.copy(
+                        secondsBreak = newSeconds,
+                        secondsFormatted = newSeconds.formatSecondsToTime()
                     )
                 }
-            } while (_uiState.value.secondsBreak > 0)
+            }
 
-            soundService.playStartSound()
-            if (_uiState.value.continueAfterBreak) {
-                startTimer()
-            } else {
-                stopTimer()
+            if (currentCoroutineContext().isActive) {
+                soundService.playStartSound()
+                if (_uiState.value.continueAfterBreak) {
+                    startTimer()
+                } else {
+                    stopTimer()
+                }
             }
         }
     }
 
     fun stopTimer() {
         updateMinutesStudying()
-
-        breakJob?.cancel()
-        timerJob?.cancel()
-
+        cancelAllJobs()
         isRunning()
 
         _uiState.update {
             it.copy(
                 seconds = 0,
                 secondsBreak = 0,
-                secondsFormatted = "00:00"
+                secondsFormatted = "00:00",
+                isTimerRunning = false,
+                isBreakRunning = false
             )
         }
+    }
+
+    private fun cancelAllJobs() {
+        timerJob?.cancel()
+        breakJob?.cancel()
+        timerJob = null
+        breakJob = null
     }
 
     private fun isRunning() {
@@ -178,11 +188,16 @@ class FlowTimeViewModel(
     }
 
     private fun updateMinutesStudying() {
+        val minutesToAdd = _uiState.value.seconds / 60
         _uiState.update {
             it.copy(
-                minutesStudying =
-                dataProvider.updateMinutes((_uiState.value.seconds / 60)).formatMinutesStudying()
+                minutesStudying = dataProvider.updateMinutes(minutesToAdd).formatMinutesStudying()
             )
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        cancelAllJobs()
     }
 }

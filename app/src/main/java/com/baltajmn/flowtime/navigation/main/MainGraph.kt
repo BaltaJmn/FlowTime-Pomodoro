@@ -47,11 +47,9 @@ fun MainGraph(
         route = GRAPH.Main,
         startDestination = Home.route
     ) {
-        composable(
-            route = Home.route
-        ) {
-            HomeScreen {
-                when (it) {
+        composable(route = Home.route) {
+            HomeScreen { screenType ->
+                when (screenType) {
                     ScreenType.Pomodoro -> appState.navigateToPomodoro()
                     ScreenType.FlowTime -> appState.navigateToFlowTime()
                     ScreenType.Percentage -> appState.navigateToPercentage()
@@ -68,23 +66,19 @@ fun MainGraph(
                 )
             }
         ) {
-            FlowTimeScreen(
-                onTimerRunning = onTimerRunning
-            )
+            FlowTimeScreen(onTimerRunning = onTimerRunning)
         }
 
         composable(
             route = Pomodoro.route,
             enterTransition = {
                 slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Up,
+                    towards = AnimatedContentTransitionScope.SlideDirection.Up,
                     animationSpec = tween(500)
                 )
             }
         ) {
-            PomodoroScreen(
-                onTimerRunning = onTimerRunning
-            )
+            PomodoroScreen(onTimerRunning = onTimerRunning)
         }
 
         composable(

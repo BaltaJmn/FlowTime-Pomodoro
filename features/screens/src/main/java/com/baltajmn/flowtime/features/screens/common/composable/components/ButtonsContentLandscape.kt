@@ -20,8 +20,8 @@ import com.baltajmn.flowtime.features.screens.common.TimerState
 fun <T : TimerState<T>> ButtonsContentLandscape(
     state: T,
     onStartClick: () -> Unit,
-    onBreakClick: () -> Unit,
-    onFinishClick: () -> Unit
+    onFinishClick: () -> Unit,
+    onBreakClick: (() -> Unit)? = null
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -29,37 +29,30 @@ fun <T : TimerState<T>> ButtonsContentLandscape(
         verticalArrangement = Arrangement.Center
     ) {
         if (state.isTimerRunning || state.isBreakRunning) {
-            CircularButton(
-                onClick = { onFinishClick.invoke() }
-            ) {
+            CircularButton(onClick = onFinishClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stop),
-                    contentDescription = "Clear",
-                    tint = MaterialTheme.colorScheme.tertiary
+                    contentDescription = "Detener temporizador",
+                    tint = MaterialTheme.colorScheme.surface
                 )
             }
 
-            if (state.isBreakRunning.not()) {
-                Spacer(modifier = Modifier.height(64.dp))
-
-                CircularButton(
-                    onClick = { onBreakClick.invoke() }
-                ) {
+            if (!state.isBreakRunning && onBreakClick != null) {
+                Spacer(modifier = Modifier.height(32.dp))
+                CircularButton(onClick = onBreakClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_next),
-                        contentDescription = "Clear",
-                        tint = MaterialTheme.colorScheme.tertiary
+                        contentDescription = "Iniciar descanso",
+                        tint = MaterialTheme.colorScheme.surface
                     )
                 }
             }
         } else {
-            CircularButton(
-                onClick = { onStartClick.invoke() }
-            ) {
+            CircularButton(onClick = onStartClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),
-                    contentDescription = "Add",
-                    tint = MaterialTheme.colorScheme.tertiary
+                    contentDescription = "Iniciar temporizador",
+                    tint = MaterialTheme.colorScheme.surface
                 )
             }
         }

@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.features.screens.home
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,14 +51,19 @@ fun HomeContent(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(32.dp)
+            .padding(32.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
         item { Spacer(modifier = Modifier.height(32.dp)) }
         item { HomeTitle() }
-        item { Spacer(modifier = Modifier.height(32.dp)) }
-        items(ScreenType.entries) {
-            Spacer(modifier = Modifier.height(32.dp))
-            ScreenCard(screenType = it, navigateToScreen = navigateToScreen)
+        items(
+            items = ScreenType.entries,
+            key = { it.name }
+        ) { screenType ->
+            ScreenCard(
+                screenType = screenType,
+                navigateToScreen = navigateToScreen
+            )
         }
     }
 }
@@ -67,11 +74,18 @@ fun HomeTitle() {
 }
 
 @Composable
-fun ScreenCard(screenType: ScreenType, navigateToScreen: (ScreenType) -> Unit) {
+fun ScreenCard(
+    screenType: ScreenType,
+    navigateToScreen: (ScreenType) -> Unit
+) {
+    val icon = remember(screenType) { getIcon(screenType) }
+    val title = remember(screenType) { getTitle(screenType) }
+    val description = remember(screenType) { getDescription(screenType) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .noRippleClickable { navigateToScreen.invoke(screenType) },
+            .noRippleClickable { navigateToScreen(screenType) },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         )
@@ -84,15 +98,21 @@ fun ScreenCard(screenType: ScreenType, navigateToScreen: (ScreenType) -> Unit) {
             Icon(
                 modifier = Modifier
                     .size(64.dp)
-                    .padding(
-                        bottom = 8.dp
-                    ),
-                painter = painterResource(getIcon(screenType = screenType)),
+                    .padding(bottom = 8.dp),
+                painter = painterResource(icon),
                 tint = MaterialTheme.colorScheme.primary,
-                contentDescription = ""
+                contentDescription = null
             )
-            Text(text = stringResource(getTitle(screenType = screenType)), style = SmallTitle)
-            Text(text = stringResource(getDescription(screenType = screenType)), style = Body)
+            Text(
+                text = stringResource(title),
+                style = SmallTitle,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                text = stringResource(description),
+                style = Body,
+                color = MaterialTheme.colorScheme.secondary
+            )
         }
     }
 }

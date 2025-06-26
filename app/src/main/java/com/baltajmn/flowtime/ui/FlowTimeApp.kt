@@ -57,11 +57,12 @@ fun FlowTimeApp(
 ) {
     val context = LocalContext.current
     val activity = LocalActivity.current
-    var showDialog by remember {
-        mutableStateOf(
-            showRating && rememberShowRating && showOnBoard.not()
-        )
+
+    val shouldShowRatingDialog = remember(showRating, rememberShowRating, showOnBoard) {
+        showRating && rememberShowRating && !showOnBoard
     }
+
+    var showDialog by remember(shouldShowRatingDialog) { mutableStateOf(shouldShowRatingDialog) }
 
     KeepScreenOn()
 
@@ -69,8 +70,8 @@ fun FlowTimeApp(
         if (showDialog) {
             RatingDialog(
                 onRateNow = {
-                    activity?.let {
-                        initiateReviewFlow(context, it, onShowRatingChanged)
+                    activity?.let { act ->
+                        initiateReviewFlow(context, act, onShowRatingChanged)
                     }
                     showDialog = false
                 },
@@ -172,17 +173,34 @@ fun RatingDialog(
 fun KeepScreenOn() {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
-    val window = context.findActivity()?.window ?: return
-    val powerManager =
-        context.getSystemService(Context.POWER_SERVICE) as PowerManager
-    val wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp:WakeLockTag")
 
-    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-    DisposableEffect(lifecycleOwner) {
+    DisposableEffect(lifecycleOwner, context) {
+        val window = context.findActivity()?.window
+        val powerManager = context.getSystemService(Context.POWER_SERVICE) as? PowerManager
+        val wakeLock =
+            powerManager?.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "FlowTime:WakeLock")
+
+        window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         val lifecycleObserver = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_START -> wakeLock.acquire()
-                Lifecycle.Event.ON_STOP -> wakeLock.release()
+                Lifecycle.Event.ON_START -> {
+                    try {
+                        wakeLock?.acquire(10 * 60 * 1000L)
+                    } catch (e: Exception) {
+                        // Ignore wake lock errors
+                    }
+                }
+
+                Lifecycle.Event.ON_STOP -> {
+                    try {
+                        if (wakeLock?.isHeld == true) {
+                            wakeLock.release()
+                        }
+                    } catch (e: Exception) {
+                        // Ignore wake lock errors
+                    }
+                }
                 else -> Unit
             }
         }
@@ -191,6 +209,14 @@ fun KeepScreenOn() {
 
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
+            window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            try {
+                if (wakeLock?.isHeld == true) {
+                    wakeLock.release()
+                }
+            } catch (e: Exception) {
+                // Ignore wake lock errors
+            }
         }
     }
 }

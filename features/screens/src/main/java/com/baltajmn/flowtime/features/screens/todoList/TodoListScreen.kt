@@ -33,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,11 +71,12 @@ fun AnimatedTodoListContent(
 ) {
     AnimatedContent(
         targetState = state.isLoading,
-        label = ""
-    ) {
-        when (it) {
-            true -> LoadingView()
-            false -> TodoListContent(
+        label = "todo_list_loading"
+    ) { isLoading ->
+        if (isLoading) {
+            LoadingView()
+        } else {
+            TodoListContent(
                 state = state,
                 listState = listState,
                 viewModel = viewModel
@@ -89,8 +91,8 @@ fun TodoListContent(
     listState: LazyListState,
     viewModel: TodoListViewModel
 ) {
-    var showDialog by remember { mutableStateOf(false) }
-    var isEdit by remember { mutableStateOf(false) }
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+    var isEdit by rememberSaveable { mutableStateOf(false) }
     var currentListItem by remember { mutableStateOf(ListItem()) }
 
     if (showDialog) {
@@ -123,10 +125,12 @@ fun TodoListContent(
         item {
             ScreenTitleWithIcon(
                 text = "Todo List",
-                onIconClick = {
-                    currentListItem = ListItem()
-                    isEdit = false
-                    showDialog = true
+                onIconClick = remember {
+                    {
+                        currentListItem = ListItem()
+                        isEdit = false
+                        showDialog = true
+                    }
                 }
             )
         }
@@ -134,25 +138,26 @@ fun TodoListContent(
         item {
             TodoListDay(
                 selectedDate = state.selectedDateToShow,
-                plusWeek = { viewModel.plusDay() },
-                minusWeek = { viewModel.minusDay() }
+                plusWeek = viewModel::plusDay,
+                minusWeek = viewModel::minusDay
             )
         }
         item { Spacer(modifier = Modifier.height(16.dp)) }
-        items(state.currentTodoList.todoList) { item ->
+        items(
+            items = state.currentTodoList.todoList,
+            key = { it.id }
+        ) { item ->
             TodoItem(
                 item = item,
-                onItemClick = {
-                    viewModel.markAsDone(it)
+                onItemClick = viewModel::markAsDone,
+                onEditClick = remember {
+                    { listItem ->
+                        currentListItem = listItem
+                        isEdit = true
+                        showDialog = true
+                    }
                 },
-                onEditClick = {
-                    currentListItem = it
-                    isEdit = true
-                    showDialog = true
-                },
-                onDeleteClick = {
-                    viewModel.onDeleteItem(it)
-                }
+                onDeleteClick = viewModel::onDeleteItem
             )
         }
     }

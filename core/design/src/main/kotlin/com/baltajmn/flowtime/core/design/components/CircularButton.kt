@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 fun CircularButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable (Modifier) -> Unit
+    content: @Composable () -> Unit
 ) {
     Button(
         modifier = modifier
@@ -26,9 +26,14 @@ fun CircularButton(
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.primary
+            contentColor = MaterialTheme.colorScheme.surface
         ),
+        elevation = ButtonDefaults.buttonElevation(
+            defaultElevation = 6.dp,
+            pressedElevation = 8.dp,
+            disabledElevation = 0.dp
+        )
     ) {
-        content(Modifier)
+        content()
     }
 }

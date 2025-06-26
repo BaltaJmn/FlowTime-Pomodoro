@@ -24,7 +24,11 @@ fun <T : TimerState<T>> ButtonsContent(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
+        horizontalArrangement = if (state.isTimerRunning || state.isBreakRunning) {
+            Arrangement.SpaceEvenly
+        } else {
+            Arrangement.Center
+        },
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (state.isTimerRunning || state.isBreakRunning) {
