@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.navigation.main
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalConfiguration
@@ -20,6 +22,7 @@ import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.MainGraph
 import com.baltajmn.flowtime.ui.FlowTimeAppState
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     appState: FlowTimeAppState,
@@ -39,8 +42,8 @@ fun MainScreen(
     val settingsState = rememberLazyListState()
 
     val settingsStateScrolling = settingsState.isScrollingUp()
-    val isPortrait by derivedStateOf { configuration.orientation == Configuration.ORIENTATION_PORTRAIT }
-    val shouldShow by derivedStateOf { !isTimerRunning || (isPortrait && settingsStateScrolling) }
+    val isPortrait by remember { derivedStateOf { configuration.orientation == Configuration.ORIENTATION_PORTRAIT } }
+    val shouldShow by remember { derivedStateOf { !isTimerRunning || (isPortrait && settingsStateScrolling) } }
 
     Scaffold(
         topBar = {
