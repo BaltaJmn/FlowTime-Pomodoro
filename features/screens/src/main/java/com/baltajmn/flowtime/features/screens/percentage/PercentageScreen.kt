@@ -36,8 +36,13 @@ fun PercentageScreen(
             state = timerState,
             titleProvider = { s: PercentageState, ctx ->
                 when {
-                    s.isTimerRunning && !s.isBreakRunning -> ctx.getString(R.string.time_title_working)
-                    !s.isTimerRunning && s.isBreakRunning -> ctx.getString(R.string.time_title_resting)
+                    s.isTimerRunning && !s.isBreakRunning -> ctx.getString(
+                        R.string.time_title_working
+                    )
+
+                    !s.isTimerRunning && s.isBreakRunning -> ctx.getString(
+                        R.string.time_title_resting
+                    )
                     else -> ctx.getString(R.string.percentage_title)
                 }
             },

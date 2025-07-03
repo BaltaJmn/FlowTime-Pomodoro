@@ -36,8 +36,13 @@ fun FlowTimeScreen(
             state = timerState,
             titleProvider = { s: FlowTimeState, ctx ->
                 when {
-                    s.isTimerRunning && !s.isBreakRunning -> ctx.getString(R.string.time_title_working)
-                    !s.isTimerRunning && s.isBreakRunning -> ctx.getString(R.string.time_title_resting)
+                    s.isTimerRunning && !s.isBreakRunning -> ctx.getString(
+                        R.string.time_title_working
+                    )
+
+                    !s.isTimerRunning && s.isBreakRunning -> ctx.getString(
+                        R.string.time_title_resting
+                    )
                     else -> ctx.getString(R.string.flow_time_title)
                 }
             },
