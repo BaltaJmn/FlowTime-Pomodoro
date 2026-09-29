@@ -12,4 +12,6 @@ dependencies {
     implementation(libs.gson)
     implementation(projects.core.persistence)
     implementation(projects.core.data)
+
+    testImplementation(libs.mock)
 }

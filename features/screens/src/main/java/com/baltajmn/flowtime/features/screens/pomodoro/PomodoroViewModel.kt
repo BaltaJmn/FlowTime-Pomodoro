@@ -160,20 +160,15 @@ class PomodoroViewModel(
     }
 
     private fun updateMinutesStudying(fromConfig: Boolean = true) {
-        val endRange = _uiState.value.range.endRange
-        val seconds = _uiState.value.seconds
-
-        val time = if (fromConfig) {
-            endRange
-        } else if (seconds > (endRange * 60) - 60) {
-            0
-        } else {
-            (endRange * 60 - seconds) / 60
-        }
+        val minutes = pomodoroMinutesWorked(
+            workMinutes = _uiState.value.range.endRange,
+            remainingSeconds = _uiState.value.seconds,
+            completed = fromConfig
+        )
 
         _uiState.update {
             it.copy(
-                minutesStudying = dataProvider.updateMinutes(time.toLong()).formatMinutesStudying()
+                minutesStudying = dataProvider.updateMinutes(minutes).formatMinutesStudying()
             )
         }
     }

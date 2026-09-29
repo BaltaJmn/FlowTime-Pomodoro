@@ -142,11 +142,10 @@ class PercentageViewModel(
     }
 
     private fun getBreakTime() {
-        val secondsBreak: Long
-        val percentage = _uiState.value.percentage
-        val seconds = _uiState.value.seconds
-
-        secondsBreak = (percentage * seconds) / 100
+        val secondsBreak = percentageBreakSeconds(
+            workedSeconds = _uiState.value.seconds,
+            percentage = _uiState.value.percentage
+        )
 
         _uiState.update {
             it.copy(
