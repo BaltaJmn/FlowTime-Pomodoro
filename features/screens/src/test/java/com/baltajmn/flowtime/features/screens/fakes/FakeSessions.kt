@@ -33,6 +33,11 @@ class FakeSessions : SessionRepository {
 
     override suspend fun totalSeconds() = days.values.sum()
 
+    override suspend fun countSessions(from: LocalDate, to: LocalDate) = recorded.count {
+        val day = Instant.ofEpochMilli(it.startedAt).atZone(ZoneOffset.UTC).toLocalDate()
+        !day.isBefore(from) && !day.isAfter(to)
+    }
+
     override suspend fun addToDays(secondsByDay: Map<LocalDate, Long>, replace: Boolean) {
         secondsByDay.forEach { (day, seconds) ->
             val base = if (replace) 0L else days[day] ?: 0L

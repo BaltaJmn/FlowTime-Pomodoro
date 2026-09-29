@@ -10,6 +10,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -25,6 +26,9 @@ interface SessionRepository {
 
     suspend fun totalSeconds(): Long
 
+    /** Sesiones de trabajo de verdad entre esos días, sin el tiempo importado. */
+    suspend fun countSessions(from: LocalDate, to: LocalDate): Int
+
     /** Tiempo sin sesiones que lo expliquen (un texto importado); con [replace], sustituye el del día. */
     suspend fun addToDays(secondsByDay: Map<LocalDate, Long>, replace: Boolean)
 
@@ -34,43 +38,66 @@ interface SessionRepository {
 
 class DefaultSessionRepository(
     private val dao: SessionDao,
-    private val dataProvider: DataProvider
+    private val dataProvider: DataProvider,
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
+    private val zone: () -> ZoneId = { ZoneId.systemDefault() }
 ) : SessionRepository {
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private val zone get() = ZoneId.systemDefault()
+    // Lo que se lee o se guarda espera a la importación: la primera vez tras actualizar, una pantalla
+    // podía leer antes de que terminara y enseñar el historial vacío.
+    @Volatile
+    private var legacyImport: Job? = null
 
     override fun record(mode: String, startedAt: Long, endedAt: Long, focusSeconds: Long) {
         val session = SessionDb(
             startedAt = startedAt,
             endedAt = endedAt,
-            localDate = Instant.ofEpochMilli(startedAt).atZone(zone).toLocalDate().toString(),
+            localDate = Instant.ofEpochMilli(startedAt).atZone(zone()).toLocalDate().toString(),
             mode = mode,
             focusSeconds = focusSeconds
         )
-        scope.launch { dao.insert(session) }
+        scope.launch {
+            legacyImport?.join()
+            dao.insert(session)
+        }
     }
 
     override fun secondsOn(day: LocalDate): Flow<Long> = dao.secondsOn(day.toString())
 
-    override suspend fun secondsByDay(from: LocalDate, to: LocalDate): Map<LocalDate, Long> =
-        dao.secondsByDay(from.toString(), to.toString()).associate { LocalDate.parse(it.localDate) to it.seconds }
+    override suspend fun secondsByDay(from: LocalDate, to: LocalDate): Map<LocalDate, Long> {
+        legacyImport?.join()
+        return dao.secondsByDay(from.toString(), to.toString())
+            .associate { LocalDate.parse(it.localDate) to it.seconds }
+    }
 
-    override suspend fun totalSeconds(): Long = dao.totalSeconds()
+    override suspend fun totalSeconds(): Long {
+        legacyImport?.join()
+        return dao.totalSeconds()
+    }
 
-    override suspend fun addToDays(secondsByDay: Map<LocalDate, Long>, replace: Boolean) =
-        dao.addToDays(secondsByDay, replace, zone)
+    override suspend fun countSessions(from: LocalDate, to: LocalDate): Int {
+        legacyImport?.join()
+        return dao.countSessions(from.toString(), to.toString())
+    }
 
-    // Sustituye cada día en vez de sumar: si el proceso muere antes de marcarlo como hecho y se repite,
-    // no duplica nada. Las claves antiguas se quedan, por si hay que volver a una versión anterior.
+    override suspend fun addToDays(secondsByDay: Map<LocalDate, Long>, replace: Boolean) {
+        legacyImport?.join()
+        dao.addToDays(secondsByDay, replace, zone())
+    }
+
+    // Solo sustituye el tiempo LEGACY de cada día: si el proceso muere antes de marcarlo como hecho y
+    // se repite, no duplica nada, y una sesión nueva guardada mientras tanto no se borra. Si falla, se
+    // reintenta en el siguiente arranque en vez de cerrar la app. Las claves antiguas se quedan, por
+    // si hay que volver a una versión anterior.
     override fun importLegacyOnce() {
         if (dataProvider.getBoolean(SESSIONS_IMPORTED, false)) return
-        scope.launch {
-            val days = dataProvider.getStudyTimeMap().mapNotNull { (key, minutes) ->
-                DayKeys.parse(key)?.let { it to minutes * 60 }
-            }.toMap()
-            dao.addToDays(days, replace = true, zone = zone)
-            dataProvider.setBoolean(SESSIONS_IMPORTED, true)
+        legacyImport = scope.launch {
+            runCatching {
+                val days = dataProvider.getStudyTimeMap().mapNotNull { (key, minutes) ->
+                    DayKeys.parse(key)?.let { it to minutes * 60 }
+                }.toMap()
+                dao.importLegacy(days, zone())
+            }.onSuccess { dataProvider.setBoolean(SESSIONS_IMPORTED, true) }
         }
     }
 }

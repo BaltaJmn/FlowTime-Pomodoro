@@ -64,6 +64,26 @@ class SessionDaoTest {
     }
 
     @Test
+    fun importar_el_historial_antiguo_solo_sustituye_el_tiempo_sin_sesiones() = runTest {
+        dao.insert(session(sep29, 600))
+
+        dao.importLegacy(mapOf(sep29 to 1500L), zone)
+        dao.importLegacy(mapOf(sep29 to 1500L), zone)
+
+        assertEquals(2100L, dao.secondsOn("2026-09-29").first())
+    }
+
+    @Test
+    fun contar_sesiones_no_cuenta_el_tiempo_importado() = runTest {
+        dao.insert(session(sep29, 600))
+        dao.insert(session(sep29, 60, mode = SessionDb.MODE_LEGACY))
+        dao.insert(session(sep30, 900))
+
+        assertEquals(1, dao.countSessions("2026-09-01", "2026-09-29"))
+        assertEquals(2, dao.countSessions("2026-09-01", "2026-09-30"))
+    }
+
+    @Test
     fun el_tiempo_sin_sesiones_empieza_a_medianoche_del_dia_en_la_zona_del_movil() {
         val legacy = SessionDb.legacy(sep29, 90, zone)
 

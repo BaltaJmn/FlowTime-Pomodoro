@@ -14,7 +14,8 @@ import org.koin.dsl.module
 
 val DataModule = module {
     singleOf(::DefaultTodoListRepository) bind TodoListRepository::class
-    singleOf(::DefaultSessionRepository) bind SessionRepository::class
+    // A mano: el constructor tiene parámetros opcionales para los tests que Koin no sabría resolver.
+    single<SessionRepository> { DefaultSessionRepository(get(), get()) }
     single<TimeSource> { SystemTimeSource(androidContext()) }
     singleOf(::FocusEngine)
 }

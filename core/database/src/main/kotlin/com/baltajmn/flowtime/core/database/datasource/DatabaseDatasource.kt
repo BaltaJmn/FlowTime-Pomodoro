@@ -78,11 +78,35 @@ abstract class SessionDao {
     @Query("SELECT COALESCE(SUM(focusSeconds), 0) FROM session")
     abstract suspend fun totalSeconds(): Long
 
+    /** Sesiones de trabajo de verdad: el tiempo importado no cuenta como sesión. */
+    @Query(
+        "SELECT COUNT(*) FROM session " +
+            "WHERE mode != '${SessionDb.MODE_LEGACY}' AND localDate BETWEEN :from AND :to"
+    )
+    abstract suspend fun countSessions(from: String, to: String): Int
+
     @Query("SELECT COALESCE(SUM(focusSeconds), 0) FROM session WHERE localDate = :day")
     protected abstract suspend fun secondsOnce(day: String): Long
 
     @Query("DELETE FROM session WHERE localDate = :day")
     protected abstract suspend fun deleteDay(day: String)
+
+    @Query("DELETE FROM session WHERE localDate = :day AND mode = '${SessionDb.MODE_LEGACY}'")
+    protected abstract suspend fun deleteLegacyDay(day: String)
+
+    /**
+     * El historial de antes de las sesiones, como tiempo [SessionDb.MODE_LEGACY] de cada día. Solo
+     * sustituye ese tiempo: repetirlo no duplica nada ni borra las sesiones de verdad del mismo día.
+     */
+    @Transaction
+    open suspend fun importLegacy(secondsByDay: Map<LocalDate, Long>, zone: ZoneId) {
+        secondsByDay.forEach { (day, seconds) ->
+            val key = day.toString()
+            deleteLegacyDay(key)
+            val add = seconds.coerceAtMost(DAY_SECONDS - secondsOnce(key))
+            if (add > 0) insert(SessionDb.legacy(day, add, zone))
+        }
+    }
 
     /**
      * Añade tiempo a cada día como una sesión [SessionDb.MODE_LEGACY], sin pasar de las 24 horas.
