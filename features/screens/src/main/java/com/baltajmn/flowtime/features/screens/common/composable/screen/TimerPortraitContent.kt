@@ -26,6 +26,7 @@ import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.components.ButtonsContent
 import com.baltajmn.flowtime.features.screens.common.composable.components.MinutesStudying
 import com.baltajmn.flowtime.features.screens.common.composable.components.ScreenTitle
+import com.baltajmn.flowtime.features.screens.common.composable.components.TagChips
 import com.baltajmn.flowtime.features.screens.common.composable.components.TimeContent
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
@@ -35,7 +36,8 @@ fun TimerPortraitContent(
     state: TimerUiState,
     title: String,
     onAction: (TimerAction) -> Unit,
-    onSwitchChanged: (Boolean) -> Unit
+    onSwitchChanged: (Boolean) -> Unit,
+    onTagSelected: (Long?) -> Unit = {}
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -67,7 +69,9 @@ fun TimerPortraitContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(64.dp))
+        TagChips(tags = state.tags, selected = state.tagId, onSelect = onTagSelected)
+
+        Spacer(modifier = Modifier.height(48.dp))
 
         ButtonsContent(state = state, onAction = onAction)
 

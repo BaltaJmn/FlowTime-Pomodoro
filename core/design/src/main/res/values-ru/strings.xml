@@ -191,7 +191,7 @@
     <string name="backup_import_title">Импортировать эту копию?</string>
     <string name="backup_import_message">Сеансов: %1$d · Задач: %2$d. Добавится только то, чего у вас ещё нет; ничего не удаляется.</string>
     <string name="backup_import_settings">Импортировать также настройки</string>
-    <string name="backup_restored">Новых сеансов: %1$d · Уже были: %2$d · Новых задач: %3$d</string>
+    <string name="backup_restored">Новых сеансов: %1$d · Уже были: %2$d · Новых задач: %3$d · Новых меток: %4$d</string>
     <string name="backup_exported">Копия сохранена</string>
     <string name="backup_not_a_backup">Этот файл не является копией FlowTime</string>
     <string name="backup_too_new">Эта копия из более новой версии FlowTime. Обновите приложение, чтобы импортировать её.</string>
@@ -214,4 +214,20 @@
         <item quantity="many">%d дней подряд</item>
         <item quantity="other">%d дня подряд</item>
     </plurals>
+    <string name="tag_study">Учёба</string>
+    <string name="tag_work">Работа</string>
+    <string name="tag_reading">Чтение</string>
+    <string name="tag_home">Дом</string>
+    <string name="tag_none">Без метки</string>
+    <string name="tags_title">Метки</string>
+    <string name="tag_add">Добавить метку</string>
+    <string name="tag_name">Название</string>
+    <string name="tag_rename">Переименовать</string>
+    <string name="tag_archive">В архив</string>
+    <string name="tag_unarchive">Вернуть</string>
+    <string name="tags_archived">В архиве</string>
+    <string name="tag_color">Изменить цвет</string>
+    <string name="tag_duplicate">Метка с таким названием уже есть</string>
+    <string name="tag_empty">Введите название</string>
+    <string name="tag_limit">Без Pro можно иметь %1$d активные метки. Отправьте одну в архив, чтобы добавить новую.</string>
 </resources>

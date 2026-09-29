@@ -5,6 +5,7 @@ import com.baltajmn.flowtime.data.backup.Backup
 import com.baltajmn.flowtime.data.backup.RestoreResult
 import com.baltajmn.flowtime.data.goal.DailyGoal
 import com.baltajmn.flowtime.data.goal.Streak
+import com.baltajmn.flowtime.data.tag.Tag
 
 data class SettingsState(
     val isLoading: Boolean = false,
@@ -14,8 +15,17 @@ data class SettingsState(
     val keepScreenOn: Boolean = true,
     val appearance: Appearance = Appearance(),
     val backup: BackupUiState = BackupUiState(),
-    val goal: GoalUiState = GoalUiState()
+    val goal: GoalUiState = GoalUiState(),
+    val tags: TagsUiState = TagsUiState()
 )
+
+data class TagsUiState(
+    val active: List<Tag> = emptyList(),
+    val archived: List<Tag> = emptyList(),
+    val message: TagMessage? = null
+)
+
+enum class TagMessage { EMPTY, DUPLICATE, LIMIT }
 
 data class GoalUiState(val minutes: Int = DailyGoal.DEFAULT_MINUTES, val streak: Streak = Streak())
 

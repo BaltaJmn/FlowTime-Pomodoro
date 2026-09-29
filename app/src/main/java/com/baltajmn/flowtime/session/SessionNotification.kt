@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import com.baltajmn.flowtime.MainActivity
 import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusState
 import com.baltajmn.flowtime.data.timer.Phase
@@ -29,7 +30,8 @@ import com.baltajmn.flowtime.data.timer.TimerMode
  */
 class SessionNotification(
     private val context: Context,
-    private val engine: FocusEngine
+    private val engine: FocusEngine,
+    private val tags: TagRepository
 ) {
     private val manager = NotificationManagerCompat.from(context)
 
@@ -50,7 +52,7 @@ class SessionNotification(
         val builder = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(state.mode.icon)
             .setContentTitle(context.getString(title(state)))
-            .setSubText(context.getString(state.mode.label))
+            .setSubText(subText(state))
             .setContentIntent(openTimer(state.mode))
             .setOngoing(true)
             .setOnlyAlertOnce(true)
@@ -130,6 +132,12 @@ class SessionNotification(
             Manifest.permission.POST_NOTIFICATIONS
         )
         if (permission == PackageManager.PERMISSION_GRANTED) manager.notify(id, notification)
+    }
+
+    /** "Pomodoro · Estudio", o solo el modo si no hay etiqueta. */
+    private fun subText(state: FocusState): String {
+        val tag = state.tagId?.let { id -> tags.all.value.firstOrNull { it.id == id } }
+        return listOfNotNull(context.getString(state.mode.label), tag?.name).joinToString(" · ")
     }
 
     private fun title(state: FocusState) = when {

@@ -185,7 +185,7 @@
     <string name="backup_import_title">Diese Sicherung importieren?</string>
     <string name="backup_import_message">Sitzungen: %1$d · Aufgaben: %2$d. Es wird nur hinzugefügt, was noch fehlt; nichts wird gelöscht.</string>
     <string name="backup_import_settings">Auch die Einstellungen importieren</string>
-    <string name="backup_restored">Neue Sitzungen: %1$d · Schon vorhanden: %2$d · Neue Aufgaben: %3$d</string>
+    <string name="backup_restored">Neue Sitzungen: %1$d · Schon vorhanden: %2$d · Neue Aufgaben: %3$d · Neue Labels: %4$d</string>
     <string name="backup_exported">Sicherung gespeichert</string>
     <string name="backup_not_a_backup">Diese Datei ist keine FlowTime-Sicherung</string>
     <string name="backup_too_new">Diese Sicherung stammt aus einer neueren FlowTime-Version. Aktualisiere die App, um sie zu importieren.</string>
@@ -206,4 +206,20 @@
         <item quantity="one">%d Tag in Folge</item>
         <item quantity="other">%d Tage in Folge</item>
     </plurals>
+    <string name="tag_study">Lernen</string>
+    <string name="tag_work">Arbeit</string>
+    <string name="tag_reading">Lesen</string>
+    <string name="tag_home">Haushalt</string>
+    <string name="tag_none">Ohne Label</string>
+    <string name="tags_title">Labels</string>
+    <string name="tag_add">Label hinzufügen</string>
+    <string name="tag_name">Name</string>
+    <string name="tag_rename">Umbenennen</string>
+    <string name="tag_archive">Archivieren</string>
+    <string name="tag_unarchive">Wiederherstellen</string>
+    <string name="tags_archived">Archiviert</string>
+    <string name="tag_color">Farbe ändern</string>
+    <string name="tag_duplicate">Es gibt schon ein Label mit diesem Namen</string>
+    <string name="tag_empty">Gib einen Namen ein</string>
+    <string name="tag_limit">Ohne Pro kannst du %1$d aktive Labels haben. Archiviere eins, um ein neues hinzuzufügen.</string>
 </resources>

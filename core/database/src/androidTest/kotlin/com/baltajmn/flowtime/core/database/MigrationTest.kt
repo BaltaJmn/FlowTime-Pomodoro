@@ -38,6 +38,29 @@ class MigrationTest {
         }
     }
 
+    @Test
+    fun de_la_2_a_la_3_las_sesiones_se_conservan_sin_etiqueta() {
+        helper.createDatabase(DB, 2).use { db ->
+            db.execSQL(
+                "INSERT INTO session (startedAt, endedAt, localDate, mode, focusSeconds) " +
+                    "VALUES (0, 1500000, '2026-09-29', 'POMODORO', 1500)"
+            )
+        }
+
+        // La migración automática: la tabla de etiquetas y session.tagId, que admite nulos.
+        helper.runMigrationsAndValidate(DB, 3, true).use { db ->
+            db.query("SELECT focusSeconds, tagId FROM session").use {
+                it.moveToFirst()
+                assertEquals(1500, it.getInt(0))
+                assertEquals(true, it.isNull(1))
+            }
+            db.execSQL(
+                "INSERT INTO tag (name, color, position, archived, createdAt) " +
+                    "VALUES ('Estudio', 0, 0, 0, 0)"
+            )
+        }
+    }
+
     private companion object {
         const val DB = "migration-test"
     }

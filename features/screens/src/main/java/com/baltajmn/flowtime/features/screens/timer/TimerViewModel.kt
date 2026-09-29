@@ -9,6 +9,8 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.NOTIFICATIONS_EXPLAINED
 import com.baltajmn.flowtime.data.goal.DayProgress
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.tag.Tag
+import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusSnapshot
 import com.baltajmn.flowtime.data.timer.Phase
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
@@ -31,7 +34,10 @@ data class TimerUiState(
     /** El objetivo de hoy, ya formateado. Vacío hasta que se lee. */
     val goalToday: String = "",
     val continueAfterBreak: Boolean = true,
-    val keepScreenOn: Boolean = true
+    val keepScreenOn: Boolean = true,
+    /** Las etiquetas activas, para elegir con cuál se guarda el trabajo. */
+    val tags: List<Tag> = emptyList(),
+    val tagId: Long? = null
 ) {
     val isActive get() = phase != Phase.IDLE
     val actions get() = actionsFor(mode, phase, paused)
@@ -42,7 +48,8 @@ class TimerViewModel(
     private val mode: TimerMode,
     private val engine: FocusEngine,
     private val dataProvider: DataProvider,
-    goals: GoalRepository
+    goals: GoalRepository,
+    tags: TagRepository
 ) : ViewModel() {
 
     private val continueAfterBreak =
@@ -56,14 +63,27 @@ class TimerViewModel(
             engine.snapshots(),
             continueAfterBreak,
             goals.today.onStart<DayProgress?> { emit(null) },
+            tags.active.onStart { emit(emptyList()) },
             ::toUiState
         ).stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
-            toUiState(engine.snapshot(), continueAfterBreak.value, today = null)
+            toUiState(engine.snapshot(), continueAfterBreak.value, today = null, tags = emptyList())
         )
 
+    init {
+        // Una etiqueta archivada deja de ser la elegida, salvo para el trabajo que ya está en marcha.
+        viewModelScope.launch {
+            combine(engine.state, tags.active, ::Pair).collect { (state, active) ->
+                val tag = state.tagId ?: return@collect
+                if (!state.isActive && active.none { it.id == tag }) engine.setTag(null)
+            }
+        }
+    }
+
     fun onAction(action: TimerAction) = engine.perform(action, mode)
+
+    fun selectTag(id: Long?) = engine.setTag(id)
 
     /** El permiso de notificaciones se explica una sola vez: después, el aviso queda en Ajustes. */
     fun explainNotificationsOnce(): Boolean {
@@ -80,7 +100,8 @@ class TimerViewModel(
     private fun toUiState(
         snapshot: FocusSnapshot,
         continueAfter: Boolean,
-        today: DayProgress?
+        today: DayProgress?,
+        tags: List<Tag>
     ): TimerUiState {
         val session = snapshot.state
         // Si la sesión en marcha es de otro modo, esta pantalla se ve parada.
@@ -93,7 +114,9 @@ class TimerViewModel(
             minutesToday = ((today?.seconds ?: 0) / 60).formatMinutesStudying(),
             goalToday = today?.goalMinutes?.toLong()?.formatMinutesStudying().orEmpty(),
             continueAfterBreak = continueAfter,
-            keepScreenOn = keepScreenOn
+            keepScreenOn = keepScreenOn,
+            tags = tags,
+            tagId = session.tagId
         )
     }
 }

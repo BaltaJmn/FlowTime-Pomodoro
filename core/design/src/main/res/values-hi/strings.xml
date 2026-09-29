@@ -185,7 +185,7 @@
     <string name="backup_import_title">यह बैकअप आयात करें?</string>
     <string name="backup_import_message">सत्र: %1$d · कार्य: %2$d। केवल वही जोड़ा जाएगा जो आपके पास नहीं है; कुछ भी हटाया नहीं जाएगा।</string>
     <string name="backup_import_settings">सेटिंग्स भी आयात करें</string>
-    <string name="backup_restored">नए सत्र: %1$d · पहले से थे: %2$d · नए कार्य: %3$d</string>
+    <string name="backup_restored">नए सत्र: %1$d · पहले से थे: %2$d · नए कार्य: %3$d · नए टैग: %4$d</string>
     <string name="backup_exported">बैकअप सहेजा गया</string>
     <string name="backup_not_a_backup">यह फ़ाइल FlowTime का बैकअप नहीं है</string>
     <string name="backup_too_new">यह बैकअप FlowTime के नए संस्करण का है। इसे आयात करने के लिए ऐप अपडेट करें।</string>
@@ -206,4 +206,20 @@
         <item quantity="one">लगातार %d दिन</item>
         <item quantity="other">लगातार %d दिन</item>
     </plurals>
+    <string name="tag_study">पढ़ाई</string>
+    <string name="tag_work">काम</string>
+    <string name="tag_reading">पढ़ना</string>
+    <string name="tag_home">घर</string>
+    <string name="tag_none">बिना टैग</string>
+    <string name="tags_title">टैग</string>
+    <string name="tag_add">टैग जोड़ें</string>
+    <string name="tag_name">नाम</string>
+    <string name="tag_rename">नाम बदलें</string>
+    <string name="tag_archive">संग्रहित करें</string>
+    <string name="tag_unarchive">वापस लाएँ</string>
+    <string name="tags_archived">संग्रहित</string>
+    <string name="tag_color">रंग बदलें</string>
+    <string name="tag_duplicate">इस नाम का टैग पहले से है</string>
+    <string name="tag_empty">कोई नाम लिखें</string>
+    <string name="tag_limit">Pro के बिना आप %1$d सक्रिय टैग रख सकते हैं। नया जोड़ने के लिए किसी एक को संग्रहित करें।</string>
 </resources>

@@ -23,6 +23,7 @@ import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.features.screens.common.composable.components.ButtonsContent
 import com.baltajmn.flowtime.features.screens.common.composable.components.MinutesStudying
+import com.baltajmn.flowtime.features.screens.common.composable.components.TagChips
 import com.baltajmn.flowtime.features.screens.common.composable.components.TimeContent
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
@@ -32,7 +33,8 @@ fun TimerLandscapeContent(
     state: TimerUiState,
     title: String,
     onAction: (TimerAction) -> Unit,
-    onSwitchChanged: (Boolean) -> Unit
+    onSwitchChanged: (Boolean) -> Unit,
+    onTagSelected: (Long?) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -60,6 +62,8 @@ fun TimerLandscapeContent(
                 TimeContent(secondsFormatted = state.time)
                 Spacer(modifier = Modifier.height(8.dp))
                 MinutesStudying(minutesStudying = state.minutesToday, goal = state.goalToday)
+                Spacer(modifier = Modifier.height(8.dp))
+                TagChips(tags = state.tags, selected = state.tagId, onSelect = onTagSelected)
             }
             Column(
                 modifier = Modifier

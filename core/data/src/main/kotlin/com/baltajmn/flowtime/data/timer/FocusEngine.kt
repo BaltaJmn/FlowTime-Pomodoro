@@ -60,7 +60,9 @@ data class FocusState(
     /** Duración de una fase con cuenta atrás; 0 si cuenta hacia arriba. */
     val durationMillis: Long = 0,
     /** Hora real a la que empezó el trabajo en curso, o el de antes de este descanso. */
-    val workStartedAt: Long = 0
+    val workStartedAt: Long = 0,
+    /** La etiqueta con la que se guarda el trabajo. Pasa de una fase a otra y a la sesión siguiente. */
+    val tagId: Long? = null
 ) {
     val isActive: Boolean get() = phase != Phase.IDLE
     val isPaused: Boolean get() = isActive && !running
@@ -140,7 +142,14 @@ class FocusEngine(
         sync()
         val current = _state.value
         if (current.phase == Phase.WORK) record(current, elapsedMillis(current), overshoot = 0)
-        set(newWork(mode, overshoot = 0))
+        set(newWork(mode, overshoot = 0, current.tagId))
+    }
+
+    /** Con la sesión en marcha, cambia la del trabajo en curso, que es el que se guarda al terminar. */
+    @Synchronized
+    fun setTag(id: Long?) {
+        dataProvider.setLong(SharedPreferencesItem.LAST_TAG_ID, id ?: NO_TAG)
+        set(_state.value.copy(tagId = id))
     }
 
     @Synchronized
@@ -168,7 +177,7 @@ class FocusEngine(
     fun skipBreak() {
         sync()
         val s = _state.value
-        if (s.phase == Phase.BREAK) change(s, newWork(s.mode, overshoot = 0), overshoot = 0)
+        if (s.phase == Phase.BREAK) change(s, newWork(s.mode, overshoot = 0, s.tagId), overshoot = 0)
     }
 
     /** Para la sesión. Lo trabajado hasta ahora se guarda. */
@@ -177,7 +186,7 @@ class FocusEngine(
         sync()
         val s = _state.value
         if (s.phase == Phase.WORK) record(s, elapsedMillis(s), overshoot = 0)
-        if (s.isActive) set(FocusState(mode = s.mode))
+        if (s.isActive) set(FocusState(mode = s.mode, tagId = s.tagId))
     }
 
     /** Pasa por las fases que hayan terminado desde la última vez, aunque la app estuviera cerrada. */
@@ -226,28 +235,34 @@ class FocusEngine(
                     phase = Phase.BREAK,
                     running = true,
                     durationMillis = breakMillis,
-                    workStartedAt = s.workStartedAt
+                    workStartedAt = s.workStartedAt,
+                    tagId = s.tagId
                 ),
                 overshoot
             )
         } else {
-            afterBreak(s.mode, overshoot)
+            afterBreak(s, overshoot)
         }
         change(s, next, overshoot)
     }
 
-    private fun finishBreak(s: FocusState, overshoot: Long) = change(s, afterBreak(s.mode, overshoot), overshoot)
+    private fun finishBreak(s: FocusState, overshoot: Long) = change(s, afterBreak(s, overshoot), overshoot)
 
-    private fun afterBreak(mode: TimerMode, overshoot: Long) =
-        if (dataProvider.getCheckValue(mode.continueAfterBreakKey)) newWork(mode, overshoot) else FocusState(mode = mode)
+    private fun afterBreak(s: FocusState, overshoot: Long) =
+        if (dataProvider.getCheckValue(s.mode.continueAfterBreakKey)) {
+            newWork(s.mode, overshoot, s.tagId)
+        } else {
+            FocusState(mode = s.mode, tagId = s.tagId)
+        }
 
-    private fun newWork(mode: TimerMode, overshoot: Long) = anchored(
+    private fun newWork(mode: TimerMode, overshoot: Long, tagId: Long?) = anchored(
         FocusState(
             mode = mode,
             phase = Phase.WORK,
             running = true,
             durationMillis = workMillis(mode),
-            workStartedAt = time.wallMillis() - overshoot
+            workStartedAt = time.wallMillis() - overshoot,
+            tagId = tagId
         ),
         overshoot
     )
@@ -272,7 +287,7 @@ class FocusEngine(
     // sin querer no es una sesión.
     private fun record(s: FocusState, workedMillis: Long, overshoot: Long) {
         if (workedMillis < MINUTE) return
-        sessions.record(s.mode.name, s.workStartedAt, time.wallMillis() - overshoot, workedMillis / 1000)
+        sessions.record(s.mode.name, s.workStartedAt, time.wallMillis() - overshoot, workedMillis / 1000, s.tagId)
     }
 
     private fun change(from: FocusState, to: FocusState, overshoot: Long) {
@@ -286,12 +301,15 @@ class FocusEngine(
     }
 
     // Un estado a medias (de otra versión, o un fichero dañado) no puede impedir que la app arranque.
+    // Sin sesión guardada (la primera vez, o tras restaurar una copia en otro móvil), la etiqueta es
+    // la última que se usó.
     private fun restore(): FocusState = runCatching {
         dataProvider.getObject(SharedPreferencesItem.TIMER_SESSION, FocusState::class.java)
             ?.takeIf { it.mode.name.isNotEmpty() && it.phase.name.isNotEmpty() }
-    }.getOrNull() ?: FocusState()
+    }.getOrNull() ?: FocusState(tagId = dataProvider.getLong(SharedPreferencesItem.LAST_TAG_ID).takeIf { it != NO_TAG })
 
     private companion object {
         const val MINUTE = 60_000L
+        const val NO_TAG = 0L
     }
 }

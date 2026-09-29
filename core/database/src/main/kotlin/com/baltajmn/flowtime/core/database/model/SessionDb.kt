@@ -10,7 +10,7 @@ import java.time.ZoneId
  * Un bloque de trabajo terminado, con sus segundos reales. [MODE_LEGACY] es tiempo sin sesiones que
  * lo expliquen: el historial de antes, que solo guardaba minutos por día, o un texto importado.
  */
-@Entity(tableName = "session", indices = [Index("localDate")])
+@Entity(tableName = "session", indices = [Index("localDate"), Index("tagId")])
 data class SessionDb(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val startedAt: Long,
@@ -18,7 +18,9 @@ data class SessionDb(
     /** yyyy-MM-dd del día en que empezó, en la zona del móvil. Una sesión cuenta entera para ese día. */
     val localDate: String,
     val mode: String,
-    val focusSeconds: Long
+    val focusSeconds: Long,
+    /** La etiqueta del bloque, o null si no tenía. */
+    val tagId: Long? = null
 ) {
     companion object {
         const val MODE_LEGACY = "LEGACY"

@@ -14,6 +14,9 @@ import com.baltajmn.flowtime.data.backup.BackupRead
 import com.baltajmn.flowtime.data.backup.BackupRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.tag.Tag
+import com.baltajmn.flowtime.data.tag.TagRepository
+import com.baltajmn.flowtime.data.tag.TagResult
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +31,8 @@ class SettingsViewModel(
     private val appearanceRepository: AppearanceRepository,
     private val backupRepository: BackupRepository,
     private val files: DocumentFiles,
-    private val goals: GoalRepository
+    private val goals: GoalRepository,
+    private val tags: TagRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
@@ -46,7 +50,44 @@ class SettingsViewModel(
                 _uiState.update { it.copy(goal = goal) }
             }
         }
+        viewModelScope.launch {
+            combine(tags.active, tags.archived, ::Pair).collect { (active, archived) ->
+                updateTags { it.copy(active = active, archived = archived) }
+            }
+        }
     }
+
+    fun addTag(name: String) = changeTags { tags.create(name) }
+
+    fun renameTag(id: Long, name: String) = changeTags { tags.rename(id, name) }
+
+    /** El siguiente color de la paleta. */
+    fun recolorTag(tag: Tag) {
+        viewModelScope.launch { tags.recolor(tag.id, tag.color + 1) }
+    }
+
+    fun archiveTag(id: Long) {
+        viewModelScope.launch { tags.archive(id) }
+    }
+
+    fun unarchiveTag(id: Long) = changeTags { tags.unarchive(id) }
+
+    fun onTagMessageShown() = updateTags { it.copy(message = null) }
+
+    private fun changeTags(change: suspend () -> TagResult) {
+        viewModelScope.launch {
+            val message = when (change()) {
+                is TagResult.Done -> null
+                TagResult.Invalid -> TagMessage.EMPTY
+                TagResult.Duplicate -> TagMessage.DUPLICATE
+                TagResult.LimitReached -> TagMessage.LIMIT
+            }
+            updateTags { it.copy(message = message) }
+        }
+    }
+
+    private fun updateTags(change: (TagsUiState) -> TagsUiState) =
+        _uiState.update { it.copy(tags = change(it.tags)) }
 
     fun changeGoal(delta: Int) = goals.setGoal(goals.currentGoal + delta)
 

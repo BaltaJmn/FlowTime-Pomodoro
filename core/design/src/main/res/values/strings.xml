@@ -187,7 +187,7 @@
     <string name="backup_import_title">Import this backup?</string>
     <string name="backup_import_message">Sessions: %1$d · Tasks: %2$d. Only what you don\'t have yet is added; nothing is deleted.</string>
     <string name="backup_import_settings">Also import settings</string>
-    <string name="backup_restored">New sessions: %1$d · Already here: %2$d · New tasks: %3$d</string>
+    <string name="backup_restored">New sessions: %1$d · Already here: %2$d · New tasks: %3$d · New tags: %4$d</string>
     <string name="backup_exported">Backup saved</string>
     <string name="backup_not_a_backup">This file isn\'t a FlowTime backup</string>
     <string name="backup_too_new">This backup comes from a newer version of FlowTime. Update the app to import it.</string>
@@ -208,4 +208,20 @@
         <item quantity="one">%d day in a row</item>
         <item quantity="other">%d days in a row</item>
     </plurals>
+    <string name="tag_study">Study</string>
+    <string name="tag_work">Work</string>
+    <string name="tag_reading">Reading</string>
+    <string name="tag_home">Home</string>
+    <string name="tag_none">No tag</string>
+    <string name="tags_title">Tags</string>
+    <string name="tag_add">Add tag</string>
+    <string name="tag_name">Name</string>
+    <string name="tag_rename">Rename</string>
+    <string name="tag_archive">Archive</string>
+    <string name="tag_unarchive">Restore</string>
+    <string name="tags_archived">Archived</string>
+    <string name="tag_color">Change color</string>
+    <string name="tag_duplicate">There\'s already a tag with that name</string>
+    <string name="tag_empty">Write a name</string>
+    <string name="tag_limit">Without Pro you can have %1$d active tags. Archive one to add another.</string>
 </resources>

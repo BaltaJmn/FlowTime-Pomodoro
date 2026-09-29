@@ -236,6 +236,46 @@ class FocusEngineTest {
     }
 
     @Test
+    fun `el bloque se guarda con la etiqueta que habia al terminar`() {
+        engine.setTag(1)
+        engine.start(TimerMode.POMODORO)
+        time.advance(minutes(10))
+
+        // Cambiarla a mitad de bloque cambia la del bloque en curso.
+        engine.setTag(2)
+        time.advance(minutes(35))
+        engine.sync()
+        // Y sigue en el siguiente, tras el descanso.
+        time.advance(minutes(15 + 45))
+        engine.sync()
+
+        assertEquals(listOf(2L, 2L), sessions.recorded.map { it.tagId })
+    }
+
+    @Test
+    fun `sin elegir etiqueta el bloque se guarda sin ella`() {
+        engine.start(TimerMode.FLOW_TIME)
+        time.advance(minutes(20))
+
+        engine.stop()
+
+        assertEquals(null, sessions.recorded.single().tagId)
+    }
+
+    @Test
+    fun `la etiqueta se queda para la sesion siguiente, tambien al reabrir la app`() {
+        engine.setTag(3)
+        engine.start(TimerMode.FLOW_TIME)
+        time.advance(minutes(20))
+        engine.stop()
+
+        assertEquals(3L, FocusEngine(prefs, time, sessions).state.value.tagId)
+        // Sin la sesión guardada (una copia restaurada en otro móvil), la última que se usó.
+        prefs.values.remove(SharedPreferencesItem.TIMER_SESSION.name.lowercase())
+        assertEquals(3L, FocusEngine(prefs, time, sessions).state.value.tagId)
+    }
+
+    @Test
     fun `avisa del cambio de fase y de cuanto tarde se ha visto`() {
         val changes = mutableListOf<PhaseChange>()
         engine.onPhaseChange = { changes += it }

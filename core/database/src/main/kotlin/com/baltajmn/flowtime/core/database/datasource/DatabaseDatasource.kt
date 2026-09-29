@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.core.database.datasource
 
+import androidx.room.AutoMigration
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Insert
@@ -15,20 +16,24 @@ import com.baltajmn.flowtime.core.database.converter.ItemConverter
 import com.baltajmn.flowtime.core.database.model.DaySeconds
 import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.SessionDb.Companion.DAY_SECONDS
+import com.baltajmn.flowtime.core.database.model.TagDb
 import com.baltajmn.flowtime.core.database.model.TodoListDB
 import java.time.LocalDate
 import java.time.ZoneId
 import kotlinx.coroutines.flow.Flow
 
+// De la 2 a la 3, automática: una tabla nueva (tag) y una columna que admite nulos (session.tagId).
 @Database(
-    entities = [TodoListDB::class, SessionDb::class],
-    version = 2
+    entities = [TodoListDB::class, SessionDb::class, TagDb::class],
+    version = 3,
+    autoMigrations = [AutoMigration(from = 2, to = 3)]
 )
 @TypeConverters(ItemConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun todoListDao(): TodoListDao
     abstract fun sessionDao(): SessionDao
     abstract fun backupDao(): BackupDao
+    abstract fun tagDao(): TagDao
 }
 
 /** Escrita a mano: con la migración destructiva, un fallo borraba todas las tareas sin avisar. */

@@ -16,12 +16,15 @@ data class Backup(
     val exportedAt: Long = 0,
     val appVersion: String = "",
     val sessions: List<BackupSession> = emptyList(),
+    val tags: List<BackupTag> = emptyList(),
     val tasks: List<BackupTask> = emptyList(),
     val settings: BackupSettings? = null
 ) {
     companion object {
         const val APP = "flowtime"
-        const val FORMAT = 1
+
+        /** 2: etiquetas (#37). Una versión que solo lee el 1 las perdería al importar. */
+        const val FORMAT = 2
     }
 }
 
@@ -32,7 +35,20 @@ data class BackupSession(
     /** yyyy-MM-dd del día en que empezó. */
     val localDate: String,
     val mode: String,
-    val focusSeconds: Long
+    val focusSeconds: Long,
+    /** El [BackupTag.id] de su etiqueta dentro de este fichero. */
+    val tagId: Long? = null
+)
+
+/** El [id] solo vale dentro del fichero: al importar, cada etiqueta se busca por el nombre. */
+@Serializable
+data class BackupTag(
+    val id: Long,
+    val name: String,
+    val color: Int = 0,
+    val position: Int = 0,
+    val archived: Boolean = false,
+    val createdAt: Long = 0
 )
 
 /** Con la forma que tendrán las tareas en su propia tabla (#39): así el formato no cambia entonces. */

@@ -188,7 +188,7 @@
     <string name="backup_import_title">¿Importar esta copia?</string>
     <string name="backup_import_message">Sesiones: %1$d · Tareas: %2$d. Solo se añade lo que aún no tienes; no se borra nada.</string>
     <string name="backup_import_settings">Importar también los ajustes</string>
-    <string name="backup_restored">Sesiones nuevas: %1$d · Ya estaban: %2$d · Tareas nuevas: %3$d</string>
+    <string name="backup_restored">Sesiones nuevas: %1$d · Ya estaban: %2$d · Tareas nuevas: %3$d · Etiquetas nuevas: %4$d</string>
     <string name="backup_exported">Copia guardada</string>
     <string name="backup_not_a_backup">Este fichero no es una copia de FlowTime</string>
     <string name="backup_too_new">Esta copia es de una versión más nueva de FlowTime. Actualiza la app para importarla.</string>
@@ -209,4 +209,20 @@
         <item quantity="one">%d día seguido</item>
         <item quantity="other">%d días seguidos</item>
     </plurals>
+    <string name="tag_study">Estudio</string>
+    <string name="tag_work">Trabajo</string>
+    <string name="tag_reading">Lectura</string>
+    <string name="tag_home">Casa</string>
+    <string name="tag_none">Sin etiqueta</string>
+    <string name="tags_title">Etiquetas</string>
+    <string name="tag_add">Añadir etiqueta</string>
+    <string name="tag_name">Nombre</string>
+    <string name="tag_rename">Cambiar nombre</string>
+    <string name="tag_archive">Archivar</string>
+    <string name="tag_unarchive">Recuperar</string>
+    <string name="tags_archived">Archivadas</string>
+    <string name="tag_color">Cambiar color</string>
+    <string name="tag_duplicate">Ya hay una etiqueta con ese nombre</string>
+    <string name="tag_empty">Escribe un nombre</string>
+    <string name="tag_limit">Sin Pro puedes tener %1$d etiquetas activas. Archiva una para añadir otra.</string>
 </resources>

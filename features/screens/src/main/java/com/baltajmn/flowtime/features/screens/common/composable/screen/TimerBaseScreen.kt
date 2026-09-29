@@ -11,11 +11,12 @@ fun TimerBaseScreen(
     state: TimerUiState,
     title: String,
     onAction: (TimerAction) -> Unit,
-    onSwitchChanged: (Boolean) -> Unit
+    onSwitchChanged: (Boolean) -> Unit,
+    onTagSelected: (Long?) -> Unit
 ) {
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        TimerLandscapeContent(state, title, onAction, onSwitchChanged)
+        TimerLandscapeContent(state, title, onAction, onSwitchChanged, onTagSelected)
     } else {
-        TimerPortraitContent(state, title, onAction, onSwitchChanged)
+        TimerPortraitContent(state, title, onAction, onSwitchChanged, onTagSelected)
     }
 }

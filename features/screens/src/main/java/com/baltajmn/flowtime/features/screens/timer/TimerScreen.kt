@@ -50,7 +50,8 @@ fun TimerScreen(
                 explainNotifications = viewModel.explainNotificationsOnce()
             }
         },
-        onSwitchChanged = viewModel::changeSwitch
+        onSwitchChanged = viewModel::changeSwitch,
+        onTagSelected = viewModel::selectTag
     )
 
     if (explainNotifications) {

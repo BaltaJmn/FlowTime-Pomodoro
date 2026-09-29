@@ -3,12 +3,14 @@ package com.baltajmn.flowtime.data.backup
 import com.baltajmn.flowtime.core.database.datasource.BackupDao
 import com.baltajmn.flowtime.core.database.model.ListItemDb
 import com.baltajmn.flowtime.core.database.model.SessionDb
+import com.baltajmn.flowtime.core.database.model.TagDb
 import com.baltajmn.flowtime.core.database.model.TodoListDB
 import com.baltajmn.flowtime.core.design.sound.Ambience
 import com.baltajmn.flowtime.core.design.sound.PlayerType
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.core.design.theme.DarkMode
+import com.baltajmn.flowtime.core.design.theme.TagPalette
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
@@ -29,7 +31,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 
 /** Lo que ha hecho una importación. */
-data class RestoreResult(val sessionsAdded: Int, val sessionsExisting: Int, val tasksAdded: Int)
+data class RestoreResult(
+    val sessionsAdded: Int,
+    val sessionsExisting: Int,
+    val tasksAdded: Int,
+    val tagsAdded: Int = 0
+)
 
 sealed interface BackupRead {
     data class Valid(val backup: Backup) : BackupRead
@@ -79,6 +86,7 @@ class DefaultBackupRepository(
             exportedAt = clock(),
             appVersion = appVersion,
             sessions = dao.sessions().map { it.toBackup() },
+            tags = dao.tags().map { BackupTag(it.id, it.name, it.color, it.position, it.archived, it.createdAt) },
             tasks = dao.todoLists().flatMap { list ->
                 list.todoList.mapIndexed { position, item -> item.toBackup(list.date, position) }
             },
@@ -114,10 +122,11 @@ class DefaultBackupRepository(
                 .groupBy { it.plannedFor }
                 .map { (date, tasks) ->
                     TodoListDB(date, tasks.sortedBy { it.position }.map { it.toDb() })
-                }
+                },
+            tags = backup.tags.filter { it.name.isNotBlank() }.distinctBy { it.id }.map { it.toDb() }
         )
         if (withSettings) backup.settings?.let(::applySettings)
-        RestoreResult(count.sessionsAdded, count.sessionsExisting, count.tasksAdded)
+        RestoreResult(count.sessionsAdded, count.sessionsExisting, count.tasksAdded, count.tagsAdded)
     }
 
     private fun readSettings() = BackupSettings(
@@ -177,16 +186,27 @@ class DefaultBackupRepository(
     private companion object {
         const val UNSET = -1f
         const val MAX_MINUTES = 24 * 60
+        const val MAX_TAG_NAME = 30
     }
 
-    private fun SessionDb.toBackup() = BackupSession(startedAt, endedAt, localDate, mode, focusSeconds)
+    private fun SessionDb.toBackup() = BackupSession(startedAt, endedAt, localDate, mode, focusSeconds, tagId)
 
     private fun BackupSession.toDb() = SessionDb(
         startedAt = startedAt,
         endedAt = endedAt,
         localDate = localDate,
         mode = mode,
-        focusSeconds = focusSeconds
+        focusSeconds = focusSeconds,
+        tagId = tagId
+    )
+
+    private fun BackupTag.toDb() = TagDb(
+        id = id,
+        name = name.trim().take(MAX_TAG_NAME),
+        color = color.mod(TagPalette.COUNT),
+        position = position,
+        archived = archived,
+        createdAt = createdAt
     )
 
     private fun BackupSession.isValid() =

@@ -17,7 +17,13 @@ class FakeSessionRepository : SessionRepository {
 
     fun add(day: LocalDate, seconds: Long) = days.update { it + (day to (it[day] ?: 0L) + seconds) }
 
-    override fun record(mode: String, startedAt: Long, endedAt: Long, focusSeconds: Long) = Unit
+    override fun record(
+        mode: String,
+        startedAt: Long,
+        endedAt: Long,
+        focusSeconds: Long,
+        tagId: Long?
+    ) = Unit
 
     override fun secondsOn(day: LocalDate): Flow<Long> = days.map { it[day] ?: 0L }
 

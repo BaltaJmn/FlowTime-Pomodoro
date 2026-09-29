@@ -3,6 +3,7 @@ package com.baltajmn.flowtime.data.backup
 import com.baltajmn.flowtime.core.database.datasource.BackupDao
 import com.baltajmn.flowtime.core.database.model.ListItemDb
 import com.baltajmn.flowtime.core.database.model.SessionDb
+import com.baltajmn.flowtime.core.database.model.TagDb
 import com.baltajmn.flowtime.core.database.model.TodoListDB
 import com.baltajmn.flowtime.core.design.sound.Ambience
 import com.baltajmn.flowtime.core.design.sound.PlayerType
@@ -36,7 +37,17 @@ class BackupRepositoryTest {
     private class FakeBackupDao : BackupDao() {
         val rows = mutableListOf<SessionDb>()
         val lists = sortedMapOf<String, TodoListDB>()
+        val tagRows = mutableListOf<TagDb>()
         private var nextId = 1L
+        private var nextTagId = 100L
+
+        override suspend fun tags() = tagRows.sortedWith(compareBy({ it.position }, { it.id }))
+
+        override suspend fun insertTag(tag: TagDb): Long {
+            val id = nextTagId++
+            tagRows += tag.copy(id = id)
+            return id
+        }
 
         override suspend fun sessions() = rows.sortedBy { it.startedAt }
 
@@ -84,6 +95,10 @@ class BackupRepositoryTest {
         val sessions get() = dao.rows.map { it.copy(id = 0) }.sortedBy { it.startedAt }
 
         suspend fun backup() = (backups.read(backups.export()) as BackupRead.Valid).backup
+
+        fun tagRows(tag: TagDb) {
+            dao.tagRows += tag
+        }
     }
 
     private fun session(
@@ -232,17 +247,50 @@ class BackupRepositoryTest {
     }
 
     @Test
+    fun `las etiquetas se buscan por el nombre y las sesiones se quedan con la suya`() = runTest {
+        val old = Device().apply {
+            tagRows(TagDb(id = 5, name = "Estudio", color = 2, position = 0, createdAt = 0))
+            tagRows(TagDb(id = 9, name = "Correr", color = 6, position = 1, archived = true, createdAt = 0))
+            dao.rows += session("2026-09-28", 9).copy(tagId = 5)
+            dao.rows += session("2026-09-29", 9).copy(tagId = 9)
+            dao.rows += session("2026-09-29", 18)
+        }
+        // En el móvil nuevo ya hay una "estudio", con otro id.
+        val new = Device().apply { tagRows(TagDb(id = 1, name = "estudio", color = 0, position = 0, createdAt = 0)) }
+
+        val result = new.backups.restore(old.backup(), withSettings = false)
+
+        assertEquals(1, result.tagsAdded)
+        val correr = new.dao.tagRows.single { it.name == "Correr" }
+        assertEquals(TagDb(id = correr.id, name = "Correr", color = 6, position = 1, archived = true, createdAt = 0), correr)
+        assertEquals(listOf(1L, correr.id, null), new.dao.rows.sortedBy { it.startedAt }.map { it.tagId })
+    }
+
+    @Test
+    fun `una copia del formato 1, sin etiquetas, se sigue leyendo`() = runTest {
+        val file = """{"app":"flowtime","format":1,"sessions":[{"startedAt":0,"endedAt":60000,""" +
+            """"localDate":"2026-02-28","mode":"POMODORO","focusSeconds":60}]}"""
+        val device = Device()
+
+        val read = device.backups.read(file)
+        device.backups.restore((read as BackupRead.Valid).backup, withSettings = false)
+
+        assertEquals(listOf<Long?>(null), device.dao.rows.map { it.tagId })
+        assertEquals(BackupRead.TooNew, device.backups.read("""{"app":"flowtime","format":3}"""))
+    }
+
+    @Test
     fun `lo que no es una copia de esta app no se lee`() = runTest {
         val backups = Device().backups
         val file = Device().apply { dao.rows += session("2026-09-28", 9) }.backups.export()
 
-        assertEquals(BackupRead.TooNew, backups.read("""{"app":"flowtime","format":2}"""))
+        assertEquals(BackupRead.TooNew, backups.read("""{"app":"flowtime","format":9}"""))
         assertEquals(BackupRead.NotABackup, backups.read("{}"))
         assertEquals(BackupRead.NotABackup, backups.read("""{"app":"otra","format":1}"""))
         assertEquals(BackupRead.NotABackup, backups.read("hola"))
         assertEquals(BackupRead.NotABackup, backups.read(file.dropLast(40)))
         // Un campo que esta versión no conoce, de una versión posterior con el mismo formato, sí.
-        val newer = backups.read("""{"app":"flowtime","format":1,"streak":12}""")
+        val newer = backups.read("""{"app":"flowtime","format":2,"streak":12}""")
         assertTrue(newer is BackupRead.Valid)
     }
 

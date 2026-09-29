@@ -20,6 +20,7 @@ import com.baltajmn.flowtime.features.screens.common.composable.screen.TimerLand
 import com.baltajmn.flowtime.features.screens.fakes.FakeBackups
 import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
 import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
+import com.baltajmn.flowtime.features.screens.fakes.FakeTags
 import com.baltajmn.flowtime.features.screens.history.HistoryContent
 import com.baltajmn.flowtime.features.screens.history.HistoryViewModel
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
@@ -101,7 +102,8 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
             AppearanceRepository(prefs),
             FakeBackups(lastExportAt = System.currentTimeMillis()),
             DocumentFiles(RuntimeEnvironment.getApplication()),
-            GoalRepository(prefs, sessions, days = flowOf(LocalDate.now()))
+            GoalRepository(prefs, sessions, days = flowOf(LocalDate.now())),
+            FakeTags("Estudio", "Trabajo", "Lectura", "Casa")
         )
         compose.capture("settings_$mode", dark = dark) {
             val state by viewModel.uiState.collectAsState()

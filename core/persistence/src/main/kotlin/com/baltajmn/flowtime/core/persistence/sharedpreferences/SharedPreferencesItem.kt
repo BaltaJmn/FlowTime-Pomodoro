@@ -22,4 +22,6 @@ enum class SharedPreferencesItem {
     LAST_BACKUP_AT,
     DAILY_GOAL,
     GOAL_CELEBRATED_ON,
+    TAGS_SEEDED,
+    LAST_TAG_ID,
 }

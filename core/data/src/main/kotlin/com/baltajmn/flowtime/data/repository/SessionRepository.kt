@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 /** Los bloques de trabajo terminados. Los totales van en segundos; cada pantalla redondea como quiera. */
 interface SessionRepository {
     /** No espera a la base de datos: lo llama el motor, que no puede bloquearse. */
-    fun record(mode: String, startedAt: Long, endedAt: Long, focusSeconds: Long)
+    fun record(mode: String, startedAt: Long, endedAt: Long, focusSeconds: Long, tagId: Long? = null)
 
     fun secondsOn(day: LocalDate): Flow<Long>
 
@@ -48,13 +48,14 @@ class DefaultSessionRepository(
     @Volatile
     private var legacyImport: Job? = null
 
-    override fun record(mode: String, startedAt: Long, endedAt: Long, focusSeconds: Long) {
+    override fun record(mode: String, startedAt: Long, endedAt: Long, focusSeconds: Long, tagId: Long?) {
         val session = SessionDb(
             startedAt = startedAt,
             endedAt = endedAt,
             localDate = Instant.ofEpochMilli(startedAt).atZone(zone()).toLocalDate().toString(),
             mode = mode,
-            focusSeconds = focusSeconds
+            focusSeconds = focusSeconds,
+            tagId = tagId
         )
         scope.launch {
             legacyImport?.join()

@@ -14,14 +14,21 @@ class FakeSessions : SessionRepository {
         val mode: String,
         val startedAt: Long,
         val endedAt: Long,
-        val focusSeconds: Long
+        val focusSeconds: Long,
+        val tagId: Long? = null
     )
 
     val recorded = mutableListOf<Recorded>()
     val days = mutableMapOf<LocalDate, Long>()
 
-    override fun record(mode: String, startedAt: Long, endedAt: Long, focusSeconds: Long) {
-        recorded += Recorded(mode, startedAt, endedAt, focusSeconds)
+    override fun record(
+        mode: String,
+        startedAt: Long,
+        endedAt: Long,
+        focusSeconds: Long,
+        tagId: Long?
+    ) {
+        recorded += Recorded(mode, startedAt, endedAt, focusSeconds, tagId)
         val day = Instant.ofEpochMilli(startedAt).atZone(ZoneOffset.UTC).toLocalDate()
         days[day] = (days[day] ?: 0L) + focusSeconds
     }

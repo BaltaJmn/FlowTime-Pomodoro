@@ -165,6 +165,18 @@ fun SettingsContent(
         item { GoalCard(goal = state.goal, onChange = viewModel::changeGoal) }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
+            TagsCard(
+                state = state.tags,
+                onAdd = viewModel::addTag,
+                onRename = viewModel::renameTag,
+                onRecolor = viewModel::recolorTag,
+                onArchive = viewModel::archiveTag,
+                onUnarchive = viewModel::unarchiveTag,
+                onMessageShown = viewModel::onTagMessageShown
+            )
+        }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
+        item {
             SupportButton(
                 title = LocalContext.current.getString(R.string.support_developer_title),
                 description = LocalContext.current.getString(R.string.support_developer_description),

@@ -159,7 +159,8 @@ private fun MessageDialog(message: BackupMessage, onDismiss: () -> Unit) {
             R.string.backup_restored,
             message.result.sessionsAdded,
             message.result.sessionsExisting,
-            message.result.tasksAdded
+            message.result.tasksAdded,
+            message.result.tagsAdded
         )
         BackupMessage.NotABackup -> stringResource(R.string.backup_not_a_backup)
         BackupMessage.TooNew -> stringResource(R.string.backup_too_new)

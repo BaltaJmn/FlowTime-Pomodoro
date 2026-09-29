@@ -27,7 +27,7 @@ val FeaturesModule: Module
 val CoreModules: Module
     get() = module {
         viewModelOf(::MainViewModel)
-        single { SessionNotification(androidContext(), get()) }
+        single { SessionNotification(androidContext(), get(), get()) }
         single { PhaseAlarm(androidContext(), get()) }
         single { GoalWatcher(androidContext(), get(), get()) }
         includes(
