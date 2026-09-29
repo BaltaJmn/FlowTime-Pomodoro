@@ -4,7 +4,11 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.baltajmn.flowtime.core.database.datasource.AppDatabase
+import com.baltajmn.flowtime.core.database.model.ModeSeconds
+import com.baltajmn.flowtime.core.database.model.PeriodTotals
 import com.baltajmn.flowtime.core.database.model.SessionDb
+import com.baltajmn.flowtime.core.database.model.TaskDb
+import com.baltajmn.flowtime.core.database.model.TaskTotal
 import java.time.LocalDate
 import java.time.ZoneId
 import kotlinx.coroutines.flow.first
@@ -81,6 +85,87 @@ class SessionDaoTest {
 
         assertEquals(1, dao.countSessions("2026-09-01", "2026-09-29"))
         assertEquals(2, dao.countSessions("2026-09-01", "2026-09-30"))
+    }
+
+    @Test
+    fun los_totales_de_un_periodo_suman_lo_importado_pero_no_como_sesion() = runTest {
+        dao.insert(session(sep29, 1500))
+        dao.insert(session(sep29, 600, mode = SessionDb.MODE_LEGACY))
+        dao.insert(session(sep30, 900))
+
+        assertEquals(
+            PeriodTotals(totalSeconds = 2100, sessions = 1, sessionSeconds = 1500),
+            dao.totals("2026-09-29", "2026-09-29")
+        )
+        assertEquals(PeriodTotals(0, 0, 0), dao.totals("2026-10-01", "2026-10-31"))
+    }
+
+    // strftime con 'localtime' usa la zona del móvil, la misma que ZoneId.systemDefault().
+    private fun startingAt(day: LocalDate, hour: Int) =
+        day.atTime(hour, 30).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+
+    @Test
+    fun por_hora_cuenta_la_hora_en_que_empezo_sin_el_tiempo_importado() = runTest {
+        dao.insert(session(sep29, 600).copy(startedAt = startingAt(sep29, 9)))
+        dao.insert(session(sep29, 300).copy(startedAt = startingAt(sep29, 9)))
+        dao.insert(session(sep29, 1200).copy(startedAt = startingAt(sep29, 23)))
+        dao.insert(SessionDb.legacy(sep29, 900, ZoneId.systemDefault()))
+
+        assertEquals(
+            mapOf(9 to 900L, 23 to 1200L),
+            dao.secondsByHour("2026-09-29", "2026-09-29").associate { it.hour to it.seconds }
+        )
+    }
+
+    @Test
+    fun por_modo_con_su_numero_de_sesiones_sin_el_tiempo_importado() = runTest {
+        dao.insert(session(sep29, 1500))
+        dao.insert(session(sep29, 1500))
+        dao.insert(session(sep30, 2400, mode = "FLOW_TIME"))
+        dao.insert(session(sep30, 600, mode = SessionDb.MODE_LEGACY))
+
+        assertEquals(
+            listOf(ModeSeconds("FLOW_TIME", 2400, 1), ModeSeconds("POMODORO", 3000, 2)),
+            dao.secondsByMode("2026-09-01", "2026-09-30").sortedBy { it.mode }
+        )
+    }
+
+    @Test
+    fun por_etiqueta_junta_las_sesiones_sin_etiqueta() = runTest {
+        dao.insert(session(sep29, 600).copy(tagId = 1))
+        dao.insert(session(sep29, 300).copy(tagId = 1))
+        dao.insert(session(sep29, 900))
+        dao.insert(session(sep29, 60, mode = SessionDb.MODE_LEGACY))
+
+        assertEquals(
+            mapOf(1L to 900L, null to 900L),
+            dao.secondsByTag("2026-09-29", "2026-09-29").associate { it.tagId to it.seconds }
+        )
+    }
+
+    private fun task(title: String) =
+        TaskDb(title = title, description = "", plannedFor = sep29.toString(), createdAt = 0, position = 0)
+
+    @Test
+    fun las_tareas_con_mas_tiempo_llevan_su_titulo_y_las_borradas_no_salen() = runTest {
+        val write = db.taskDao().insert(task("Escribir"))
+        val read = db.taskDao().insert(task("Leer"))
+        val deleted = 99L
+        dao.insert(session(sep29, 600).copy(taskId = read))
+        dao.insert(session(sep29, 1500).copy(taskId = write))
+        dao.insert(session(sep30, 300).copy(taskId = read))
+        dao.insert(session(sep30, 900).copy(taskId = deleted))
+        dao.insert(session(sep30, 1200))
+
+        assertEquals(
+            listOf(TaskTotal(write, "Escribir", 1500), TaskTotal(read, "Leer", 900)),
+            dao.topTasks("2026-09-01", "2026-09-30")
+        )
+        assertEquals(listOf(TaskTotal(read, "Leer", 300)), dao.topTasks("2026-09-30", "2026-09-30"))
+        assertEquals(
+            mapOf(write to 1500L, read to 900L, deleted to 900L),
+            dao.secondsByTask().first().associate { it.taskId to it.seconds }
+        )
     }
 
     @Test
