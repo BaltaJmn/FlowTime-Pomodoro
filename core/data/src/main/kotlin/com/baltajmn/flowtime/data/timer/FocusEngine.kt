@@ -2,6 +2,7 @@ package com.baltajmn.flowtime.data.timer
 
 import androidx.annotation.StringRes
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
@@ -205,21 +206,18 @@ class FocusEngine(
     fun workMillis(mode: TimerMode): Long =
         if (mode == TimerMode.POMODORO) pomodoroRange().endRange.coerceAtLeast(1) * MINUTE else 0
 
+    /** Los tramos de FlowTime con sus totales acumulados: los mismos para el motor y para el anillo. */
+    fun flowTimeRanges(): List<RangeModel> = (
+        dataProvider.getRangeModelList(SharedPreferencesItem.FLOW_TIME_RANGE)
+            ?: TimerDefaults.flowTimeRanges()
+        ).withCumulativeTotals()
+
+    fun percentage(): Long = TimerDefaults.percentage(dataProvider.getLong(SharedPreferencesItem.PERCENTAGE_RANGE))
+
     private fun breakMillis(mode: TimerMode, workedMillis: Long): Long = when (mode) {
         TimerMode.POMODORO -> pomodoroRange().rest * MINUTE
-
-        TimerMode.FLOW_TIME -> flowTimeBreakSeconds(
-            workedSeconds = workedMillis / 1000,
-            ranges = (
-                dataProvider.getRangeModelList(SharedPreferencesItem.FLOW_TIME_RANGE)
-                    ?: TimerDefaults.flowTimeRanges()
-                ).withCumulativeTotals()
-        ) * 1000
-
-        TimerMode.PERCENTAGE -> percentageBreakSeconds(
-            workedSeconds = workedMillis / 1000,
-            percentage = TimerDefaults.percentage(dataProvider.getLong(SharedPreferencesItem.PERCENTAGE_RANGE))
-        ) * 1000
+        TimerMode.FLOW_TIME -> flowTimeBreakSeconds(workedMillis / 1000, flowTimeRanges()) * 1000
+        TimerMode.PERCENTAGE -> percentageBreakSeconds(workedMillis / 1000, percentage()) * 1000
     }
 
     private fun pomodoroRange() =

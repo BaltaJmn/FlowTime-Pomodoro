@@ -13,10 +13,13 @@ import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusSnapshot
+import com.baltajmn.flowtime.data.timer.FocusState
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerAction
+import com.baltajmn.flowtime.data.timer.TimerHint
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.data.timer.actionsFor
+import com.baltajmn.flowtime.data.timer.timerProgress
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -37,9 +40,13 @@ data class TimerUiState(
     val keepScreenOn: Boolean = true,
     /** Las etiquetas activas, para elegir con cuál se guarda el trabajo. */
     val tags: List<Tag> = emptyList(),
-    val tagId: Long? = null
+    val tagId: Long? = null,
+    /** Lo que lleva el anillo, de 0 a 1. */
+    val progress: Float = 0f,
+    val hint: TimerHint? = null
 ) {
     val isActive get() = phase != Phase.IDLE
+    val isBreak get() = phase == Phase.BREAK
     val actions get() = actionsFor(mode, phase, paused)
 }
 
@@ -106,6 +113,11 @@ class TimerViewModel(
         val session = snapshot.state
         // Si la sesión en marcha es de otro modo, esta pantalla se ve parada.
         val mine = session.isActive && session.mode == mode
+        val ring = timerProgress(
+            snapshot = if (mine) snapshot else FocusSnapshot(FocusState(mode), elapsedMillis = 0),
+            flowTimeRanges = if (mine && mode == TimerMode.FLOW_TIME) engine.flowTimeRanges() else emptyList(),
+            percentage = engine.percentage()
+        )
         return TimerUiState(
             mode = mode,
             phase = if (mine) session.phase else Phase.IDLE,
@@ -116,7 +128,9 @@ class TimerViewModel(
             continueAfterBreak = continueAfter,
             keepScreenOn = keepScreenOn,
             tags = tags,
-            tagId = session.tagId
+            tagId = session.tagId,
+            progress = ring.progress,
+            hint = ring.hint
         )
     }
 }

@@ -4,11 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -21,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.components.ProgressRing
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.components.ButtonsContent
@@ -28,6 +26,7 @@ import com.baltajmn.flowtime.features.screens.common.composable.components.Minut
 import com.baltajmn.flowtime.features.screens.common.composable.components.ScreenTitle
 import com.baltajmn.flowtime.features.screens.common.composable.components.TagChips
 import com.baltajmn.flowtime.features.screens.common.composable.components.TimeContent
+import com.baltajmn.flowtime.features.screens.common.composable.components.TimerHintText
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 
@@ -48,26 +47,26 @@ fun TimerPortraitContent(
 
         ScreenTitle(text = title)
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        Card(
-            modifier = Modifier.padding(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
-                TimeContent(secondsFormatted = state.time)
-                Spacer(modifier = Modifier.height(16.dp))
-                MinutesStudying(minutesStudying = state.minutesToday, goal = state.goalToday)
-                Spacer(modifier = Modifier.height(16.dp))
+        // Trabajo con primary y descanso con tertiary: se distinguen sin leer nada.
+        val color = if (state.isBreak) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary
+        ProgressRing(progress = state.progress, modifier = Modifier.size(280.dp), color = color) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                TimeContent(
+                    secondsFormatted = state.time,
+                    fontSize = if (state.time.length > 5) 44.sp else 64.sp,
+                    color = color
+                )
+                TimerHintText(hint = state.hint)
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        MinutesStudying(minutesStudying = state.minutesToday, goal = state.goalToday)
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         TagChips(tags = state.tags, selected = state.tagId, onSelect = onTagSelected)
 

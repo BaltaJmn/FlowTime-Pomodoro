@@ -4,6 +4,8 @@
 
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- La vibración al cambiar de fase con la app a la vista (#50). Es un permiso normal. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- Es un temporizador: Play permite USE_EXACT_ALARM declarándolo en la ficha. En Android 12
          no existe, y SCHEDULE_EXACT_ALARM viene concedido. -->

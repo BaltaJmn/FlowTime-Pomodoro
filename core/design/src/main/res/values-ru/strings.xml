@@ -242,4 +242,6 @@
         <item quantity="many">%d дней назад</item>
         <item quantity="other">%d дня назад</item>
     </plurals>
+    <string name="timer_hint_next_step">После %1$s — %2$s отдыха</string>
+    <string name="timer_hint_earned">Заработанный отдых: %1$s</string>
 </resources>

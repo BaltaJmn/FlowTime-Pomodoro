@@ -232,4 +232,6 @@
         <item quantity="one">Vor %d Tag</item>
         <item quantity="other">Vor %d Tagen</item>
     </plurals>
+    <string name="timer_hint_next_step">Ab %1$s: %2$s Pause</string>
+    <string name="timer_hint_earned">Verdiente Pause: %1$s</string>
 </resources>

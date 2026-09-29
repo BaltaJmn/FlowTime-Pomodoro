@@ -10,6 +10,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,9 +38,15 @@ fun ButtonsContent(
     vertical: Boolean = false
 ) {
     val actions = state.actions
+    val haptics = LocalHapticFeedback.current
     val content = @Composable {
         actions.forEach { action ->
-            CircularButton(onClick = { onAction(action) }) {
+            CircularButton(
+                onClick = {
+                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onAction(action)
+                }
+            ) {
                 Icon(
                     painter = painterResource(id = action.icon()),
                     contentDescription = stringResource(action.label),

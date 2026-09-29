@@ -3,6 +3,7 @@ package com.baltajmn.flowtime.features.screens.screenshots
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.data.timer.Phase
+import com.baltajmn.flowtime.data.timer.TimerHint
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.screen.TimerPortraitContent
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
@@ -37,7 +38,10 @@ class ThemeScreenshotsTest(private val theme: AppTheme, private val dark: Boolea
                 mode = TimerMode.FLOW_TIME,
                 phase = Phase.WORK,
                 time = "24:59",
-                minutesToday = "1 h 25 min"
+                minutesToday = "1 h 25 min",
+                goalToday = "2 h",
+                progress = 0.66f,
+                hint = TimerHint.NextStep(atMinutes = 30, breakMinutes = 15)
             ),
             title = "Working",
             onAction = {},

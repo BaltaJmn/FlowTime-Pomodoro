@@ -235,4 +235,6 @@
         <item quantity="one">%d giorno fa</item>
         <item quantity="other">%d giorni fa</item>
     </plurals>
+    <string name="timer_hint_next_step">A %1$s, %2$s di pausa</string>
+    <string name="timer_hint_earned">Pausa guadagnata: %1$s</string>
 </resources>

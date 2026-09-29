@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -19,12 +20,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.components.ProgressRing
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.features.screens.common.composable.components.ButtonsContent
 import com.baltajmn.flowtime.features.screens.common.composable.components.MinutesStudying
 import com.baltajmn.flowtime.features.screens.common.composable.components.TagChips
 import com.baltajmn.flowtime.features.screens.common.composable.components.TimeContent
+import com.baltajmn.flowtime.features.screens.common.composable.components.TimerHintText
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 
@@ -59,7 +62,25 @@ fun TimerLandscapeContent(
                     )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                TimeContent(secondsFormatted = state.time)
+                val color = if (state.isBreak) {
+                    MaterialTheme.colorScheme.tertiary
+                } else {
+                    MaterialTheme.colorScheme.primary
+                }
+                ProgressRing(
+                    progress = state.progress,
+                    modifier = Modifier.size(200.dp),
+                    color = color
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        TimeContent(
+                            secondsFormatted = state.time,
+                            fontSize = if (state.time.length > 5) 32.sp else 44.sp,
+                            color = color
+                        )
+                        TimerHintText(hint = state.hint)
+                    }
+                }
                 Spacer(modifier = Modifier.height(8.dp))
                 MinutesStudying(minutesStudying = state.minutesToday, goal = state.goalToday)
                 Spacer(modifier = Modifier.height(8.dp))

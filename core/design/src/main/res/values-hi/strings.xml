@@ -232,4 +232,6 @@
         <item quantity="one">%d दिन पहले</item>
         <item quantity="other">%d दिन पहले</item>
     </plurals>
+    <string name="timer_hint_next_step">%1$s पर, %2$s का ब्रेक</string>
+    <string name="timer_hint_earned">कमाया गया ब्रेक: %1$s</string>
 </resources>

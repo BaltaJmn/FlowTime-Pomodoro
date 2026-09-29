@@ -234,4 +234,6 @@
         <item quantity="one">%d day ago</item>
         <item quantity="other">%d days ago</item>
     </plurals>
+    <string name="timer_hint_next_step">At %1$s, %2$s break</string>
+    <string name="timer_hint_earned">Break earned: %1$s</string>
 </resources>

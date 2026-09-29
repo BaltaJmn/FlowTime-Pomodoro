@@ -81,7 +81,9 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
                 mode = TimerMode.POMODORO,
                 phase = Phase.BREAK,
                 time = "04:12",
-                minutesToday = "45 min"
+                minutesToday = "45 min",
+                goalToday = "1 h",
+                progress = 0.28f
             ),
             title = "Resting",
             onAction = {},

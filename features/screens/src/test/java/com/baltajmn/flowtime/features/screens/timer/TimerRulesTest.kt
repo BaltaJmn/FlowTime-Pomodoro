@@ -2,7 +2,9 @@ package com.baltajmn.flowtime.features.screens.timer
 
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
+import com.baltajmn.flowtime.data.timer.NextStep
 import com.baltajmn.flowtime.data.timer.flowTimeBreakSeconds
+import com.baltajmn.flowtime.data.timer.flowTimeNextStep
 import com.baltajmn.flowtime.data.timer.percentageBreakSeconds
 import com.baltajmn.flowtime.data.timer.withCumulativeTotals
 import org.junit.Assert.assertEquals
@@ -87,5 +89,38 @@ class TimerRulesTest {
         )
 
         assertEquals(listOf(10, 11), ranges.withCumulativeTotals().map { it.totalRange })
+    }
+
+    @Test
+    fun `el siguiente tramo de FlowTime, en el borde de cada uno`() {
+        val ranges = defaults.withCumulativeTotals()
+
+        assertEquals(NextStep(0, minutes(15), minutes(10)), flowTimeNextStep(minutes(10), ranges))
+        // El límite es del tramo que termina, como en el descanso.
+        assertEquals(NextStep(0, minutes(15), minutes(10)), flowTimeNextStep(minutes(15), ranges))
+        assertEquals(
+            NextStep(minutes(15), minutes(30), minutes(15)),
+            flowTimeNextStep(minutes(15) + 1, ranges)
+        )
+        // Y lo que dice coincide con el descanso que da el motor al pasarlo.
+        assertEquals(minutes(15), flowTimeBreakSeconds(minutes(30) + 1, ranges))
+    }
+
+    @Test
+    fun `tras el ultimo limite el descanso ya no cambia`() {
+        assertEquals(null, flowTimeNextStep(minutes(30) + 1, defaults.withCumulativeTotals()))
+        assertEquals(null, flowTimeNextStep(minutes(3), listOf(RangeModel(20, 20, 5))))
+    }
+
+    @Test
+    fun `con un tramo borrado a mitad cuentan los totales de nuevo`() {
+        // Borrado el de 15 a 30, el de 45 se queda con 15 minutos: termina a los 30.
+        val ranges = listOf(RangeModel(15, 15, 5), RangeModel(45, 15, 15), RangeModel(60, 15, 20))
+            .withCumulativeTotals()
+
+        assertEquals(
+            NextStep(minutes(15), minutes(30), minutes(20)),
+            flowTimeNextStep(minutes(20), ranges)
+        )
     }
 }

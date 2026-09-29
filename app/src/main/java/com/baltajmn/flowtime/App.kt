@@ -1,6 +1,11 @@
 package com.baltajmn.flowtime
 
 import android.app.Application
+import android.media.AudioManager
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.baltajmn.flowtime.core.design.R
@@ -77,10 +82,25 @@ class App : Application() {
         if (!visible) return get<SessionNotification>().alert(change)
         val sounds = get<SoundService>()
         if (change.from == Phase.WORK) sounds.playConfirmationSound() else sounds.playStartSound()
+        vibrate()
+    }
+
+    /** Un patrón corto, para notarlo aunque el móvil esté en vibración. En silencio, nada. */
+    private fun vibrate() {
+        if (getSystemService(AudioManager::class.java)?.ringerMode == AudioManager.RINGER_MODE_SILENT) return
+        val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            getSystemService(VibratorManager::class.java)?.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(Vibrator::class.java)
+        }
+        val pattern = VibrationEffect.createWaveform(VIBRATION, -1)
+        vibrator?.takeIf { it.hasVibrator() }?.vibrate(pattern)
     }
 
     private companion object {
         // Margen para que arranque el proceso cuando la alarma lo despierta con la app cerrada.
         const val LATE_MILLIS = 60_000L
+        val VIBRATION = longArrayOf(0, 120, 80, 120)
     }
 }

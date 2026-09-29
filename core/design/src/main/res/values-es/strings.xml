@@ -235,4 +235,6 @@
         <item quantity="one">Hace %d día</item>
         <item quantity="other">Hace %d días</item>
     </plurals>
+    <string name="timer_hint_next_step">A los %1$s, %2$s de descanso</string>
+    <string name="timer_hint_earned">Descanso ganado: %1$s</string>
 </resources>
