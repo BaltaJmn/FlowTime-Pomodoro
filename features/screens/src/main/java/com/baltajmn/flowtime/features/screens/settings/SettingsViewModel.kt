@@ -14,6 +14,7 @@ import com.baltajmn.flowtime.data.backup.BackupRead
 import com.baltajmn.flowtime.data.backup.BackupRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.stats.level
 import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.tag.TagResult
@@ -93,29 +94,11 @@ class SettingsViewModel(
 
     private fun getUserLevel() {
         viewModelScope.launch {
-            val userLevel = getAllStudyTimeUseCase()
-            val xpBase = 100
-            val xpPerHour = 50
-            val xpTotal = (userLevel * xpPerHour).toInt()
-
-            var level = 0
-            var xpRequiredForCurrentLevel = 0
-            var xpRequiredForNextLevel = xpBase
-
-            while (xpTotal >= xpRequiredForNextLevel) {
-                level++
-                xpRequiredForCurrentLevel = xpRequiredForNextLevel
-                xpRequiredForNextLevel = xpBase * (level + 1) * (level + 1)
-            }
-
-            val xpInCurrentLevel = xpTotal - xpRequiredForCurrentLevel
-            val xpNeededInThisLevel = xpRequiredForNextLevel - xpRequiredForCurrentLevel
-            val progressPercentage = (xpInCurrentLevel.toDouble() / xpNeededInThisLevel) * 100
-
+            val level = level(totalMinutes = getAllStudyTimeUseCase())
             _uiState.update {
                 it.copy(
-                    userLevel = level.toLong(),
-                    progressPercentage = progressPercentage.toLong(),
+                    userLevel = level.level,
+                    progressPercentage = level.progressPercentage,
                     showAlert = dataProvider.getBoolean(SHOW_ALERT, true),
                     keepScreenOn = dataProvider.getBoolean(KEEP_SCREEN_ON, true)
                 )

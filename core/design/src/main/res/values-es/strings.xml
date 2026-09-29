@@ -237,4 +237,15 @@
     </plurals>
     <string name="timer_hint_next_step">A los %1$s, %2$s de descanso</string>
     <string name="timer_hint_earned">Descanso ganado: %1$s</string>
+    <string name="stats_today">Hoy</string>
+    <string name="stats_week">Semana</string>
+    <string name="stats_month">Mes</string>
+    <string name="stats_total">Total</string>
+    <string name="stats_sessions">Sesiones</string>
+    <string name="stats_average_session">Media por sesión</string>
+    <string name="stats_daily_average">Media al día</string>
+    <string name="stats_best_day">Mejor día</string>
+    <string name="stats_empty">Sin sesiones en este periodo</string>
+    <string name="stats_previous">Periodo anterior</string>
+    <string name="stats_next">Periodo siguiente</string>
 </resources>

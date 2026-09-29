@@ -244,4 +244,15 @@
     </plurals>
     <string name="timer_hint_next_step">После %1$s — %2$s отдыха</string>
     <string name="timer_hint_earned">Заработанный отдых: %1$s</string>
+    <string name="stats_today">Сегодня</string>
+    <string name="stats_week">Неделя</string>
+    <string name="stats_month">Месяц</string>
+    <string name="stats_total">Всего</string>
+    <string name="stats_sessions">Сеансы</string>
+    <string name="stats_average_session">В среднем за сеанс</string>
+    <string name="stats_daily_average">В среднем за день</string>
+    <string name="stats_best_day">Лучший день</string>
+    <string name="stats_empty">В этот период сеансов нет</string>
+    <string name="stats_previous">Предыдущий период</string>
+    <string name="stats_next">Следующий период</string>
 </resources>

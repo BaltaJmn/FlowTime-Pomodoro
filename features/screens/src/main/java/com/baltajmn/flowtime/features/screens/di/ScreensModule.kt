@@ -48,7 +48,7 @@ private val ScreensPresentationModule: Module
         viewModelOf(::SettingsViewModel)
         // A mano: el constructor tiene un parámetro opcional para los tests que Koin no sabría resolver.
         viewModel { TodoListViewModel(get()) }
-        viewModelOf(::HistoryViewModel)
+        viewModel { HistoryViewModel(get(), get(), get(), get(), get()) }
         viewModelOf(::OnBoardViewModel)
         viewModelOf(::SplashViewModel)
     }

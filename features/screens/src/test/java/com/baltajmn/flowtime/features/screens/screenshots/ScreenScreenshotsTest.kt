@@ -12,6 +12,7 @@ import com.baltajmn.flowtime.core.design.sound.PlayerType
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.stats.StatsSummary
 import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerMode
@@ -19,6 +20,7 @@ import com.baltajmn.flowtime.features.screens.common.composable.screen.TimerLand
 import com.baltajmn.flowtime.features.screens.fakes.FakeBackups
 import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
 import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
+import com.baltajmn.flowtime.features.screens.fakes.FakeStats
 import com.baltajmn.flowtime.features.screens.fakes.FakeTags
 import com.baltajmn.flowtime.features.screens.fakes.FakeTasks
 import com.baltajmn.flowtime.features.screens.history.HistoryContent
@@ -125,7 +127,17 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
             GetStudyTime(sessions),
             GetAllStudyTime(sessions),
             GetStudyTimeToClipboard(sessions),
-            SetStudyTimeFromClipboard(sessions)
+            SetStudyTimeFromClipboard(sessions),
+            FakeStats(
+                StatsSummary(
+                    totalSeconds = 6 * 3600L,
+                    sessions = 9,
+                    averageSessionSeconds = 40 * 60L,
+                    dailyAverageSeconds = 51 * 60L,
+                    bestDay = LocalDate.now(),
+                    bestDaySeconds = 130 * 60L
+                )
+            )
         )
         compose.capture("history_$mode", dark = dark) {
             val state by viewModel.uiState.collectAsState()

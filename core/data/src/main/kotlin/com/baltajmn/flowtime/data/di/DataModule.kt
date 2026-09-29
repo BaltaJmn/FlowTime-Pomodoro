@@ -9,6 +9,8 @@ import com.baltajmn.flowtime.data.pro.ProGate
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.repository.DefaultSessionRepository
 import com.baltajmn.flowtime.data.repository.SessionRepository
+import com.baltajmn.flowtime.data.stats.DefaultStatsRepository
+import com.baltajmn.flowtime.data.stats.StatsRepository
 import com.baltajmn.flowtime.data.tag.DefaultTagRepository
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.task.DefaultTaskRepository
@@ -42,6 +44,7 @@ val DataModule = module {
     single { ProGate(get()) }
     single<TagRepository> { DefaultTagRepository(get(), get(), get()) }
     single<TaskRepository> { DefaultTaskRepository(get(), get()) }
+    single<StatsRepository> { DefaultStatsRepository(get()) }
     single<TimeSource> { SystemTimeSource(androidContext()) }
     singleOf(::FocusEngine)
 }

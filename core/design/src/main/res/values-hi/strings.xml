@@ -234,4 +234,15 @@
     </plurals>
     <string name="timer_hint_next_step">%1$s पर, %2$s का ब्रेक</string>
     <string name="timer_hint_earned">कमाया गया ब्रेक: %1$s</string>
+    <string name="stats_today">आज</string>
+    <string name="stats_week">हफ़्ता</string>
+    <string name="stats_month">महीना</string>
+    <string name="stats_total">कुल</string>
+    <string name="stats_sessions">सत्र</string>
+    <string name="stats_average_session">प्रति सत्र औसत</string>
+    <string name="stats_daily_average">प्रति दिन औसत</string>
+    <string name="stats_best_day">सबसे अच्छा दिन</string>
+    <string name="stats_empty">इस अवधि में कोई सत्र नहीं</string>
+    <string name="stats_previous">पिछली अवधि</string>
+    <string name="stats_next">अगली अवधि</string>
 </resources>

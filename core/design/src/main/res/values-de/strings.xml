@@ -234,4 +234,15 @@
     </plurals>
     <string name="timer_hint_next_step">Ab %1$s: %2$s Pause</string>
     <string name="timer_hint_earned">Verdiente Pause: %1$s</string>
+    <string name="stats_today">Heute</string>
+    <string name="stats_week">Woche</string>
+    <string name="stats_month">Monat</string>
+    <string name="stats_total">Gesamt</string>
+    <string name="stats_sessions">Sitzungen</string>
+    <string name="stats_average_session">Ø pro Sitzung</string>
+    <string name="stats_daily_average">Ø pro Tag</string>
+    <string name="stats_best_day">Bester Tag</string>
+    <string name="stats_empty">Keine Sitzungen in diesem Zeitraum</string>
+    <string name="stats_previous">Vorheriger Zeitraum</string>
+    <string name="stats_next">Nächster Zeitraum</string>
 </resources>

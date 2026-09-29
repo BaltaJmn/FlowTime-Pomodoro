@@ -143,6 +143,17 @@ fun HistoryContent(
         }
         item { Spacer(modifier = Modifier.height(32.dp)) }
         item {
+            StatsSummaryCard(
+                period = state.period,
+                range = state.periodRange,
+                summary = state.summary,
+                onPeriod = viewModel::selectPeriod,
+                onPrevious = viewModel::previousPeriod,
+                onNext = viewModel::nextPeriod
+            )
+        }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
+        item {
             HistoryWeek(
                 selectedDate = state.selectedDateToShow,
                 plusWeek = { viewModel.plusWeek() },

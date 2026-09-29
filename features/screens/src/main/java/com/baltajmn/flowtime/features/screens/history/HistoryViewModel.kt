@@ -4,6 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baltajmn.flowtime.core.common.extensions.formatAllStudyTime
 import com.baltajmn.flowtime.core.common.extensions.toShowInSelector
+import com.baltajmn.flowtime.data.stats.PeriodKind
+import com.baltajmn.flowtime.data.stats.StatsPeriod
+import com.baltajmn.flowtime.data.stats.StatsRepository
+import com.baltajmn.flowtime.data.stats.StatsSummary
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboardUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeUseCase
@@ -20,7 +24,9 @@ class HistoryViewModel(
     private val getStudyTime: GetStudyTimeUseCase,
     private val getAllStudyTimeUseCase: GetAllStudyTimeUseCase,
     private val getStudyTimeToClipboard: GetStudyTimeToClipboardUseCase,
-    private val setStudyTimeFromClipboard: SetStudyTimeFromClipboardUseCase
+    private val setStudyTimeFromClipboard: SetStudyTimeFromClipboardUseCase,
+    private val stats: StatsRepository,
+    private val today: () -> LocalDate = { LocalDate.now() }
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HistoryState())
@@ -33,6 +39,28 @@ class HistoryViewModel(
                     studyTime = getStudyTime(_uiState.value.selectedDate),
                     allStudyTime = getAllStudyTimeUseCase().formatAllStudyTime()
                 )
+            }
+        }
+        loadSummary(_uiState.value.period)
+    }
+
+    /** Hoy, esta semana o este mes. */
+    fun selectPeriod(kind: PeriodKind) = loadSummary(StatsPeriod(kind))
+
+    fun previousPeriod() = loadSummary(_uiState.value.period.previous)
+
+    /** Hasta el periodo en curso, no más allá. */
+    fun nextPeriod() {
+        val period = _uiState.value.period
+        if (period.offset > 0) loadSummary(period.copy(offset = period.offset - 1))
+    }
+
+    private fun loadSummary(period: StatsPeriod) {
+        viewModelScope.launch {
+            val now = today()
+            val summary = stats.summary(period, now)
+            _uiState.update {
+                it.copy(period = period, periodRange = period.range(now), summary = summary)
             }
         }
     }
@@ -126,5 +154,9 @@ data class HistoryState(
     val studyTime: List<Long> = List(7) { 0L },
     val allStudyTime: String = "",
     val pendingImport: StudyTimeImport? = null,
-    val importSummary: ImportSummary? = null
+    val importSummary: ImportSummary? = null,
+    /** El resumen de #38: lo gratis, hoy, la semana y el mes. */
+    val period: StatsPeriod = StatsPeriod(PeriodKind.WEEK),
+    val periodRange: ClosedRange<LocalDate> = StatsPeriod(PeriodKind.WEEK).range(LocalDate.now()),
+    val summary: StatsSummary = StatsSummary()
 )

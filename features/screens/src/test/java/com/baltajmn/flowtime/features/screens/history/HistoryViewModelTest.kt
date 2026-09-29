@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.features.screens.history
 
 import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
+import com.baltajmn.flowtime.features.screens.fakes.FakeStats
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboard
@@ -34,7 +35,8 @@ class HistoryViewModelTest {
             getStudyTime = GetStudyTime(sessions),
             getAllStudyTimeUseCase = GetAllStudyTime(sessions),
             getStudyTimeToClipboard = GetStudyTimeToClipboard(sessions),
-            setStudyTimeFromClipboard = SetStudyTimeFromClipboard(sessions)
+            setStudyTimeFromClipboard = SetStudyTimeFromClipboard(sessions),
+            stats = FakeStats()
         )
     }
 

@@ -14,9 +14,13 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.baltajmn.flowtime.core.database.converter.ItemConverter
 import com.baltajmn.flowtime.core.database.model.DaySeconds
+import com.baltajmn.flowtime.core.database.model.HourSeconds
+import com.baltajmn.flowtime.core.database.model.ModeSeconds
+import com.baltajmn.flowtime.core.database.model.PeriodTotals
 import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.SessionDb.Companion.DAY_SECONDS
 import com.baltajmn.flowtime.core.database.model.TagDb
+import com.baltajmn.flowtime.core.database.model.TagSeconds
 import com.baltajmn.flowtime.core.database.model.TaskDb
 import com.baltajmn.flowtime.core.database.model.TodoListDB
 import java.time.LocalDate
@@ -94,6 +98,40 @@ abstract class SessionDao {
             "WHERE mode != '${SessionDb.MODE_LEGACY}' AND localDate BETWEEN :from AND :to"
     )
     abstract suspend fun countSessions(from: String, to: String): Int
+
+    @Query(
+        "SELECT COALESCE(SUM(focusSeconds), 0) AS totalSeconds, " +
+            "COALESCE(SUM(CASE WHEN mode != '${SessionDb.MODE_LEGACY}' THEN 1 ELSE 0 END), 0) AS sessions, " +
+            "COALESCE(SUM(CASE WHEN mode != '${SessionDb.MODE_LEGACY}' THEN focusSeconds ELSE 0 END), 0) " +
+            "AS sessionSeconds FROM session WHERE localDate BETWEEN :from AND :to"
+    )
+    abstract suspend fun totals(from: String, to: String): PeriodTotals
+
+    /**
+     * Por la hora en que empezó cada sesión, como cuenta para el día en que empezó. Sin LEGACY, que
+     * tiene la hora puesta a medianoche.
+     */
+    @Query(
+        "SELECT CAST(strftime('%H', startedAt / 1000, 'unixepoch', 'localtime') AS INTEGER) AS hour, " +
+            "SUM(focusSeconds) AS seconds FROM session " +
+            "WHERE mode != '${SessionDb.MODE_LEGACY}' AND localDate BETWEEN :from AND :to GROUP BY hour"
+    )
+    abstract suspend fun secondsByHour(from: String, to: String): List<HourSeconds>
+
+    @Query(
+        "SELECT mode, SUM(focusSeconds) AS seconds, COUNT(*) AS sessions FROM session " +
+            "WHERE mode != '${SessionDb.MODE_LEGACY}' AND localDate BETWEEN :from AND :to GROUP BY mode"
+    )
+    abstract suspend fun secondsByMode(from: String, to: String): List<ModeSeconds>
+
+    @Query(
+        "SELECT tagId, SUM(focusSeconds) AS seconds FROM session " +
+            "WHERE mode != '${SessionDb.MODE_LEGACY}' AND localDate BETWEEN :from AND :to GROUP BY tagId"
+    )
+    abstract suspend fun secondsByTag(from: String, to: String): List<TagSeconds>
+
+    @Query("SELECT * FROM session ORDER BY startedAt")
+    abstract suspend fun all(): List<SessionDb>
 
     @Query("SELECT COALESCE(SUM(focusSeconds), 0) FROM session WHERE localDate = :day")
     protected abstract suspend fun secondsOnce(day: String): Long

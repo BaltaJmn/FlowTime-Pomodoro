@@ -1,14 +1,11 @@
 package com.baltajmn.flowtime.data.repository
 
-import com.baltajmn.flowtime.core.database.datasource.SessionDao
-import com.baltajmn.flowtime.core.database.model.DaySeconds
 import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
 import com.baltajmn.flowtime.data.fakes.FakeDataProvider
+import com.baltajmn.flowtime.data.fakes.FakeSessionDao
 import java.time.LocalDate
 import java.time.ZoneOffset
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -17,40 +14,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SessionRepositoryTest {
-
-    /** La tabla de sesiones en memoria: lo justo para que funcionen las transacciones de la clase base. */
-    private class FakeSessionDao : SessionDao() {
-        val rows = mutableListOf<SessionDb>()
-        private var nextId = 1L
-
-        override suspend fun insert(session: SessionDb) {
-            rows += session.copy(id = nextId++)
-        }
-
-        override suspend fun secondsByDay(from: String, to: String) = rows
-            .filter { it.localDate in from..to }
-            .groupBy { it.localDate }
-            .map { (day, sessions) -> DaySeconds(day, sessions.sumOf { it.focusSeconds }) }
-
-        override fun secondsOn(day: String): Flow<Long> = flowOf(secondsOf(day))
-
-        override suspend fun totalSeconds() = rows.sumOf { it.focusSeconds }
-
-        override suspend fun countSessions(from: String, to: String) =
-            rows.count { it.mode != SessionDb.MODE_LEGACY && it.localDate in from..to }
-
-        override suspend fun secondsOnce(day: String) = secondsOf(day)
-
-        override suspend fun deleteDay(day: String) {
-            rows.removeAll { it.localDate == day }
-        }
-
-        override suspend fun deleteLegacyDay(day: String) {
-            rows.removeAll { it.localDate == day && it.mode == SessionDb.MODE_LEGACY }
-        }
-
-        private fun secondsOf(day: String) = rows.filter { it.localDate == day }.sumOf { it.focusSeconds }
-    }
 
     private val dao = FakeSessionDao()
     private val prefs = FakeDataProvider()

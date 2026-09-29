@@ -237,4 +237,15 @@
     </plurals>
     <string name="timer_hint_next_step">A %1$s, %2$s di pausa</string>
     <string name="timer_hint_earned">Pausa guadagnata: %1$s</string>
+    <string name="stats_today">Oggi</string>
+    <string name="stats_week">Settimana</string>
+    <string name="stats_month">Mese</string>
+    <string name="stats_total">Totale</string>
+    <string name="stats_sessions">Sessioni</string>
+    <string name="stats_average_session">Media per sessione</string>
+    <string name="stats_daily_average">Media al giorno</string>
+    <string name="stats_best_day">Giorno migliore</string>
+    <string name="stats_empty">Nessuna sessione in questo periodo</string>
+    <string name="stats_previous">Periodo precedente</string>
+    <string name="stats_next">Periodo successivo</string>
 </resources>
