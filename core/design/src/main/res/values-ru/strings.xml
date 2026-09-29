@@ -82,4 +82,12 @@
     <string name="pomodoro_advantages">Улучшает концентрацию, снижает умственную усталость и способствует регулярным перерывам для поддержания продуктивности.</string>
     <string name="flow_time_advantages">Позволяет гибко планировать рабочие сессии, подстраивается под ваш ритм и помогает достичь состояния глубокого фокуса.</string>
     <string name="percentage_advantages">Регулирует перерывы в зависимости от времени работы, балансирует усилия и восстановление, персонализирует ваш опыт обучения.</string>
+
+    <string name="import_summary">Импортировано дней: %1$d · Пропущено строк: %2$d</string>
+    <string name="import_nothing">Не найдено ни одного подходящего дня для импорта</string>
+    <string name="import_conflict_title">Для некоторых дней уже есть данные</string>
+    <string name="import_conflict_message">Дней, для которых уже сохранены минуты: %1$d. Что с ними сделать?</string>
+    <string name="import_replace">Заменить</string>
+    <string name="import_sum">Сложить</string>
+
 </resources>

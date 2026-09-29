@@ -83,4 +83,11 @@
     <string name="flow_time_advantages">लचीले कार्य सत्रों की अनुमति देता है, आपकी गति के अनुसार अनुकूलित होता है और गहरी एकाग्रता प्राप्त करने में मदद करता है।</string>
     <string name="percentage_advantages">काम के समय के अनुसार ब्रेक समायोजित करता है, प्रयास और पुनर्प्राप्ति को संतुलित करता है, और आपके अध्ययन अनुभव को वैयक्तिकृत करता है।</string>
 
+    <string name="import_summary">आयात किए गए दिन: %1$d · छोड़ी गई पंक्तियाँ: %2$d</string>
+    <string name="import_nothing">आयात करने के लिए कोई मान्य दिन नहीं मिला</string>
+    <string name="import_conflict_title">कुछ दिनों में पहले से डेटा है</string>
+    <string name="import_conflict_message">जिन दिनों में पहले से मिनट सहेजे गए हैं: %1$d। आप उनके साथ क्या करना चाहते हैं?</string>
+    <string name="import_replace">बदलें</string>
+    <string name="import_sum">जोड़ें</string>
+
 </resources>

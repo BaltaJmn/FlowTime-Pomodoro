@@ -7,7 +7,9 @@ import com.baltajmn.flowtime.core.common.extensions.toShowInSelector
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboardUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeUseCase
+import com.baltajmn.flowtime.features.screens.history.usecases.ImportMode
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboardUseCase
+import com.baltajmn.flowtime.features.screens.history.usecases.StudyTimeImport
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -69,21 +71,59 @@ class HistoryViewModel(
 
     fun importStudyTime(data: String) {
         viewModelScope.launch {
-            setStudyTimeFromClipboard(data)
+            val studyTime = setStudyTimeFromClipboard.preview(data)
+            when {
+                studyTime.minutesByDay.isEmpty() -> _uiState.update {
+                    it.copy(
+                        importSummary = ImportSummary(
+                            importedDays = 0,
+                            ignoredLines = studyTime.ignoredLines
+                        )
+                    )
+                }
 
-            _uiState.update {
-                it.copy(
-                    studyTime = getStudyTime(_uiState.value.selectedDate)
-                )
+                // Hay días con datos: se pregunta si sustituirlos o sumarlos.
+                studyTime.daysWithData > 0 -> _uiState.update { it.copy(pendingImport = studyTime) }
+                else -> applyImport(studyTime, ImportMode.REPLACE)
             }
         }
     }
+
+    /** Respuesta al diálogo de días con datos; null es cancelar. */
+    fun resolvePendingImport(mode: ImportMode?) {
+        val studyTime = _uiState.value.pendingImport ?: return
+        _uiState.update { it.copy(pendingImport = null) }
+        if (mode != null) viewModelScope.launch { applyImport(studyTime, mode) }
+    }
+
+    fun onImportSummaryShown() {
+        _uiState.update { it.copy(importSummary = null) }
+    }
+
+    private suspend fun applyImport(studyTime: StudyTimeImport, mode: ImportMode) {
+        setStudyTimeFromClipboard.apply(studyTime, mode)
+
+        _uiState.update {
+            it.copy(
+                studyTime = getStudyTime(it.selectedDate),
+                allStudyTime = getAllStudyTimeUseCase().formatAllStudyTime(),
+                importSummary = ImportSummary(
+                    importedDays = studyTime.minutesByDay.size,
+                    ignoredLines = studyTime.ignoredLines
+                )
+            )
+        }
+    }
 }
+
+data class ImportSummary(val importedDays: Int, val ignoredLines: Int)
 
 data class HistoryState(
     val isLoading: Boolean = false,
     val selectedDate: LocalDate = LocalDate.now(),
     val selectedDateToShow: String = LocalDate.now().toShowInSelector(),
     val studyTime: List<Long> = listOf(),
-    val allStudyTime: String = ""
+    val allStudyTime: String = "",
+    val pendingImport: StudyTimeImport? = null,
+    val importSummary: ImportSummary? = null
 )

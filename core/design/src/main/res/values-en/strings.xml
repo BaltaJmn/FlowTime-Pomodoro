@@ -83,4 +83,11 @@
     <string name="flow_time_advantages">Allows flexible work sessions, adapts to your pace, and helps achieve deep focus states.</string>
     <string name="percentage_advantages">Adjusts breaks based on work time, balances effort and recovery, and personalizes your study experience.</string>
 
+    <string name="import_summary">Days imported: %1$d · Lines ignored: %2$d</string>
+    <string name="import_nothing">No valid days found to import</string>
+    <string name="import_conflict_title">Some days already have data</string>
+    <string name="import_conflict_message">Days that already have minutes saved: %1$d. What do you want to do with them?</string>
+    <string name="import_replace">Replace</string>
+    <string name="import_sum">Add up</string>
+
 </resources>

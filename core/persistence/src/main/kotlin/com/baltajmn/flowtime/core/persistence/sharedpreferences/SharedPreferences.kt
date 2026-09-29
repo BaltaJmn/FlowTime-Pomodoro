@@ -27,12 +27,10 @@ class SharedPreferencesProvider(
     }
 
     override fun getString(key: SharedPreferencesItem, decrypt: Boolean): String? {
-        if (decrypt) {
-            val encryptedValue =
-                sharedPreferences.getString(key.name.lowercase(), null) ?: return null
-            return cryptoManager.decrypt(encryptedValue)
-        }
-        return sharedPreferences.getString(key.name.lowercase(), null)
+        val value = readOrDefault(null) {
+            sharedPreferences.getString(key.name.lowercase(), null)
+        } ?: return null
+        return if (decrypt) cryptoManager.decrypt(value) else value
     }
 
     override fun setString(key: SharedPreferencesItem, value: String, encrypt: Boolean) {
@@ -41,7 +39,7 @@ class SharedPreferencesProvider(
     }
 
     override fun getBoolean(key: SharedPreferencesItem, defValue: Boolean): Boolean {
-        return sharedPreferences.getBoolean(key.name.lowercase(), defValue)
+        return readOrDefault(defValue) { sharedPreferences.getBoolean(key.name.lowercase(), defValue) }
     }
 
     override fun setBoolean(key: SharedPreferencesItem, value: Boolean) {
@@ -49,7 +47,7 @@ class SharedPreferencesProvider(
     }
 
     override fun getLong(key: SharedPreferencesItem): Long {
-        return sharedPreferences.getLong(key.name.lowercase(), 0L)
+        return readOrDefault(0L) { sharedPreferences.getLong(key.name.lowercase(), 0L) }
     }
 
     override fun setLong(key: SharedPreferencesItem, value: Long) {
@@ -57,7 +55,7 @@ class SharedPreferencesProvider(
     }
 
     override fun getFloat(key: String, defValue: Float): Float {
-        return sharedPreferences.getFloat(key, defValue)
+        return readOrDefault(defValue) { sharedPreferences.getFloat(key, defValue) }
     }
 
     override fun setFloat(key: String, value: Float) {
@@ -70,12 +68,12 @@ class SharedPreferencesProvider(
     }
 
     override fun getRangeModel(key: SharedPreferencesItem): RangeModel? {
-        val rawString = sharedPreferences.getString(key.name.lowercase(), null) ?: return null
+        val rawString = getString(key) ?: return null
         return Gson().fromJson(rawString, RangeModel::class.java)
     }
 
     override fun getRangeModelList(key: SharedPreferencesItem): MutableList<RangeModel>? {
-        val rawString = sharedPreferences.getString(key.name.lowercase(), null) ?: return null
+        val rawString = getString(key) ?: return null
         val type: Type = object : TypeToken<MutableList<RangeModel>>() {}.type
         return Gson().fromJson(rawString, type)
     }
@@ -87,13 +85,13 @@ class SharedPreferencesProvider(
 
     override fun updateMinutes(minutes: Long): Long {
         val todayKey = DayKeys.today(clock)
-        val total = sharedPreferences.getLong(todayKey, 0L) + minutes
+        val total = readOrDefault(0L) { sharedPreferences.getLong(todayKey, 0L) } + minutes
         sharedPreferences.edit().putLong(todayKey, total).apply()
         return total
     }
 
     override fun getMinutesByDate(date: LocalDate): Long {
-        return sharedPreferences.getLong(DayKeys.of(date), 0L)
+        return readOrDefault(0L) { sharedPreferences.getLong(DayKeys.of(date), 0L) }
     }
 
     override fun getAllDates(): List<LocalDate> {
@@ -106,10 +104,11 @@ class SharedPreferencesProvider(
             .mapValues { (_, value) -> value as Long }
     }
 
+    // Solo días: estas preferencias guardan también los ajustes, y una clave cualquiera los pisaba.
     override fun setStudyTimeMap(map: Map<String, Long>) {
         val editor = sharedPreferences.edit()
         map.forEach { (key, value) ->
-            editor.putLong(key, value)
+            DayKeys.parse(key)?.let { date -> editor.putLong(DayKeys.of(date), value) }
         }
         editor.apply()
     }
@@ -121,10 +120,14 @@ class SharedPreferencesProvider(
     }
 
     override fun getCheckValue(key: SharedPreferencesItem): Boolean {
-        return sharedPreferences.getBoolean(
-            key.name.lowercase(),
-            true
-        )
+        return readOrDefault(true) { sharedPreferences.getBoolean(key.name.lowercase(), true) }
+    }
+
+    /** Un ajuste guardado con otro tipo cerraba la app al leerlo: mejor el valor por defecto. */
+    private inline fun <T> readOrDefault(default: T, read: () -> T): T = try {
+        read()
+    } catch (e: ClassCastException) {
+        default
     }
 
     /**

@@ -83,4 +83,11 @@
     <string name="flow_time_advantages">Consente sessioni di lavoro flessibili, si adatta al tuo ritmo e aiuta a raggiungere stati di massima concentrazione.</string>
     <string name="percentage_advantages">Adatta le pause in base al tempo di lavoro, bilancia sforzo e recupero e personalizza la tua esperienza di studio.</string>
 
+    <string name="import_summary">Giorni importati: %1$d · Righe ignorate: %2$d</string>
+    <string name="import_nothing">Nessun giorno valido da importare</string>
+    <string name="import_conflict_title">Alcuni giorni contengono già dati</string>
+    <string name="import_conflict_message">Giorni con minuti già salvati: %1$d. Cosa vuoi fare?</string>
+    <string name="import_replace">Sostituisci</string>
+    <string name="import_sum">Somma</string>
+
 </resources>

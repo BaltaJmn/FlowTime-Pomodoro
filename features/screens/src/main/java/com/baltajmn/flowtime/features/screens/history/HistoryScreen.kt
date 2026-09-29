@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.features.screens.history
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,17 +24,21 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,6 +52,7 @@ import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.Title
+import com.baltajmn.flowtime.features.screens.history.usecases.ImportMode
 import org.koin.androidx.compose.koinViewModel
 import java.time.DayOfWeek
 import java.time.format.TextStyle
@@ -96,6 +102,29 @@ fun HistoryContent(
     val context = LocalContext.current
     val clipboardManager = LocalClipboardManager.current
 
+    state.importSummary?.let { summary ->
+        LaunchedEffect(summary) {
+            val message = if (summary.importedDays == 0) {
+                context.getString(R.string.import_nothing)
+            } else {
+                context.getString(
+                    R.string.import_summary,
+                    summary.importedDays,
+                    summary.ignoredLines
+                )
+            }
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            viewModel.onImportSummaryShown()
+        }
+    }
+
+    state.pendingImport?.let { pending ->
+        ImportConflictDialog(
+            daysWithData = pending.daysWithData,
+            onResolve = viewModel::resolvePendingImport
+        )
+    }
+
     LazyColumn(
         state = rememberLazyListState(),
         verticalArrangement = Arrangement.Top,
@@ -125,9 +154,7 @@ fun HistoryContent(
                     }
                 },
                 onImportStudyTime = {
-                    clipboardManager.getText()?.text?.let { text ->
-                        viewModel.importStudyTime(text)
-                    }
+                    viewModel.importStudyTime(clipboardManager.getText()?.text.orEmpty())
                 }
             )
         }
@@ -159,6 +186,30 @@ fun ScreenTitleWithBack(text: String, navigateUp: () -> Unit) {
             color = MaterialTheme.colorScheme.primary
         )
     }
+}
+
+@Composable
+fun ImportConflictDialog(daysWithData: Int, onResolve: (ImportMode?) -> Unit) {
+    AlertDialog(
+        onDismissRequest = { onResolve(null) },
+        title = { Text(text = stringResource(R.string.import_conflict_title)) },
+        text = { Text(text = stringResource(R.string.import_conflict_message, daysWithData)) },
+        confirmButton = {
+            Row {
+                TextButton(onClick = { onResolve(ImportMode.REPLACE) }) {
+                    Text(text = stringResource(R.string.import_replace))
+                }
+                TextButton(onClick = { onResolve(ImportMode.SUM) }) {
+                    Text(text = stringResource(R.string.import_sum))
+                }
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onResolve(null) }) {
+                Text(text = stringResource(R.string.dialog_cancel))
+            }
+        }
+    )
 }
 
 @Composable
