@@ -128,7 +128,7 @@ fun OnboardingContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.secondary)
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(16.dp)
     ) {
         HorizontalPager(

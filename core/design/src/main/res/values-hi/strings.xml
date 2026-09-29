@@ -135,4 +135,23 @@
     <string name="sound_pink">पिंक नॉइज़</string>
     <string name="sound_white">व्हाइट नॉइज़</string>
 
+    <string name="cd_previous_week">पिछला सप्ताह</string>
+    <string name="cd_next_week">अगला सप्ताह</string>
+    <string name="cd_edit_task">कार्य संपादित करें</string>
+    <string name="cd_delete_task">कार्य हटाएँ</string>
+    <string name="cd_play_sound">%1$s चलाएँ</string>
+    <string name="cd_pause_sound">%1$s रोकें</string>
+    <plurals name="time_hours">
+        <item quantity="one">%d घंटा</item>
+        <item quantity="other">%d घंटे</item>
+    </plurals>
+    <plurals name="time_minutes">
+        <item quantity="one">%d मिनट</item>
+        <item quantity="other">%d मिनट</item>
+    </plurals>
+    <plurals name="time_seconds">
+        <item quantity="one">%d सेकंड</item>
+        <item quantity="other">%d सेकंड</item>
+    </plurals>
+
 </resources>

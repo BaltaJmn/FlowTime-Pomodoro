@@ -56,7 +56,7 @@ fun TimerAlertDialog(isOpen: Boolean, onCloseDialog: (Boolean) -> Unit) {
                         modifier = Modifier
                             .fillMaxSize()
 
-                            .background(color = MaterialTheme.colorScheme.secondary)
+                            .background(color = MaterialTheme.colorScheme.primaryContainer)
                             .padding(horizontal = 8.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,

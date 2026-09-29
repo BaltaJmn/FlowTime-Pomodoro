@@ -128,7 +128,7 @@ fun RatingDialog(
                 MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(28.dp)
             ),
-        containerColor = MaterialTheme.colorScheme.secondary,
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
         titleContentColor = MaterialTheme.colorScheme.tertiary,
         textContentColor = MaterialTheme.colorScheme.tertiary,
         title = { Text(text = LocalContext.current.getString(R.string.rating_dialog_title)) },
@@ -141,7 +141,7 @@ fun RatingDialog(
                 Button(onClick = onRateNow) {
                     Text(
                         text = LocalContext.current.getString(R.string.rate_now),
-                        color = MaterialTheme.colorScheme.secondary
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }

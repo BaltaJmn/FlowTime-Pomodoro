@@ -135,4 +135,29 @@
     <string name="sound_pink">Розовый шум</string>
     <string name="sound_white">Белый шум</string>
 
+    <string name="cd_previous_week">Предыдущая неделя</string>
+    <string name="cd_next_week">Следующая неделя</string>
+    <string name="cd_edit_task">Изменить задачу</string>
+    <string name="cd_delete_task">Удалить задачу</string>
+    <string name="cd_play_sound">Воспроизвести: %1$s</string>
+    <string name="cd_pause_sound">Пауза: %1$s</string>
+    <plurals name="time_hours">
+        <item quantity="one">%d час</item>
+        <item quantity="few">%d часа</item>
+        <item quantity="many">%d часов</item>
+        <item quantity="other">%d часа</item>
+    </plurals>
+    <plurals name="time_minutes">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минуты</item>
+    </plurals>
+    <plurals name="time_seconds">
+        <item quantity="one">%d секунда</item>
+        <item quantity="few">%d секунды</item>
+        <item quantity="many">%d секунд</item>
+        <item quantity="other">%d секунды</item>
+    </plurals>
+
 </resources>

@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -221,7 +222,7 @@ fun TodoItem(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Edit,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.cd_edit_task),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -231,7 +232,7 @@ fun TodoItem(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.cd_delete_task),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -309,11 +310,12 @@ fun ScreenTitleWithIcon(text: String, onIconClick: () -> Unit) {
                 .weight(0.1f)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = null
+                    indication = null,
+                    role = Role.Button
                 ) { onIconClick.invoke() },
             imageVector = Icons.Filled.Add,
             tint = MaterialTheme.colorScheme.primary,
-            contentDescription = null
+            contentDescription = stringResource(R.string.todo_add_item)
         )
     }
 }

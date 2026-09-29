@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -131,7 +132,7 @@ fun HistoryContent(
         contentPadding = PaddingValues(24.dp),
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.secondary)
+            .background(MaterialTheme.colorScheme.primaryContainer)
     ) {
         item { Spacer(modifier = Modifier.height(16.dp)) }
         item {
@@ -168,7 +169,9 @@ fun ScreenTitleWithBack(text: String, navigateUp: () -> Unit) {
             .fillMaxWidth()
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = null
+                indication = null,
+                onClickLabel = stringResource(R.string.nav_back),
+                role = Role.Button
             ) { navigateUp.invoke() },
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
@@ -244,7 +247,7 @@ fun AllMinutes(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Share,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.export),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -260,7 +263,7 @@ fun AllMinutes(
             ) {
                 Icon(
                     imageVector = Icons.Filled.KeyboardArrowDown,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.import_button),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -290,7 +293,7 @@ fun HistoryWeek(
             IconButton(onClick = { minusWeek.invoke() }) {
                 Icon(
                     Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.cd_previous_week),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -307,7 +310,7 @@ fun HistoryWeek(
             IconButton(onClick = { plusWeek.invoke() }) {
                 Icon(
                     Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.cd_next_week),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }

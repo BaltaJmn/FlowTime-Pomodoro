@@ -34,7 +34,6 @@ import com.baltajmn.flowtime.core.design.R.string.mode_pomodoro
 import com.baltajmn.flowtime.core.design.R.string.nav_home
 import com.baltajmn.flowtime.core.design.R.string.percentage_advantages
 import com.baltajmn.flowtime.core.design.R.string.pomodoro_advantages
-import com.baltajmn.flowtime.core.design.extensions.noRippleClickable
 import com.baltajmn.flowtime.core.design.model.ScreenType
 import com.baltajmn.flowtime.core.design.model.ScreenType.FlowTime
 import com.baltajmn.flowtime.core.design.model.ScreenType.Percentage
@@ -90,9 +89,8 @@ fun ScreenCard(
     val description = remember(screenType) { getDescription(screenType) }
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .noRippleClickable { navigateToScreen(screenType) },
+        onClick = { navigateToScreen(screenType) },
+        modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         )

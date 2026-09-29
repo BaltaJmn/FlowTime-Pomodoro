@@ -135,4 +135,23 @@
     <string name="sound_pink">Rosa Rauschen</string>
     <string name="sound_white">Weißes Rauschen</string>
 
+    <string name="cd_previous_week">Vorherige Woche</string>
+    <string name="cd_next_week">Nächste Woche</string>
+    <string name="cd_edit_task">Aufgabe bearbeiten</string>
+    <string name="cd_delete_task">Aufgabe löschen</string>
+    <string name="cd_play_sound">%1$s abspielen</string>
+    <string name="cd_pause_sound">%1$s pausieren</string>
+    <plurals name="time_hours">
+        <item quantity="one">%d Stunde</item>
+        <item quantity="other">%d Stunden</item>
+    </plurals>
+    <plurals name="time_minutes">
+        <item quantity="one">%d Minute</item>
+        <item quantity="other">%d Minuten</item>
+    </plurals>
+    <plurals name="time_seconds">
+        <item quantity="one">%d Sekunde</item>
+        <item quantity="other">%d Sekunden</item>
+    </plurals>
+
 </resources>

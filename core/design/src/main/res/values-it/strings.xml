@@ -135,4 +135,26 @@
     <string name="sound_pink">Rumore rosa</string>
     <string name="sound_white">Rumore bianco</string>
 
+    <string name="cd_previous_week">Settimana precedente</string>
+    <string name="cd_next_week">Settimana successiva</string>
+    <string name="cd_edit_task">Modifica attività</string>
+    <string name="cd_delete_task">Elimina attività</string>
+    <string name="cd_play_sound">Riproduci %1$s</string>
+    <string name="cd_pause_sound">Metti in pausa %1$s</string>
+    <plurals name="time_hours">
+        <item quantity="one">%d ora</item>
+        <item quantity="many">%d ore</item>
+        <item quantity="other">%d ore</item>
+    </plurals>
+    <plurals name="time_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="many">%d minuti</item>
+        <item quantity="other">%d minuti</item>
+    </plurals>
+    <plurals name="time_seconds">
+        <item quantity="one">%d secondo</item>
+        <item quantity="many">%d secondi</item>
+        <item quantity="other">%d secondi</item>
+    </plurals>
+
 </resources>

@@ -244,7 +244,7 @@ fun CurrentlyPlaying(
             Icon(
                 imageVector = Icons.Default.ArrowDropDown,
                 tint = MaterialTheme.colorScheme.primary,
-                contentDescription = null
+                contentDescription = stringResource(R.string.cd_sound_mixer)
             )
         }
     }
@@ -338,7 +338,10 @@ fun SliderItem(
                     if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play
                 ),
                 tint = MaterialTheme.colorScheme.secondary,
-                contentDescription = null // Handled by parent semantics
+                contentDescription = stringResource(
+                    if (isPlaying) R.string.cd_pause_sound else R.string.cd_play_sound,
+                    soundName
+                )
             )
         }
     }

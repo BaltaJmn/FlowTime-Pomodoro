@@ -137,4 +137,23 @@
     <string name="sound_pink">Pink noise</string>
     <string name="sound_white">White noise</string>
 
+    <string name="cd_previous_week">Previous week</string>
+    <string name="cd_next_week">Next week</string>
+    <string name="cd_edit_task">Edit task</string>
+    <string name="cd_delete_task">Delete task</string>
+    <string name="cd_play_sound">Play %1$s</string>
+    <string name="cd_pause_sound">Pause %1$s</string>
+    <plurals name="time_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="time_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="time_seconds">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+
 </resources>
