@@ -19,4 +19,5 @@ val DatabaseModule = module {
 
     single { get<AppDatabase>().todoListDao() }
     single { get<AppDatabase>().sessionDao() }
+    single { get<AppDatabase>().backupDao() }
 }

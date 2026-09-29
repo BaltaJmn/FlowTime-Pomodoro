@@ -258,6 +258,17 @@ fun SettingsContent(
             }
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
+        item {
+            BackupCard(
+                state = state.backup,
+                onExport = viewModel::exportTo,
+                onImport = viewModel::importFrom,
+                onConfirmImport = viewModel::confirmImport,
+                onCancelImport = viewModel::cancelImport,
+                onMessageShown = viewModel::onBackupMessageShown
+            )
+        }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
         item { PositiveText() }
         item { Spacer(modifier = Modifier.height(192.dp)) }
     }

@@ -12,5 +12,7 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.design)
     implementation(projects.core.persistence)
-    implementation(libs.androidx.workmanager)
+    implementation(libs.kotlinx.serialization.json)
+
+    testImplementation(libs.mock)
 }

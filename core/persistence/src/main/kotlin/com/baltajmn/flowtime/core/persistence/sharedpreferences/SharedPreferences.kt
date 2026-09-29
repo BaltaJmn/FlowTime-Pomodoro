@@ -12,6 +12,9 @@ class SharedPreferencesProvider(context: Context) : DataProvider {
 
     companion object {
         const val SHARED_CONFIG = "shared_config"
+
+        /** La sesión en curso, aparte: la copia de seguridad de Android no debe llevársela a otro móvil. */
+        const val SESSION_STATE = "session_state"
     }
 
     private val sharedPreferences by lazy {
@@ -19,12 +22,22 @@ class SharedPreferencesProvider(context: Context) : DataProvider {
             .also(::migrateNonLatinDayKeys)
     }
 
+    // Sus anclas (el reloj desde el arranque y el número de arranque) solo valen en el móvil donde se
+    // crearon: restaurada en otro, la sesión contaría un tiempo que no es.
+    private val sessionPreferences by lazy {
+        context.getSharedPreferences(SESSION_STATE, Context.MODE_PRIVATE)
+            .also(::moveSessionState)
+    }
+
+    private fun prefs(key: SharedPreferencesItem) =
+        if (key == SharedPreferencesItem.TIMER_SESSION) sessionPreferences else sharedPreferences
+
     override fun getString(key: SharedPreferencesItem): String? {
-        return readOrDefault(null) { sharedPreferences.getString(key.name.lowercase(), null) }
+        return readOrDefault(null) { prefs(key).getString(key.name.lowercase(), null) }
     }
 
     override fun setString(key: SharedPreferencesItem, value: String) {
-        sharedPreferences.edit().putString(key.name.lowercase(), value).apply()
+        prefs(key).edit().putString(key.name.lowercase(), value).apply()
     }
 
     override fun getBoolean(key: SharedPreferencesItem, defValue: Boolean): Boolean {
@@ -53,7 +66,7 @@ class SharedPreferencesProvider(context: Context) : DataProvider {
 
     override fun setObject(key: SharedPreferencesItem, value: Any) {
         val rawString = Gson().toJson(value)
-        sharedPreferences.edit().putString(key.name.lowercase(), rawString).apply()
+        prefs(key).edit().putString(key.name.lowercase(), rawString).apply()
     }
 
     override fun <T> getObject(key: SharedPreferencesItem, type: Class<T>): T? {
@@ -102,6 +115,14 @@ class SharedPreferencesProvider(context: Context) : DataProvider {
         read()
     } catch (e: ClassCastException) {
         default
+    }
+
+    /** La sesión en curso vivía con los ajustes: se mueve una vez a su fichero. */
+    private fun moveSessionState(sessionPrefs: SharedPreferences) {
+        val key = SharedPreferencesItem.TIMER_SESSION.name.lowercase()
+        val old = sharedPreferences.getString(key, null) ?: return
+        if (!sessionPrefs.contains(key)) sessionPrefs.edit().putString(key, old).apply()
+        sharedPreferences.edit().remove(key).apply()
     }
 
     /**

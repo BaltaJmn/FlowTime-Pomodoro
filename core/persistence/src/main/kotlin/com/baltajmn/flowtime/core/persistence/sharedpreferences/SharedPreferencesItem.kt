@@ -19,4 +19,5 @@ enum class SharedPreferencesItem {
     SESSIONS_IMPORTED,
     DARK_MODE,
     DYNAMIC_COLOR,
+    LAST_BACKUP_AT,
 }

@@ -180,4 +180,21 @@
     <string name="alert_session_over">Сессия завершена</string>
     <string name="exact_alarms_off">Оповещения могут приходить с опозданием на несколько минут. Разрешите будильники и напоминания, чтобы слышать их вовремя.</string>
     <string name="channel_sounds">Фоновые звуки</string>
+    <string name="backup_title">Резервная копия</string>
+    <string name="backup_automatic">Если резервное копирование Google включено, Android сохраняет вашу историю и настройки в аккаунте: при установке FlowTime на новый телефон они вернутся.</string>
+    <string name="backup_export_label">Сохранить всё в файл</string>
+    <string name="backup_export">Экспорт</string>
+    <string name="backup_import_label">Восстановить из файла</string>
+    <string name="backup_import">Импорт</string>
+    <string name="backup_last">Последний экспорт: %1$s</string>
+    <string name="backup_never">Вы ещё не экспортировали копию</string>
+    <string name="backup_import_title">Импортировать эту копию?</string>
+    <string name="backup_import_message">Сеансов: %1$d · Задач: %2$d. Добавится только то, чего у вас ещё нет; ничего не удаляется.</string>
+    <string name="backup_import_settings">Импортировать также настройки</string>
+    <string name="backup_restored">Новых сеансов: %1$d · Уже были: %2$d · Новых задач: %3$d</string>
+    <string name="backup_exported">Копия сохранена</string>
+    <string name="backup_not_a_backup">Этот файл не является копией FlowTime</string>
+    <string name="backup_too_new">Эта копия из более новой версии FlowTime. Обновите приложение, чтобы импортировать её.</string>
+    <string name="backup_failed">Не удалось сохранить файл</string>
+    <string name="backup_import_failed">Не удалось импортировать копию. Ничего не изменилось.</string>
 </resources>

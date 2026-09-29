@@ -176,4 +176,21 @@
     <string name="alert_session_over">Session finished</string>
     <string name="exact_alarms_off">Alerts may arrive a few minutes late. Allow alarms and reminders to hear them on time.</string>
     <string name="channel_sounds">Ambient sounds</string>
+    <string name="backup_title">Backup</string>
+    <string name="backup_automatic">If Google backup is on, Android saves your history and settings to your account: install FlowTime on a new phone and they come back.</string>
+    <string name="backup_export_label">Save everything to a file</string>
+    <string name="backup_export">Export</string>
+    <string name="backup_import_label">Restore from a file</string>
+    <string name="backup_import">Import</string>
+    <string name="backup_last">Last export: %1$s</string>
+    <string name="backup_never">You haven\'t exported a backup yet</string>
+    <string name="backup_import_title">Import this backup?</string>
+    <string name="backup_import_message">Sessions: %1$d · Tasks: %2$d. Only what you don\'t have yet is added; nothing is deleted.</string>
+    <string name="backup_import_settings">Also import settings</string>
+    <string name="backup_restored">New sessions: %1$d · Already here: %2$d · New tasks: %3$d</string>
+    <string name="backup_exported">Backup saved</string>
+    <string name="backup_not_a_backup">This file isn\'t a FlowTime backup</string>
+    <string name="backup_too_new">This backup comes from a newer version of FlowTime. Update the app to import it.</string>
+    <string name="backup_failed">The file couldn\'t be saved</string>
+    <string name="backup_import_failed">The backup couldn\'t be imported. Nothing has changed.</string>
 </resources>

@@ -3,10 +3,8 @@ package com.baltajmn.flowtime.data.repository
 import com.baltajmn.flowtime.core.database.datasource.SessionDao
 import com.baltajmn.flowtime.core.database.model.DaySeconds
 import com.baltajmn.flowtime.core.database.model.SessionDb
-import com.baltajmn.flowtime.core.persistence.model.RangeModel
-import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
-import com.baltajmn.flowtime.core.persistence.sharedpreferences.DayKeys
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
+import com.baltajmn.flowtime.data.fakes.FakeDataProvider
 import java.time.LocalDate
 import java.time.ZoneOffset
 import kotlinx.coroutines.flow.Flow
@@ -54,38 +52,8 @@ class SessionRepositoryTest {
         private fun secondsOf(day: String) = rows.filter { it.localDate == day }.sumOf { it.focusSeconds }
     }
 
-    /** Las preferencias en memoria, con las claves ddMMyyyy del historial de antes. */
-    private class FakePrefs : DataProvider {
-        val values = mutableMapOf<String, Any>()
-
-        override fun getString(key: SharedPreferencesItem) = values[key.name] as? String
-        override fun setString(key: SharedPreferencesItem, value: String) {
-            values[key.name] = value
-        }
-        override fun getBoolean(key: SharedPreferencesItem, defValue: Boolean) = values[key.name] as? Boolean ?: defValue
-        override fun setBoolean(key: SharedPreferencesItem, value: Boolean) {
-            values[key.name] = value
-        }
-        override fun getLong(key: SharedPreferencesItem) = values[key.name] as? Long ?: 0L
-        override fun setLong(key: SharedPreferencesItem, value: Long) {
-            values[key.name] = value
-        }
-        override fun getFloat(key: String, defValue: Float) = defValue
-        override fun setFloat(key: String, value: Float) = Unit
-        override fun setObject(key: SharedPreferencesItem, value: Any) = Unit
-        override fun <T> getObject(key: SharedPreferencesItem, type: Class<T>): T? = null
-        override fun getRangeModel(key: SharedPreferencesItem): RangeModel? = null
-        override fun getRangeModelList(key: SharedPreferencesItem): MutableList<RangeModel>? = null
-        override fun setRangeModel(key: SharedPreferencesItem, value: RangeModel) = Unit
-        override fun getStudyTimeMap() = values
-            .filter { (key, value) -> value is Long && DayKeys.parse(key) != null }
-            .mapValues { (_, value) -> value as Long }
-        override fun setCheckValue(key: SharedPreferencesItem, value: Boolean) = Unit
-        override fun getCheckValue(key: SharedPreferencesItem) = true
-    }
-
     private val dao = FakeSessionDao()
-    private val prefs = FakePrefs()
+    private val prefs = FakeDataProvider()
     private val sep29 = LocalDate.of(2026, 9, 29)
 
     private fun TestScope.repository() =

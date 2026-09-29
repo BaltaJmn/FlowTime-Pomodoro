@@ -12,9 +12,11 @@ import com.baltajmn.flowtime.core.design.components.TopBarSurface
 import com.baltajmn.flowtime.core.design.sound.PlayerState
 import com.baltajmn.flowtime.core.design.sound.PlayerType
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
+import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.screen.TimerLandscapeContent
+import com.baltajmn.flowtime.features.screens.fakes.FakeBackups
 import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
 import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
 import com.baltajmn.flowtime.features.screens.history.HistoryContent
@@ -40,6 +42,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
@@ -92,7 +95,9 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
         val viewModel = SettingsViewModel(
             prefs,
             GetAllStudyTime(sessions()),
-            AppearanceRepository(prefs)
+            AppearanceRepository(prefs),
+            FakeBackups(lastExportAt = System.currentTimeMillis()),
+            DocumentFiles(RuntimeEnvironment.getApplication())
         )
         compose.capture("settings_$mode", dark = dark) {
             val state by viewModel.uiState.collectAsState()

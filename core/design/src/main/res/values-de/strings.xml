@@ -174,4 +174,21 @@
     <string name="alert_session_over">Sitzung beendet</string>
     <string name="exact_alarms_off">Hinweise können einige Minuten zu spät kommen. Erlaube Wecker und Erinnerungen, um sie pünktlich zu hören.</string>
     <string name="channel_sounds">Umgebungsgeräusche</string>
+    <string name="backup_title">Datensicherung</string>
+    <string name="backup_automatic">Wenn die Google-Sicherung aktiviert ist, speichert Android deinen Verlauf und deine Einstellungen in deinem Konto: Installierst du FlowTime auf einem neuen Handy, sind sie wieder da.</string>
+    <string name="backup_export_label">Alles in einer Datei speichern</string>
+    <string name="backup_export">Exportieren</string>
+    <string name="backup_import_label">Aus einer Datei wiederherstellen</string>
+    <string name="backup_import">Importieren</string>
+    <string name="backup_last">Letzter Export: %1$s</string>
+    <string name="backup_never">Du hast noch keine Sicherung exportiert</string>
+    <string name="backup_import_title">Diese Sicherung importieren?</string>
+    <string name="backup_import_message">Sitzungen: %1$d · Aufgaben: %2$d. Es wird nur hinzugefügt, was noch fehlt; nichts wird gelöscht.</string>
+    <string name="backup_import_settings">Auch die Einstellungen importieren</string>
+    <string name="backup_restored">Neue Sitzungen: %1$d · Schon vorhanden: %2$d · Neue Aufgaben: %3$d</string>
+    <string name="backup_exported">Sicherung gespeichert</string>
+    <string name="backup_not_a_backup">Diese Datei ist keine FlowTime-Sicherung</string>
+    <string name="backup_too_new">Diese Sicherung stammt aus einer neueren FlowTime-Version. Aktualisiere die App, um sie zu importieren.</string>
+    <string name="backup_failed">Die Datei konnte nicht gespeichert werden</string>
+    <string name="backup_import_failed">Die Sicherung konnte nicht importiert werden. Es wurde nichts geändert.</string>
 </resources>

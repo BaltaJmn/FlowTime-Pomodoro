@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.Flow
 abstract class AppDatabase : RoomDatabase() {
     abstract fun todoListDao(): TodoListDao
     abstract fun sessionDao(): SessionDao
+    abstract fun backupDao(): BackupDao
 }
 
 /** Escrita a mano: con la migración destructiva, un fallo borraba todas las tareas sin avisar. */

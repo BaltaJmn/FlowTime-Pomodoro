@@ -177,4 +177,21 @@
     <string name="alert_session_over">Sesión terminada</string>
     <string name="exact_alarms_off">Los avisos pueden llegar con unos minutos de retraso. Permite las alarmas y recordatorios para oírlos a su hora.</string>
     <string name="channel_sounds">Sonidos ambientales</string>
+    <string name="backup_title">Copia de seguridad</string>
+    <string name="backup_automatic">Si tienes activada la copia de seguridad de Google, Android guarda tu historial y tus ajustes en tu cuenta: al instalar FlowTime en un móvil nuevo, vuelven.</string>
+    <string name="backup_export_label">Guardar todo en un fichero</string>
+    <string name="backup_export">Exportar</string>
+    <string name="backup_import_label">Recuperar desde un fichero</string>
+    <string name="backup_import">Importar</string>
+    <string name="backup_last">Última exportación: %1$s</string>
+    <string name="backup_never">Todavía no has exportado ninguna copia</string>
+    <string name="backup_import_title">¿Importar esta copia?</string>
+    <string name="backup_import_message">Sesiones: %1$d · Tareas: %2$d. Solo se añade lo que aún no tienes; no se borra nada.</string>
+    <string name="backup_import_settings">Importar también los ajustes</string>
+    <string name="backup_restored">Sesiones nuevas: %1$d · Ya estaban: %2$d · Tareas nuevas: %3$d</string>
+    <string name="backup_exported">Copia guardada</string>
+    <string name="backup_not_a_backup">Este fichero no es una copia de FlowTime</string>
+    <string name="backup_too_new">Esta copia es de una versión más nueva de FlowTime. Actualiza la app para importarla.</string>
+    <string name="backup_failed">No se ha podido guardar el fichero</string>
+    <string name="backup_import_failed">No se ha podido importar la copia. No ha cambiado nada.</string>
 </resources>

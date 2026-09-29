@@ -51,7 +51,6 @@ class AndroidLibraryPlugin : Plugin<Project> {
             dependencies {
                 implementation(libs.koin.core)
                 implementation(libs.koin.android)
-                implementation(libs.koin.workmanager)
                 if (project.name != "common") {
                     implementation(project(":core:common"))
                 }

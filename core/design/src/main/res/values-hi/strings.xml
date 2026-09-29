@@ -174,4 +174,21 @@
     <string name="alert_session_over">सत्र समाप्त</string>
     <string name="exact_alarms_off">सूचनाएं कुछ मिनट देर से आ सकती हैं। समय पर सुनने के लिए अलार्म और रिमाइंडर की अनुमति दें।</string>
     <string name="channel_sounds">परिवेशी ध्वनियां</string>
+    <string name="backup_title">बैकअप</string>
+    <string name="backup_automatic">अगर Google बैकअप चालू है, तो Android आपका इतिहास और सेटिंग्स आपके खाते में सहेजता है: नए फ़ोन पर FlowTime इंस्टॉल करने पर वे वापस आ जाते हैं।</string>
+    <string name="backup_export_label">सब कुछ एक फ़ाइल में सहेजें</string>
+    <string name="backup_export">निर्यात करें</string>
+    <string name="backup_import_label">फ़ाइल से वापस लाएँ</string>
+    <string name="backup_import">आयात करें</string>
+    <string name="backup_last">पिछला निर्यात: %1$s</string>
+    <string name="backup_never">आपने अभी तक कोई बैकअप निर्यात नहीं किया है</string>
+    <string name="backup_import_title">यह बैकअप आयात करें?</string>
+    <string name="backup_import_message">सत्र: %1$d · कार्य: %2$d। केवल वही जोड़ा जाएगा जो आपके पास नहीं है; कुछ भी हटाया नहीं जाएगा।</string>
+    <string name="backup_import_settings">सेटिंग्स भी आयात करें</string>
+    <string name="backup_restored">नए सत्र: %1$d · पहले से थे: %2$d · नए कार्य: %3$d</string>
+    <string name="backup_exported">बैकअप सहेजा गया</string>
+    <string name="backup_not_a_backup">यह फ़ाइल FlowTime का बैकअप नहीं है</string>
+    <string name="backup_too_new">यह बैकअप FlowTime के नए संस्करण का है। इसे आयात करने के लिए ऐप अपडेट करें।</string>
+    <string name="backup_failed">फ़ाइल सहेजी नहीं जा सकी</string>
+    <string name="backup_import_failed">बैकअप आयात नहीं हो सका। कुछ भी नहीं बदला।</string>
 </resources>

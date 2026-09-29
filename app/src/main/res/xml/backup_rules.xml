@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   Sample backup rules file; uncomment and customize as necessary.
-   See https://developer.android.com/guide/topics/data/autobackup
-   for details.
-   Note: This file is ignored for devices older that API 31
-   See https://developer.android.com/about/versions/12/backup-restore
--->
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copia automática de Android hasta la 11. La 12 y posteriores leen data_extraction_rules.xml,
+     con lo mismo. Solo va lo incluido: la sesión en curso (session_state) y las cachés se quedan
+     fuera. Las preferencias de RevenueCat guardan su usuario anónimo, y con él las propinas, que
+     con Billing 8 ya no se pueden restaurar desde Google. -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
+    <include domain="database" path="app_database" />
+    <include domain="database" path="app_database-wal" />
+    <include domain="database" path="app_database-shm" />
+    <include domain="sharedpref" path="shared_config.xml" />
+    <include domain="sharedpref" path="com_revenuecat_purchases_preferences.xml" />
 </full-backup-content>
