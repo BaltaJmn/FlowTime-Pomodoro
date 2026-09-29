@@ -13,8 +13,12 @@ import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.ConsumeParams
+import com.android.billingclient.api.PendingPurchasesParams
+import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryPurchasesParams
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.ui.FlowTimeApp
@@ -42,9 +46,7 @@ class MainActivity : ComponentActivity() {
         PurchasesUpdatedListener { billingResult, purchases ->
             when (billingResult.responseCode) {
                 BillingClient.BillingResponseCode.OK -> {
-                    purchases?.forEach { purchase ->
-                        Log.d("MainActivity", "Purchase successful: ${purchase.products}")
-                    }
+                    purchases?.forEach(::consume)
                 }
 
                 BillingClient.BillingResponseCode.USER_CANCELED -> {
@@ -70,7 +72,10 @@ class MainActivity : ComponentActivity() {
 
         billingClient = BillingClient.newBuilder(this)
             .setListener(purchasesUpdatedListener)
-            .enablePendingPurchases()
+            .enablePendingPurchases(
+                PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()
+            )
+            .enableAutoServiceReconnection()
             .build()
 
         connectBillingClient()
@@ -96,6 +101,7 @@ class MainActivity : ComponentActivity() {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     queryProductDetails()
+                    consumePendingPurchases()
                 } else {
                     Log.e(
                         "MainActivity",
@@ -104,19 +110,18 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            override fun onBillingServiceDisconnected() {
-                connectBillingClient()
-            }
+            // enableAutoServiceReconnection() reconecta sola en la siguiente llamada.
+            override fun onBillingServiceDisconnected() = Unit
         })
     }
 
     private fun queryProductDetails() {
         billingClient.queryProductDetailsAsync(
             queryProductDetailsParams
-        ) { billingResult, productDetailsList ->
+        ) { billingResult, result ->
             when (billingResult.responseCode) {
                 BillingClient.BillingResponseCode.OK -> {
-                    viewModel.setProductDetailsList(productDetailsList)
+                    viewModel.setProductDetailsList(result.productDetailsList)
                 }
 
                 else -> {
@@ -125,6 +130,32 @@ class MainActivity : ComponentActivity() {
                         "Product details query failed: ${billingResult.debugMessage}"
                     )
                 }
+            }
+        }
+    }
+
+    // Compras que terminaron con la app cerrada, o pendientes que se pagaron despues.
+    private fun consumePendingPurchases() {
+        billingClient.queryPurchasesAsync(
+            QueryPurchasesParams.newBuilder()
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build()
+        ) { billingResult, purchases ->
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                purchases.forEach(::consume)
+            }
+        }
+    }
+
+    // Play reembolsa cualquier compra que no se reconozca en tres dias. Consumir la donacion la
+    // reconoce y deja volver a donar.
+    private fun consume(purchase: Purchase) {
+        if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) return
+        billingClient.consumeAsync(
+            ConsumeParams.newBuilder().setPurchaseToken(purchase.purchaseToken).build()
+        ) { billingResult, _ ->
+            if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
+                Log.e("MainActivity", "Consume failed: ${billingResult.debugMessage}")
             }
         }
     }
