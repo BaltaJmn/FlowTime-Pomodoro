@@ -19,7 +19,8 @@ import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 fun LottieImage(
     modifier: Modifier = Modifier,
     animation: Int,
-    tintColor: Color
+    tintColor: Color,
+    playing: Boolean = true
 ) {
     val dynamicProperties = rememberLottieDynamicProperties(
         rememberLottieDynamicProperty(
@@ -31,6 +32,7 @@ fun LottieImage(
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(animation))
     val animationProgress by animateLottieCompositionAsState(
         composition = composition,
+        isPlaying = playing,
         iterations = LottieConstants.IterateForever,
         restartOnPlay = false,
     )

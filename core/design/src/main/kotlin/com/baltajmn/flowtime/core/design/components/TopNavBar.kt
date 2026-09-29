@@ -229,6 +229,8 @@ fun CurrentlyPlaying(
         LottieImage(
             modifier = Modifier.size(TopNavBarConstants.Sizes.EQUALIZER),
             animation = R.raw.equalizer,
+            // Quieto si no suena nada: animar siempre redibuja la pantalla sin parar y gasta batería.
+            playing = hasActivePlayers,
             tintColor = if (hasActivePlayers) {
                 MaterialTheme.colorScheme.primary
             } else {
