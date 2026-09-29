@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- El original está en design/icon-foreground.svg: el anillo de progreso del temporizador con agua
-     que fluye dentro. Todo cabe en la zona segura, el círculo de 66 dp del centro. -->
+<!-- Para los iconos temáticos de Android 13: solo la forma, el color lo pone el sistema. Sin la pista
+     del anillo, que en un solo color no se distinguiría. Original: design/icon-monochrome.svg. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
     <path
-        android:pathData="M54,29 A25,25 0 1,1 54,79 A25,25 0 1,1 54,29"
-        android:strokeWidth="7"
-        android:strokeColor="#2B6782" />
-    <path
         android:pathData="M54,29 A25,25 0 1,1 32.35,41.5"
         android:strokeWidth="7"
-        android:strokeColor="#EAF6FB"
+        android:strokeColor="#FFFFFFFF"
         android:strokeLineCap="round" />
     <path
-        android:fillColor="#8ECAE6"
+        android:fillColor="#FFFFFFFF"
         android:pathData="M36.76,57 C42,50 48,50 54,56 S66,63 71.24,57 A17.5,17.5 0 0,1 36.76,57 Z" />
 </vector>

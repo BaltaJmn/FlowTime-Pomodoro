@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" width="108" height="108">
+  <!-- Primer plano del icono adaptativo: el anillo de progreso del temporizador (#50) con agua que
+       fluye dentro. Todo cabe en la zona segura (círculo de 66 de diámetro). -->
+  <circle cx="54" cy="54" r="25" fill="none" stroke="#2B6782" stroke-width="7"/>
+  <path d="M54,29 A25,25 0 1 1 32.35,41.5" fill="none" stroke="#EAF6FB" stroke-width="7" stroke-linecap="round"/>
+  <path d="M36.76,57 C42,50 48,50 54,56 S66,63 71.24,57 A17.5,17.5 0 0 1 36.76,57 Z" fill="#8ECAE6"/>
+</svg>

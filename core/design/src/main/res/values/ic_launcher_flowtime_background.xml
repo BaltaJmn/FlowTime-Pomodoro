@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_flowtime_background">#65B2D8</color>
+    <!-- Azul oscuro del tema: el anillo (#EAF6FB) queda a 8:1 y el agua (#8ECAE6) a 4,9:1. -->
+    <color name="ic_launcher_flowtime_background">#15506A</color>
 </resources>
