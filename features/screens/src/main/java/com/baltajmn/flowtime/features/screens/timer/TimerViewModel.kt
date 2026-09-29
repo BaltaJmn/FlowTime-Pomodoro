@@ -6,10 +6,13 @@ import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.KEEP_SCREEN_ON
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.NOTIFICATIONS_EXPLAINED
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusSnapshot
 import com.baltajmn.flowtime.data.timer.Phase
+import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.data.timer.TimerMode
+import com.baltajmn.flowtime.data.timer.actionsFor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,12 +30,8 @@ data class TimerUiState(
     val keepScreenOn: Boolean = true
 ) {
     val isActive get() = phase != Phase.IDLE
-
-    /** En Pomodoro el trabajo termina solo; en los otros modos el descanso se pide. */
-    val canTakeBreak get() = phase == Phase.WORK && mode != TimerMode.POMODORO
+    val actions get() = actionsFor(mode, phase, paused)
 }
-
-enum class TimerAction { START, PAUSE, RESUME, BREAK, SKIP_BREAK, STOP }
 
 /** Una pantalla por modo, todas sobre el mismo motor: solo una sesión puede estar en marcha. */
 class TimerViewModel(
@@ -53,13 +52,13 @@ class TimerViewModel(
                 toUiState(engine.snapshot(), continueAfterBreak.value)
             )
 
-    fun onAction(action: TimerAction) = when (action) {
-        TimerAction.START -> engine.start(mode)
-        TimerAction.PAUSE -> engine.pause()
-        TimerAction.RESUME -> engine.resume()
-        TimerAction.BREAK -> engine.takeBreak()
-        TimerAction.SKIP_BREAK -> engine.skipBreak()
-        TimerAction.STOP -> engine.stop()
+    fun onAction(action: TimerAction) = engine.perform(action, mode)
+
+    /** El permiso de notificaciones se explica una sola vez: después, el aviso queda en Ajustes. */
+    fun explainNotificationsOnce(): Boolean {
+        if (dataProvider.getBoolean(NOTIFICATIONS_EXPLAINED, false)) return false
+        dataProvider.setBoolean(NOTIFICATIONS_EXPLAINED, true)
+        return true
     }
 
     fun changeSwitch(value: Boolean) {

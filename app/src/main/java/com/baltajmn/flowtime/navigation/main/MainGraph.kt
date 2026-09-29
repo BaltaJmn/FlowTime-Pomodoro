@@ -1,9 +1,14 @@
 package com.baltajmn.flowtime.navigation.main
 
+import android.content.Intent
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.core.util.Consumer
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,6 +31,7 @@ import com.baltajmn.flowtime.features.screens.home.HomeScreen
 import com.baltajmn.flowtime.features.screens.settings.SettingsScreen
 import com.baltajmn.flowtime.features.screens.timer.TimerScreen
 import com.baltajmn.flowtime.features.screens.todoList.TodoListScreen
+import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.ui.FlowTimeAppState
 
 @Composable
@@ -150,5 +156,16 @@ fun MainGraph(
                 navigateUp = navigateUp
             )
         }
+    }
+
+    // Después del NavHost, que ya tiene el grafo: desde la notificación se abre el temporizador.
+    val activity = LocalActivity.current as? ComponentActivity
+    DisposableEffect(activity) {
+        val open = Consumer<Intent> { intent ->
+            SessionNotification.timerToOpen(intent)?.let(appState::navigateToTimer)
+        }
+        activity?.intent?.let(open::accept)
+        activity?.addOnNewIntentListener(open)
+        onDispose { activity?.removeOnNewIntentListener(open) }
     }
 }

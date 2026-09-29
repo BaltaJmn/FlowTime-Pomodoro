@@ -24,7 +24,7 @@ import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.features.screens.common.composable.components.ButtonsContent
 import com.baltajmn.flowtime.features.screens.common.composable.components.MinutesStudying
 import com.baltajmn.flowtime.features.screens.common.composable.components.TimeContent
-import com.baltajmn.flowtime.features.screens.timer.TimerAction
+import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 
 @Composable

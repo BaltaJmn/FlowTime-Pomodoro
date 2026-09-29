@@ -1,5 +1,7 @@
 package com.baltajmn.flowtime.data.timer
 
+import androidx.annotation.StringRes
+import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
@@ -24,6 +26,27 @@ enum class TimerMode(val continueAfterBreakKey: SharedPreferencesItem) {
 
 enum class Phase { IDLE, WORK, BREAK }
 
+enum class TimerAction(@StringRes val label: Int) {
+    START(R.string.action_start),
+    PAUSE(R.string.action_pause),
+    RESUME(R.string.action_resume),
+    BREAK(R.string.action_break),
+    SKIP_BREAK(R.string.action_skip_break),
+    STOP(R.string.action_stop)
+}
+
+/**
+ * Lo que se puede hacer con una sesión, en el orden en que se enseña, igual en la app que en la
+ * notificación. En Pomodoro el trabajo termina solo; en los otros modos el descanso se pide.
+ */
+fun actionsFor(mode: TimerMode, phase: Phase, paused: Boolean): List<TimerAction> = when {
+    phase == Phase.IDLE -> listOf(TimerAction.START)
+    paused -> listOf(TimerAction.STOP, TimerAction.RESUME)
+    phase == Phase.BREAK -> listOf(TimerAction.STOP, TimerAction.PAUSE, TimerAction.SKIP_BREAK)
+    mode != TimerMode.POMODORO -> listOf(TimerAction.STOP, TimerAction.PAUSE, TimerAction.BREAK)
+    else -> listOf(TimerAction.STOP, TimerAction.PAUSE)
+}
+
 /**
  * La sesión tal como se guarda. El tiempo no se va sumando cada segundo: se calcula a partir del
  * ancla (cuándo empezó a contar la fase, o cuándo se reanudó) y de lo que ya llevaba contado.
@@ -44,6 +67,7 @@ data class FocusState(
     val isActive: Boolean get() = phase != Phase.IDLE
     val isPaused: Boolean get() = isActive && !running
     val countsDown: Boolean get() = durationMillis > 0
+    val actions: List<TimerAction> get() = actionsFor(mode, phase, isPaused)
 }
 
 /** La sesión en un instante: lo que enseña la pantalla. */
@@ -96,6 +120,16 @@ class FocusEngine(
                 }
             }
         }
+    }
+
+    /** [mode] solo cuenta al empezar: el resto de acciones son sobre la sesión en marcha. */
+    fun perform(action: TimerAction, mode: TimerMode = _state.value.mode) = when (action) {
+        TimerAction.START -> start(mode)
+        TimerAction.PAUSE -> pause()
+        TimerAction.RESUME -> resume()
+        TimerAction.BREAK -> takeBreak()
+        TimerAction.SKIP_BREAK -> skipBreak()
+        TimerAction.STOP -> stop()
     }
 
     @Synchronized

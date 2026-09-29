@@ -3,7 +3,7 @@ package com.baltajmn.flowtime.features.screens.common.composable.screen
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
-import com.baltajmn.flowtime.features.screens.timer.TimerAction
+import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 
 @Composable

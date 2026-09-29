@@ -6,6 +6,7 @@ import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.di.CoreModules
 import com.baltajmn.flowtime.di.FeaturesModule
+import com.baltajmn.flowtime.session.SessionNotification
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
@@ -29,7 +30,9 @@ class App : Application() {
         val scope = MainScope()
         val engine = get<FocusEngine>()
         val sounds = get<SoundService>()
+        val notification = get<SessionNotification>()
         engine.runIn(scope)
+        scope.launch { engine.state.collect(notification::update) }
         scope.launch {
             engine.changes.collect { change ->
                 // Un cambio visto tarde (la app estaba cerrada) ya no avisa de nada.

@@ -1,5 +1,8 @@
 package com.baltajmn.flowtime.features.screens.settings
 
+import android.content.Intent
+import android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
+import android.provider.Settings.EXTRA_APP_PACKAGE
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
@@ -53,6 +56,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.core.app.NotificationManagerCompat
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.AppTheme
@@ -215,7 +222,11 @@ fun SettingsContent(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    ButtonHistory(navigateToHistory = navigateToHistory)
+                    ButtonRow(
+                        text = R.string.study_history,
+                        button = R.string.go_to_history,
+                        onClick = navigateToHistory
+                    )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -243,6 +254,8 @@ fun SettingsContent(
                         checked = state.keepScreenOn,
                         onCheckedChange = viewModel::saveKeepScreenOn
                     )
+
+                    NotificationsOffRow()
                 }
             }
         }
@@ -252,8 +265,26 @@ fun SettingsContent(
     }
 }
 
+/** Solo si están desactivadas. Se vuelve a mirar al volver de los ajustes del sistema. */
 @Composable
-fun ButtonHistory(navigateToHistory: () -> Unit) {
+fun NotificationsOffRow() {
+    val context = LocalContext.current
+    val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
+    val enabled = remember(lifecycle) { NotificationManagerCompat.from(context).areNotificationsEnabled() }
+    if (enabled) return
+    Spacer(modifier = Modifier.height(8.dp))
+    ButtonRow(text = R.string.notifications_off, button = R.string.notifications_allow) {
+        context.startActivity(
+            Intent(ACTION_APP_NOTIFICATION_SETTINGS).putExtra(
+                EXTRA_APP_PACKAGE,
+                context.packageName
+            )
+        )
+    }
+}
+
+@Composable
+fun ButtonRow(@StringRes text: Int, @StringRes button: Int, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -263,15 +294,15 @@ fun ButtonHistory(navigateToHistory: () -> Unit) {
     ) {
         Text(
             modifier = Modifier.weight(1f),
-            text = LocalContext.current.getString((R.string.study_history)),
+            text = stringResource(text),
             style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
         )
         Button(
             modifier = Modifier.weight(1f),
-            onClick = { navigateToHistory.invoke() }
+            onClick = onClick
         ) {
             Text(
-                text = LocalContext.current.getString(R.string.go_to_history),
+                text = stringResource(button),
                 style = SubBody.copy(color = Color.White)
             )
         }

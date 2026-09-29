@@ -112,9 +112,6 @@
     <string name="theme_purple">Фиолетовый</string>
     <string name="theme_orange">Оранжевый</string>
     <string name="theme_black">Чёрный</string>
-    <string name="cd_stop_timer">Остановить таймер</string>
-    <string name="cd_start_break">Начать перерыв</string>
-    <string name="cd_start_timer">Запустить таймер</string>
     <string name="cd_delete_range">Удалить диапазон</string>
     <string name="cd_sound_panel">Панель звуков</string>
     <string name="cd_sound_mixer">Микшер звуков</string>
@@ -159,8 +156,17 @@
     </plurals>
 
     <string name="time_title_paused">Пауза</string>
-    <string name="cd_pause_timer">Приостановить таймер</string>
-    <string name="cd_resume_timer">Продолжить таймер</string>
-    <string name="cd_skip_break">Пропустить перерыв</string>
     <string name="keep_screen_on">Не выключать экран во время сессии</string>
+    <string name="action_start">Старт</string>
+    <string name="action_stop">Стоп</string>
+    <string name="action_pause">Пауза</string>
+    <string name="action_resume">Продолжить</string>
+    <string name="action_break">Начать перерыв</string>
+    <string name="action_skip_break">Пропустить перерыв</string>
+    <string name="channel_session">Текущая сессия</string>
+    <string name="notifications_title">Показывать время в уведомлениях?</string>
+    <string name="notifications_text">Вы увидите время и сможете приостановить или завершить сессию, не открывая приложение.</string>
+    <string name="notifications_allow">Включить</string>
+    <string name="notifications_later">Не сейчас</string>
+    <string name="notifications_off">Уведомления выключены. Включите их, чтобы видеть время, когда приложение закрыто.</string>
 </resources>

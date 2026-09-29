@@ -8,6 +8,8 @@ import com.baltajmn.flowtime.core.design.service.SoundViewModel
 import com.baltajmn.flowtime.core.persistence.di.PersistenceModule
 import com.baltajmn.flowtime.data.di.DataModule
 import com.baltajmn.flowtime.features.screens.di.ScreensModule
+import com.baltajmn.flowtime.session.SessionNotification
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -25,6 +27,7 @@ val CoreModules: Module
     get() = module {
         viewModelOf(::MainViewModel)
         viewModelOf(::SoundViewModel)
+        single { SessionNotification(androidContext(), get()) }
         includes(
             listOf(
                 DispatchersModule,

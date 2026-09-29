@@ -20,12 +20,14 @@ import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.AppTheme
+import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.ui.FlowTimeApp
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel = inject<MainViewModel>().value
+    private val sessionNotification: SessionNotification by inject()
     private val theme: MutableState<AppTheme> = mutableStateOf(AppTheme.Blue)
     private val showSound: MutableState<Boolean> = mutableStateOf(true)
 
@@ -92,6 +94,13 @@ class MainActivity : ComponentActivity() {
                 onRememberShowRating = { it: Boolean -> viewModel.setRememberShowRating(it) }
             )
         }
+    }
+
+    // Desde Android 14 se puede descartar; vuelve al abrir la app, y también justo después de dar
+    // el permiso, que no para la actividad.
+    override fun onResume() {
+        super.onResume()
+        sessionNotification.update()
     }
 
     private fun connectBillingClient() {

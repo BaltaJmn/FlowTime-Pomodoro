@@ -112,9 +112,6 @@
     <string name="theme_purple">Viola</string>
     <string name="theme_orange">Arancione</string>
     <string name="theme_black">Nero</string>
-    <string name="cd_stop_timer">Ferma il timer</string>
-    <string name="cd_start_break">Inizia la pausa</string>
-    <string name="cd_start_timer">Avvia il timer</string>
     <string name="cd_delete_range">Elimina intervallo</string>
     <string name="cd_sound_panel">Pannello dei suoni</string>
     <string name="cd_sound_mixer">Mixer dei suoni</string>
@@ -156,8 +153,17 @@
     </plurals>
 
     <string name="time_title_paused">In pausa</string>
-    <string name="cd_pause_timer">Metti in pausa il timer</string>
-    <string name="cd_resume_timer">Riprendi il timer</string>
-    <string name="cd_skip_break">Salta la pausa</string>
     <string name="keep_screen_on">Tieni lo schermo acceso durante la sessione</string>
+    <string name="action_start">Avvia</string>
+    <string name="action_stop">Ferma</string>
+    <string name="action_pause">Pausa</string>
+    <string name="action_resume">Riprendi</string>
+    <string name="action_break">Inizia la pausa</string>
+    <string name="action_skip_break">Salta la pausa</string>
+    <string name="channel_session">Sessione in corso</string>
+    <string name="notifications_title">Vedere il tempo nelle notifiche?</string>
+    <string name="notifications_text">Vedrai il tempo e potrai mettere in pausa o fermare la sessione senza aprire l\'app.</string>
+    <string name="notifications_allow">Attiva</string>
+    <string name="notifications_later">Non ora</string>
+    <string name="notifications_off">Le notifiche sono disattivate. Attivale per vedere il tempo con l\'app chiusa.</string>
 </resources>

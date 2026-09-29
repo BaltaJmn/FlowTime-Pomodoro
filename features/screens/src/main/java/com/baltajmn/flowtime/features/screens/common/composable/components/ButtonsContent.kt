@@ -1,7 +1,6 @@
 package com.baltajmn.flowtime.features.screens.common.composable.components
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,32 +18,15 @@ import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.CircularButton
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerMode
-import com.baltajmn.flowtime.features.screens.timer.TimerAction
+import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 
-private class TimerButton(
-    val action: TimerAction,
-    @DrawableRes val icon: Int,
-    @StringRes val description: Int
-)
-
-private val Start = TimerButton(TimerAction.START, R.drawable.ic_play, R.string.cd_start_timer)
-private val Stop = TimerButton(TimerAction.STOP, R.drawable.ic_stop, R.string.cd_stop_timer)
-private val Pause = TimerButton(TimerAction.PAUSE, R.drawable.ic_pause, R.string.cd_pause_timer)
-private val Resume = TimerButton(TimerAction.RESUME, R.drawable.ic_play, R.string.cd_resume_timer)
-private val Break = TimerButton(TimerAction.BREAK, R.drawable.ic_next, R.string.cd_start_break)
-private val SkipBreak = TimerButton(
-    TimerAction.SKIP_BREAK,
-    R.drawable.ic_next,
-    R.string.cd_skip_break
-)
-
-private fun buttonsFor(state: TimerUiState): List<TimerButton> = when {
-    !state.isActive -> listOf(Start)
-    state.paused -> listOf(Stop, Resume)
-    state.phase == Phase.BREAK -> listOf(Stop, Pause, SkipBreak)
-    state.canTakeBreak -> listOf(Stop, Pause, Break)
-    else -> listOf(Stop, Pause)
+@DrawableRes
+private fun TimerAction.icon() = when (this) {
+    TimerAction.START, TimerAction.RESUME -> R.drawable.ic_play
+    TimerAction.STOP -> R.drawable.ic_stop
+    TimerAction.PAUSE -> R.drawable.ic_pause
+    TimerAction.BREAK, TimerAction.SKIP_BREAK -> R.drawable.ic_next
 }
 
 @Composable
@@ -53,13 +35,13 @@ fun ButtonsContent(
     onAction: (TimerAction) -> Unit,
     vertical: Boolean = false
 ) {
-    val buttons = buttonsFor(state)
+    val actions = state.actions
     val content = @Composable {
-        buttons.forEach { button ->
-            CircularButton(onClick = { onAction(button.action) }) {
+        actions.forEach { action ->
+            CircularButton(onClick = { onAction(action) }) {
                 Icon(
-                    painter = painterResource(id = button.icon),
-                    contentDescription = stringResource(button.description),
+                    painter = painterResource(id = action.icon()),
+                    contentDescription = stringResource(action.label),
                     tint = MaterialTheme.colorScheme.surface
                 )
             }
@@ -74,7 +56,7 @@ fun ButtonsContent(
     } else {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = if (buttons.size > 1) Arrangement.SpaceEvenly else Arrangement.Center,
+            horizontalArrangement = if (actions.size > 1) Arrangement.SpaceEvenly else Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) { content() }
     }

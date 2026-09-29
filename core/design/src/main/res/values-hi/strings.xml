@@ -112,9 +112,6 @@
     <string name="theme_purple">बैंगनी</string>
     <string name="theme_orange">नारंगी</string>
     <string name="theme_black">काला</string>
-    <string name="cd_stop_timer">टाइमर रोकें</string>
-    <string name="cd_start_break">ब्रेक शुरू करें</string>
-    <string name="cd_start_timer">टाइमर शुरू करें</string>
     <string name="cd_delete_range">रेंज हटाएँ</string>
     <string name="cd_sound_panel">ध्वनि नियंत्रण पैनल</string>
     <string name="cd_sound_mixer">ध्वनि मिक्सर</string>
@@ -153,8 +150,17 @@
     </plurals>
 
     <string name="time_title_paused">रुका हुआ</string>
-    <string name="cd_pause_timer">टाइमर रोकें</string>
-    <string name="cd_resume_timer">टाइमर फिर से शुरू करें</string>
-    <string name="cd_skip_break">ब्रेक छोड़ें</string>
     <string name="keep_screen_on">सत्र के दौरान स्क्रीन चालू रखें</string>
+    <string name="action_start">शुरू करें</string>
+    <string name="action_stop">बंद करें</string>
+    <string name="action_pause">रोकें</string>
+    <string name="action_resume">फिर शुरू करें</string>
+    <string name="action_break">ब्रेक शुरू करें</string>
+    <string name="action_skip_break">ब्रेक छोड़ें</string>
+    <string name="channel_session">चल रहा सत्र</string>
+    <string name="notifications_title">सूचनाओं में समय देखें?</string>
+    <string name="notifications_text">आप समय देख पाएंगे, और ऐप खोले बिना सत्र रोक या बंद कर सकेंगे।</string>
+    <string name="notifications_allow">चालू करें</string>
+    <string name="notifications_later">अभी नहीं</string>
+    <string name="notifications_off">सूचनाएं बंद हैं। ऐप बंद होने पर भी समय देखने के लिए इन्हें चालू करें।</string>
 </resources>

@@ -15,4 +15,5 @@ enum class SharedPreferencesItem {
     REMEMBER_SHOW_RATING,
     TIMER_SESSION,
     KEEP_SCREEN_ON,
+    NOTIFICATIONS_EXPLAINED,
 }

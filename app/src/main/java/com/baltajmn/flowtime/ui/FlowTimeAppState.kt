@@ -15,6 +15,7 @@ import com.baltajmn.flowtime.core.navigation.MainGraph
 import com.baltajmn.flowtime.core.navigation.PreMainGraph
 import com.baltajmn.flowtime.core.navigation.extensions.navigateAndPop
 import com.baltajmn.flowtime.core.navigation.extensions.navigatePoppingUpToStartDestination
+import com.baltajmn.flowtime.data.timer.TimerMode
 
 @Composable
 fun rememberAppState(
@@ -72,6 +73,12 @@ class FlowTimeAppState(
 
     fun navigateToPercentage() {
         mainNavController.navigatePoppingUpToStartDestination(MainGraph.Percentage.route)
+    }
+
+    fun navigateToTimer(mode: TimerMode) = when (mode) {
+        TimerMode.POMODORO -> navigateToPomodoro()
+        TimerMode.FLOW_TIME -> navigateToFlowTime()
+        TimerMode.PERCENTAGE -> navigateToPercentage()
     }
 
     private fun navigateToEdit(type: ScreenType) {
