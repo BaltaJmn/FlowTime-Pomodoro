@@ -93,6 +93,7 @@ fun SettingsScreen(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
+    navigateToIntro: () -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -104,6 +105,7 @@ fun SettingsScreen(
         showSound = showSound,
         onSoundChange = onSoundChange,
         navigateToHistory = navigateToHistory,
+        navigateToIntro = navigateToIntro,
         onSupportDeveloperClick = onSupportDeveloperClick
     )
 }
@@ -116,6 +118,7 @@ fun AnimatedSettingsContent(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
+    navigateToIntro: () -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
     AnimatedContent(
@@ -132,6 +135,7 @@ fun AnimatedSettingsContent(
                 showSound = showSound,
                 onSoundChange = onSoundChange,
                 navigateToHistory = navigateToHistory,
+                navigateToIntro = navigateToIntro,
                 onSupportDeveloperClick = onSupportDeveloperClick
             )
         }
@@ -146,6 +150,7 @@ fun SettingsContent(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
+    navigateToIntro: () -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
     LazyColumn(
@@ -215,6 +220,12 @@ fun SettingsContent(
                         text = R.string.study_history,
                         button = R.string.go_to_history,
                         onClick = navigateToHistory
+                    )
+
+                    ButtonRow(
+                        text = R.string.settings_intro,
+                        button = R.string.settings_intro_button,
+                        onClick = navigateToIntro
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))

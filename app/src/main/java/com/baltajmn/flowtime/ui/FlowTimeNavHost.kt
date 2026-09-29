@@ -60,7 +60,8 @@ fun NavGraphBuilder.preMainNavGraph(
             route = PreMainGraph.Onboard.route
         ) {
             OnBoardScreen(
-                navigateToMainGraph = { appState.navigateToMainGraph() }
+                navigateToMainGraph = appState::finishOnBoard,
+                navigateBack = appState::closeOnBoard
             )
         }
     }

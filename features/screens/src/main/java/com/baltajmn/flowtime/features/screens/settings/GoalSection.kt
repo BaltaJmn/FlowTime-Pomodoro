@@ -46,29 +46,7 @@ fun GoalCard(goal: GoalUiState, onChange: (delta: Int) -> Unit) {
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                StepButton(
-                    text = "−",
-                    description = stringResource(R.string.goal_decrease),
-                    enabled = goal.minutes > DailyGoal.MIN_MINUTES
-                ) { onChange(-DailyGoal.STEP_MINUTES) }
-                Text(
-                    text = stringResource(
-                        R.string.goal_per_day,
-                        goal.minutes.toLong().formatMinutesStudying()
-                    ),
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    style = SubBody.copy(
-                        fontSize = 20.sp,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                )
-                StepButton(
-                    text = "+",
-                    description = stringResource(R.string.goal_increase),
-                    enabled = goal.minutes < DailyGoal.MAX_MINUTES
-                ) { onChange(DailyGoal.STEP_MINUTES) }
-            }
+            GoalStepper(minutes = goal.minutes, onChange = onChange)
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = streakText(goal.streak),
@@ -80,6 +58,28 @@ fun GoalCard(goal: GoalUiState, onChange: (delta: Int) -> Unit) {
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
+    }
+}
+
+/** Los minutos de cada día, de 5 en 5. También en la introducción. */
+@Composable
+fun GoalStepper(minutes: Int, onChange: (delta: Int) -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        StepButton(
+            text = "−",
+            description = stringResource(R.string.goal_decrease),
+            enabled = minutes > DailyGoal.MIN_MINUTES
+        ) { onChange(-DailyGoal.STEP_MINUTES) }
+        Text(
+            text = stringResource(R.string.goal_per_day, minutes.toLong().formatMinutesStudying()),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = SubBody.copy(fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+        )
+        StepButton(
+            text = "+",
+            description = stringResource(R.string.goal_increase),
+            enabled = minutes < DailyGoal.MAX_MINUTES
+        ) { onChange(DailyGoal.STEP_MINUTES) }
     }
 }
 

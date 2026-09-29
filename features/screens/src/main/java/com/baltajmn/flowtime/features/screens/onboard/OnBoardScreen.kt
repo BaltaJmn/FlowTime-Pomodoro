@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.features.screens.onboard
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,45 +18,37 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.R.drawable.ic_flowtime
-import com.baltajmn.flowtime.core.design.R.drawable.ic_list
-import com.baltajmn.flowtime.core.design.R.drawable.ic_music
-import com.baltajmn.flowtime.core.design.R.drawable.ic_percentage
-import com.baltajmn.flowtime.core.design.R.drawable.ic_pomodoro
-import com.baltajmn.flowtime.core.design.R.drawable.ic_settings
-import com.baltajmn.flowtime.core.design.R.string.on_board_finish
-import com.baltajmn.flowtime.core.design.R.string.on_board_next
-import com.baltajmn.flowtime.core.design.R.string.on_board_skip
-import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_1
-import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_2
-import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_3
-import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_4
-import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_5
-import com.baltajmn.flowtime.core.design.R.string.on_board_subtitle_6
-import com.baltajmn.flowtime.core.design.R.string.on_board_title_1
-import com.baltajmn.flowtime.core.design.R.string.on_board_title_2
-import com.baltajmn.flowtime.core.design.R.string.on_board_title_3
-import com.baltajmn.flowtime.core.design.R.string.on_board_title_4
-import com.baltajmn.flowtime.core.design.R.string.on_board_title_5
-import com.baltajmn.flowtime.core.design.R.string.on_board_title_6
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.collectEvents
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
+import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.Title
+import com.baltajmn.flowtime.data.timer.TimerMode
+import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel.Event.Back
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel.Event.NavigateToMainGraph
+import com.baltajmn.flowtime.features.screens.settings.GoalStepper
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -62,68 +56,43 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun OnBoardScreen(
     viewModel: OnBoardViewModel = koinViewModel(),
-    navigateToMainGraph: () -> Unit
+    navigateToMainGraph: (timer: TimerMode?) -> Unit,
+    navigateBack: () -> Unit
 ) {
     collectEvents {
         viewModel.event.collectLatest {
             when (it) {
-                is NavigateToMainGraph -> navigateToMainGraph()
+                is NavigateToMainGraph -> navigateToMainGraph(it.timer)
+                Back -> navigateBack()
             }
         }
     }
 
-    OnboardingContent(viewModel = viewModel)
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    OnboardingContent(
+        state = state,
+        onMode = viewModel::selectMode,
+        onGoal = viewModel::changeGoal,
+        onSkip = viewModel::skip,
+        onStart = viewModel::start
+    )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+private const val PAGES = 3
+
+/** Qué es FlowTime, el modo y el objetivo, y empezar. "Saltar" termina desde cualquier página. */
 @Composable
 fun OnboardingContent(
-    viewModel: OnBoardViewModel,
+    state: OnBoardUiState,
+    onMode: (TimerMode) -> Unit,
+    onGoal: (delta: Int) -> Unit,
+    onSkip: () -> Unit,
+    onStart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val pages = listOf(
-        OnBoardModel(
-            title = LocalContext.current.getString(on_board_title_1),
-            description = LocalContext.current.getString(on_board_subtitle_1),
-            imageRes = ic_flowtime
-        ),
-        OnBoardModel(
-            title = LocalContext.current.getString(on_board_title_1),
-            description = LocalContext.current.getString(on_board_subtitle_1),
-            imageRes = ic_flowtime
-        ),
-        OnBoardModel(
-            title = LocalContext.current.getString(on_board_title_2),
-            description = LocalContext.current.getString(on_board_subtitle_2),
-            imageRes = ic_pomodoro
-        ),
-        OnBoardModel(
-            title = LocalContext.current.getString(on_board_title_3),
-            description = LocalContext.current.getString(on_board_subtitle_3),
-            imageRes = ic_percentage
-        ),
-        OnBoardModel(
-            title = LocalContext.current.getString(on_board_title_4),
-            description = LocalContext.current.getString(on_board_subtitle_4),
-            imageRes = ic_list
-        ),
-        OnBoardModel(
-            title = LocalContext.current.getString(on_board_title_6),
-            description = LocalContext.current.getString(on_board_subtitle_6),
-            imageRes = ic_music
-        ),
-        OnBoardModel(
-            title = LocalContext.current.getString(on_board_title_5),
-            description = LocalContext.current.getString(on_board_subtitle_5),
-            imageRes = ic_settings
-        )
-    )
-
-    val pagerState = rememberPagerState(
-        pageCount = { pages.size },
-        initialPage = 0
-    )
+    val pagerState = rememberPagerState(pageCount = { PAGES })
     val coroutineScope = rememberCoroutineScope()
+    val last = pagerState.currentPage == PAGES - 1
 
     Column(
         modifier = modifier
@@ -137,7 +106,19 @@ fun OnboardingContent(
                 .weight(1f)
                 .fillMaxWidth()
         ) { page ->
-            OnBoardItem(pages[page])
+            when (page) {
+                0 -> OnBoardItem(
+                    imageRes = R.drawable.ic_flowtime,
+                    title = R.string.on_board_intro_title,
+                    description = R.string.on_board_intro_text
+                )
+                1 -> SetupPage(state = state, onMode = onMode, onGoal = onGoal)
+                else -> OnBoardItem(
+                    imageRes = R.drawable.ic_play,
+                    title = R.string.on_board_ready_title,
+                    description = R.string.on_board_ready_text
+                )
+            }
         }
 
         Row(
@@ -146,38 +127,35 @@ fun OnboardingContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-
         ) {
             Text(
-                modifier = Modifier.clickable {
-                    val skipPage = pagerState.pageCount - 1
-                    coroutineScope.launch { pagerState.animateScrollToPage(skipPage) }
-                },
-                text = LocalContext.current.getString(on_board_skip),
-                style = Title.copy(
-                    fontSize = 24.sp,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                modifier = Modifier.clickable(onClick = onSkip),
+                text = stringResource(R.string.on_board_skip),
+                style = Title.copy(fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
             )
 
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.weight(1f)
             ) {
-                repeat(pages.size) { index ->
+                repeat(PAGES) { index ->
                     val isSelected = pagerState.currentPage == index
                     Box(
                         modifier = Modifier
                             .padding(4.dp)
                             .width(if (isSelected) 18.dp else 8.dp)
-                            .height(if (isSelected) 8.dp else 8.dp)
+                            .height(8.dp)
                             .border(
                                 width = 1.dp,
                                 color = MaterialTheme.colorScheme.tertiary,
                                 shape = RoundedCornerShape(10.dp)
                             )
                             .background(
-                                color = if (isSelected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.secondary,
+                                color = if (isSelected) {
+                                    MaterialTheme.colorScheme.tertiary
+                                } else {
+                                    MaterialTheme.colorScheme.secondary
+                                },
                                 shape = CircleShape
                             )
                     )
@@ -186,28 +164,90 @@ fun OnboardingContent(
 
             Text(
                 modifier = Modifier.clickable {
-                    if (pagerState.currentPage < pages.size - 1) {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                        }
+                    if (last) {
+                        onStart()
                     } else {
-                        viewModel.finishOnBoard()
+                        val next = pagerState.currentPage + 1
+                        coroutineScope.launch { pagerState.animateScrollToPage(next) }
                     }
                 },
-                text = LocalContext.current.getString(
-                    if (pagerState.currentPage < pages.size - 1) on_board_next else on_board_finish
-                ),
-                style = Title.copy(
-                    fontSize = 24.sp,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                text = stringResource(if (last) R.string.on_board_start else R.string.on_board_next),
+                style = Title.copy(fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnBoardItem(page: OnBoardModel) {
+private fun SetupPage(
+    state: OnBoardUiState,
+    onMode: (TimerMode) -> Unit,
+    onGoal: (delta: Int) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = stringResource(R.string.on_board_setup_title),
+            style = LargeTitle.copy(
+                fontSize = 24.sp,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.tertiary
+            )
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+            val modes = TimerMode.entries
+            modes.forEachIndexed { index, mode ->
+                SegmentedButton(
+                    selected = state.mode == mode,
+                    onClick = { onMode(mode) },
+                    shape = SegmentedButtonDefaults.itemShape(index = index, count = modes.size),
+                    enabled = !state.modeLocked,
+                    label = { Text(text = stringResource(mode.label), maxLines = 1) }
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(state.mode.advantages),
+            modifier = Modifier.padding(horizontal = 8.dp),
+            style = SubBody.copy(
+                fontSize = 15.sp,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary
+            )
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+        Text(
+            text = stringResource(R.string.goal_title),
+            style = LargeTitle.copy(fontSize = 20.sp, color = MaterialTheme.colorScheme.tertiary)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        GoalStepper(minutes = state.goalMinutes, onChange = onGoal)
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = stringResource(R.string.on_board_setup_later),
+            style = SubBody.copy(
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        )
+    }
+}
+
+@Composable
+private fun OnBoardItem(
+    @DrawableRes imageRes: Int,
+    @StringRes title: Int,
+    @StringRes description: Int
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -218,12 +258,12 @@ fun OnBoardItem(page: OnBoardModel) {
                 .height(350.dp)
                 .width(350.dp)
                 .padding(bottom = 20.dp),
-            painter = painterResource(id = page.imageRes),
+            painter = painterResource(id = imageRes),
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiary),
             contentDescription = null
         )
         Text(
-            text = page.title,
+            text = stringResource(title),
             style = LargeTitle.copy(
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,
@@ -231,7 +271,7 @@ fun OnBoardItem(page: OnBoardModel) {
             )
         )
         Text(
-            text = page.description,
+            text = stringResource(description),
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
             style = Title.copy(
                 fontSize = 20.sp,
@@ -242,8 +282,16 @@ fun OnBoardItem(page: OnBoardModel) {
     }
 }
 
-data class OnBoardModel(
-    val imageRes: Int,
-    val title: String,
-    val description: String
-)
+private val TimerMode.label
+    get() = when (this) {
+        TimerMode.POMODORO -> R.string.mode_pomodoro
+        TimerMode.FLOW_TIME -> R.string.mode_flow_time
+        TimerMode.PERCENTAGE -> R.string.mode_percentage
+    }
+
+private val TimerMode.advantages
+    get() = when (this) {
+        TimerMode.POMODORO -> R.string.pomodoro_advantages
+        TimerMode.FLOW_TIME -> R.string.flow_time_advantages
+        TimerMode.PERCENTAGE -> R.string.percentage_advantages
+    }

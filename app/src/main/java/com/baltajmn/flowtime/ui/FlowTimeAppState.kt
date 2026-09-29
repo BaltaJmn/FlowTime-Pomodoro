@@ -46,6 +46,21 @@ class FlowTimeAppState(
         preMainNavController.navigate(PreMainGraph.Onboard.route)
     }
 
+    /** El temporizador que abrir en cuanto esté la app, al terminar la introducción con "Empezar". */
+    private var timerOnStart: TimerMode? = null
+
+    fun finishOnBoard(timer: TimerMode?) {
+        timerOnStart = timer
+        navigateToMainGraph()
+    }
+
+    /** Abierta desde Ajustes, la introducción vuelve allí. */
+    fun closeOnBoard() {
+        preMainNavController.popBackStack()
+    }
+
+    fun takeTimerOnStart(): TimerMode? = timerOnStart.also { timerOnStart = null }
+
     fun navigateUp() {
         mainNavController.navigateUp()
     }

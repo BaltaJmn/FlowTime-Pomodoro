@@ -134,6 +134,7 @@ fun MainGraph(
             SettingsScreen(
                 listState = settingsState,
                 navigateToHistory = navigateToHistory,
+                navigateToIntro = appState::navigateToOnBoard,
                 showSound = showSound,
                 onSoundChange = onSoundChange,
                 onSupportDeveloperClick = onSupportDeveloperClick
@@ -155,12 +156,14 @@ fun MainGraph(
         }
     }
 
-    // Después del NavHost, que ya tiene el grafo: desde la notificación se abre el temporizador.
+    // Después del NavHost, que ya tiene el grafo: desde la notificación se abre el temporizador, y
+    // también al terminar la introducción con "Empezar".
     val activity = LocalActivity.current as? ComponentActivity
     DisposableEffect(activity) {
         val open = Consumer<Intent> { intent ->
             SessionNotification.timerToOpen(intent)?.let(appState::navigateToTimer)
         }
+        appState.takeTimerOnStart()?.let(appState::navigateToTimer)
         activity?.intent?.let(open::accept)
         activity?.addOnNewIntentListener(open)
         onDispose { activity?.removeOnNewIntentListener(open) }

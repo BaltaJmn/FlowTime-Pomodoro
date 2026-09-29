@@ -115,6 +115,7 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
                 showSound = true,
                 onSoundChange = {},
                 navigateToHistory = {},
+                navigateToIntro = {},
                 onSupportDeveloperClick = {}
             )
         }
