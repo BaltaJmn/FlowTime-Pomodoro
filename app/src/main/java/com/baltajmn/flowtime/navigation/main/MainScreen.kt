@@ -1,7 +1,6 @@
 package com.baltajmn.flowtime.navigation.main
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -11,20 +10,9 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import com.baltajmn.flowtime.core.design.components.BottomNavBar
-import com.baltajmn.flowtime.core.design.components.BottomNavBarItem
-import com.baltajmn.flowtime.core.design.components.TimerAlertDialog
 import com.baltajmn.flowtime.core.design.components.TopNavBar
-import com.baltajmn.flowtime.core.design.components.isScrollingUp
-import com.baltajmn.flowtime.core.design.model.ScreenType
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.MainGraph
 import com.baltajmn.flowtime.ui.FlowTimeAppState
@@ -38,40 +26,26 @@ fun MainScreen(
     onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
-    var screenRoute by rememberSaveable { mutableStateOf(BottomNavBarItem.Home) }
-    var isTimerRunning by rememberSaveable { mutableStateOf(false) }
-    var showDialog by rememberSaveable { mutableStateOf(false) }
-
-    val configuration = LocalConfiguration.current
     val currentRoute = appState.currentRoute
 
     val todoListState = rememberLazyListState()
     val settingsState = rememberLazyListState()
 
-    val settingsStateScrolling = settingsState.isScrollingUp()
-    val isPortrait by remember { derivedStateOf { configuration.orientation == Configuration.ORIENTATION_PORTRAIT } }
-    val shouldShow by remember { derivedStateOf { !isTimerRunning || (isPortrait && settingsStateScrolling) } }
-
     Scaffold(
         topBar = {
-            TopNavBar(shouldShow = { shouldShow && showSound })
+            TopNavBar(shouldShow = { showSound })
         },
         bottomBar = {
+            // La sesión sigue en el motor: se puede ir a cualquier pantalla sin pararla.
             BottomNavBar(
-                shouldShow = { shouldShow && !isTimerRunning },
+                shouldShow = { true },
                 currentRoute = { currentRoute },
                 onSelectedItem = { navBarItem, screenType ->
-                    screenRoute = navBarItem
-                    val targetRoute = navBarItem.getScreenRoute()
-                    if (currentRoute != targetRoute) {
-                        if (!isTimerRunning) {
-                            if (currentRoute == MainGraph.Edit.route) {
-                                appState.navigateUp()
-                            } else {
-                                appState.bottomNavigationTo(navBarItem, screenType)
-                            }
+                    if (currentRoute != navBarItem.getScreenRoute()) {
+                        if (currentRoute == MainGraph.Edit.route) {
+                            appState.navigateUp()
                         } else {
-                            showDialog = true
+                            appState.bottomNavigationTo(navBarItem, screenType)
                         }
                     }
                 }
@@ -94,24 +68,8 @@ fun MainScreen(
                 onThemeChanged = onThemeChanged,
                 showSound = showSound,
                 onSoundChange = onSoundChange,
-                onSupportDeveloperClick = onSupportDeveloperClick,
-                onTimerRunning = { isRunning -> isTimerRunning = isRunning }
+                onSupportDeveloperClick = onSupportDeveloperClick
             )
         }
-    }
-
-    if (showDialog) {
-        TimerAlertDialog(
-            isOpen = true,
-            onCloseDialog = { shouldNavigate ->
-                showDialog = false
-                if (shouldNavigate) {
-                    appState.bottomNavigationTo(
-                        bottomNavBarItem = screenRoute,
-                        type = ScreenType.FlowTime
-                    )
-                }
-            }
-        )
     }
 }

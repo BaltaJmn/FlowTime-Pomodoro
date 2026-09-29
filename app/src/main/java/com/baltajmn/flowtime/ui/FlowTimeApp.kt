@@ -2,9 +2,6 @@ package com.baltajmn.flowtime.ui
 
 import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
-import android.os.PowerManager
-import android.view.WindowManager
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,10 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import com.baltajmn.flowtime.R
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.design.theme.FlowTimeTheme
@@ -63,8 +56,6 @@ fun FlowTimeApp(
     }
 
     var showDialog by remember(shouldShowRatingDialog) { mutableStateOf(shouldShowRatingDialog) }
-
-    KeepScreenOn()
 
     FlowTimeTheme(appTheme = appTheme) {
         if (showDialog) {
@@ -167,65 +158,4 @@ fun RatingDialog(
         },
         onDismissRequest = { onNeverRemind.invoke() }
     )
-}
-
-@Composable
-fun KeepScreenOn() {
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
-
-    DisposableEffect(lifecycleOwner, context) {
-        val window = context.findActivity()?.window
-        val powerManager = context.getSystemService(Context.POWER_SERVICE) as? PowerManager
-        val wakeLock =
-            powerManager?.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "FlowTime:WakeLock")
-
-        window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
-        val lifecycleObserver = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_START -> {
-                    try {
-                        wakeLock?.acquire(10 * 60 * 1000L)
-                    } catch (e: Exception) {
-                        // Ignore wake lock errors
-                    }
-                }
-
-                Lifecycle.Event.ON_STOP -> {
-                    try {
-                        if (wakeLock?.isHeld == true) {
-                            wakeLock.release()
-                        }
-                    } catch (e: Exception) {
-                        // Ignore wake lock errors
-                    }
-                }
-                else -> Unit
-            }
-        }
-
-        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
-            window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            try {
-                if (wakeLock?.isHeld == true) {
-                    wakeLock.release()
-                }
-            } catch (e: Exception) {
-                // Ignore wake lock errors
-            }
-        }
-    }
-}
-
-fun Context.findActivity(): Activity? {
-    var context = this
-    while (context is ContextWrapper) {
-        if (context is Activity) return context
-        context = context.baseContext
-    }
-    return null
 }

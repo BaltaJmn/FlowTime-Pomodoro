@@ -18,8 +18,6 @@
     <string name="time_title_working">Arbeiten</string>
     <string name="time_title_resting">Ausruhen</string>
     <string name="button_break">Pause</string>
-    <string name="dialog_title">Möchtest du wirklich beenden?</string>
-    <string name="dialog_subtitle">Dein Timer wird zurückgesetzt</string>
     <string name="dialog_confirm">Bestätigen</string>
     <string name="dialog_cancel">Abbrechen</string>
     <string name="study_history">Verlauf</string>
@@ -63,7 +61,7 @@
     <string name="on_board_title_4">Liste</string>
     <string name="on_board_title_5">Einstellungen</string>
     <string name="on_board_title_6">Hintergrundmusik</string>
-    <string name="on_board_subtitle_0">App, die für den Vordergrundbetrieb entwickelt wurde.</string>
+    <string name="on_board_subtitle_0">Die Zeit läuft weiter, auch wenn du die App verlässt.</string>
     <string name="on_board_subtitle_1">Verfolge deine Zeit effizient mit FlowTime.</string>
     <string name="on_board_subtitle_2">Steigere die Produktivität mit der Pomodoro-Technik.</string>
     <string name="on_board_subtitle_3">Passe deine Ruhezeit prozentual zur Arbeitszeit an.</string>
@@ -154,4 +152,9 @@
         <item quantity="other">%d Sekunden</item>
     </plurals>
 
+    <string name="time_title_paused">Pausiert</string>
+    <string name="cd_pause_timer">Timer pausieren</string>
+    <string name="cd_resume_timer">Timer fortsetzen</string>
+    <string name="cd_skip_break">Pause überspringen</string>
+    <string name="keep_screen_on">Bildschirm während einer Sitzung anlassen</string>
 </resources>

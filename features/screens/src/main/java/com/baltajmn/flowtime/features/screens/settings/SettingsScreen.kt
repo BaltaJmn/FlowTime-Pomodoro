@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.features.screens.settings
 
 import android.annotation.SuppressLint
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -218,8 +219,9 @@ fun SettingsContent(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    ButtonSound(
-                        showSound = showSound,
+                    CheckRow(
+                        text = R.string.show_sound,
+                        checked = showSound,
                         onCheckedChange = {
                             onSoundChange.invoke(it)
                             viewModel.saveSound(it)
@@ -228,11 +230,18 @@ fun SettingsContent(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    ButtonAlert(
-                        showAlert = state.showAlert,
-                        onCheckedChange = {
-                            viewModel.saveAlert(it)
-                        }
+                    CheckRow(
+                        text = R.string.show_alert,
+                        checked = state.showAlert,
+                        onCheckedChange = viewModel::saveAlert
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    CheckRow(
+                        text = R.string.keep_screen_on,
+                        checked = state.keepScreenOn,
+                        onCheckedChange = viewModel::saveKeepScreenOn
                     )
                 }
             }
@@ -270,14 +279,11 @@ fun ButtonHistory(navigateToHistory: () -> Unit) {
 }
 
 @Composable
-fun ButtonSound(
-    showSound: Boolean,
+fun CheckRow(
+    @StringRes text: Int,
+    checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
-    val hasToShow by rememberSaveable(showSound) {
-        mutableStateOf(showSound)
-    }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -287,41 +293,12 @@ fun ButtonSound(
     ) {
         Text(
             modifier = Modifier.weight(1f),
-            text = LocalContext.current.getString((R.string.show_sound)),
+            text = stringResource(text),
             style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
         )
         Checkbox(
             modifier = Modifier.weight(1f),
-            checked = hasToShow,
-            onCheckedChange = onCheckedChange
-        )
-    }
-}
-
-@Composable
-fun ButtonAlert(
-    showAlert: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    val hasToShow by rememberSaveable(showAlert) {
-        mutableStateOf(showAlert)
-    }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 12.dp, end = 16.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            modifier = Modifier.weight(1f),
-            text = LocalContext.current.getString((R.string.show_alert)),
-            style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
-        )
-        Checkbox(
-            modifier = Modifier.weight(1f),
-            checked = hasToShow,
+            checked = checked,
             onCheckedChange = onCheckedChange
         )
     }

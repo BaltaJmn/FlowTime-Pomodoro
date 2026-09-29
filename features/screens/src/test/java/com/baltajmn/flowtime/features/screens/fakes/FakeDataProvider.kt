@@ -42,6 +42,9 @@ class FakeDataProvider(private val today: LocalDate = LocalDate.of(2026, 9, 29))
         values[key.key] = value
     }
 
+    override fun <T> getObject(key: SharedPreferencesItem, type: Class<T>): T? =
+        values[key.key]?.takeIf(type::isInstance)?.let(type::cast)
+
     override fun getRangeModel(key: SharedPreferencesItem) = values[key.key] as? RangeModel
 
     @Suppress("UNCHECKED_CAST")

@@ -18,8 +18,6 @@
     <string name="time_title_resting">Resting</string>
     <string name="time_title_working">Working</string>
     <string name="button_break">Break</string>
-    <string name="dialog_title">Do you want to exit?</string>
-    <string name="dialog_subtitle">Your timer will be reset</string>
     <string name="dialog_confirm">Confirm</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="study_history">History</string>
@@ -63,7 +61,7 @@
     <string name="on_board_title_4">List</string>
     <string name="on_board_title_5">Settings</string>
     <string name="on_board_title_6">Background Music</string>
-    <string name="on_board_subtitle_0">App designed to be kept in the foreground.</string>
+    <string name="on_board_subtitle_0">Your time keeps counting even if you leave the app.</string>
     <string name="on_board_subtitle_1">Track your time efficiently with FlowTime.</string>
     <string name="on_board_subtitle_2">Boost productivity with the Pomodoro technique.</string>
     <string name="on_board_subtitle_3">Adjust your rest in percentage of the worked time.</string>
@@ -156,4 +154,9 @@
         <item quantity="other">%d seconds</item>
     </plurals>
 
+    <string name="time_title_paused">Paused</string>
+    <string name="cd_pause_timer">Pause timer</string>
+    <string name="cd_resume_timer">Resume timer</string>
+    <string name="cd_skip_break">Skip break</string>
+    <string name="keep_screen_on">Keep the screen on during a session</string>
 </resources>

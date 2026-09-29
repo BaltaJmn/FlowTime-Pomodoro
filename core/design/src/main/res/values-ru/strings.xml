@@ -18,8 +18,6 @@
     <string name="time_title_working">Работа</string>
     <string name="time_title_resting">Отдых</string>
     <string name="button_break">Перерыв</string>
-    <string name="dialog_title">Точно выйти?</string>
-    <string name="dialog_subtitle">Таймер будет сброшен</string>
     <string name="dialog_confirm">Подтвердить</string>
     <string name="dialog_cancel">Отмена</string>
     <string name="study_history">История</string>
@@ -63,7 +61,7 @@
     <string name="on_board_title_4">Список</string>
     <string name="on_board_title_5">Настройки</string>
     <string name="on_board_title_6">Фоновая музыка</string>
-    <string name="on_board_subtitle_0">Приложение, предназначенное для работы на переднем плане.</string>
+    <string name="on_board_subtitle_0">Время идёт, даже если вы выйдете из приложения.</string>
     <string name="on_board_subtitle_1">Эффективно отслеживайте своё время с FlowTime.</string>
     <string name="on_board_subtitle_2">Повышайте продуктивность с помощью техники Помодоро.</string>
     <string name="on_board_subtitle_3">Настройте свой отдых в процентах от рабочего времени.</string>
@@ -160,4 +158,9 @@
         <item quantity="other">%d секунды</item>
     </plurals>
 
+    <string name="time_title_paused">Пауза</string>
+    <string name="cd_pause_timer">Приостановить таймер</string>
+    <string name="cd_resume_timer">Продолжить таймер</string>
+    <string name="cd_skip_break">Пропустить перерыв</string>
+    <string name="keep_screen_on">Не выключать экран во время сессии</string>
 </resources>

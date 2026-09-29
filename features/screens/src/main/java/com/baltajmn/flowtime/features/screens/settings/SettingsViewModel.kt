@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.KEEP_SCREEN_ON
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_ALERT
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.THEME_COLOR
@@ -50,7 +51,8 @@ class SettingsViewModel(
                 it.copy(
                     userLevel = level.toLong(),
                     progressPercentage = progressPercentage.toLong(),
-                    showAlert = dataProvider.getBoolean(SHOW_ALERT, true)
+                    showAlert = dataProvider.getBoolean(SHOW_ALERT, true),
+                    keepScreenOn = dataProvider.getBoolean(KEEP_SCREEN_ON, true)
                 )
             }
         }
@@ -71,5 +73,10 @@ class SettingsViewModel(
                 showAlert = showAlert
             )
         }
+    }
+
+    fun saveKeepScreenOn(keepScreenOn: Boolean) {
+        dataProvider.setBoolean(KEEP_SCREEN_ON, keepScreenOn)
+        _uiState.update { it.copy(keepScreenOn = keepScreenOn) }
     }
 }

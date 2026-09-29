@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.features.screens.common.composable.screen
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,27 +15,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.Title
-import com.baltajmn.flowtime.features.screens.common.TimerState
-import com.baltajmn.flowtime.features.screens.common.composable.components.ButtonsContentLandscape
+import com.baltajmn.flowtime.features.screens.common.composable.components.ButtonsContent
 import com.baltajmn.flowtime.features.screens.common.composable.components.MinutesStudying
 import com.baltajmn.flowtime.features.screens.common.composable.components.TimeContent
+import com.baltajmn.flowtime.features.screens.timer.TimerAction
+import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 
 @Composable
-fun <T : TimerState<T>> TimerLandscapeContent(
-    state: T,
-    titleProvider: (T, Context) -> String,
-    onStartClick: () -> Unit,
-    onFinishClick: () -> Unit,
-    onBreakClick: (() -> Unit)? = null,
+fun TimerLandscapeContent(
+    state: TimerUiState,
+    title: String,
+    onAction: (TimerAction) -> Unit,
     onSwitchChanged: (Boolean) -> Unit
 ) {
-    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,16 +50,16 @@ fun <T : TimerState<T>> TimerLandscapeContent(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = titleProvider(state, context),
+                    text = title,
                     style = LargeTitle.copy(
                         fontSize = 30.sp,
                         color = MaterialTheme.colorScheme.primary
                     )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                TimeContent(secondsFormatted = state.secondsFormatted)
+                TimeContent(secondsFormatted = state.time)
                 Spacer(modifier = Modifier.height(8.dp))
-                MinutesStudying(minutesStudying = state.minutesStudying)
+                MinutesStudying(minutesStudying = state.minutesToday)
             }
             Column(
                 modifier = Modifier
@@ -71,17 +68,12 @@ fun <T : TimerState<T>> TimerLandscapeContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                ButtonsContentLandscape(
-                    state = state,
-                    onStartClick = onStartClick,
-                    onFinishClick = onFinishClick,
-                    onBreakClick = onBreakClick
-                )
+                ButtonsContent(state = state, onAction = onAction, vertical = true)
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = context.getString(R.string.pomodoro_continue_after_break),
+                    text = stringResource(R.string.pomodoro_continue_after_break),
                     style = Title.copy(
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)

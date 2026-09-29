@@ -1,11 +1,25 @@
-package com.baltajmn.flowtime.features.screens.flowtime
+package com.baltajmn.flowtime.features.screens.timer
 
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
+import com.baltajmn.flowtime.data.timer.flowTimeBreakSeconds
+import com.baltajmn.flowtime.data.timer.percentageBreakSeconds
+import com.baltajmn.flowtime.data.timer.withCumulativeTotals
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class FlowTimeBreakTest {
+class TimerRulesTest {
+
+    @Test
+    fun `el descanso del modo Porcentaje es el porcentaje de lo trabajado`() {
+        assertEquals(10L, percentageBreakSeconds(workedSeconds = 50, percentage = 20))
+        assertEquals(1188L, percentageBreakSeconds(workedSeconds = 3600, percentage = 33))
+    }
+
+    @Test
+    fun `el descanso del modo Porcentaje se redondea por abajo al segundo`() {
+        assertEquals(11L, percentageBreakSeconds(workedSeconds = 59, percentage = 20))
+    }
 
     // 0-15 min: 5 de descanso; 15-30: 10; y después de 30: 15.
     private val defaults = TimerDefaults.flowTimeRanges()

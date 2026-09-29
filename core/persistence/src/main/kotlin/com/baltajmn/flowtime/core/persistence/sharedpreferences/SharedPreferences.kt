@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.google.gson.Gson
+import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import java.time.Clock
@@ -58,6 +59,15 @@ class SharedPreferencesProvider(
     override fun setObject(key: SharedPreferencesItem, value: Any) {
         val rawString = Gson().toJson(value)
         sharedPreferences.edit().putString(key.name.lowercase(), rawString).apply()
+    }
+
+    override fun <T> getObject(key: SharedPreferencesItem, type: Class<T>): T? {
+        val rawString = getString(key) ?: return null
+        return try {
+            Gson().fromJson(rawString, type)
+        } catch (e: JsonParseException) {
+            null
+        }
     }
 
     override fun getRangeModel(key: SharedPreferencesItem): RangeModel? {

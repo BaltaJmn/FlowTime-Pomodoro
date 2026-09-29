@@ -3,7 +3,6 @@ package com.baltajmn.flowtime
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -65,7 +64,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         this.enableEdgeToEdge()
-        window.addFlags(FLAG_KEEP_SCREEN_ON)
 
         theme.value = viewModel.getAppTheme()
         showSound.value = viewModel.getShowSound()

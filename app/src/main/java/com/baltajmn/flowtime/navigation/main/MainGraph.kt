@@ -19,13 +19,12 @@ import com.baltajmn.flowtime.core.navigation.MainGraph.Percentage
 import com.baltajmn.flowtime.core.navigation.MainGraph.Pomodoro
 import com.baltajmn.flowtime.core.navigation.MainGraph.Settings
 import com.baltajmn.flowtime.core.navigation.MainGraph.TodoList
+import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.edit.EditScreen
-import com.baltajmn.flowtime.features.screens.flowtime.FlowTimeScreen
 import com.baltajmn.flowtime.features.screens.history.HistoryScreen
 import com.baltajmn.flowtime.features.screens.home.HomeScreen
-import com.baltajmn.flowtime.features.screens.percentage.PercentageScreen
-import com.baltajmn.flowtime.features.screens.pomodoro.PomodoroScreen
 import com.baltajmn.flowtime.features.screens.settings.SettingsScreen
+import com.baltajmn.flowtime.features.screens.timer.TimerScreen
 import com.baltajmn.flowtime.features.screens.todoList.TodoListScreen
 import com.baltajmn.flowtime.ui.FlowTimeAppState
 
@@ -39,8 +38,7 @@ fun MainGraph(
     navigateUp: () -> Unit,
     navigateToHistory: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
-    onSupportDeveloperClick: () -> Unit,
-    onTimerRunning: (Boolean) -> Unit
+    onSupportDeveloperClick: () -> Unit
 ) {
     NavHost(
         navController = appState.mainNavController,
@@ -66,7 +64,7 @@ fun MainGraph(
                 )
             }
         ) {
-            FlowTimeScreen(onTimerRunning = onTimerRunning)
+            TimerScreen(TimerMode.FLOW_TIME)
         }
 
         composable(
@@ -78,7 +76,7 @@ fun MainGraph(
                 )
             }
         ) {
-            PomodoroScreen(onTimerRunning = onTimerRunning)
+            TimerScreen(TimerMode.POMODORO)
         }
 
         composable(
@@ -90,9 +88,7 @@ fun MainGraph(
                 )
             }
         ) {
-            PercentageScreen(
-                onTimerRunning = onTimerRunning
-            )
+            TimerScreen(TimerMode.PERCENTAGE)
         }
 
         composable(

@@ -18,8 +18,6 @@
     <string name="time_title_working">काम</string>
     <string name="time_title_resting">आराम</string>
     <string name="button_break">ब्रेक</string>
-    <string name="dialog_title">क्या आप सच में बाहर निकलना चाहते हैं?</string>
-    <string name="dialog_subtitle">आपका टाइमर रीसेट हो जाएगा</string>
     <string name="dialog_confirm">पुष्टि करें</string>
     <string name="dialog_cancel">रद्द करें</string>
     <string name="study_history">इतिहास</string>
@@ -63,7 +61,7 @@
     <string name="on_board_title_4">सूची</string>
     <string name="on_board_title_5">सेटिंग्स</string>
     <string name="on_board_title_6">पृष्ठभूमि संगीत</string>
-    <string name="on_board_subtitle_0">ऐप को अग्रभूमि में रखने के लिए डिज़ाइन किया गया है।</string>
+    <string name="on_board_subtitle_0">ऐप से बाहर जाने पर भी समय चलता रहता है।</string>
     <string name="on_board_subtitle_1">FlowTime के साथ अपने समय को कुशलतापूर्वक ट्रैक करें।</string>
     <string name="on_board_subtitle_2">पोमोडोरो तकनीक के साथ उत्पादकता बढ़ाएं।</string>
     <string name="on_board_subtitle_3">काम किए गए समय के प्रतिशत में अपने आराम को समायोजित करें।</string>
@@ -154,4 +152,9 @@
         <item quantity="other">%d सेकंड</item>
     </plurals>
 
+    <string name="time_title_paused">रुका हुआ</string>
+    <string name="cd_pause_timer">टाइमर रोकें</string>
+    <string name="cd_resume_timer">टाइमर फिर से शुरू करें</string>
+    <string name="cd_skip_break">ब्रेक छोड़ें</string>
+    <string name="keep_screen_on">सत्र के दौरान स्क्रीन चालू रखें</string>
 </resources>

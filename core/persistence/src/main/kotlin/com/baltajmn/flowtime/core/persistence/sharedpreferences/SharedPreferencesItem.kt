@@ -13,4 +13,6 @@ enum class SharedPreferencesItem {
     CONTINUE_AFTER_BREAK_PERCENTAGE,
     SHOW_RATING,
     REMEMBER_SHOW_RATING,
+    TIMER_SESSION,
+    KEEP_SCREEN_ON,
 }

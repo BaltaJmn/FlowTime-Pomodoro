@@ -1,4 +1,4 @@
-package com.baltajmn.flowtime.features.screens.flowtime
+package com.baltajmn.flowtime.data.timer
 
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 
@@ -28,3 +28,7 @@ fun List<RangeModel>.withCumulativeTotals(): MutableList<RangeModel> {
         range.copy(totalRange = total, endRange = duration)
     }.toMutableList()
 }
+
+/** Descanso del modo Porcentaje: ese porcentaje de lo trabajado, redondeado al segundo por abajo. */
+fun percentageBreakSeconds(workedSeconds: Long, percentage: Long): Long =
+    workedSeconds * percentage / 100
