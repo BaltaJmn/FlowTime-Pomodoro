@@ -13,7 +13,6 @@
     <string name="pomodoro_settings_working">काम का समय…</string>
     <string name="pomodoro_settings_resting">आराम का समय…</string>
     <string name="pomodoro_continue_after_break">ब्रेक के बाद जारी रखें</string>
-    <string name="theme_settings_title">थीम रंग</string>
     <string name="settings_save">परिवर्तनों को सुरक्षित करें</string>
     <string name="time_title_working">काम</string>
     <string name="time_title_resting">आराम</string>
@@ -101,6 +100,11 @@
     <string name="save">सहेजें</string>
     <string name="user_level_short">स्तर %d</string>
     <string name="cd_theme_color">%1$s थीम</string>
+    <string name="appearance_title">दिखावट</string>
+    <string name="appearance_system">सिस्टम</string>
+    <string name="appearance_light">हल्का</string>
+    <string name="appearance_dark">गहरा</string>
+    <string name="appearance_dynamic">वॉलपेपर के रंग इस्तेमाल करें</string>
     <string name="theme_blue">नीला</string>
     <string name="theme_pink">गुलाबी</string>
     <string name="theme_grey">धूसर</string>

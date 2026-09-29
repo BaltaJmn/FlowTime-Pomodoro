@@ -32,6 +32,9 @@ billingKtx = "8.3.0"
 foundationLayoutAndroid = "1.8.2"
 reviewKtx = "2.0.2"
 kotlinImmutable = "0.3.6"
+materialKolor = "2.1.1"
+robolectric = "4.16"
+roborazzi = "1.60.0"
 
 [libraries]
 
@@ -51,6 +54,7 @@ androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinImmutable" }
+material-kolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
 
 
 
@@ -79,6 +83,10 @@ junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "tes
 junit-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "testEspresso" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
 mock = { module = "io.mockk:mockk", version.ref = "mock" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
+roborazzi-junit-rule = { module = "io.github.takahirom.roborazzi:roborazzi-junit-rule", version.ref = "roborazzi" }
 
 plugin-android = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 plugin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -104,6 +112,7 @@ flowtime-android-compose-library = { id = "flowtime.compose.library", version = 
 flowtime-android-room-library = { id = "flowtime.room.library", version = "unspecified" }
 flowtime-kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 flowtime-kotlin-plugin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 
 [bundles]
 

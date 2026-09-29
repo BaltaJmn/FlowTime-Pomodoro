@@ -1,26 +1,25 @@
 package com.baltajmn.flowtime.core.design.theme
 
+import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun FlowTimeTheme(
-    appTheme: AppTheme,
+    appearance: Appearance,
     content: @Composable () -> Unit
 ) {
-
-    val colorScheme = when (appTheme) {
-        AppTheme.Blue -> BlueColorScheme
-        AppTheme.Pink -> PinkColorScheme
-        AppTheme.Orange -> OrangeColorScheme
-        AppTheme.Brown -> BrownColorScheme
-        AppTheme.Olive -> OliveColorScheme
-        AppTheme.Marine -> MarineColorScheme
-        AppTheme.Green -> GreenColorScheme
-        AppTheme.Beige -> BeigeColorScheme
-        AppTheme.Grey -> GreyColorScheme
-        AppTheme.Purple -> PurpleColorScheme
-        AppTheme.Black -> BlackColorScheme
+    val dark = appearance.isDark(isSystemInDarkTheme())
+    val context = LocalContext.current
+    val colorScheme = if (appearance.dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (dark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+    } else {
+        remember(appearance.theme, dark) { appearance.theme.colorScheme(dark) }
     }
 
     MaterialTheme(
@@ -29,3 +28,14 @@ fun FlowTimeTheme(
         content = content
     )
 }
+
+/** Un tema concreto, sin mirar los ajustes: para vistas previas y capturas. */
+@Composable
+fun FlowTimeTheme(
+    theme: AppTheme = AppTheme.Blue,
+    dark: Boolean = false,
+    content: @Composable () -> Unit
+) = FlowTimeTheme(
+    appearance = Appearance(theme = theme, darkMode = if (dark) DarkMode.DARK else DarkMode.LIGHT),
+    content = content
+)

@@ -7,6 +7,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -281,6 +283,12 @@ fun SliderItem(
         horizontalArrangement = Arrangement.spacedBy(TopNavBarConstants.Padding.SPACER)
     ) {
         Icon(
+            // Los ruidos son círculos de su color: con borde, el blanco se ve también en el tema claro.
+            modifier = if (iconTint != null) {
+                Modifier.border(1.dp, MaterialTheme.colorScheme.onSurfaceVariant, CircleShape)
+            } else {
+                Modifier
+            },
             painter = painterResource(type.icon),
             contentDescription = soundName,
             tint = iconTint ?: MaterialTheme.colorScheme.secondary

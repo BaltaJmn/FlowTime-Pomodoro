@@ -14,7 +14,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.baltajmn.flowtime.core.design.model.ScreenType
-import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.GRAPH
 import com.baltajmn.flowtime.core.navigation.MainGraph.Edit
 import com.baltajmn.flowtime.core.navigation.MainGraph.FlowTime
@@ -43,7 +42,6 @@ fun MainGraph(
     onSoundChange: (Boolean) -> Unit,
     navigateUp: () -> Unit,
     navigateToHistory: () -> Unit,
-    onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
     NavHost(
@@ -138,7 +136,6 @@ fun MainGraph(
                 navigateToHistory = navigateToHistory,
                 showSound = showSound,
                 onSoundChange = onSoundChange,
-                onThemeChanged = onThemeChanged,
                 onSupportDeveloperClick = onSupportDeveloperClick
             )
         }

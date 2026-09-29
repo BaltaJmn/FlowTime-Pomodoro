@@ -11,6 +11,7 @@ android {
 dependencies {
     implementation(projects.core.persistence)
     implementation(libs.androidx.lifecycle.process)
+    implementation(libs.material.kolor)
 
     // Testing dependencies
     testImplementation(libs.junit)

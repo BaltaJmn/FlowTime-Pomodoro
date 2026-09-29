@@ -1,14 +1,13 @@
 package com.baltajmn.flowtime.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.GRAPH
 import com.baltajmn.flowtime.core.navigation.PreMainGraph
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardScreen
@@ -20,11 +19,10 @@ fun FlowTimeNavHost(
     flowTimeAppState: FlowTimeAppState,
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
-    onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
     NavHost(
-        modifier = Modifier.background(color = Color.White),
+        modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
         navController = flowTimeAppState.preMainNavController,
         route = GRAPH.Root,
         startDestination = GRAPH.PreMain
@@ -36,7 +34,6 @@ fun FlowTimeNavHost(
                 appState = flowTimeAppState,
                 showSound = showSound,
                 onSoundChange = onSoundChange,
-                onThemeChanged = onThemeChanged,
                 onSupportDeveloperClick = onSupportDeveloperClick
             )
         }

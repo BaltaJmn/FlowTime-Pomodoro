@@ -27,7 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.R
-import com.baltajmn.flowtime.core.design.theme.AppTheme
+import com.baltajmn.flowtime.core.design.theme.Appearance
 import com.baltajmn.flowtime.core.design.theme.FlowTimeTheme
 import com.google.android.gms.tasks.Task
 import com.google.android.play.core.review.ReviewInfo
@@ -37,13 +37,12 @@ import com.google.android.play.core.review.ReviewManagerFactory
 @Composable
 fun FlowTimeApp(
     flowTimeAppState: FlowTimeAppState = rememberAppState(),
-    appTheme: AppTheme,
+    appearance: Appearance,
     showOnBoard: Boolean,
     showRating: Boolean,
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     rememberShowRating: Boolean,
-    onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit,
     onShowRatingChanged: (Boolean) -> Unit,
     onRememberShowRating: (Boolean) -> Unit
@@ -57,7 +56,7 @@ fun FlowTimeApp(
 
     var showDialog by remember(shouldShowRatingDialog) { mutableStateOf(shouldShowRatingDialog) }
 
-    FlowTimeTheme(appTheme = appTheme) {
+    FlowTimeTheme(appearance = appearance) {
         if (showDialog) {
             RatingDialog(
                 onRateNow = {
@@ -81,7 +80,6 @@ fun FlowTimeApp(
             flowTimeAppState = flowTimeAppState,
             showSound = showSound,
             onSoundChange = onSoundChange,
-            onThemeChanged = onThemeChanged,
             onSupportDeveloperClick = onSupportDeveloperClick
         )
     }

@@ -13,7 +13,6 @@
     <string name="pomodoro_settings_working">Trabajando por…</string>
     <string name="pomodoro_settings_resting">Descansando por…</string>
     <string name="pomodoro_continue_after_break">Continuar después del descanso</string>
-    <string name="theme_settings_title">Color del tema</string>
     <string name="settings_save">Guardar cambios</string>
     <string name="time_title_working">Trabajando</string>
     <string name="time_title_resting">Descansando</string>
@@ -101,6 +100,11 @@
     <string name="save">Guardar</string>
     <string name="user_level_short">Nv. %d</string>
     <string name="cd_theme_color">Tema %1$s</string>
+    <string name="appearance_title">Apariencia</string>
+    <string name="appearance_system">Sistema</string>
+    <string name="appearance_light">Claro</string>
+    <string name="appearance_dark">Oscuro</string>
+    <string name="appearance_dynamic">Usar los colores del fondo de pantalla</string>
     <string name="theme_blue">Azul</string>
     <string name="theme_pink">Rosa</string>
     <string name="theme_grey">Gris</string>

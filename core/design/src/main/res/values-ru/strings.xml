@@ -13,7 +13,6 @@
     <string name="pomodoro_settings_working">Работаю…</string>
     <string name="pomodoro_settings_resting">Отдыхаю…</string>
     <string name="pomodoro_continue_after_break">Продолжать после перерыва</string>
-    <string name="theme_settings_title">Цвет темы</string>
     <string name="settings_save">Сохранить изменения</string>
     <string name="time_title_working">Работа</string>
     <string name="time_title_resting">Отдых</string>
@@ -101,6 +100,11 @@
     <string name="save">Сохранить</string>
     <string name="user_level_short">Ур. %d</string>
     <string name="cd_theme_color">Тема: %1$s</string>
+    <string name="appearance_title">Оформление</string>
+    <string name="appearance_system">Система</string>
+    <string name="appearance_light">Светлое</string>
+    <string name="appearance_dark">Тёмное</string>
+    <string name="appearance_dynamic">Цвета обоев</string>
     <string name="theme_blue">Синий</string>
     <string name="theme_pink">Розовый</string>
     <string name="theme_grey">Серый</string>

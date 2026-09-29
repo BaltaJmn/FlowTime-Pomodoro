@@ -17,4 +17,6 @@ enum class SharedPreferencesItem {
     KEEP_SCREEN_ON,
     NOTIFICATIONS_EXPLAINED,
     SESSIONS_IMPORTED,
+    DARK_MODE,
+    DYNAMIC_COLOR,
 }

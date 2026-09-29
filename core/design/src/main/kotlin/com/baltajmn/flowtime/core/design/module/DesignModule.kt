@@ -3,6 +3,7 @@ package com.baltajmn.flowtime.core.design.module
 import android.media.MediaPlayer
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.service.SoundService
+import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.core.design.sound.AmbientMixer
 import com.baltajmn.flowtime.core.design.sound.Ambience
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
@@ -36,5 +37,6 @@ val DesignModule: Module
         }
 
         single { AmbientMixer() }
+        single { AppearanceRepository(get()) }
         single { Ambience(androidContext(), get(), get()) }
     }

@@ -17,7 +17,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -25,7 +24,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,7 +33,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -68,6 +65,20 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.AppTheme
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.semantics.Role
+import com.baltajmn.flowtime.core.design.theme.Appearance
+import com.baltajmn.flowtime.core.design.theme.DarkMode
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
@@ -82,7 +93,6 @@ fun SettingsScreen(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
-    onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -94,7 +104,6 @@ fun SettingsScreen(
         showSound = showSound,
         onSoundChange = onSoundChange,
         navigateToHistory = navigateToHistory,
-        onThemeChanged = onThemeChanged,
         onSupportDeveloperClick = onSupportDeveloperClick
     )
 }
@@ -107,7 +116,6 @@ fun AnimatedSettingsContent(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
-    onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
     AnimatedContent(
@@ -124,7 +132,6 @@ fun AnimatedSettingsContent(
                 showSound = showSound,
                 onSoundChange = onSoundChange,
                 navigateToHistory = navigateToHistory,
-                onThemeChanged = onThemeChanged,
                 onSupportDeveloperClick = onSupportDeveloperClick
             )
         }
@@ -139,7 +146,6 @@ fun SettingsContent(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
-    onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
     LazyColumn(
@@ -165,48 +171,12 @@ fun SettingsContent(
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
-            Card {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = LocalContext.current.getString(R.string.theme_settings_title),
-                        style = LargeTitle.copy(
-                            fontSize = 30.sp,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    LazyRow(
-                        state = rememberLazyListState(),
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        items(AppTheme.entries) { color ->
-                            val colorDescription = stringResource(
-                                R.string.cd_theme_color,
-                                stringResource(color.label)
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .background(color = color.color)
-                                    .aspectRatio(1f)
-                                    .size(32.dp)
-                                    .semantics { contentDescription = colorDescription }
-                                    .clickable {
-                                        onThemeChanged.invoke(color)
-                                        viewModel.saveColor(color)
-                                    }
-                            )
-                        }
-                    }
-                }
-            }
+            AppearanceCard(
+                appearance = state.appearance,
+                onDarkMode = viewModel::setDarkMode,
+                onDynamicColor = viewModel::setDynamicColor,
+                onTheme = viewModel::setTheme
+            )
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
@@ -327,7 +297,7 @@ fun ButtonRow(@StringRes text: Int, @StringRes button: Int, onClick: () -> Unit)
         ) {
             Text(
                 text = stringResource(button),
-                style = SubBody.copy(color = Color.White)
+                style = SubBody.copy(color = MaterialTheme.colorScheme.onPrimary)
             )
         }
     }
@@ -424,7 +394,7 @@ fun SupportButton(
             ) {
                 Text(
                     text = LocalContext.current.getString(R.string.support_developer),
-                    style = SubBody.copy(color = Color.White)
+                    style = SubBody.copy(color = MaterialTheme.colorScheme.onPrimary)
                 )
             }
         }
@@ -468,6 +438,18 @@ fun ProgressLevel(
                 )
             )
 
+            // El nivel va encima de la barra y no dentro: en blanco sobre la parte vacía no se leía.
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                text = stringResource(R.string.user_level_short, userLevel),
+                style = SubBody.copy(
+                    fontWeight = FontWeight.W700,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            )
+
             BoxWithConstraints(
                 Modifier
                     .padding(vertical = 8.dp)
@@ -485,17 +467,119 @@ fun ProgressLevel(
                         .fillMaxWidth(fraction = width / 100)
                         .background(color = MaterialTheme.colorScheme.primary)
                 )
-                Text(
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp)
-                        .align(Alignment.CenterStart),
-                    text = stringResource(R.string.user_level_short, userLevel),
-                    style = SubBody.copy(
-                        fontWeight = FontWeight.W700,
-                        color = Color.White
-                    )
+            }
+        }
+    }
+}
+
+/** Claro u oscuro, los colores del fondo de pantalla (desde Android 12) y el tema. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppearanceCard(
+    appearance: Appearance,
+    onDarkMode: (DarkMode) -> Unit,
+    onDynamicColor: (Boolean) -> Unit,
+    onTheme: (AppTheme) -> Unit
+) {
+    val canUseWallpaper = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    // Con los colores del fondo de pantalla, el tema no se usa: se ve, pero apagado.
+    val themesEnabled = !(canUseWallpaper && appearance.dynamicColor)
+
+    Card {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.appearance_title),
+                style = LargeTitle.copy(
+                    fontSize = 30.sp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                DarkMode.entries.forEachIndexed { index, mode ->
+                    SegmentedButton(
+                        selected = appearance.darkMode == mode,
+                        onClick = { onDarkMode(mode) },
+                        shape = SegmentedButtonDefaults.itemShape(index, DarkMode.entries.size)
+                    ) {
+                        Text(text = stringResource(mode.label), style = SubBody)
+                    }
+                }
+            }
+
+            if (canUseWallpaper) {
+                CheckRow(
+                    text = R.string.appearance_dynamic,
+                    checked = appearance.dynamicColor,
+                    onCheckedChange = onDynamicColor
                 )
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .alpha(if (themesEnabled) 1f else 0.38f),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(vertical = 4.dp)
+            ) {
+                items(AppTheme.entries) { theme ->
+                    ThemeSwatch(
+                        theme = theme,
+                        selected = theme == appearance.theme,
+                        enabled = themesEnabled,
+                        onClick = { onTheme(theme) }
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
+}
+
+@Composable
+private fun ThemeSwatch(
+    theme: AppTheme,
+    selected: Boolean,
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    val description = stringResource(R.string.cd_theme_color, stringResource(theme.label))
+    Box(
+        modifier = Modifier
+            .size(40.dp)
+            .clip(CircleShape)
+            .background(theme.color)
+            .border(
+                width = if (selected) 3.dp else 1.dp,
+                color = if (selected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outlineVariant,
+                shape = CircleShape
+            )
+            .selectable(
+                selected = selected,
+                enabled = enabled,
+                role = Role.RadioButton,
+                onClick = onClick
+            )
+            .semantics { contentDescription = description },
+        contentAlignment = Alignment.Center
+    ) {
+        if (selected) {
+            // Sobre el color de muestra, no sobre el tema: blanco o negro según lo claro que sea.
+            Icon(
+                imageVector = Icons.Filled.Check,
+                contentDescription = null,
+                tint = if (theme.color.luminance() > 0.5f) Color.Black else Color.White
+            )
         }
     }
 }

@@ -3,11 +3,12 @@ package com.baltajmn.flowtime.features.screens.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baltajmn.flowtime.core.design.theme.AppTheme
+import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
+import com.baltajmn.flowtime.core.design.theme.DarkMode
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.KEEP_SCREEN_ON
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_ALERT
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
-import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.THEME_COLOR
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,13 +18,19 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val dataProvider: DataProvider,
-    private val getAllStudyTimeUseCase: GetAllStudyTimeUseCase
+    private val getAllStudyTimeUseCase: GetAllStudyTimeUseCase,
+    private val appearanceRepository: AppearanceRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
 
     init {
         getUserLevel()
+        viewModelScope.launch {
+            appearanceRepository.appearance.collect { appearance ->
+                _uiState.update { it.copy(appearance = appearance) }
+            }
+        }
     }
 
     private fun getUserLevel() {
@@ -58,9 +65,11 @@ class SettingsViewModel(
         }
     }
 
-    fun saveColor(color: AppTheme) {
-        dataProvider.setString(THEME_COLOR, color.name)
-    }
+    fun setTheme(theme: AppTheme) = appearanceRepository.setTheme(theme)
+
+    fun setDarkMode(mode: DarkMode) = appearanceRepository.setDarkMode(mode)
+
+    fun setDynamicColor(enabled: Boolean) = appearanceRepository.setDynamicColor(enabled)
 
     fun saveSound(showSound: Boolean) {
         dataProvider.setBoolean(SHOW_SOUND, showSound)

@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.baltajmn.flowtime.core.design.components.BottomNavBar
 import com.baltajmn.flowtime.core.design.components.TopNavBar
-import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.core.navigation.MainGraph
 import com.baltajmn.flowtime.ui.FlowTimeAppState
 
@@ -23,7 +22,6 @@ fun MainScreen(
     appState: FlowTimeAppState,
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
-    onThemeChanged: (AppTheme) -> Unit,
     onSupportDeveloperClick: () -> Unit
 ) {
     val currentRoute = appState.currentRoute
@@ -65,7 +63,6 @@ fun MainScreen(
                 settingsState = settingsState,
                 navigateToHistory = appState::navigateToHistory,
                 navigateUp = appState::navigateUp,
-                onThemeChanged = onThemeChanged,
                 showSound = showSound,
                 onSoundChange = onSoundChange,
                 onSupportDeveloperClick = onSupportDeveloperClick

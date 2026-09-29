@@ -1,13 +1,19 @@
 package com.baltajmn.flowtime
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
@@ -19,7 +25,7 @@ import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.baltajmn.flowtime.core.design.R
-import com.baltajmn.flowtime.core.design.theme.AppTheme
+import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.ui.FlowTimeApp
 import org.koin.android.ext.android.inject
@@ -28,7 +34,7 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel = inject<MainViewModel>().value
     private val sessionNotification: SessionNotification by inject()
-    private val theme: MutableState<AppTheme> = mutableStateOf(AppTheme.Blue)
+    private val appearanceRepository: AppearanceRepository by inject()
     private val showSound: MutableState<Boolean> = mutableStateOf(true)
 
     private val queryProductDetailsParams =
@@ -67,7 +73,6 @@ class MainActivity : ComponentActivity() {
 
         this.enableEdgeToEdge()
 
-        theme.value = viewModel.getAppTheme()
         showSound.value = viewModel.getShowSound()
 
         billingClient = BillingClient.newBuilder(this)
@@ -81,14 +86,24 @@ class MainActivity : ComponentActivity() {
         connectBillingClient()
 
         setContent {
+            val appearance by appearanceRepository.appearance.collectAsStateWithLifecycle()
+            val dark = appearance.isDark(isSystemInDarkTheme())
+            // Los iconos de las barras del sistema siguen al tema de la app, no al del sistema: con el
+            // modo oscuro forzado en un móvil claro, se quedaban oscuros sobre fondo oscuro.
+            DisposableEffect(dark) {
+                enableEdgeToEdge(
+                    statusBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT) { dark },
+                    navigationBarStyle = SystemBarStyle.auto(LIGHT_SCRIM, DARK_SCRIM) { dark }
+                )
+                onDispose {}
+            }
             FlowTimeApp(
-                appTheme = theme.value,
+                appearance = appearance,
                 showOnBoard = viewModel.getShowOnBoard(),
                 showRating = viewModel.getShowRating(),
                 rememberShowRating = viewModel.getRememberShowRating(),
                 showSound = showSound.value,
                 onSoundChange = { it: Boolean -> showSound.value = it },
-                onThemeChanged = { it: AppTheme -> theme.value = it },
                 onShowRatingChanged = { it: Boolean -> viewModel.setShowRating(it) },
                 onSupportDeveloperClick = { initiatePurchase() },
                 onRememberShowRating = { it: Boolean -> viewModel.setRememberShowRating(it) }
@@ -198,5 +213,11 @@ class MainActivity : ComponentActivity() {
             }
             .create()
             .show()
+    }
+
+    private companion object {
+        // Los mismos velos que pone enableEdgeToEdge() por defecto en la barra de navegación de botones.
+        val LIGHT_SCRIM = Color.argb(0xE6, 0xFF, 0xFF, 0xFF)
+        val DARK_SCRIM = Color.argb(0x80, 0x1B, 0x1B, 0x1B)
     }
 }

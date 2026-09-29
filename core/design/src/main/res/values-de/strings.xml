@@ -13,7 +13,6 @@
     <string name="pomodoro_settings_working">Arbeiten für</string>
     <string name="pomodoro_settings_resting">Ausruhen für</string>
     <string name="pomodoro_continue_after_break">Weiter nach der Pause</string>
-    <string name="theme_settings_title">Designfarbe</string>
     <string name="settings_save">Änderungen speichern</string>
     <string name="time_title_working">Arbeiten</string>
     <string name="time_title_resting">Ausruhen</string>
@@ -101,6 +100,11 @@
     <string name="save">Speichern</string>
     <string name="user_level_short">Lvl. %d</string>
     <string name="cd_theme_color">Design %1$s</string>
+    <string name="appearance_title">Darstellung</string>
+    <string name="appearance_system">System</string>
+    <string name="appearance_light">Hell</string>
+    <string name="appearance_dark">Dunkel</string>
+    <string name="appearance_dynamic">Farben des Hintergrundbilds verwenden</string>
     <string name="theme_blue">Blau</string>
     <string name="theme_pink">Rosa</string>
     <string name="theme_grey">Grau</string>
