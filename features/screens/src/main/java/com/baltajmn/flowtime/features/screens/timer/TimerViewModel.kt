@@ -11,6 +11,8 @@ import com.baltajmn.flowtime.data.goal.DayProgress
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.tag.TagRepository
+import com.baltajmn.flowtime.data.task.Task
+import com.baltajmn.flowtime.data.task.TaskRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusSnapshot
 import com.baltajmn.flowtime.data.timer.FocusState
@@ -24,6 +26,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
+import java.time.LocalDate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -43,7 +48,13 @@ data class TimerUiState(
     val tagId: Long? = null,
     /** Lo que lleva el anillo, de 0 a 1. */
     val progress: Float = 0f,
-    val hint: TimerHint? = null
+    val hint: TimerHint? = null,
+    /** La tarea en la que se trabaja (#40), y las pendientes de hoy para elegir otra. */
+    val taskId: Long? = null,
+    val taskTitle: String? = null,
+    val pendingTasks: List<Task> = emptyList(),
+    /** En el descanso de un bloque con tarea: preguntar si se ha terminado. */
+    val askTaskDone: Boolean = false
 ) {
     val isActive get() = phase != Phase.IDLE
     val isBreak get() = phase == Phase.BREAK
@@ -56,12 +67,19 @@ class TimerViewModel(
     private val engine: FocusEngine,
     private val dataProvider: DataProvider,
     goals: GoalRepository,
-    tags: TagRepository
+    tags: TagRepository,
+    private val tasks: TaskRepository
 ) : ViewModel() {
 
     private val continueAfterBreak =
         MutableStateFlow(dataProvider.getCheckValue(mode.continueAfterBreakKey))
     private val keepScreenOn = dataProvider.getBoolean(KEEP_SCREEN_ON, true)
+
+    // Las pendientes de hoy, y el descanso (por la hora de su trabajo) en el que ya se contestó.
+    private val pendingTasks = LocalDate.now().let { today ->
+        tasks.day(today, today).map { list -> list.filterNot(Task::done) }
+    }
+    private val answeredFor = MutableStateFlow<Long?>(null)
 
     // El día sale del repositorio del objetivo: con la pantalla abierta pasada la medianoche, antes
     // seguía sumando los minutos de ayer.
@@ -72,7 +90,12 @@ class TimerViewModel(
             goals.today.onStart<DayProgress?> { emit(null) },
             tags.active.onStart { emit(emptyList()) },
             ::toUiState
-        ).stateIn(
+        ).combine(pendingTasks.onStart { emit(emptyList()) }) { state, pending ->
+            state.copy(pendingTasks = pending)
+        }.combine(answeredFor) { state, answered ->
+            val asked = answered == engine.state.value.workStartedAt
+            state.copy(askTaskDone = state.askTaskDone && !asked)
+        }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
             toUiState(engine.snapshot(), continueAfterBreak.value, today = null, tags = emptyList())
@@ -91,6 +114,21 @@ class TimerViewModel(
     fun onAction(action: TimerAction) = engine.perform(action, mode)
 
     fun selectTag(id: Long?) = engine.setTag(id)
+
+    /** Si la tarea tiene etiqueta, la sesión se queda con ella. */
+    fun selectTask(task: Task?) = engine.setTask(task?.id, task?.tagId, task?.title)
+
+    /** "Sí": se completa y deja de ser la de la sesión. */
+    fun completeTask() {
+        val id = engine.state.value.taskId ?: return
+        viewModelScope.launch {
+            tasks.setDone(id, done = true, today = LocalDate.now())
+            engine.setTask(null)
+        }
+    }
+
+    /** "Aún no": la tarea sigue, y no se vuelve a preguntar en este descanso. */
+    fun keepTask() = answeredFor.update { engine.state.value.workStartedAt }
 
     /** El permiso de notificaciones se explica una sola vez: después, el aviso queda en Ajustes. */
     fun explainNotificationsOnce(): Boolean {
@@ -130,7 +168,10 @@ class TimerViewModel(
             tags = tags,
             tagId = session.tagId,
             progress = ring.progress,
-            hint = ring.hint
+            hint = ring.hint,
+            taskId = session.taskId,
+            taskTitle = session.taskTitle,
+            askTaskDone = mine && session.phase == Phase.BREAK && session.taskId != null
         )
     }
 }

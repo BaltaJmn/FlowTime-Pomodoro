@@ -248,4 +248,12 @@
     <string name="stats_empty">Nessuna sessione in questo periodo</string>
     <string name="stats_previous">Periodo precedente</string>
     <string name="stats_next">Periodo successivo</string>
+    <string name="task_none">Nessuna attività</string>
+    <string name="task_chip">Attività: %1$s</string>
+    <string name="task_pick_title">Su cosa lavorerai?</string>
+    <string name="task_no_pending">Nessuna attività in sospeso per oggi</string>
+    <string name="task_done_question">Hai finito «%1$s»?</string>
+    <string name="task_done_yes">Sì, fatta</string>
+    <string name="task_done_not_yet">Non ancora</string>
+    <string name="task_done_action">Fatta</string>
 </resources>

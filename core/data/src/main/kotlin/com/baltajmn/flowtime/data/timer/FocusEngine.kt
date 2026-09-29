@@ -63,7 +63,11 @@ data class FocusState(
     /** Hora real a la que empezó el trabajo en curso, o el de antes de este descanso. */
     val workStartedAt: Long = 0,
     /** La etiqueta con la que se guarda el trabajo. Pasa de una fase a otra y a la sesión siguiente. */
-    val tagId: Long? = null
+    val tagId: Long? = null,
+    /** La tarea en la que se trabaja. Como la etiqueta, sigue hasta que se cambie o se complete. */
+    val taskId: Long? = null,
+    /** Su título, para la notificación y el aviso, que no pueden esperar a la base de datos. */
+    val taskTitle: String? = null
 ) {
     val isActive: Boolean get() = phase != Phase.IDLE
     val isPaused: Boolean get() = isActive && !running
@@ -143,7 +147,7 @@ class FocusEngine(
         sync()
         val current = _state.value
         if (current.phase == Phase.WORK) record(current, elapsedMillis(current), overshoot = 0)
-        set(newWork(mode, overshoot = 0, current.tagId))
+        set(newWork(mode, overshoot = 0, current))
     }
 
     /**
@@ -161,6 +165,16 @@ class FocusEngine(
     fun setTag(id: Long?) {
         dataProvider.setLong(SharedPreferencesItem.LAST_TAG_ID, id ?: NO_TAG)
         set(_state.value.copy(tagId = id))
+    }
+
+    /**
+     * La tarea del trabajo en curso, o de la siguiente sesión si está parada. Si la tarea tiene
+     * etiqueta ([tagId]), la sesión se queda con ella; si no, con la que tuviera.
+     */
+    @Synchronized
+    fun setTask(id: Long?, tagId: Long? = null, title: String? = null) {
+        if (tagId != null) setTag(tagId)
+        set(_state.value.copy(taskId = id, taskTitle = title?.takeIf { id != null }))
     }
 
     @Synchronized
@@ -188,7 +202,7 @@ class FocusEngine(
     fun skipBreak() {
         sync()
         val s = _state.value
-        if (s.phase == Phase.BREAK) change(s, newWork(s.mode, overshoot = 0, s.tagId), overshoot = 0)
+        if (s.phase == Phase.BREAK) change(s, newWork(s.mode, overshoot = 0, s), overshoot = 0)
     }
 
     /** Para la sesión. Lo trabajado hasta ahora se guarda. */
@@ -197,7 +211,7 @@ class FocusEngine(
         sync()
         val s = _state.value
         if (s.phase == Phase.WORK) record(s, elapsedMillis(s), overshoot = 0)
-        if (s.isActive) set(FocusState(mode = s.mode, tagId = s.tagId))
+        if (s.isActive) set(s.stopped())
     }
 
     /** Pasa por las fases que hayan terminado desde la última vez, aunque la app estuviera cerrada. */
@@ -244,7 +258,9 @@ class FocusEngine(
                     running = true,
                     durationMillis = breakMillis,
                     workStartedAt = s.workStartedAt,
-                    tagId = s.tagId
+                    tagId = s.tagId,
+                    taskId = s.taskId,
+                    taskTitle = s.taskTitle
                 ),
                 overshoot
             )
@@ -258,19 +274,26 @@ class FocusEngine(
 
     private fun afterBreak(s: FocusState, overshoot: Long) =
         if (dataProvider.getCheckValue(s.mode.continueAfterBreakKey)) {
-            newWork(s.mode, overshoot, s.tagId)
+            newWork(s.mode, overshoot, s)
         } else {
-            FocusState(mode = s.mode, tagId = s.tagId)
+            s.stopped()
         }
 
-    private fun newWork(mode: TimerMode, overshoot: Long, tagId: Long?) = anchored(
+    /** Parada, con lo que se lleva a la sesión siguiente: el modo, la etiqueta y la tarea. */
+    private fun FocusState.stopped() =
+        FocusState(mode = mode, tagId = tagId, taskId = taskId, taskTitle = taskTitle)
+
+    /** Un trabajo nuevo con la etiqueta y la tarea de [from]. */
+    private fun newWork(mode: TimerMode, overshoot: Long, from: FocusState) = anchored(
         FocusState(
             mode = mode,
             phase = Phase.WORK,
             running = true,
             durationMillis = workMillis(mode),
             workStartedAt = time.wallMillis() - overshoot,
-            tagId = tagId
+            tagId = from.tagId,
+            taskId = from.taskId,
+            taskTitle = from.taskTitle
         ),
         overshoot
     )
@@ -295,7 +318,14 @@ class FocusEngine(
     // sin querer no es una sesión.
     private fun record(s: FocusState, workedMillis: Long, overshoot: Long) {
         if (workedMillis < MINUTE) return
-        sessions.record(s.mode.name, s.workStartedAt, time.wallMillis() - overshoot, workedMillis / 1000, s.tagId)
+        sessions.record(
+            mode = s.mode.name,
+            startedAt = s.workStartedAt,
+            endedAt = time.wallMillis() - overshoot,
+            focusSeconds = workedMillis / 1000,
+            tagId = s.tagId,
+            taskId = s.taskId
+        )
     }
 
     private fun change(from: FocusState, to: FocusState, overshoot: Long) {

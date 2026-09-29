@@ -43,7 +43,7 @@ private val ScreensDomainModule: Module
 
 private val ScreensPresentationModule: Module
     get() = module {
-        viewModel { params -> TimerViewModel(params.get(), get(), get(), get(), get()) }
+        viewModel { params -> TimerViewModel(params.get(), get(), get(), get(), get(), get()) }
         viewModelOf(::EditViewModel)
         viewModelOf(::SettingsViewModel)
         // A mano: el constructor tiene un parámetro opcional para los tests que Koin no sabría resolver.

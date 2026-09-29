@@ -26,8 +26,11 @@ import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.features.screens.common.composable.components.ButtonsContent
 import com.baltajmn.flowtime.features.screens.common.composable.components.MinutesStudying
 import com.baltajmn.flowtime.features.screens.common.composable.components.TagChips
+import com.baltajmn.flowtime.features.screens.common.composable.components.TaskChip
+import com.baltajmn.flowtime.features.screens.common.composable.components.TaskDoneQuestion
 import com.baltajmn.flowtime.features.screens.common.composable.components.TimeContent
 import com.baltajmn.flowtime.features.screens.common.composable.components.TimerHintText
+import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 
@@ -37,7 +40,10 @@ fun TimerLandscapeContent(
     title: String,
     onAction: (TimerAction) -> Unit,
     onSwitchChanged: (Boolean) -> Unit,
-    onTagSelected: (Long?) -> Unit = {}
+    onTagSelected: (Long?) -> Unit = {},
+    onTaskSelected: (Task?) -> Unit = {},
+    onTaskDone: () -> Unit = {},
+    onTaskNotYet: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -85,6 +91,18 @@ fun TimerLandscapeContent(
                 MinutesStudying(minutesStudying = state.minutesToday, goal = state.goalToday)
                 Spacer(modifier = Modifier.height(8.dp))
                 TagChips(tags = state.tags, selected = state.tagId, onSelect = onTagSelected)
+                TaskChip(
+                    title = state.taskTitle,
+                    pending = state.pendingTasks,
+                    onSelect = onTaskSelected
+                )
+                if (state.askTaskDone && state.taskTitle != null) {
+                    TaskDoneQuestion(
+                        title = state.taskTitle,
+                        onYes = onTaskDone,
+                        onNotYet = onTaskNotYet
+                    )
+                }
             }
             Column(
                 modifier = Modifier

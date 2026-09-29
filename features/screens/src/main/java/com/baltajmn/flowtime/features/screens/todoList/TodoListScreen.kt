@@ -52,6 +52,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
@@ -259,6 +260,14 @@ fun TodoItem(
                     style = textStyleDescription,
                     color = textColor
                 )
+                // El tiempo que se le ha dedicado, sumando sus sesiones (#40).
+                if (item.focusSeconds >= 60) {
+                    Text(
+                        text = (item.focusSeconds / 60).formatMinutesStudying(),
+                        style = SubBody.copy(fontSize = 13.sp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 if (daysLate > 0) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(

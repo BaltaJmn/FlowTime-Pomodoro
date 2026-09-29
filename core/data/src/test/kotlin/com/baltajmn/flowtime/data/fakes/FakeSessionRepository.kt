@@ -22,7 +22,8 @@ class FakeSessionRepository : SessionRepository {
         startedAt: Long,
         endedAt: Long,
         focusSeconds: Long,
-        tagId: Long?
+        tagId: Long?,
+        taskId: Long?
     ) = Unit
 
     override fun secondsOn(day: LocalDate): Flow<Long> = days.map { it[day] ?: 0L }

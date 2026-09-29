@@ -276,6 +276,30 @@ class FocusEngineTest {
     }
 
     @Test
+    fun `el bloque se guarda con su tarea, que sigue tras el descanso`() {
+        engine.setTask(7)
+        engine.start(TimerMode.POMODORO)
+
+        time.advance(minutes(45 + 15 + 45))
+        engine.sync()
+
+        assertEquals(listOf(7L, 7L), sessions.recorded.map { it.taskId })
+    }
+
+    @Test
+    fun `elegir una tarea con etiqueta pone esa etiqueta`() {
+        engine.setTag(1)
+
+        engine.setTask(7, tagId = 4)
+        assertEquals(4L, engine.state.value.tagId)
+
+        // Una tarea sin etiqueta deja la que hubiera.
+        engine.setTask(8)
+        assertEquals(4L, engine.state.value.tagId)
+        assertEquals(8L, engine.state.value.taskId)
+    }
+
+    @Test
     fun `elegir modo con la sesion parada lo guarda como el ultimo usado`() {
         engine.select(TimerMode.PERCENTAGE)
 

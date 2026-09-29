@@ -3,6 +3,7 @@ package com.baltajmn.flowtime.features.screens.fakes
 import com.baltajmn.flowtime.data.stats.StatsPeriod
 import com.baltajmn.flowtime.data.stats.StatsRepository
 import com.baltajmn.flowtime.data.stats.StatsSummary
+import com.baltajmn.flowtime.data.stats.TaskTime
 import java.time.LocalDate
 
 /** Siempre el mismo resumen. */
@@ -18,5 +19,7 @@ class FakeStats(private val summary: StatsSummary = StatsSummary()) : StatsRepos
 
     override suspend fun byTag(period: StatsPeriod, today: LocalDate) = emptyMap<Long?, Long>()
 
-    override suspend fun csv(tagNames: Map<Long, String>) = ""
+    override suspend fun topTasks(period: StatsPeriod, today: LocalDate) = emptyList<TaskTime>()
+
+    override suspend fun csv(tagNames: Map<Long, String>, taskTitles: Map<Long, String>) = ""
 }

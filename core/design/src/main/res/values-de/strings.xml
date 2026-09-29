@@ -245,4 +245,12 @@
     <string name="stats_empty">Keine Sitzungen in diesem Zeitraum</string>
     <string name="stats_previous">Vorheriger Zeitraum</string>
     <string name="stats_next">Nächster Zeitraum</string>
+    <string name="task_none">Keine Aufgabe</string>
+    <string name="task_chip">Aufgabe: %1$s</string>
+    <string name="task_pick_title">Woran arbeitest du?</string>
+    <string name="task_no_pending">Keine offenen Aufgaben für heute</string>
+    <string name="task_done_question">Hast du „%1$s“ erledigt?</string>
+    <string name="task_done_yes">Ja, erledigt</string>
+    <string name="task_done_not_yet">Noch nicht</string>
+    <string name="task_done_action">Erledigt</string>
 </resources>

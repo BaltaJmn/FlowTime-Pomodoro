@@ -247,4 +247,12 @@
     <string name="stats_empty">No sessions in this period</string>
     <string name="stats_previous">Previous period</string>
     <string name="stats_next">Next period</string>
+    <string name="task_none">No task</string>
+    <string name="task_chip">Task: %1$s</string>
+    <string name="task_pick_title">What will you work on?</string>
+    <string name="task_no_pending">No pending tasks for today</string>
+    <string name="task_done_question">Have you finished “%1$s”?</string>
+    <string name="task_done_yes">Yes, done</string>
+    <string name="task_done_not_yet">Not yet</string>
+    <string name="task_done_action">Done</string>
 </resources>

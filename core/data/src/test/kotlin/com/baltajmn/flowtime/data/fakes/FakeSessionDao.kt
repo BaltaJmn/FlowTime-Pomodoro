@@ -7,6 +7,8 @@ import com.baltajmn.flowtime.core.database.model.ModeSeconds
 import com.baltajmn.flowtime.core.database.model.PeriodTotals
 import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.TagSeconds
+import com.baltajmn.flowtime.core.database.model.TaskSeconds
+import com.baltajmn.flowtime.core.database.model.TaskTotal
 import java.time.Instant
 import java.time.ZoneOffset
 import kotlinx.coroutines.flow.Flow
@@ -57,6 +59,19 @@ class FakeSessionDao : SessionDao() {
         .map { (tag, sessions) -> TagSeconds(tag, sessions.sumOf { it.focusSeconds }) }
 
     override suspend fun all() = rows.sortedBy { it.startedAt }
+
+    override fun secondsByTask(): Flow<List<TaskSeconds>> = flowOf(
+        rows.filter { it.taskId != null }
+            .groupBy { it.taskId!! }
+            .map { (task, sessions) -> TaskSeconds(task, sessions.sumOf { it.focusSeconds }) }
+    )
+
+    /** Sin la tabla de tareas: el título es el id. */
+    override suspend fun topTasks(from: String, to: String) = rows
+        .filter { it.taskId != null && it.localDate in from..to }
+        .groupBy { it.taskId!! }
+        .map { (task, sessions) -> TaskTotal(task, "$task", sessions.sumOf { it.focusSeconds }) }
+        .sortedByDescending { it.seconds }
 
     override suspend fun secondsOnce(day: String) = secondsOf(day)
 

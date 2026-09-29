@@ -65,8 +65,11 @@ class SessionNotification(
                 .setWhen(
                     if (state.countsDown) now + snapshot.remainingMillis else now - snapshot.elapsedMillis
                 )
+                .setContentText(state.taskTitle)
         } else {
-            builder.setShowWhen(false).setContentText(snapshot.displaySeconds.formatSecondsToTime())
+            val time = snapshot.displaySeconds.formatSecondsToTime()
+            builder.setShowWhen(false)
+                .setContentText(listOfNotNull(time, state.taskTitle).joinToString(" · "))
         }
         state.actions.forEach { action ->
             builder.addAction(0, context.getString(action.label), perform(action))
@@ -107,19 +110,24 @@ class SessionNotification(
             Phase.WORK -> R.string.alert_focus
             Phase.IDLE -> R.string.alert_session_over
         }
-        post(
-            ALERT_ID,
-            NotificationCompat.Builder(context, channel)
-                .setSmallIcon(change.mode.icon)
-                .setContentTitle(context.getString(title))
-                .setSubText(context.getString(change.mode.label))
-                .setContentIntent(openTimer(change.mode))
-                .setAutoCancel(true)
-                // Un temporizador que termina es una alarma: si No molestar deja pasar las alarmas, suena.
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .build()
-        )
+        val builder = NotificationCompat.Builder(context, channel)
+            .setSmallIcon(change.mode.icon)
+            .setContentTitle(context.getString(title))
+            .setSubText(context.getString(change.mode.label))
+            .setContentIntent(openTimer(change.mode))
+            .setAutoCancel(true)
+            // Un temporizador que termina es una alarma: si No molestar deja pasar las alarmas, suena.
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+        // Al acabar un bloque con tarea, completarla sin abrir la app (#40).
+        val state = engine.state.value
+        val taskId = state.taskId
+        if (workEnded && taskId != null) {
+            val question = context.getString(R.string.task_done_question, state.taskTitle.orEmpty())
+            val done = context.getString(R.string.task_done_action)
+            builder.setContentText(question).addAction(0, done, completeTask(taskId))
+        }
+        post(ALERT_ID, builder.build())
     }
 
     /** Al volver a la app, el aviso ya ha hecho su trabajo. */
@@ -155,6 +163,15 @@ class SessionNotification(
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
 
+    private fun completeTask(id: Long) = PendingIntent.getBroadcast(
+        context,
+        REQUEST_COMPLETE_TASK,
+        Intent(context, SessionReceiver::class.java)
+            .setAction(ACTION_COMPLETE_TASK)
+            .putExtra(EXTRA_TASK_ID, id),
+        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+    )
+
     private fun perform(action: TimerAction) = PendingIntent.getBroadcast(
         context,
         action.ordinal,
@@ -169,6 +186,11 @@ class SessionNotification(
         private const val CHANNEL_WORK_END = "work_end"
         private const val CHANNEL_BREAK_END = "break_end"
         private const val EXTRA_OPEN_TIMER = "open_timer"
+
+        // Otro que los de las acciones del temporizador, que usan su ordinal.
+        private const val REQUEST_COMPLETE_TASK = 100
+        const val ACTION_COMPLETE_TASK = "COMPLETE_TASK"
+        const val EXTRA_TASK_ID = "task_id"
 
         /** El modo cuya pantalla hay que abrir si se ha llegado pulsando la notificación. Solo una vez. */
         fun timerToOpen(intent: Intent): TimerMode? {

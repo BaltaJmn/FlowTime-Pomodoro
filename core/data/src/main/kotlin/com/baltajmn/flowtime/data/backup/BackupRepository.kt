@@ -116,6 +116,7 @@ class DefaultBackupRepository(
             sessions = backup.sessions.filter { it.isValid() }.map { it.toDb() },
             tasks = backup.tasks
                 .filter { it.title.isNotBlank() && it.plannedFor.isDay() && it.doneOn?.isDay() != false }
+                .distinctBy { it.id }
                 .map { it.toDb() },
             tags = backup.tags.filter { it.name.isNotBlank() }.distinctBy { it.id }.map { it.toDb() }
         )
@@ -183,7 +184,8 @@ class DefaultBackupRepository(
         const val MAX_TAG_NAME = 30
     }
 
-    private fun SessionDb.toBackup() = BackupSession(startedAt, endedAt, localDate, mode, focusSeconds, tagId)
+    private fun SessionDb.toBackup() =
+        BackupSession(startedAt, endedAt, localDate, mode, focusSeconds, tagId, taskId)
 
     private fun BackupSession.toDb() = SessionDb(
         startedAt = startedAt,
@@ -191,7 +193,8 @@ class DefaultBackupRepository(
         localDate = localDate,
         mode = mode,
         focusSeconds = focusSeconds,
-        tagId = tagId
+        tagId = tagId,
+        taskId = taskId
     )
 
     private fun BackupTag.toDb() = TagDb(
@@ -207,6 +210,7 @@ class DefaultBackupRepository(
         localDate.isDay() && mode.isNotBlank() && focusSeconds in 0..SessionDb.DAY_SECONDS && endedAt >= startedAt
 
     private fun TaskDb.toBackup() = BackupTask(
+        id = id,
         title = title,
         description = description,
         plannedFor = plannedFor,
@@ -217,6 +221,7 @@ class DefaultBackupRepository(
     )
 
     private fun BackupTask.toDb() = TaskDb(
+        id = id,
         title = title,
         description = description,
         plannedFor = plannedFor,

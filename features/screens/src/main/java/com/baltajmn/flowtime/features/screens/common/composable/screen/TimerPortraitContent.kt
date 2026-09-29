@@ -25,8 +25,11 @@ import com.baltajmn.flowtime.features.screens.common.composable.components.Butto
 import com.baltajmn.flowtime.features.screens.common.composable.components.MinutesStudying
 import com.baltajmn.flowtime.features.screens.common.composable.components.ScreenTitle
 import com.baltajmn.flowtime.features.screens.common.composable.components.TagChips
+import com.baltajmn.flowtime.features.screens.common.composable.components.TaskChip
+import com.baltajmn.flowtime.features.screens.common.composable.components.TaskDoneQuestion
 import com.baltajmn.flowtime.features.screens.common.composable.components.TimeContent
 import com.baltajmn.flowtime.features.screens.common.composable.components.TimerHintText
+import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 
@@ -36,7 +39,10 @@ fun TimerPortraitContent(
     title: String,
     onAction: (TimerAction) -> Unit,
     onSwitchChanged: (Boolean) -> Unit,
-    onTagSelected: (Long?) -> Unit = {}
+    onTagSelected: (Long?) -> Unit = {},
+    onTaskSelected: (Task?) -> Unit = {},
+    onTaskDone: () -> Unit = {},
+    onTaskNotYet: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -69,6 +75,10 @@ fun TimerPortraitContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         TagChips(tags = state.tags, selected = state.tagId, onSelect = onTagSelected)
+        TaskChip(title = state.taskTitle, pending = state.pendingTasks, onSelect = onTaskSelected)
+        if (state.askTaskDone && state.taskTitle != null) {
+            TaskDoneQuestion(title = state.taskTitle, onYes = onTaskDone, onNotYet = onTaskNotYet)
+        }
 
         Spacer(modifier = Modifier.height(48.dp))
 

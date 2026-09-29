@@ -51,7 +51,10 @@ fun TimerScreen(
             }
         },
         onSwitchChanged = viewModel::changeSwitch,
-        onTagSelected = viewModel::selectTag
+        onTagSelected = viewModel::selectTag,
+        onTaskSelected = viewModel::selectTask,
+        onTaskDone = viewModel::completeTask,
+        onTaskNotYet = viewModel::keepTask
     )
 
     if (explainNotifications) {

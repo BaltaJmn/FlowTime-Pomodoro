@@ -21,6 +21,8 @@ import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.SessionDb.Companion.DAY_SECONDS
 import com.baltajmn.flowtime.core.database.model.TagDb
 import com.baltajmn.flowtime.core.database.model.TagSeconds
+import com.baltajmn.flowtime.core.database.model.TaskSeconds
+import com.baltajmn.flowtime.core.database.model.TaskTotal
 import com.baltajmn.flowtime.core.database.model.TaskDb
 import com.baltajmn.flowtime.core.database.model.TodoListDB
 import java.time.LocalDate
@@ -29,11 +31,13 @@ import kotlinx.coroutines.flow.Flow
 
 // De la 2 a la 3, automática: una tabla nueva (tag) y una columna que admite nulos (session.tagId).
 // De la 3 a la 4, a mano: las tareas pasan de un JSON por día a una fila cada una (MIGRATION_3_4).
-// todoList se queda una versión más, sin usar, por si hubiera que volver atrás.
+// De la 4 a la 5, automática: session.taskId (#40).
+// todoList se queda, sin usar, hasta la versión de la app siguiente a la que publique la 4: si la
+// migración de las tareas tuviera un fallo, de ahí se podrían volver a leer.
 @Database(
     entities = [TodoListDB::class, SessionDb::class, TagDb::class, TaskDb::class],
-    version = 4,
-    autoMigrations = [AutoMigration(from = 2, to = 3)]
+    version = 5,
+    autoMigrations = [AutoMigration(from = 2, to = 3), AutoMigration(from = 4, to = 5)]
 )
 @TypeConverters(ItemConverter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -132,6 +136,21 @@ abstract class SessionDao {
 
     @Query("SELECT * FROM session ORDER BY startedAt")
     abstract suspend fun all(): List<SessionDb>
+
+    /** El tiempo de cada tarea, que se actualiza con cada sesión nueva. */
+    @Query(
+        "SELECT taskId, SUM(focusSeconds) AS seconds FROM session " +
+            "WHERE taskId IS NOT NULL GROUP BY taskId"
+    )
+    abstract fun secondsByTask(): Flow<List<TaskSeconds>>
+
+    /** Las tareas con más tiempo en un periodo, con su título. Las borradas no salen. */
+    @Query(
+        "SELECT session.taskId AS taskId, task.title AS title, SUM(session.focusSeconds) AS seconds " +
+            "FROM session JOIN task ON task.id = session.taskId " +
+            "WHERE session.localDate BETWEEN :from AND :to GROUP BY session.taskId ORDER BY seconds DESC"
+    )
+    abstract suspend fun topTasks(from: String, to: String): List<TaskTotal>
 
     @Query("SELECT COALESCE(SUM(focusSeconds), 0) FROM session WHERE localDate = :day")
     protected abstract suspend fun secondsOnce(day: String): Long

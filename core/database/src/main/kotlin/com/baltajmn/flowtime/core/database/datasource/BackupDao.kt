@@ -38,8 +38,8 @@ abstract class BackupDao {
         focusSeconds: Long
     ): Int
 
-    @Query("SELECT COUNT(*) FROM task WHERE createdAt = :createdAt")
-    protected abstract suspend fun countTasks(createdAt: Long): Int
+    @Query("SELECT id FROM task WHERE createdAt = :createdAt LIMIT 1")
+    protected abstract suspend fun taskCreatedAt(createdAt: Long): Long?
 
     @Insert
     protected abstract suspend fun insertTask(task: TaskDb): Long
@@ -53,7 +53,7 @@ abstract class BackupDao {
      *   tener varias LEGACY iguales (el mismo tiempo añadido dos veces desde un texto) y hay que
      *   traerlas todas.
      * - Una tarea ya está si se creó a la misma hora: si se editó después de la copia, se queda como
-     *   está ahora. Su `tagId` también es el del fichero.
+     *   está ahora. Su `id` y su `tagId` son los del fichero, igual que el `taskId` de las sesiones.
      */
     @Transaction
     open suspend fun restore(
@@ -72,22 +72,21 @@ abstract class BackupDao {
             }
             incoming.id to id
         }
+        var tasksAdded = 0
+        val taskIds = tasks.associate { task ->
+            val id = taskCreatedAt(task.createdAt)
+                ?: insertTask(task.copy(id = 0, tagId = task.tagId?.let(tagIds::get))).also { tasksAdded++ }
+            task.id to id
+        }
         var sessionsAdded = 0
         sessions
-            .map { it.copy(id = 0, tagId = it.tagId?.let(tagIds::get)) }
+            .map { it.copy(id = 0, tagId = it.tagId?.let(tagIds::get), taskId = it.taskId?.let(taskIds::get)) }
             .groupBy { it.copy(tagId = null) }
             .forEach { (session, copies) ->
                 val existing = session.run { countSame(startedAt, endedAt, mode, focusSeconds) }
                 copies.drop(existing).forEach { insert(it) }
                 sessionsAdded += (copies.size - existing).coerceAtLeast(0)
             }
-        var tasksAdded = 0
-        tasks.forEach { task ->
-            if (countTasks(task.createdAt) == 0) {
-                insertTask(task.copy(id = 0, tagId = task.tagId?.let(tagIds::get)))
-                tasksAdded++
-            }
-        }
         return RestoreCount(
             sessionsAdded = sessionsAdded,
             sessionsExisting = sessions.size - sessionsAdded,

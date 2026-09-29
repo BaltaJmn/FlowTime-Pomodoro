@@ -66,7 +66,7 @@ class BackupRepositoryTest {
                 it.focusSeconds == focusSeconds
         }
 
-        override suspend fun countTasks(createdAt: Long) = taskRows.count { it.createdAt == createdAt }
+        override suspend fun taskCreatedAt(createdAt: Long) = taskRows.firstOrNull { it.createdAt == createdAt }?.id
 
         override suspend fun insertTask(task: TaskDb): Long {
             val id = (taskRows.maxOfOrNull { it.id } ?: 0) + 1
@@ -258,7 +258,7 @@ class BackupRepositoryTest {
             tagRows(TagDb(id = 9, name = "Correr", color = 6, position = 1, archived = true, createdAt = 0))
             dao.rows += session("2026-09-28", 9).copy(tagId = 5)
             dao.rows += session("2026-09-29", 9).copy(tagId = 9)
-            dao.rows += session("2026-09-29", 18)
+            dao.rows += session("2026-09-29", 18).copy(taskId = 7)
             dao.taskRows += task(7, "Correr 5 km").copy(tagId = 9)
         }
         // En el móvil nuevo ya hay una "estudio", con otro id.
@@ -270,7 +270,10 @@ class BackupRepositoryTest {
         val correr = new.dao.tagRows.single { it.name == "Correr" }
         assertEquals(TagDb(id = correr.id, name = "Correr", color = 6, position = 1, archived = true, createdAt = 0), correr)
         assertEquals(listOf(1L, correr.id, null), new.dao.rows.sortedBy { it.startedAt }.map { it.tagId })
-        assertEquals(correr.id, new.dao.taskRows.single().tagId)
+        val run = new.dao.taskRows.single()
+        assertEquals(correr.id, run.tagId)
+        // Y la sesión se queda con su tarea, con el id que tiene en este móvil.
+        assertEquals(run.id, new.dao.rows.single { it.startedAt == session("2026-09-29", 18).startedAt }.taskId)
     }
 
     @Test

@@ -34,6 +34,9 @@ data class StatsPeriod(val kind: PeriodKind, val offset: Int = 0) {
     val previous: StatsPeriod get() = copy(offset = offset + 1)
 }
 
+/** Una tarea con el tiempo que se le ha dedicado en un periodo. */
+data class TaskTime(val taskId: Long, val title: String, val seconds: Long)
+
 data class StatsSummary(
     val totalSeconds: Long = 0,
     /** Sin el tiempo importado (LEGACY), que no son sesiones. */
@@ -64,8 +67,11 @@ interface StatsRepository {
     /** Por etiqueta; la clave null es "Sin etiqueta". */
     suspend fun byTag(period: StatsPeriod, today: LocalDate): Map<Long?, Long>
 
-    /** Todas las sesiones en CSV, con el nombre de su etiqueta. Es de Pro (#38). */
-    suspend fun csv(tagNames: Map<Long, String>): String
+    /** Las tareas con más tiempo del periodo (#40), la primera la que más. Es de Pro. */
+    suspend fun topTasks(period: StatsPeriod, today: LocalDate): List<TaskTime>
+
+    /** Todas las sesiones en CSV, con el nombre de su etiqueta y de su tarea. Es de Pro (#38). */
+    suspend fun csv(tagNames: Map<Long, String>, taskTitles: Map<Long, String> = emptyMap()): String
 }
 
 class DefaultStatsRepository(
@@ -117,7 +123,13 @@ class DefaultStatsRepository(
             .associate { it.tagId to it.seconds }
     }
 
-    override suspend fun csv(tagNames: Map<Long, String>): String = buildString {
+    override suspend fun topTasks(period: StatsPeriod, today: LocalDate): List<TaskTime> {
+        val range = period.range(today)
+        return dao.topTasks(range.start.toString(), range.endInclusive.toString())
+            .map { TaskTime(it.taskId, it.title, it.seconds) }
+    }
+
+    override suspend fun csv(tagNames: Map<Long, String>, taskTitles: Map<Long, String>): String = buildString {
         appendLine("startedAt,endedAt,date,mode,tag,task,focusMinutes")
         dao.all().forEach { session ->
             appendLine(
@@ -127,7 +139,7 @@ class DefaultStatsRepository(
                     session.localDate,
                     session.mode,
                     session.tagId?.let(tagNames::get).orEmpty(),
-                    "",
+                    session.taskId?.let(taskTitles::get).orEmpty(),
                     String.format(Locale.ROOT, "%.1f", session.focusSeconds / 60.0)
                 ).joinToString(",") { it.csvField() }
             )

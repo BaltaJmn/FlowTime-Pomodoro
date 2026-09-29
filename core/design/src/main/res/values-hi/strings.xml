@@ -245,4 +245,12 @@
     <string name="stats_empty">इस अवधि में कोई सत्र नहीं</string>
     <string name="stats_previous">पिछली अवधि</string>
     <string name="stats_next">अगली अवधि</string>
+    <string name="task_none">कोई कार्य नहीं</string>
+    <string name="task_chip">कार्य: %1$s</string>
+    <string name="task_pick_title">आप किस पर काम करेंगे?</string>
+    <string name="task_no_pending">आज के लिए कोई बाकी कार्य नहीं</string>
+    <string name="task_done_question">क्या आपने “%1$s” पूरा कर लिया?</string>
+    <string name="task_done_yes">हाँ, हो गया</string>
+    <string name="task_done_not_yet">अभी नहीं</string>
+    <string name="task_done_action">हो गया</string>
 </resources>

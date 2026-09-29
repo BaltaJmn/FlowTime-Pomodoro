@@ -37,7 +37,9 @@ data class BackupSession(
     val mode: String,
     val focusSeconds: Long,
     /** El [BackupTag.id] de su etiqueta dentro de este fichero. */
-    val tagId: Long? = null
+    val tagId: Long? = null,
+    /** El [BackupTask.id] de su tarea dentro de este fichero (#40). */
+    val taskId: Long? = null
 )
 
 /** El [id] solo vale dentro del fichero: al importar, cada etiqueta se busca por el nombre. */
@@ -51,8 +53,10 @@ data class BackupTag(
     val createdAt: Long = 0
 )
 
+/** El [id] solo vale dentro del fichero: al importar, cada tarea se busca por cuándo se creó. */
 @Serializable
 data class BackupTask(
+    val id: Long = 0,
     val title: String,
     val description: String = "",
     /** yyyy-MM-dd del día para el que se apuntó. */

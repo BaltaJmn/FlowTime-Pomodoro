@@ -255,4 +255,12 @@
     <string name="stats_empty">В этот период сеансов нет</string>
     <string name="stats_previous">Предыдущий период</string>
     <string name="stats_next">Следующий период</string>
+    <string name="task_none">Без задачи</string>
+    <string name="task_chip">Задача: %1$s</string>
+    <string name="task_pick_title">Над чем будете работать?</string>
+    <string name="task_no_pending">На сегодня нет незавершённых задач</string>
+    <string name="task_done_question">Вы закончили «%1$s»?</string>
+    <string name="task_done_yes">Да, готово</string>
+    <string name="task_done_not_yet">Ещё нет</string>
+    <string name="task_done_action">Готово</string>
 </resources>

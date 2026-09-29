@@ -43,7 +43,7 @@ val DataModule = module {
     single<PurchasesRepository> { NoPurchases() }
     single { ProGate(get()) }
     single<TagRepository> { DefaultTagRepository(get(), get(), get()) }
-    single<TaskRepository> { DefaultTaskRepository(get(), get()) }
+    single<TaskRepository> { DefaultTaskRepository(get(), get(), get()) }
     single<StatsRepository> { DefaultStatsRepository(get()) }
     single<TimeSource> { SystemTimeSource(androidContext()) }
     singleOf(::FocusEngine)

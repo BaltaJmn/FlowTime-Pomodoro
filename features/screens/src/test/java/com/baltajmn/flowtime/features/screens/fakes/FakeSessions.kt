@@ -15,7 +15,8 @@ class FakeSessions : SessionRepository {
         val startedAt: Long,
         val endedAt: Long,
         val focusSeconds: Long,
-        val tagId: Long? = null
+        val tagId: Long? = null,
+        val taskId: Long? = null
     )
 
     val recorded = mutableListOf<Recorded>()
@@ -26,9 +27,10 @@ class FakeSessions : SessionRepository {
         startedAt: Long,
         endedAt: Long,
         focusSeconds: Long,
-        tagId: Long?
+        tagId: Long?,
+        taskId: Long?
     ) {
-        recorded += Recorded(mode, startedAt, endedAt, focusSeconds, tagId)
+        recorded += Recorded(mode, startedAt, endedAt, focusSeconds, tagId, taskId)
         val day = Instant.ofEpochMilli(startedAt).atZone(ZoneOffset.UTC).toLocalDate()
         days[day] = (days[day] ?: 0L) + focusSeconds
     }

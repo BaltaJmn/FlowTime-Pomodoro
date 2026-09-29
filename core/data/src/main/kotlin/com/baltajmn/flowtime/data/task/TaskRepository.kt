@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.data.task
 
+import com.baltajmn.flowtime.core.database.datasource.SessionDao
 import com.baltajmn.flowtime.core.database.datasource.TaskDao
 import com.baltajmn.flowtime.core.database.model.TaskDb
 import com.baltajmn.flowtime.data.pro.Limits
@@ -8,7 +9,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoUnit
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 
 data class Task(
     val id: Long,
@@ -20,7 +21,9 @@ data class Task(
     val doneOn: LocalDate? = null,
     val createdAt: Long = 0,
     val position: Int = 0,
-    val tagId: Long? = null
+    val tagId: Long? = null,
+    /** El tiempo que se le ha dedicado: la suma de sus sesiones (#40). */
+    val focusSeconds: Long = 0
 ) {
     val done: Boolean get() = doneOn != null
 
@@ -74,13 +77,16 @@ interface TaskRepository {
 
 class DefaultTaskRepository(
     private val dao: TaskDao,
+    private val sessions: SessionDao,
     private val gate: ProGate,
     private val clock: () -> Long = System::currentTimeMillis
 ) : TaskRepository {
 
     override fun day(day: LocalDate, today: LocalDate): Flow<List<Task>> =
-        dao.around(day.toString(), today.toString()).map { rows ->
-            rows.mapNotNull { it.toTask() }.filter { it.showsOn(day, today) }
+        combine(dao.around(day.toString(), today.toString()), sessions.secondsByTask()) { rows, times ->
+            val seconds = times.associate { it.taskId to it.seconds }
+            rows.mapNotNull { it.toTask()?.copy(focusSeconds = seconds[it.id] ?: 0) }
+                .filter { it.showsOn(day, today) }
         }
 
     override suspend fun add(

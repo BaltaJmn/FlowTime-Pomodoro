@@ -1,7 +1,9 @@
 package com.baltajmn.flowtime.data.task
 
 import com.baltajmn.flowtime.core.database.datasource.TaskDao
+import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.TaskDb
+import com.baltajmn.flowtime.data.fakes.FakeSessionDao
 import com.baltajmn.flowtime.data.pro.NoPurchases
 import com.baltajmn.flowtime.data.pro.ProGate
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
@@ -55,9 +57,10 @@ class TaskRepositoryTest {
     private val today = LocalDate.of(2026, 9, 29)
     private val yesterday = today.minusDays(1)
     private val dao = FakeTaskDao()
+    private val sessions = FakeSessionDao()
 
     private fun repository(purchases: PurchasesRepository = NoPurchases(), enabled: Boolean = false) =
-        DefaultTaskRepository(dao, ProGate(purchases, enabled), clock = { 0 })
+        DefaultTaskRepository(dao, sessions, ProGate(purchases, enabled), clock = { 0 })
 
     private suspend fun TaskRepository.titles(day: LocalDate) = day(day, today).first().map { it.title }
 
@@ -169,6 +172,18 @@ class TaskRepositoryTest {
 
         assertEquals(listOf("De hoy", "De ayer"), tasks.titles(today))
         assertEquals(0L, tasks.day(today, today).first().last().daysLate(today))
+    }
+
+    @Test
+    fun `el tiempo de una tarea es la suma de sus sesiones`() = runTest {
+        val tasks = repository()
+        val id = (tasks.add("Repasar", "", today) as TaskResult.Done).id
+        listOf(25L, 25L, 10L).forEach { minutes ->
+            sessions.rows += SessionDb(0, 0, 0, today.toString(), "POMODORO", minutes * 60, taskId = id)
+        }
+        sessions.rows += SessionDb(0, 0, 0, today.toString(), "POMODORO", 30 * 60)
+
+        assertEquals(60 * 60L, tasks.day(today, today).first().single().focusSeconds)
     }
 
     @Test
