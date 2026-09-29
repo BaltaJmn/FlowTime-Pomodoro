@@ -133,36 +133,25 @@ class FlowTimeViewModel(
     fun getFlowTimeConfig() {
         _uiState.update {
             it.copy(
-                rangesList = dataProvider.getRangeModelList(FLOW_TIME_RANGE)
-                    ?: TimerDefaults.flowTimeRanges(),
+                rangesList = (
+                    dataProvider.getRangeModelList(FLOW_TIME_RANGE)
+                        ?: TimerDefaults.flowTimeRanges()
+                    ).withCumulativeTotals(),
                 continueAfterBreak = dataProvider.getCheckValue(CONTINUE_AFTER_BREAK_FLOW_TIME)
             )
         }
     }
 
     private fun getBreakTime() {
-        var secondsBreak = 0
-        val rangesList = _uiState.value.rangesList
-        val seconds = _uiState.value.seconds
-
-        for (i in rangesList.indices) {
-            if (i > 0) {
-                if (seconds > rangesList[i - 1].totalRange * 60 && seconds < rangesList[i].totalRange * 60) {
-                    secondsBreak = rangesList[i].rest * 60
-                }
-            } else {
-                if (seconds < rangesList[i].totalRange * 60) {
-                    secondsBreak = rangesList[i].rest * 60
-                }
-            }
-        }
-
-        if (secondsBreak == 0) secondsBreak = 900
+        val secondsBreak = flowTimeBreakSeconds(
+            workedSeconds = _uiState.value.seconds,
+            ranges = _uiState.value.rangesList
+        )
 
         _uiState.update {
             it.copy(
                 seconds = 0,
-                secondsBreak = secondsBreak.toLong()
+                secondsBreak = secondsBreak
             )
         }
     }

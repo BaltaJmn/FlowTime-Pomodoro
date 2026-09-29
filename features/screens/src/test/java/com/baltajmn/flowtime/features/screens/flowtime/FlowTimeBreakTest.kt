@@ -1,0 +1,77 @@
+package com.baltajmn.flowtime.features.screens.flowtime
+
+import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+class FlowTimeBreakTest {
+
+    // 0-15 min: 5 de descanso; 15-30: 10; y después de 30: 15.
+    private val defaults = TimerDefaults.flowTimeRanges()
+
+    private fun minutes(value: Int) = value * 60L
+
+    @Test
+    fun `cada duracion cae en su rango`() {
+        assertEquals(minutes(5), flowTimeBreakSeconds(minutes(10), defaults))
+        assertEquals(minutes(10), flowTimeBreakSeconds(minutes(20), defaults))
+        assertEquals(minutes(15), flowTimeBreakSeconds(minutes(45), defaults))
+    }
+
+    @Test
+    fun `los limites exactos pertenecen al rango que terminan`() {
+        assertEquals(minutes(5), flowTimeBreakSeconds(minutes(15), defaults))
+        assertEquals(minutes(10), flowTimeBreakSeconds(minutes(15) + 1, defaults))
+        assertEquals(minutes(10), flowTimeBreakSeconds(minutes(30), defaults))
+        assertEquals(minutes(15), flowTimeBreakSeconds(minutes(30) + 1, defaults))
+    }
+
+    @Test
+    fun `se respeta el descanso configurado en el ultimo rango`() {
+        val ranges = defaults.toMutableList().apply { this[lastIndex] = last().copy(rest = 25) }
+
+        assertEquals(minutes(25), flowTimeBreakSeconds(minutes(45), ranges))
+        assertEquals(minutes(25), flowTimeBreakSeconds(minutes(180), ranges))
+    }
+
+    @Test
+    fun `el ultimo rango se aplica aunque su total guardado sea menor que el anterior`() {
+        // Los rangos por defecto de versiones anteriores guardaban 15 en el último.
+        val legacy = listOf(
+            RangeModel(totalRange = 15, endRange = 15, rest = 5),
+            RangeModel(totalRange = 30, endRange = 15, rest = 10),
+            RangeModel(totalRange = 15, endRange = 15, rest = 20)
+        )
+
+        assertEquals(minutes(20), flowTimeBreakSeconds(minutes(40), legacy))
+    }
+
+    @Test
+    fun `sin rangos se descansa 15 minutos`() {
+        assertEquals(minutes(15), flowTimeBreakSeconds(minutes(40), emptyList()))
+    }
+
+    @Test
+    fun `los totales se recalculan a partir de las duraciones`() {
+        val stale = listOf(
+            RangeModel(totalRange = 15, endRange = 15, rest = 5),
+            RangeModel(totalRange = 45, endRange = 15, rest = 10),
+            RangeModel(totalRange = 15, endRange = 15, rest = 15)
+        )
+
+        val totals = stale.withCumulativeTotals().map { it.totalRange }
+
+        assertEquals(listOf(15, 30, 45), totals)
+    }
+
+    @Test
+    fun `una duracion de 0 cuenta como 1 minuto para que los limites crezcan`() {
+        val ranges = listOf(
+            RangeModel(totalRange = 10, endRange = 10, rest = 5),
+            RangeModel(totalRange = 10, endRange = 0, rest = 10)
+        )
+
+        assertEquals(listOf(10, 11), ranges.withCumulativeTotals().map { it.totalRange })
+    }
+}

@@ -86,6 +86,27 @@ class EditViewModelTest {
     }
 
     @Test
+    fun `borrar un rango intermedio recalcula los limites de los siguientes`() {
+        val viewModel = viewModel(ScreenType.FlowTime)
+        viewModel.addRange()
+
+        viewModel.deleteRange(1)
+
+        val totals = viewModel.uiState.value.flowTimeRanges.map { it.totalRange }
+        assertEquals(listOf(15, 30, 45), totals)
+    }
+
+    @Test
+    fun `cambiar la duracion de un rango mueve los limites de los siguientes`() {
+        val viewModel = viewModel(ScreenType.FlowTime)
+
+        viewModel.modifyRange(0, RangeModel(totalRange = 20, endRange = 20, rest = 5))
+
+        val totals = viewModel.uiState.value.flowTimeRanges.map { it.totalRange }
+        assertEquals(listOf(20, 35, 50), totals)
+    }
+
+    @Test
     fun `el porcentaje queda entre el minimo y el maximo`() {
         assertEquals(TimerDefaults.PERCENTAGE, TimerDefaults.percentage(0))
         assertEquals(TimerDefaults.PERCENTAGE, TimerDefaults.percentage(-10))
