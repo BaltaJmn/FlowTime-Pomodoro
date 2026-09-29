@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.baltajmn.flowtime.core.common.dispatchers.DispatcherProvider
 import com.baltajmn.flowtime.core.design.model.ScreenType
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.FLOW_TIME_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.PERCENTAGE_RANGE
@@ -25,7 +26,18 @@ class EditViewModel(
     val uiState: StateFlow<EditState> = _uiState
 
     init {
-        _uiState.update { it.copy(screenType = type) }
+        _uiState.update {
+            it.copy(
+                screenType = type,
+                flowTimeRanges = (
+                    dataProvider.getRangeModelList(FLOW_TIME_RANGE)
+                        ?: TimerDefaults.flowTimeRanges()
+                    ).toMutableList(),
+                pomodoroRange = dataProvider.getRangeModel(POMODORO_RANGE)
+                    ?: TimerDefaults.pomodoro(),
+                percentage = TimerDefaults.percentage(dataProvider.getLong(PERCENTAGE_RANGE))
+            )
+        }
     }
 
     fun addRange() {
@@ -100,9 +112,16 @@ class EditViewModel(
         _uiState.update { it.copy(percentage = percentage) }
     }
 
+    // Solo el modo que se está editando: guardar los tres pisaba la configuración de los otros dos.
     fun saveChanges() {
-        dataProvider.setObject(FLOW_TIME_RANGE, _uiState.value.flowTimeRanges.toMutableList())
-        dataProvider.setObject(POMODORO_RANGE, _uiState.value.pomodoroRange)
-        dataProvider.setLong(PERCENTAGE_RANGE, _uiState.value.percentage)
+        with(_uiState.value) {
+            when (screenType) {
+                ScreenType.FlowTime ->
+                    dataProvider.setObject(FLOW_TIME_RANGE, flowTimeRanges.toMutableList())
+
+                ScreenType.Pomodoro -> dataProvider.setObject(POMODORO_RANGE, pomodoroRange)
+                ScreenType.Percentage -> dataProvider.setLong(PERCENTAGE_RANGE, percentage)
+            }
+        }
     }
 }

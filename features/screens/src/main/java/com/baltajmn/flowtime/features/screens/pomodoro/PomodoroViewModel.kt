@@ -5,7 +5,7 @@ import com.baltajmn.flowtime.core.common.dispatchers.DispatcherProvider
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.design.service.SoundService
-import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.CONTINUE_AFTER_BREAK_POMODORO
@@ -124,11 +124,7 @@ class PomodoroViewModel(
         _uiState.update {
             it.copy(
                 range = dataProvider.getRangeModel(SharedPreferencesItem.POMODORO_RANGE)
-                    ?: RangeModel(
-                        totalRange = 45,
-                        endRange = 45,
-                        rest = 15
-                    ),
+                    ?: TimerDefaults.pomodoro(),
                 continueAfterBreak = dataProvider.getCheckValue(CONTINUE_AFTER_BREAK_POMODORO)
             )
         }

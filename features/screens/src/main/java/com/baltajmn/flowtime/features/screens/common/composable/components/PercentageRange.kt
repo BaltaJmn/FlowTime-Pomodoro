@@ -12,18 +12,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.sp
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
+import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
 
 @Composable
 fun PercentageRange(percentage: Long, onPercentageChange: (Long) -> Unit) {
-    var sliderPosition by remember { mutableFloatStateOf(percentage.toFloat()) }
+    var sliderPosition by remember(percentage) { mutableFloatStateOf(percentage.toFloat()) }
 
     Column {
         Slider(
             value = sliderPosition,
             onValueChange = { sliderPosition = it },
             onValueChangeFinished = { onPercentageChange(sliderPosition.toLong()) },
-            valueRange = 0f..100f,
-            steps = 19,
+            // De 5 en 5 y sin el 0: un descanso del 0 % no es un descanso.
+            valueRange = TimerDefaults.MIN_PERCENTAGE.toFloat()..TimerDefaults.MAX_PERCENTAGE.toFloat(),
+            steps = 18,
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
                 activeTrackColor = MaterialTheme.colorScheme.primary,

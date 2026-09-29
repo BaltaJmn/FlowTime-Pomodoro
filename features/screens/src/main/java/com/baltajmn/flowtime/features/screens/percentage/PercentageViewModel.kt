@@ -5,6 +5,7 @@ import com.baltajmn.flowtime.core.common.dispatchers.DispatcherProvider
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.design.service.SoundService
+import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
 import com.baltajmn.flowtime.features.screens.common.PercentageState
@@ -130,7 +131,9 @@ class PercentageViewModel(
     fun getPercentageConfig() {
         _uiState.update {
             it.copy(
-                percentage = dataProvider.getLong(SharedPreferencesItem.PERCENTAGE_RANGE),
+                percentage = TimerDefaults.percentage(
+                    dataProvider.getLong(SharedPreferencesItem.PERCENTAGE_RANGE)
+                ),
                 continueAfterBreak = dataProvider.getCheckValue(
                     SharedPreferencesItem.CONTINUE_AFTER_BREAK_PERCENTAGE
                 )

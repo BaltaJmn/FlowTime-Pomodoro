@@ -5,7 +5,7 @@ import com.baltajmn.flowtime.core.common.dispatchers.DispatcherProvider
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.design.service.SoundService
-import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.CONTINUE_AFTER_BREAK_FLOW_TIME
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.FLOW_TIME_RANGE
@@ -133,11 +133,8 @@ class FlowTimeViewModel(
     fun getFlowTimeConfig() {
         _uiState.update {
             it.copy(
-                rangesList = dataProvider.getRangeModelList(FLOW_TIME_RANGE) ?: listOf(
-                    RangeModel(totalRange = 15, endRange = 15, rest = 5),
-                    RangeModel(totalRange = 30, endRange = 15, rest = 10),
-                    RangeModel(totalRange = 15, endRange = 15, rest = 15)
-                ),
+                rangesList = dataProvider.getRangeModelList(FLOW_TIME_RANGE)
+                    ?: TimerDefaults.flowTimeRanges(),
                 continueAfterBreak = dataProvider.getCheckValue(CONTINUE_AFTER_BREAK_FLOW_TIME)
             )
         }
