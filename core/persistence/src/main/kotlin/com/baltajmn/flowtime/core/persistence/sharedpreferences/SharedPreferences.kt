@@ -7,13 +7,8 @@ import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
-import java.time.Clock
-import java.time.LocalDate
 
-class SharedPreferencesProvider(
-    context: Context,
-    private val clock: Clock = Clock.systemDefaultZone()
-) : DataProvider {
+class SharedPreferencesProvider(context: Context) : DataProvider {
 
     companion object {
         const val SHARED_CONFIG = "shared_config"
@@ -86,34 +81,10 @@ class SharedPreferencesProvider(
         sharedPreferences.edit().putString(key.name.lowercase(), rawString).apply()
     }
 
-    override fun updateMinutes(minutes: Long): Long {
-        val todayKey = DayKeys.today(clock)
-        val total = readOrDefault(0L) { sharedPreferences.getLong(todayKey, 0L) } + minutes
-        sharedPreferences.edit().putLong(todayKey, total).apply()
-        return total
-    }
-
-    override fun getMinutesByDate(date: LocalDate): Long {
-        return readOrDefault(0L) { sharedPreferences.getLong(DayKeys.of(date), 0L) }
-    }
-
-    override fun getAllDates(): List<LocalDate> {
-        return sharedPreferences.all.keys.mapNotNull(DayKeys::parse)
-    }
-
     override fun getStudyTimeMap(): Map<String, Long> {
         return sharedPreferences.all
             .filter { (key, value) -> value is Long && DayKeys.parse(key) != null }
             .mapValues { (_, value) -> value as Long }
-    }
-
-    // Solo días: estas preferencias guardan también los ajustes, y una clave cualquiera los pisaba.
-    override fun setStudyTimeMap(map: Map<String, Long>) {
-        val editor = sharedPreferences.edit()
-        map.forEach { (key, value) ->
-            DayKeys.parse(key)?.let { date -> editor.putLong(DayKeys.of(date), value) }
-        }
-        editor.apply()
     }
 
     override fun setCheckValue(key: SharedPreferencesItem, value: Boolean) {

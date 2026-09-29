@@ -16,4 +16,5 @@ enum class SharedPreferencesItem {
     TIMER_SESSION,
     KEEP_SCREEN_ON,
     NOTIFICATIONS_EXPLAINED,
+    SESSIONS_IMPORTED,
 }

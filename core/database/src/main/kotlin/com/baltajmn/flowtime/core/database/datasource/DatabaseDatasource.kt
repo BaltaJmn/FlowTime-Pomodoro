@@ -7,17 +7,46 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.Transaction
 import androidx.room.Update
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.baltajmn.flowtime.core.database.converter.ItemConverter
+import com.baltajmn.flowtime.core.database.model.DaySeconds
+import com.baltajmn.flowtime.core.database.model.SessionDb
+import com.baltajmn.flowtime.core.database.model.SessionDb.Companion.DAY_SECONDS
 import com.baltajmn.flowtime.core.database.model.TodoListDB
+import java.time.LocalDate
+import java.time.ZoneId
+import kotlinx.coroutines.flow.Flow
 
 @Database(
-    entities = [TodoListDB::class],
-    version = 1
+    entities = [TodoListDB::class, SessionDb::class],
+    version = 2
 )
 @TypeConverters(ItemConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun todoListDao(): TodoListDao
+    abstract fun sessionDao(): SessionDao
+}
+
+/** Escrita a mano: con la migración destructiva, un fallo borraba todas las tareas sin avisar. */
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS `session` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                `startedAt` INTEGER NOT NULL,
+                `endedAt` INTEGER NOT NULL,
+                `localDate` TEXT NOT NULL,
+                `mode` TEXT NOT NULL,
+                `focusSeconds` INTEGER NOT NULL
+            )
+            """.trimIndent()
+        )
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_session_localDate` ON `session` (`localDate`)")
+    }
 }
 
 @Dao
@@ -30,4 +59,42 @@ interface TodoListDao {
 
     @Update
     suspend fun updateTodoList(todoListDB: TodoListDB)
+}
+
+@Dao
+abstract class SessionDao {
+    @Insert
+    abstract suspend fun insert(session: SessionDb)
+
+    @Query(
+        "SELECT localDate, SUM(focusSeconds) AS seconds FROM session " +
+            "WHERE localDate BETWEEN :from AND :to GROUP BY localDate"
+    )
+    abstract suspend fun secondsByDay(from: String, to: String): List<DaySeconds>
+
+    @Query("SELECT COALESCE(SUM(focusSeconds), 0) FROM session WHERE localDate = :day")
+    abstract fun secondsOn(day: String): Flow<Long>
+
+    @Query("SELECT COALESCE(SUM(focusSeconds), 0) FROM session")
+    abstract suspend fun totalSeconds(): Long
+
+    @Query("SELECT COALESCE(SUM(focusSeconds), 0) FROM session WHERE localDate = :day")
+    protected abstract suspend fun secondsOnce(day: String): Long
+
+    @Query("DELETE FROM session WHERE localDate = :day")
+    protected abstract suspend fun deleteDay(day: String)
+
+    /**
+     * Añade tiempo a cada día como una sesión [SessionDb.MODE_LEGACY], sin pasar de las 24 horas.
+     * Con [replace], el día se queda solo con ese tiempo.
+     */
+    @Transaction
+    open suspend fun addToDays(secondsByDay: Map<LocalDate, Long>, replace: Boolean, zone: ZoneId) {
+        secondsByDay.forEach { (day, seconds) ->
+            val key = day.toString()
+            if (replace) deleteDay(key)
+            val add = seconds.coerceAtMost(DAY_SECONDS - secondsOnce(key))
+            if (add > 0) insert(SessionDb.legacy(day, add, zone))
+        }
+    }
 }

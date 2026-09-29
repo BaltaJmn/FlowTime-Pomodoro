@@ -5,6 +5,7 @@ import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
+import com.baltajmn.flowtime.data.repository.SessionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -86,7 +87,8 @@ data class PhaseChange(val mode: TimerMode, val from: Phase, val to: Phase, val 
  */
 class FocusEngine(
     private val dataProvider: DataProvider,
-    private val time: TimeSource
+    private val time: TimeSource,
+    private val sessions: SessionRepository
 ) {
     private val _state = MutableStateFlow(restore())
     val state: StateFlow<FocusState> = _state.asStateFlow()
@@ -137,7 +139,7 @@ class FocusEngine(
     fun start(mode: TimerMode) {
         sync()
         val current = _state.value
-        if (current.phase == Phase.WORK) record(current, elapsedMillis(current))
+        if (current.phase == Phase.WORK) record(current, elapsedMillis(current), overshoot = 0)
         set(newWork(mode, overshoot = 0))
     }
 
@@ -174,7 +176,7 @@ class FocusEngine(
     fun stop() {
         sync()
         val s = _state.value
-        if (s.phase == Phase.WORK) record(s, elapsedMillis(s))
+        if (s.phase == Phase.WORK) record(s, elapsedMillis(s), overshoot = 0)
         if (s.isActive) set(FocusState(mode = s.mode))
     }
 
@@ -215,7 +217,7 @@ class FocusEngine(
         dataProvider.getRangeModel(SharedPreferencesItem.POMODORO_RANGE) ?: TimerDefaults.pomodoro()
 
     private fun finishWork(s: FocusState, workedMillis: Long, overshoot: Long) {
-        record(s, workedMillis)
+        record(s, workedMillis, overshoot)
         val breakMillis = breakMillis(s.mode, workedMillis)
         val next = if (breakMillis > 0) {
             anchored(
@@ -266,8 +268,11 @@ class FocusEngine(
         time.wallMillis() - s.anchorWall
     }.coerceAtLeast(0)
 
-    private fun record(s: FocusState, workedMillis: Long) {
-        if (workedMillis >= MINUTE) dataProvider.updateMinutes(workedMillis / MINUTE)
+    // Con los segundos reales, sin las pausas. Menos de un minuto no se guarda: un empezar y parar
+    // sin querer no es una sesión.
+    private fun record(s: FocusState, workedMillis: Long, overshoot: Long) {
+        if (workedMillis < MINUTE) return
+        sessions.record(s.mode.name, s.workStartedAt, time.wallMillis() - overshoot, workedMillis / 1000)
     }
 
     private fun change(from: FocusState, to: FocusState, overshoot: Long) {

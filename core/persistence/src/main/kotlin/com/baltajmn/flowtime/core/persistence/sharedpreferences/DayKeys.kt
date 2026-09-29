@@ -1,13 +1,13 @@
 package com.baltajmn.flowtime.core.persistence.sharedpreferences
 
-import java.time.Clock
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.util.Locale
 
 /**
- * Claves de los minutos de cada día en las preferencias, con el formato ddMMyyyy.
+ * Claves de los minutos de cada día, con el formato ddMMyyyy: el historial de antes de las
+ * sesiones y el texto que se exporta e importa.
  *
  * Siempre con dígitos latinos. Antes se escribían con SimpleDateFormat en el idioma del sistema
  * y se leían con DateTimeFormatter, que no usa los dígitos del idioma: en un móvil con dígitos
@@ -18,9 +18,6 @@ object DayKeys {
     private val formatter = DateTimeFormatter.ofPattern("ddMMyyyy", Locale.ROOT)
 
     fun of(date: LocalDate): String = date.format(formatter)
-
-    /** Se calcula en cada llamada: guardarla al arrancar sumaba a ayer lo estudiado tras medianoche. */
-    fun today(clock: Clock): String = of(LocalDate.now(clock))
 
     fun parse(key: String): LocalDate? {
         val latinKey = normalize(key) ?: return null

@@ -2,6 +2,7 @@ package com.baltajmn.flowtime.core.database.di
 
 import androidx.room.Room
 import com.baltajmn.flowtime.core.database.datasource.AppDatabase
+import com.baltajmn.flowtime.core.database.datasource.MIGRATION_1_2
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
@@ -12,9 +13,10 @@ val DatabaseModule = module {
             AppDatabase::class.java,
             "app_database"
         )
-            .fallbackToDestructiveMigration()
+            .addMigrations(MIGRATION_1_2)
             .build()
     }
 
     single { get<AppDatabase>().todoListDao() }
+    single { get<AppDatabase>().sessionDao() }
 }

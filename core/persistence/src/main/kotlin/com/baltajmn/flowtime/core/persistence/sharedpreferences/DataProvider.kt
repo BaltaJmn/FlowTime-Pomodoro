@@ -1,7 +1,6 @@
 package com.baltajmn.flowtime.core.persistence.sharedpreferences
 
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
-import java.time.LocalDate
 
 interface DataProvider {
     fun getString(key: SharedPreferencesItem): String?
@@ -17,11 +16,9 @@ interface DataProvider {
     fun getRangeModel(key: SharedPreferencesItem): RangeModel?
     fun getRangeModelList(key: SharedPreferencesItem): MutableList<RangeModel>?
     fun setRangeModel(key: SharedPreferencesItem, value: RangeModel)
-    fun updateMinutes(minutes: Long): Long
-    fun getMinutesByDate(date: LocalDate): Long
-    fun getAllDates(): List<LocalDate>
+
+    /** Los minutos por día de antes de las sesiones (claves ddMMyyyy). Solo para importarlos una vez. */
     fun getStudyTimeMap(): Map<String, Long>
-    fun setStudyTimeMap(map: Map<String, Long>)
     fun setCheckValue(key: SharedPreferencesItem, value: Boolean)
     fun getCheckValue(key: SharedPreferencesItem): Boolean
 }

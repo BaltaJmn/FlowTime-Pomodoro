@@ -1,30 +1,11 @@
 package com.baltajmn.flowtime.core.persistence.sharedpreferences
 
-import java.time.Clock
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
 class DayKeysTest {
-
-    private val zone = ZoneId.of("Europe/Madrid")
-
-    private fun clockAt(dateTime: LocalDateTime): Clock =
-        Clock.fixed(dateTime.atZone(zone).toInstant(), zone)
-
-    @Test
-    fun `una sesion antes y otra despues de medianoche van a dias distintos`() {
-        val beforeMidnight = DayKeys.today(clockAt(LocalDateTime.of(2026, 9, 29, 23, 59)))
-        val afterMidnight = DayKeys.today(clockAt(LocalDateTime.of(2026, 9, 30, 0, 1)))
-
-        assertEquals("29092026", beforeMidnight)
-        assertEquals("30092026", afterMidnight)
-        assertNotEquals(beforeMidnight, afterMidnight)
-    }
 
     @Test
     fun `la clave usa digitos latinos aunque el idioma del sistema use otros`() {

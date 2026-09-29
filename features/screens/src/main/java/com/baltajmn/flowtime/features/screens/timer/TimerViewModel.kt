@@ -7,6 +7,7 @@ import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.KEEP_SCREEN_ON
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.NOTIFICATIONS_EXPLAINED
+import com.baltajmn.flowtime.data.repository.SessionRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusSnapshot
 import com.baltajmn.flowtime.data.timer.Phase
@@ -37,7 +38,8 @@ data class TimerUiState(
 class TimerViewModel(
     private val mode: TimerMode,
     private val engine: FocusEngine,
-    private val dataProvider: DataProvider
+    private val dataProvider: DataProvider,
+    sessions: SessionRepository
 ) : ViewModel() {
 
     private val continueAfterBreak =
@@ -45,12 +47,16 @@ class TimerViewModel(
     private val keepScreenOn = dataProvider.getBoolean(KEEP_SCREEN_ON, true)
 
     val uiState: StateFlow<TimerUiState> =
-        combine(engine.snapshots(), continueAfterBreak, ::toUiState)
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(5_000),
-                toUiState(engine.snapshot(), continueAfterBreak.value)
-            )
+        combine(
+            engine.snapshots(),
+            continueAfterBreak,
+            sessions.secondsOn(LocalDate.now()),
+            ::toUiState
+        ).stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5_000),
+            toUiState(engine.snapshot(), continueAfterBreak.value, secondsToday = 0)
+        )
 
     fun onAction(action: TimerAction) = engine.perform(action, mode)
 
@@ -66,7 +72,7 @@ class TimerViewModel(
         continueAfterBreak.value = value
     }
 
-    private fun toUiState(snapshot: FocusSnapshot, continueAfter: Boolean): TimerUiState {
+    private fun toUiState(snapshot: FocusSnapshot, continueAfter: Boolean, secondsToday: Long): TimerUiState {
         val session = snapshot.state
         // Si la sesión en marcha es de otro modo, esta pantalla se ve parada.
         val mine = session.isActive && session.mode == mode
@@ -75,7 +81,7 @@ class TimerViewModel(
             phase = if (mine) session.phase else Phase.IDLE,
             paused = mine && session.isPaused,
             time = (if (mine) snapshot.displaySeconds else engine.workMillis(mode) / 1000).formatSecondsToTime(),
-            minutesToday = dataProvider.getMinutesByDate(LocalDate.now()).formatMinutesStudying(),
+            minutesToday = (secondsToday / 60).formatMinutesStudying(),
             continueAfterBreak = continueAfter,
             keepScreenOn = keepScreenOn
         )

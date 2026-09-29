@@ -4,10 +4,9 @@ import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DayKeys
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
-import java.time.LocalDate
 
 /** Preferencias en memoria. Los objetos se guardan tal cual, sin pasar por JSON. */
-class FakeDataProvider(private val today: LocalDate = LocalDate.of(2026, 9, 29)) : DataProvider {
+class FakeDataProvider : DataProvider {
 
     val values = mutableMapOf<String, Any>()
 
@@ -55,24 +54,9 @@ class FakeDataProvider(private val today: LocalDate = LocalDate.of(2026, 9, 29))
         values[key.key] = value
     }
 
-    override fun updateMinutes(minutes: Long): Long {
-        val key = DayKeys.of(today)
-        val total = (values[key] as? Long ?: 0L) + minutes
-        values[key] = total
-        return total
-    }
-
-    override fun getMinutesByDate(date: LocalDate) = values[DayKeys.of(date)] as? Long ?: 0L
-
-    override fun getAllDates() = values.keys.mapNotNull(DayKeys::parse)
-
     override fun getStudyTimeMap() = values
         .filter { (key, value) -> value is Long && DayKeys.parse(key) != null }
         .mapValues { (_, value) -> value as Long }
-
-    override fun setStudyTimeMap(map: Map<String, Long>) {
-        values.putAll(map)
-    }
 
     override fun setCheckValue(key: SharedPreferencesItem, value: Boolean) {
         values[key.key] = value

@@ -6,6 +6,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.baltajmn.flowtime.core.design.service.SoundService
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
+import com.baltajmn.flowtime.data.repository.SessionRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.PhaseChange
@@ -33,6 +34,7 @@ class App : Application() {
             )
         }
 
+        get<SessionRepository>().importLegacyOnce()
         val engine = get<FocusEngine>()
         val notification = get<SessionNotification>()
         val alarm = get<PhaseAlarm>()

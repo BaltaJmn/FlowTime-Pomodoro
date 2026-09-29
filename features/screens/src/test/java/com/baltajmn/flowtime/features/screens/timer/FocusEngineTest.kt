@@ -7,10 +7,10 @@ import com.baltajmn.flowtime.data.timer.PhaseChange
 import com.baltajmn.flowtime.data.timer.TimeSource
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
+import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Test
-import java.time.LocalDate
 
 class FocusEngineTest {
 
@@ -31,11 +31,12 @@ class FocusEngineTest {
 
     private val time = FakeTime()
     private val prefs = FakeDataProvider()
-    private val engine = FocusEngine(prefs, time)
+    private val sessions = FakeSessions()
+    private val engine = FocusEngine(prefs, time, sessions)
 
     private fun minutes(value: Int) = value * 60_000L
     private fun seconds(value: Int) = value * 1_000L
-    private fun minutesToday() = prefs.getMinutesByDate(LocalDate.of(2026, 9, 29))
+    private fun secondsRecorded() = sessions.recorded.sumOf { it.focusSeconds }
 
     // Por defecto: Pomodoro de 45 minutos con 15 de descanso.
 
@@ -53,6 +54,7 @@ class FocusEngineTest {
 
     @Test
     fun `con la pantalla apagada el pomodoro termina a su hora y guarda lo trabajado`() {
+        val start = time.wall
         engine.start(TimerMode.POMODORO)
 
         time.advance(minutes(45) + seconds(20))
@@ -61,7 +63,11 @@ class FocusEngineTest {
         val state = engine.state.value
         assertEquals(Phase.BREAK, state.phase)
         assertEquals(minutes(15) - seconds(20), engine.snapshot().remainingMillis)
-        assertEquals(45L, minutesToday())
+        // La sesión acaba cuando terminó la fase, no cuando se ha visto.
+        assertEquals(
+            FakeSessions.Recorded("POMODORO", start, start + minutes(45), 45 * 60L),
+            sessions.recorded.single()
+        )
     }
 
     @Test
@@ -73,7 +79,7 @@ class FocusEngineTest {
 
         assertEquals(Phase.WORK, engine.state.value.phase)
         assertEquals(minutes(10), engine.snapshot().elapsedMillis)
-        assertEquals(45L, minutesToday())
+        assertEquals(45 * 60L, secondsRecorded())
     }
 
     @Test
@@ -116,7 +122,7 @@ class FocusEngineTest {
         engine.start(TimerMode.FLOW_TIME)
         time.advance(minutes(10))
 
-        val reopened = FocusEngine(prefs, time)
+        val reopened = FocusEngine(prefs, time, sessions)
 
         assertEquals(Phase.WORK, reopened.state.value.phase)
         assertEquals(minutes(10), reopened.snapshot().elapsedMillis)
@@ -130,7 +136,7 @@ class FocusEngineTest {
         time.wall += minutes(180)
 
         assertEquals(minutes(10), engine.snapshot().elapsedMillis)
-        assertEquals(minutes(10), FocusEngine(prefs, time).snapshot().elapsedMillis)
+        assertEquals(minutes(10), FocusEngine(prefs, time, sessions).snapshot().elapsedMillis)
     }
 
     @Test
@@ -140,7 +146,7 @@ class FocusEngineTest {
         time.boot += 1
         time.elapsed = seconds(30)
 
-        assertEquals(minutes(20), FocusEngine(prefs, time).snapshot().elapsedMillis)
+        assertEquals(minutes(20), FocusEngine(prefs, time, sessions).snapshot().elapsedMillis)
     }
 
     @Test
@@ -152,7 +158,7 @@ class FocusEngineTest {
 
         assertEquals(Phase.BREAK, engine.state.value.phase)
         assertEquals(minutes(10), engine.snapshot().remainingMillis)
-        assertEquals(20L, minutesToday())
+        assertEquals(20 * 60L, secondsRecorded())
     }
 
     // Reseña de noviembre de 2024: el contador del modo Porcentaje corría demasiado rápido.
@@ -191,14 +197,24 @@ class FocusEngineTest {
     }
 
     @Test
-    fun `parar a medias guarda lo trabajado`() {
+    fun `parar a medias guarda lo trabajado con sus segundos`() {
         engine.start(TimerMode.POMODORO)
         time.advance(minutes(24) + seconds(59))
 
         engine.stop()
 
         assertFalse(engine.state.value.isActive)
-        assertEquals(24L, minutesToday())
+        assertEquals(24 * 60L + 59, secondsRecorded())
+    }
+
+    @Test
+    fun `menos de un minuto no es una sesion`() {
+        engine.start(TimerMode.FLOW_TIME)
+        time.advance(seconds(59))
+
+        engine.stop()
+
+        assertEquals(emptyList<FakeSessions.Recorded>(), sessions.recorded)
     }
 
     @Test
@@ -209,14 +225,14 @@ class FocusEngineTest {
         engine.start(TimerMode.POMODORO)
 
         assertEquals(TimerMode.POMODORO, engine.state.value.mode)
-        assertEquals(12L, minutesToday())
+        assertEquals(12 * 60L, secondsRecorded())
     }
 
     @Test
     fun `un estado guardado que no se entiende no impide arrancar`() {
         prefs.setString(SharedPreferencesItem.TIMER_SESSION, "{roto")
 
-        assertFalse(FocusEngine(prefs, time).state.value.isActive)
+        assertFalse(FocusEngine(prefs, time, sessions).state.value.isActive)
     }
 
     @Test

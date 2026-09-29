@@ -122,7 +122,8 @@ data class HistoryState(
     val isLoading: Boolean = false,
     val selectedDate: LocalDate = LocalDate.now(),
     val selectedDateToShow: String = LocalDate.now().toShowInSelector(),
-    val studyTime: List<Long> = listOf(),
+    // Siempre los siete días: el gráfico los lee por posición, y las sesiones llegan un momento después.
+    val studyTime: List<Long> = List(7) { 0L },
     val allStudyTime: String = "",
     val pendingImport: StudyTimeImport? = null,
     val importSummary: ImportSummary? = null

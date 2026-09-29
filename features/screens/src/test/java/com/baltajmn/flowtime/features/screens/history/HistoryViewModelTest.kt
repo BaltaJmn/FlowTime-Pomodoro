@@ -1,6 +1,6 @@
 package com.baltajmn.flowtime.features.screens.history
 
-import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
+import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboard
@@ -16,11 +16,14 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
+import java.time.LocalDate
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HistoryViewModelTest {
 
-    private val dataProvider = FakeDataProvider()
+    private val sessions = FakeSessions()
+    private val sep29 = LocalDate.of(2026, 9, 29)
+    private val sep30 = LocalDate.of(2026, 9, 30)
 
     private lateinit var viewModel: HistoryViewModel
 
@@ -28,10 +31,10 @@ class HistoryViewModelTest {
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         viewModel = HistoryViewModel(
-            getStudyTime = GetStudyTime(dataProvider),
-            getAllStudyTimeUseCase = GetAllStudyTime(dataProvider),
-            getStudyTimeToClipboard = GetStudyTimeToClipboard(dataProvider),
-            setStudyTimeFromClipboard = SetStudyTimeFromClipboard(dataProvider)
+            getStudyTime = GetStudyTime(sessions),
+            getAllStudyTimeUseCase = GetAllStudyTime(sessions),
+            getStudyTimeToClipboard = GetStudyTimeToClipboard(sessions),
+            setStudyTimeFromClipboard = SetStudyTimeFromClipboard(sessions)
         )
     }
 
@@ -44,8 +47,7 @@ class HistoryViewModelTest {
     fun `sin dias con datos importa directamente y resume el resultado`() {
         viewModel.importStudyTime("29092026: 45\ntheme_color: 1")
 
-        assertEquals(45L, dataProvider.values["29092026"])
-        assertNull(dataProvider.values["theme_color"])
+        assertEquals(mapOf(sep29 to 45 * 60L), sessions.days)
         assertEquals(
             ImportSummary(importedDays = 1, ignoredLines = 1),
             viewModel.uiState.value.importSummary
@@ -54,34 +56,33 @@ class HistoryViewModelTest {
 
     @Test
     fun `con dias con datos pregunta antes de escribir`() {
-        dataProvider.values["29092026"] = 60L
+        sessions.days[sep29] = 60 * 60L
 
         viewModel.importStudyTime("29092026: 30\n30092026: 10")
 
         assertEquals(1, viewModel.uiState.value.pendingImport?.daysWithData)
-        assertEquals(60L, dataProvider.values["29092026"])
-        assertNull(dataProvider.values["30092026"])
+        assertEquals(mapOf(sep29 to 60 * 60L), sessions.days)
     }
 
     @Test
     fun `al elegir sumar se suman los minutos`() {
-        dataProvider.values["29092026"] = 60L
+        sessions.days[sep29] = 60 * 60L
         viewModel.importStudyTime("29092026: 30")
 
         viewModel.resolvePendingImport(ImportMode.SUM)
 
-        assertEquals(90L, dataProvider.values["29092026"])
+        assertEquals(90 * 60L, sessions.days[sep29])
         assertNull(viewModel.uiState.value.pendingImport)
     }
 
     @Test
     fun `al cancelar no se escribe nada`() {
-        dataProvider.values["29092026"] = 60L
+        sessions.days[sep29] = 60 * 60L
         viewModel.importStudyTime("29092026: 30")
 
         viewModel.resolvePendingImport(null)
 
-        assertEquals(60L, dataProvider.values["29092026"])
+        assertEquals(60 * 60L, sessions.days[sep29])
         assertNull(viewModel.uiState.value.importSummary)
     }
 
@@ -93,5 +94,16 @@ class HistoryViewModelTest {
             ImportSummary(importedDays = 0, ignoredLines = 1),
             viewModel.uiState.value.importSummary
         )
+    }
+
+    @Test
+    fun `exporta los minutos de cada dia sacados de las sesiones`() {
+        sessions.days[sep30] = 10 * 60L + 59
+        sessions.days[sep29] = 45 * 60L
+
+        var text = ""
+        viewModel.exportStudyTime { text = it }
+
+        assertEquals("29092026: 45\n30092026: 10", text)
     }
 }
