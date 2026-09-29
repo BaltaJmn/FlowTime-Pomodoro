@@ -46,22 +46,11 @@ fun Project.configureCompose(commonExtension: CommonExtension<*, *, *, *, *, *>)
         implementation(libs.androidx.lifecycle.viewmodel)
         implementation(libs.androidx.lifecycle.compose)
         implementation(libs.androidx.compose.ui.tooling.preview)
-        implementation(libs.compose.coil)
-        implementation(libs.accompanist.uiController)
         implementation(libs.koin.compose)
-        implementation(libs.compose.rebugger)
         implementation(libs.compose.lottie)
-
-        implementation(libs.ktor.core)
-        implementation(libs.ktor.logging)
-        implementation(libs.ktor.negotiation)
-        implementation(libs.ktor.okhttp)
-        implementation(libs.ktor.serialization)
-        implementation(libs.ktor.serializationJson)
 
         debugImplementation(libs.androidx.compose.ui.tooling.debug)
         androidTestImplementation(libs.androidx.compose.ui.test)
     }
 }
-
 

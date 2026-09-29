@@ -2,7 +2,6 @@ package com.baltajmn.flowtime.core.persistence.sharedpreferences
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.baltajmn.flowtime.core.persistence.encrypted.CryptoManager
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -15,8 +14,6 @@ class SharedPreferencesProvider(
     private val clock: Clock = Clock.systemDefaultZone()
 ) : DataProvider {
 
-    private val cryptoManager by lazy { CryptoManager() }
-
     companion object {
         const val SHARED_CONFIG = "shared_config"
     }
@@ -26,16 +23,12 @@ class SharedPreferencesProvider(
             .also(::migrateNonLatinDayKeys)
     }
 
-    override fun getString(key: SharedPreferencesItem, decrypt: Boolean): String? {
-        val value = readOrDefault(null) {
-            sharedPreferences.getString(key.name.lowercase(), null)
-        } ?: return null
-        return if (decrypt) cryptoManager.decrypt(value) else value
+    override fun getString(key: SharedPreferencesItem): String? {
+        return readOrDefault(null) { sharedPreferences.getString(key.name.lowercase(), null) }
     }
 
-    override fun setString(key: SharedPreferencesItem, value: String, encrypt: Boolean) {
-        val finalValue = if (encrypt) cryptoManager.encrypt(value) else value
-        sharedPreferences.edit().putString(key.name.lowercase(), finalValue).apply()
+    override fun setString(key: SharedPreferencesItem, value: String) {
+        sharedPreferences.edit().putString(key.name.lowercase(), value).apply()
     }
 
     override fun getBoolean(key: SharedPreferencesItem, defValue: Boolean): Boolean {

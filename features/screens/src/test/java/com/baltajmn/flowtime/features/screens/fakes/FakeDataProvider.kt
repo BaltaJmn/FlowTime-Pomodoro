@@ -13,9 +13,9 @@ class FakeDataProvider(private val today: LocalDate = LocalDate.of(2026, 9, 29))
 
     private val SharedPreferencesItem.key get() = name.lowercase()
 
-    override fun getString(key: SharedPreferencesItem, decrypt: Boolean) = values[key.key] as? String
+    override fun getString(key: SharedPreferencesItem) = values[key.key] as? String
 
-    override fun setString(key: SharedPreferencesItem, value: String, encrypt: Boolean) {
+    override fun setString(key: SharedPreferencesItem, value: String) {
         values[key.key] = value
     }
 

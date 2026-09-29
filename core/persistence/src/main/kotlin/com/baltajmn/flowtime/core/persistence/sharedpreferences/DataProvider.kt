@@ -4,8 +4,8 @@ import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import java.time.LocalDate
 
 interface DataProvider {
-    fun getString(key: SharedPreferencesItem, decrypt: Boolean = false): String?
-    fun setString(key: SharedPreferencesItem, value: String, encrypt: Boolean = false)
+    fun getString(key: SharedPreferencesItem): String?
+    fun setString(key: SharedPreferencesItem, value: String)
     fun getBoolean(key: SharedPreferencesItem, defValue: Boolean = true): Boolean
     fun setBoolean(key: SharedPreferencesItem, value: Boolean)
     fun getLong(key: SharedPreferencesItem): Long
