@@ -1,10 +1,9 @@
 package com.baltajmn.flowtime.data.backup
 
 import com.baltajmn.flowtime.core.database.datasource.BackupDao
-import com.baltajmn.flowtime.core.database.model.ListItemDb
 import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.TagDb
-import com.baltajmn.flowtime.core.database.model.TodoListDB
+import com.baltajmn.flowtime.core.database.model.TaskDb
 import com.baltajmn.flowtime.core.design.sound.Ambience
 import com.baltajmn.flowtime.core.design.sound.PlayerType
 import com.baltajmn.flowtime.core.design.theme.AppTheme
@@ -87,9 +86,7 @@ class DefaultBackupRepository(
             appVersion = appVersion,
             sessions = dao.sessions().map { it.toBackup() },
             tags = dao.tags().map { BackupTag(it.id, it.name, it.color, it.position, it.archived, it.createdAt) },
-            tasks = dao.todoLists().flatMap { list ->
-                list.todoList.mapIndexed { position, item -> item.toBackup(list.date, position) }
-            },
+            tasks = dao.tasks().map { it.toBackup() },
             settings = readSettings()
         )
         json.encodeToString(Backup.serializer(), backup)
@@ -117,12 +114,9 @@ class DefaultBackupRepository(
     ): RestoreResult = withContext(Dispatchers.Default) {
         val count = dao.restore(
             sessions = backup.sessions.filter { it.isValid() }.map { it.toDb() },
-            todoLists = backup.tasks
-                .filter { it.title.isNotBlank() && it.plannedFor.isDay() }
-                .groupBy { it.plannedFor }
-                .map { (date, tasks) ->
-                    TodoListDB(date, tasks.sortedBy { it.position }.map { it.toDb() })
-                },
+            tasks = backup.tasks
+                .filter { it.title.isNotBlank() && it.plannedFor.isDay() && it.doneOn?.isDay() != false }
+                .map { it.toDb() },
             tags = backup.tags.filter { it.name.isNotBlank() }.distinctBy { it.id }.map { it.toDb() }
         )
         if (withSettings) backup.settings?.let(::applySettings)
@@ -212,21 +206,24 @@ class DefaultBackupRepository(
     private fun BackupSession.isValid() =
         localDate.isDay() && mode.isNotBlank() && focusSeconds in 0..SessionDb.DAY_SECONDS && endedAt >= startedAt
 
-    // Las tareas de hoy no guardan cuándo se completaron: el día de la lista es lo más cercano.
-    private fun ListItemDb.toBackup(date: String, position: Int) = BackupTask(
+    private fun TaskDb.toBackup() = BackupTask(
         title = title,
         description = description,
-        plannedFor = date,
-        doneOn = date.takeIf { done },
-        createdAt = id,
-        position = position
+        plannedFor = plannedFor,
+        doneOn = doneOn,
+        createdAt = createdAt,
+        position = position,
+        tagId = tagId
     )
 
-    private fun BackupTask.toDb() = ListItemDb(
-        id = createdAt,
+    private fun BackupTask.toDb() = TaskDb(
         title = title,
         description = description,
-        done = doneOn != null
+        plannedFor = plannedFor,
+        doneOn = doneOn,
+        createdAt = createdAt,
+        position = position,
+        tagId = tagId
     )
 
     private fun RangeModel.toBackup() = BackupRange(totalRange, endRange, rest)

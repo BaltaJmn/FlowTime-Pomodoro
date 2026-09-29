@@ -15,12 +15,6 @@ import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.splash.SplashViewModel
 import com.baltajmn.flowtime.features.screens.timer.TimerViewModel
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
-import com.baltajmn.flowtime.features.screens.todoList.domain.GetTodoListByDate
-import com.baltajmn.flowtime.features.screens.todoList.domain.GetTodoListByDateUseCase
-import com.baltajmn.flowtime.features.screens.todoList.domain.InsertTodoList
-import com.baltajmn.flowtime.features.screens.todoList.domain.InsertTodoListUseCase
-import com.baltajmn.flowtime.features.screens.todoList.domain.UpdateTodoList
-import com.baltajmn.flowtime.features.screens.todoList.domain.UpdateTodoListUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
@@ -45,9 +39,6 @@ private val ScreensDomainModule: Module
         factoryOf(::GetAllStudyTime) bind GetAllStudyTimeUseCase::class
         factoryOf(::SetStudyTimeFromClipboard) bind SetStudyTimeFromClipboardUseCase::class
         factoryOf(::GetStudyTimeToClipboard) bind GetStudyTimeToClipboardUseCase::class
-        factoryOf(::GetTodoListByDate) bind GetTodoListByDateUseCase::class
-        factoryOf(::InsertTodoList) bind InsertTodoListUseCase::class
-        factoryOf(::UpdateTodoList) bind UpdateTodoListUseCase::class
     }
 
 private val ScreensPresentationModule: Module
@@ -55,7 +46,8 @@ private val ScreensPresentationModule: Module
         viewModel { params -> TimerViewModel(params.get(), get(), get(), get(), get()) }
         viewModelOf(::EditViewModel)
         viewModelOf(::SettingsViewModel)
-        viewModelOf(::TodoListViewModel)
+        // A mano: el constructor tiene un parámetro opcional para los tests que Koin no sabría resolver.
+        viewModel { TodoListViewModel(get()) }
         viewModelOf(::HistoryViewModel)
         viewModelOf(::OnBoardViewModel)
         viewModelOf(::SplashViewModel)

@@ -224,4 +224,14 @@
     <string name="tag_duplicate">There\'s already a tag with that name</string>
     <string name="tag_empty">Write a name</string>
     <string name="tag_limit">Without Pro you can have %1$d active tags. Archive one to add another.</string>
+    <string name="task_late_yesterday">From yesterday</string>
+    <string name="task_move_today">Move to today</string>
+    <string name="task_deleted">Task deleted</string>
+    <string name="task_undo">Undo</string>
+    <string name="task_empty">Write a title</string>
+    <string name="task_limit">You have %1$d pending tasks. Complete one to add another.</string>
+    <plurals name="task_late_days">
+        <item quantity="one">%d day ago</item>
+        <item quantity="other">%d days ago</item>
+    </plurals>
 </resources>

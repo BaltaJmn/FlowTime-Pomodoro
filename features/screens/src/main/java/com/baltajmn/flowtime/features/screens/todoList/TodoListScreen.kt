@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -27,9 +28,15 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +44,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
@@ -44,12 +52,13 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.baltajmn.flowtime.core.common.model.ListItem
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.Title
+import com.baltajmn.flowtime.data.pro.Limits
+import com.baltajmn.flowtime.data.task.Task
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -95,83 +104,119 @@ fun TodoListContent(
     viewModel: TodoListViewModel
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
-    var isEdit by rememberSaveable { mutableStateOf(false) }
-    var currentListItem by remember { mutableStateOf(ListItem()) }
+    // La que se está editando, o null para una nueva.
+    var editing by remember { mutableStateOf<Task?>(null) }
+    val snackbar = remember { SnackbarHostState() }
+    val deletedText = stringResource(R.string.task_deleted)
+    val undoText = stringResource(R.string.task_undo)
 
     if (showDialog) {
         ItemDialog(
-            item = currentListItem,
+            initialTitle = editing?.title.orEmpty(),
+            initialDescription = editing?.description.orEmpty(),
             onDismiss = { showDialog = false },
             onSave = { title, description ->
                 showDialog = false
-                if (isEdit) {
-                    viewModel.onUpdateItem(
-                        currentListItem.copy(
-                            title = title,
-                            description = description
+                editing?.let { viewModel.onUpdateItem(it, title, description) }
+                    ?: viewModel.onAddItem(title, description)
+            }
+        )
+    }
+
+    // Borrar no pregunta: se puede deshacer.
+    LaunchedEffect(state.deleted) {
+        if (state.deleted == null) return@LaunchedEffect
+        val result = snackbar.showSnackbar(deletedText, undoText, duration = SnackbarDuration.Short)
+        if (result == SnackbarResult.ActionPerformed) viewModel.undoDelete() else viewModel.onDeleteShown()
+    }
+
+    state.message?.let { message ->
+        AlertDialog(
+            onDismissRequest = viewModel::onMessageShown,
+            text = {
+                Text(
+                    text = when (message) {
+                        TaskMessage.EMPTY -> stringResource(R.string.task_empty)
+                        TaskMessage.LIMIT -> stringResource(
+                            R.string.task_limit,
+                            Limits.FREE_PENDING_TASKS
                         )
-                    )
-                } else {
-                    viewModel.onAddItem(title, description)
+                    }
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = viewModel::onMessageShown) {
+                    Text(text = stringResource(R.string.dialog_confirm))
                 }
             }
         )
     }
 
-    LazyColumn(
-        state = listState,
-        verticalArrangement = Arrangement.Top,
-        contentPadding = PaddingValues(24.dp),
-        modifier = Modifier.fillMaxSize()
-    ) {
-        item { Spacer(modifier = Modifier.height(16.dp)) }
-        item {
-            ScreenTitleWithIcon(
-                text = stringResource(R.string.todo_list_title),
-                onIconClick = remember {
-                    {
-                        currentListItem = ListItem()
-                        isEdit = false
-                        showDialog = true
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            state = listState,
+            verticalArrangement = Arrangement.Top,
+            contentPadding = PaddingValues(24.dp),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item {
+                ScreenTitleWithIcon(
+                    text = stringResource(R.string.todo_list_title),
+                    onIconClick = remember {
+                        {
+                            editing = null
+                            showDialog = true
+                        }
                     }
-                }
-            )
+                )
+            }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item {
+                TodoListDay(
+                    selectedDate = state.selectedDateToShow,
+                    plusWeek = viewModel::plusDay,
+                    minusWeek = viewModel::minusDay
+                )
+            }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+            items(
+                items = state.tasks,
+                key = { it.id }
+            ) { task ->
+                TodoItem(
+                    item = task,
+                    // Solo hoy se ven las que vienen de días anteriores.
+                    daysLate = if (state.selectedDate == state.today) task.daysLate(state.today) else 0,
+                    onItemClick = viewModel::markAsDone,
+                    onEditClick = remember {
+                        { selected ->
+                            editing = selected
+                            showDialog = true
+                        }
+                    },
+                    onDeleteClick = viewModel::onDeleteItem,
+                    onMoveToToday = viewModel::moveToToday
+                )
+            }
         }
-        item { Spacer(modifier = Modifier.height(16.dp)) }
-        item {
-            TodoListDay(
-                selectedDate = state.selectedDateToShow,
-                plusWeek = viewModel::plusDay,
-                minusWeek = viewModel::minusDay
-            )
-        }
-        item { Spacer(modifier = Modifier.height(16.dp)) }
-        items(
-            items = state.currentTodoList.todoList,
-            key = { it.id }
-        ) { item ->
-            TodoItem(
-                item = item,
-                onItemClick = viewModel::markAsDone,
-                onEditClick = remember {
-                    { listItem ->
-                        currentListItem = listItem
-                        isEdit = true
-                        showDialog = true
-                    }
-                },
-                onDeleteClick = viewModel::onDeleteItem
-            )
-        }
+        SnackbarHost(
+            hostState = snackbar,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 96.dp)
+        )
     }
 }
 
 @Composable
 fun TodoItem(
-    item: ListItem,
-    onItemClick: (ListItem) -> Unit,
-    onEditClick: (ListItem) -> Unit,
-    onDeleteClick: (ListItem) -> Unit
+    item: Task,
+    daysLate: Long = 0,
+    onItemClick: (Task) -> Unit,
+    onEditClick: (Task) -> Unit,
+    onDeleteClick: (Task) -> Unit,
+    onMoveToToday: (Task) -> Unit = {}
 ) {
     val textStyle = if (item.done) {
         Title.copy(textDecoration = TextDecoration.LineThrough)
@@ -214,6 +259,26 @@ fun TodoItem(
                     style = textStyleDescription,
                     color = textColor
                 )
+                if (daysLate > 0) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = if (daysLate == 1L) {
+                                stringResource(R.string.task_late_yesterday)
+                            } else {
+                                pluralStringResource(
+                                    R.plurals.task_late_days,
+                                    daysLate.toInt(),
+                                    daysLate.toInt()
+                                )
+                            },
+                            style = SubBody.copy(fontSize = 13.sp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        TextButton(onClick = { onMoveToToday(item) }) {
+                            Text(text = stringResource(R.string.task_move_today))
+                        }
+                    }
+                }
             }
 
             IconButton(
@@ -322,12 +387,13 @@ fun ScreenTitleWithIcon(text: String, onIconClick: () -> Unit) {
 
 @Composable
 fun ItemDialog(
-    item: ListItem = ListItem(),
+    initialTitle: String = "",
+    initialDescription: String = "",
     onDismiss: () -> Unit,
     onSave: (String, String) -> Unit
 ) {
-    var title by remember { mutableStateOf(item.title) }
-    var description by remember { mutableStateOf(item.description) }
+    var title by remember { mutableStateOf(initialTitle) }
+    var description by remember { mutableStateOf(initialDescription) }
 
     AlertDialog(
         onDismissRequest = onDismiss,

@@ -222,4 +222,14 @@
     <string name="tag_duplicate">Es gibt schon ein Label mit diesem Namen</string>
     <string name="tag_empty">Gib einen Namen ein</string>
     <string name="tag_limit">Ohne Pro kannst du %1$d aktive Labels haben. Archiviere eins, um ein neues hinzuzufügen.</string>
+    <string name="task_late_yesterday">Von gestern</string>
+    <string name="task_move_today">Auf heute verschieben</string>
+    <string name="task_deleted">Aufgabe gelöscht</string>
+    <string name="task_undo">Rückgängig</string>
+    <string name="task_empty">Gib einen Titel ein</string>
+    <string name="task_limit">Du hast %1$d offene Aufgaben. Erledige eine, um eine neue hinzuzufügen.</string>
+    <plurals name="task_late_days">
+        <item quantity="one">Vor %d Tag</item>
+        <item quantity="other">Vor %d Tagen</item>
+    </plurals>
 </resources>

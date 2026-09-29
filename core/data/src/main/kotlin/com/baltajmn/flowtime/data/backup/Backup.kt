@@ -23,7 +23,7 @@ data class Backup(
     companion object {
         const val APP = "flowtime"
 
-        /** 2: etiquetas (#37). Una versión que solo lee el 1 las perdería al importar. */
+        /** 2: etiquetas (#37) y tareas con su etiqueta (#39). Una versión que solo lee el 1 las perdería. */
         const val FORMAT = 2
     }
 }
@@ -51,7 +51,6 @@ data class BackupTag(
     val createdAt: Long = 0
 )
 
-/** Con la forma que tendrán las tareas en su propia tabla (#39): así el formato no cambia entonces. */
 @Serializable
 data class BackupTask(
     val title: String,
@@ -61,7 +60,9 @@ data class BackupTask(
     /** yyyy-MM-dd del día en que se completó, o null si está pendiente. */
     val doneOn: String? = null,
     val createdAt: Long,
-    val position: Int = 0
+    val position: Int = 0,
+    /** El [BackupTag.id] de su etiqueta dentro de este fichero. */
+    val tagId: Long? = null
 )
 
 @Serializable

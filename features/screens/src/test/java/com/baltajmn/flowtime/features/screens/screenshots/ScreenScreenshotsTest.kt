@@ -4,8 +4,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.baltajmn.flowtime.core.common.model.ListItem
-import com.baltajmn.flowtime.core.common.model.TodoList
 import com.baltajmn.flowtime.core.design.components.CurrentlyPlaying
 import com.baltajmn.flowtime.core.design.components.ExpandedContent
 import com.baltajmn.flowtime.core.design.components.TopBarSurface
@@ -14,6 +12,7 @@ import com.baltajmn.flowtime.core.design.sound.PlayerType
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.screen.TimerLandscapeContent
@@ -21,6 +20,7 @@ import com.baltajmn.flowtime.features.screens.fakes.FakeBackups
 import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
 import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
 import com.baltajmn.flowtime.features.screens.fakes.FakeTags
+import com.baltajmn.flowtime.features.screens.fakes.FakeTasks
 import com.baltajmn.flowtime.features.screens.history.HistoryContent
 import com.baltajmn.flowtime.features.screens.history.HistoryViewModel
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
@@ -33,9 +33,6 @@ import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 import com.baltajmn.flowtime.features.screens.todoList.TodoListContent
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
-import com.baltajmn.flowtime.features.screens.todoList.domain.GetTodoListByDateUseCase
-import com.baltajmn.flowtime.features.screens.todoList.domain.InsertTodoListUseCase
-import com.baltajmn.flowtime.features.screens.todoList.domain.UpdateTodoListUseCase
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -136,25 +133,18 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
 
     @Test
     fun todoList() {
-        val list = TodoList(
-            date = LocalDate.now().toString(),
-            todoList = listOf(
-                ListItem(1, "Repasar el tema 4", "Apuntes y ejercicios del final"),
-                ListItem(2, "Leer 20 páginas", "", done = true),
-                ListItem(3, "Preparar la presentación", "Diapositivas 5 a 12")
+        val today = LocalDate.now()
+        val tasks = FakeTasks(
+            Task(1, "Repasar el tema 4", "Apuntes y ejercicios del final", plannedFor = today),
+            Task(2, "Leer 20 páginas", plannedFor = today, doneOn = today, position = 1),
+            Task(
+                id = 3,
+                title = "Preparar la presentación",
+                description = "Diapositivas 5 a 12",
+                plannedFor = today.minusDays(1)
             )
         )
-        val viewModel = TodoListViewModel(
-            getTodoListByDate = object : GetTodoListByDateUseCase {
-                override suspend fun invoke(date: String) = list
-            },
-            updateTodoList = object : UpdateTodoListUseCase {
-                override suspend fun invoke(todoList: TodoList) = Unit
-            },
-            insertTodoList = object : InsertTodoListUseCase {
-                override suspend fun invoke(todoList: TodoList) = Unit
-            }
-        )
+        val viewModel = TodoListViewModel(tasks, today = { today })
         compose.capture("todo_$mode", dark = dark) {
             val state by viewModel.uiState.collectAsState()
             TodoListContent(

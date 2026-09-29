@@ -17,15 +17,18 @@ import com.baltajmn.flowtime.core.database.model.DaySeconds
 import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.SessionDb.Companion.DAY_SECONDS
 import com.baltajmn.flowtime.core.database.model.TagDb
+import com.baltajmn.flowtime.core.database.model.TaskDb
 import com.baltajmn.flowtime.core.database.model.TodoListDB
 import java.time.LocalDate
 import java.time.ZoneId
 import kotlinx.coroutines.flow.Flow
 
 // De la 2 a la 3, automática: una tabla nueva (tag) y una columna que admite nulos (session.tagId).
+// De la 3 a la 4, a mano: las tareas pasan de un JSON por día a una fila cada una (MIGRATION_3_4).
+// todoList se queda una versión más, sin usar, por si hubiera que volver atrás.
 @Database(
-    entities = [TodoListDB::class, SessionDb::class, TagDb::class],
-    version = 3,
+    entities = [TodoListDB::class, SessionDb::class, TagDb::class, TaskDb::class],
+    version = 4,
     autoMigrations = [AutoMigration(from = 2, to = 3)]
 )
 @TypeConverters(ItemConverter::class)
@@ -34,6 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun sessionDao(): SessionDao
     abstract fun backupDao(): BackupDao
     abstract fun tagDao(): TagDao
+    abstract fun taskDao(): TaskDao
 }
 
 /** Escrita a mano: con la migración destructiva, un fallo borraba todas las tareas sin avisar. */

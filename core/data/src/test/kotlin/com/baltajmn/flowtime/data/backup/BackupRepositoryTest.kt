@@ -1,10 +1,9 @@
 package com.baltajmn.flowtime.data.backup
 
 import com.baltajmn.flowtime.core.database.datasource.BackupDao
-import com.baltajmn.flowtime.core.database.model.ListItemDb
 import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.TagDb
-import com.baltajmn.flowtime.core.database.model.TodoListDB
+import com.baltajmn.flowtime.core.database.model.TaskDb
 import com.baltajmn.flowtime.core.design.sound.Ambience
 import com.baltajmn.flowtime.core.design.sound.PlayerType
 import com.baltajmn.flowtime.core.design.theme.AppTheme
@@ -36,7 +35,7 @@ class BackupRepositoryTest {
     /** Las dos tablas en memoria: lo justo para que funcione la transacción de la clase base. */
     private class FakeBackupDao : BackupDao() {
         val rows = mutableListOf<SessionDb>()
-        val lists = sortedMapOf<String, TodoListDB>()
+        val taskRows = mutableListOf<TaskDb>()
         val tagRows = mutableListOf<TagDb>()
         private var nextId = 1L
         private var nextTagId = 100L
@@ -51,7 +50,7 @@ class BackupRepositoryTest {
 
         override suspend fun sessions() = rows.sortedBy { it.startedAt }
 
-        override suspend fun todoLists() = lists.values.toList()
+        override suspend fun tasks() = taskRows.sortedWith(compareBy({ it.plannedFor }, { it.position }, { it.id }))
 
         override suspend fun insert(session: SessionDb) {
             rows += session.copy(id = nextId++)
@@ -67,10 +66,12 @@ class BackupRepositoryTest {
                 it.focusSeconds == focusSeconds
         }
 
-        override suspend fun todoList(date: String) = lists[date]
+        override suspend fun countTasks(createdAt: Long) = taskRows.count { it.createdAt == createdAt }
 
-        override suspend fun putTodoList(todoList: TodoListDB) {
-            lists[todoList.date] = todoList
+        override suspend fun insertTask(task: TaskDb): Long {
+            val id = (taskRows.maxOfOrNull { it.id } ?: 0) + 1
+            taskRows += task.copy(id = id)
+            return id
         }
     }
 
@@ -117,8 +118,12 @@ class BackupRepositoryTest {
         )
     }
 
-    private fun task(id: Long, title: String, done: Boolean = false) =
-        ListItemDb(id, title, description = "", done)
+    /** Una tarea del 29 de septiembre, creada a la hora [createdAt]. */
+    private fun task(createdAt: Long, title: String, doneOn: String? = null, position: Int = 0) =
+        TaskDb(createdAt, title, "", "2026-09-29", doneOn, createdAt, position)
+
+    /** Las tareas sin su id, que en cada móvil es otro. */
+    private val Device.tasks get() = dao.taskRows.map { it.copy(id = 0) }.sortedBy { it.createdAt }
 
     @Test
     fun `una copia se restaura entera en otro movil`() = runTest {
@@ -126,10 +131,8 @@ class BackupRepositoryTest {
             dao.rows += session("2026-09-29", 10, mode = "FLOW_TIME", minutes = 50)
             dao.rows += session("2026-09-28", 9)
             dao.rows += SessionDb.legacy(LocalDate.of(2025, 1, 5), 3600, ZoneOffset.UTC)
-            dao.lists["2026-09-29"] = TodoListDB(
-                "2026-09-29",
-                listOf(task(2, "Leer"), ListItemDb(1, "Repasar", "Tema 4", done = true))
-            )
+            dao.taskRows += task(2, "Leer", position = 0)
+            dao.taskRows += task(1, "Repasar", doneOn = "2026-09-30", position = 1).copy(description = "Tema 4")
             appearance.setTheme(AppTheme.Green)
             appearance.setDarkMode(DarkMode.DARK)
             prefs.setObject(POMODORO_RANGE, RangeModel(totalRange = 50, endRange = 50, rest = 10))
@@ -151,7 +154,7 @@ class BackupRepositoryTest {
 
         assertEquals(RestoreResult(sessionsAdded = 3, sessionsExisting = 0, tasksAdded = 2), result)
         assertEquals(old.sessions, new.sessions)
-        assertEquals(old.dao.lists, new.dao.lists)
+        assertEquals(old.tasks, new.tasks)
         assertEquals("3.0", backup.appVersion)
         assertEquals(NOW, backup.exportedAt)
         with(new) {
@@ -180,7 +183,7 @@ class BackupRepositoryTest {
     fun `importar dos veces no duplica nada`() = runTest {
         val old = Device().apply {
             dao.rows += session("2026-09-28", 9)
-            dao.lists["2026-09-28"] = TodoListDB("2026-09-28", listOf(task(1, "Leer")))
+            dao.taskRows += task(1, "Leer")
         }
         val new = Device()
 
@@ -189,7 +192,7 @@ class BackupRepositoryTest {
 
         assertEquals(RestoreResult(sessionsAdded = 0, sessionsExisting = 1, tasksAdded = 0), again)
         assertEquals(old.sessions, new.sessions)
-        assertEquals(old.dao.lists, new.dao.lists)
+        assertEquals(old.tasks, new.tasks)
     }
 
     @Test
@@ -206,25 +209,27 @@ class BackupRepositoryTest {
     }
 
     @Test
-    fun `las tareas que ya estan se quedan como estan y las que faltan van al final`() = runTest {
-        val day = "2026-09-29"
+    fun `las tareas que ya estan se quedan como estan y se anaden las que faltan`() = runTest {
         val old = Device().apply {
-            dao.lists[day] = TodoListDB(day, listOf(task(1, "Repasar"), task(2, "Leer")))
+            dao.taskRows += task(1, "Repasar")
+            dao.taskRows += task(2, "Leer", position = 1)
         }
         // La 1 se editó después de la copia; la 3 es nueva.
         val new = Device().apply {
-            dao.lists[day] = TodoListDB(
-                day,
-                listOf(task(1, "Repasar el tema 4", done = true), task(3, "Correr"))
-            )
+            dao.taskRows += task(1, "Repasar el tema 4", doneOn = "2026-09-29")
+            dao.taskRows += task(3, "Correr", position = 1)
         }
 
         val result = new.backups.restore(old.backup(), withSettings = false)
 
         assertEquals(1, result.tasksAdded)
         assertEquals(
-            listOf(task(1, "Repasar el tema 4", done = true), task(3, "Correr"), task(2, "Leer")),
-            new.dao.lists.getValue(day).todoList
+            listOf(
+                task(1, "Repasar el tema 4", doneOn = "2026-09-29"),
+                task(2, "Leer", position = 1),
+                task(3, "Correr", position = 1)
+            ).map { it.copy(id = 0) },
+            new.tasks
         )
     }
 
@@ -254,6 +259,7 @@ class BackupRepositoryTest {
             dao.rows += session("2026-09-28", 9).copy(tagId = 5)
             dao.rows += session("2026-09-29", 9).copy(tagId = 9)
             dao.rows += session("2026-09-29", 18)
+            dao.taskRows += task(7, "Correr 5 km").copy(tagId = 9)
         }
         // En el móvil nuevo ya hay una "estudio", con otro id.
         val new = Device().apply { tagRows(TagDb(id = 1, name = "estudio", color = 0, position = 0, createdAt = 0)) }
@@ -264,6 +270,7 @@ class BackupRepositoryTest {
         val correr = new.dao.tagRows.single { it.name == "Correr" }
         assertEquals(TagDb(id = correr.id, name = "Correr", color = 6, position = 1, archived = true, createdAt = 0), correr)
         assertEquals(listOf(1L, correr.id, null), new.dao.rows.sortedBy { it.startedAt }.map { it.tagId })
+        assertEquals(correr.id, new.dao.taskRows.single().tagId)
     }
 
     @Test

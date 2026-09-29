@@ -3,128 +3,95 @@ package com.baltajmn.flowtime.features.screens.todoList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baltajmn.flowtime.core.common.extensions.toShowInList
-import com.baltajmn.flowtime.core.common.model.ListItem
-import com.baltajmn.flowtime.features.screens.todoList.domain.GetTodoListByDateUseCase
-import com.baltajmn.flowtime.features.screens.todoList.domain.InsertTodoListUseCase
-import com.baltajmn.flowtime.features.screens.todoList.domain.UpdateTodoListUseCase
+import com.baltajmn.flowtime.data.task.Task
+import com.baltajmn.flowtime.data.task.TaskRepository
+import com.baltajmn.flowtime.data.task.TaskResult
+import java.time.LocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/** Las tareas del día elegido. Salen de un flujo: cualquier cambio se ve solo. */
 class TodoListViewModel(
-    private val getTodoListByDate: GetTodoListByDateUseCase,
-    private val updateTodoList: UpdateTodoListUseCase,
-    private val insertTodoList: InsertTodoListUseCase
+    private val tasks: TaskRepository,
+    private val today: () -> LocalDate = { LocalDate.now() }
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(TodoListState())
+    private val selectedDate = MutableStateFlow(today())
+
+    private val _uiState = MutableStateFlow(
+        TodoListState(
+            selectedDate = selectedDate.value,
+            selectedDateToShow = selectedDate.value.toShowInList(),
+            today = selectedDate.value
+        )
+    )
     val uiState: StateFlow<TodoListState> = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    currentTodoList = getTodoListByDate(_uiState.value.selectedDate.toString())
-                )
-            }
-        }
-    }
-
-    fun plusDay() {
-        viewModelScope.launch {
-            val selectedDate = _uiState.value.selectedDate.plusDays(1)
-            _uiState.update {
-                it.copy(
-                    selectedDate = selectedDate,
-                    selectedDateToShow = selectedDate.toShowInList(),
-                    currentTodoList = getTodoListByDate(selectedDate.toString())
-                )
-            }
-        }
-    }
-
-    fun minusDay() {
-        viewModelScope.launch {
-            val selectedDate = _uiState.value.selectedDate.minusDays(1)
-            _uiState.update {
-                it.copy(
-                    selectedDate = selectedDate,
-                    selectedDateToShow = selectedDate.toShowInList(),
-                    currentTodoList = getTodoListByDate(selectedDate.toString())
-                )
-            }
-        }
-    }
-
-    fun onAddItem(title: String, description: String) {
-        viewModelScope.launch {
-            val todoList = _uiState.value.currentTodoList
-            val newTodoList = todoList.copy(
-                todoList = todoList.todoList + listOf(
-                    ListItem(
-                        id = System.currentTimeMillis(),
-                        title = title,
-                        description = description
+            selectedDate.flatMapLatest { day ->
+                val now = today()
+                tasks.day(day, now).map { list -> Triple(day, now, list) }
+            }.collect { (day, now, list) ->
+                _uiState.update {
+                    it.copy(
+                        selectedDate = day,
+                        selectedDateToShow = day.toShowInList(),
+                        today = now,
+                        tasks = list
                     )
-                )
-            )
-            _uiState.update {
-                it.copy(
-                    currentTodoList = newTodoList
-                )
-            }
-            insertTodoList(newTodoList)
-        }
-    }
-
-    fun onUpdateItem(item: ListItem) {
-        viewModelScope.launch {
-            val todoList = _uiState.value.currentTodoList
-            val newTodoList = todoList.copy(
-                todoList = todoList.todoList.map {
-                    if (it.id == item.id) item else it
                 }
-            )
-            _uiState.update {
-                it.copy(
-                    currentTodoList = newTodoList
-                )
             }
-            updateTodoList(newTodoList)
         }
     }
 
-    fun onDeleteItem(item: ListItem) {
+    fun plusDay() = selectedDate.update { it.plusDays(1) }
+
+    fun minusDay() = selectedDate.update { it.minusDays(1) }
+
+    fun onAddItem(title: String, description: String) =
+        change { tasks.add(title, description, selectedDate.value) }
+
+    fun onUpdateItem(task: Task, title: String, description: String) =
+        change { tasks.edit(task.id, title, description) }
+
+    fun markAsDone(task: Task) {
+        viewModelScope.launch { tasks.setDone(task.id, !task.done, today()) }
+    }
+
+    fun moveToToday(task: Task) {
+        viewModelScope.launch { tasks.moveTo(task.id, today()) }
+    }
+
+    fun onDeleteItem(task: Task) {
         viewModelScope.launch {
-            val todoList = _uiState.value.currentTodoList
-            val newTodoList = todoList.copy(
-                todoList = todoList.todoList.filter { it.id != item.id }
-            )
-            _uiState.update {
-                it.copy(
-                    currentTodoList = newTodoList
-                )
-            }
-            updateTodoList(newTodoList)
+            tasks.delete(task.id)?.let { deleted -> _uiState.update { it.copy(deleted = deleted) } }
         }
     }
 
-    fun markAsDone(item: ListItem) {
+    fun undoDelete() {
+        val task = _uiState.value.deleted ?: return
+        _uiState.update { it.copy(deleted = null) }
+        viewModelScope.launch { tasks.restore(task) }
+    }
+
+    fun onDeleteShown() = _uiState.update { it.copy(deleted = null) }
+
+    fun onMessageShown() = _uiState.update { it.copy(message = null) }
+
+    private fun change(action: suspend () -> TaskResult) {
         viewModelScope.launch {
-            val todoList = _uiState.value.currentTodoList
-            val newTodoList = todoList.copy(
-                todoList = todoList.todoList.map {
-                    if (it.id == item.id) item.copy(done = !item.done) else it
-                }
-            )
-            _uiState.update {
-                it.copy(
-                    currentTodoList = newTodoList
-                )
+            val message = when (action()) {
+                is TaskResult.Done -> null
+                TaskResult.Invalid -> TaskMessage.EMPTY
+                TaskResult.LimitReached -> TaskMessage.LIMIT
             }
-            updateTodoList(newTodoList)
+            _uiState.update { it.copy(message = message) }
         }
     }
 }

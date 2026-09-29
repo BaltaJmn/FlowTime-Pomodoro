@@ -222,4 +222,14 @@
     <string name="tag_duplicate">इस नाम का टैग पहले से है</string>
     <string name="tag_empty">कोई नाम लिखें</string>
     <string name="tag_limit">Pro के बिना आप %1$d सक्रिय टैग रख सकते हैं। नया जोड़ने के लिए किसी एक को संग्रहित करें।</string>
+    <string name="task_late_yesterday">कल का</string>
+    <string name="task_move_today">आज पर ले जाएँ</string>
+    <string name="task_deleted">कार्य हटाया गया</string>
+    <string name="task_undo">पूर्ववत करें</string>
+    <string name="task_empty">कोई शीर्षक लिखें</string>
+    <string name="task_limit">आपके %1$d कार्य बाकी हैं। नया जोड़ने के लिए कोई एक पूरा करें।</string>
+    <plurals name="task_late_days">
+        <item quantity="one">%d दिन पहले</item>
+        <item quantity="other">%d दिन पहले</item>
+    </plurals>
 </resources>

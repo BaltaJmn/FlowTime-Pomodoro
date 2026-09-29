@@ -230,4 +230,16 @@
     <string name="tag_duplicate">Метка с таким названием уже есть</string>
     <string name="tag_empty">Введите название</string>
     <string name="tag_limit">Без Pro можно иметь %1$d активные метки. Отправьте одну в архив, чтобы добавить новую.</string>
+    <string name="task_late_yesterday">Со вчера</string>
+    <string name="task_move_today">Перенести на сегодня</string>
+    <string name="task_deleted">Задача удалена</string>
+    <string name="task_undo">Отменить</string>
+    <string name="task_empty">Введите название</string>
+    <string name="task_limit">У вас %1$d незавершённых задач. Завершите одну, чтобы добавить новую.</string>
+    <plurals name="task_late_days">
+        <item quantity="one">%d день назад</item>
+        <item quantity="few">%d дня назад</item>
+        <item quantity="many">%d дней назад</item>
+        <item quantity="other">%d дня назад</item>
+    </plurals>
 </resources>

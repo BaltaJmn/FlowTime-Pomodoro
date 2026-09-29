@@ -225,4 +225,14 @@
     <string name="tag_duplicate">Ya hay una etiqueta con ese nombre</string>
     <string name="tag_empty">Escribe un nombre</string>
     <string name="tag_limit">Sin Pro puedes tener %1$d etiquetas activas. Archiva una para añadir otra.</string>
+    <string name="task_late_yesterday">De ayer</string>
+    <string name="task_move_today">Mover a hoy</string>
+    <string name="task_deleted">Tarea borrada</string>
+    <string name="task_undo">Deshacer</string>
+    <string name="task_empty">Escribe un título</string>
+    <string name="task_limit">Tienes %1$d tareas pendientes. Completa alguna para añadir otra.</string>
+    <plurals name="task_late_days">
+        <item quantity="one">Hace %d día</item>
+        <item quantity="other">Hace %d días</item>
+    </plurals>
 </resources>

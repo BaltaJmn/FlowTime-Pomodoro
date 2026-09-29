@@ -8,17 +8,16 @@ import com.baltajmn.flowtime.data.pro.NoPurchases
 import com.baltajmn.flowtime.data.pro.ProGate
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.repository.DefaultSessionRepository
-import com.baltajmn.flowtime.data.repository.DefaultTodoListRepository
 import com.baltajmn.flowtime.data.repository.SessionRepository
-import com.baltajmn.flowtime.data.repository.TodoListRepository
 import com.baltajmn.flowtime.data.tag.DefaultTagRepository
 import com.baltajmn.flowtime.data.tag.TagRepository
+import com.baltajmn.flowtime.data.task.DefaultTaskRepository
+import com.baltajmn.flowtime.data.task.TaskRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.SystemTimeSource
 import com.baltajmn.flowtime.data.timer.TimeSource
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val DataModule = module {
@@ -35,7 +34,6 @@ val DataModule = module {
             appVersion = version.orEmpty()
         )
     }
-    singleOf(::DefaultTodoListRepository) bind TodoListRepository::class
     // A mano: el constructor tiene parámetros opcionales para los tests que Koin no sabría resolver.
     single<SessionRepository> { DefaultSessionRepository(get(), get()) }
     single { GoalRepository(get(), get()) }
@@ -43,6 +41,7 @@ val DataModule = module {
     single<PurchasesRepository> { NoPurchases() }
     single { ProGate(get()) }
     single<TagRepository> { DefaultTagRepository(get(), get(), get()) }
+    single<TaskRepository> { DefaultTaskRepository(get(), get()) }
     single<TimeSource> { SystemTimeSource(androidContext()) }
     singleOf(::FocusEngine)
 }

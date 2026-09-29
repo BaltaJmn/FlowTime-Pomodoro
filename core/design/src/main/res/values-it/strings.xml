@@ -225,4 +225,14 @@
     <string name="tag_duplicate">Esiste già un\'etichetta con questo nome</string>
     <string name="tag_empty">Scrivi un nome</string>
     <string name="tag_limit">Senza Pro puoi avere %1$d etichette attive. Archiviane una per aggiungerne un\'altra.</string>
+    <string name="task_late_yesterday">Da ieri</string>
+    <string name="task_move_today">Sposta a oggi</string>
+    <string name="task_deleted">Attività eliminata</string>
+    <string name="task_undo">Annulla</string>
+    <string name="task_empty">Scrivi un titolo</string>
+    <string name="task_limit">Hai %1$d attività in sospeso. Completane una per aggiungerne un\'altra.</string>
+    <plurals name="task_late_days">
+        <item quantity="one">%d giorno fa</item>
+        <item quantity="other">%d giorni fa</item>
+    </plurals>
 </resources>

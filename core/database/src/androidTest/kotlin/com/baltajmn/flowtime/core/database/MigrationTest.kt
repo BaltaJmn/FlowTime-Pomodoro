@@ -5,6 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.baltajmn.flowtime.core.database.datasource.AppDatabase
 import com.baltajmn.flowtime.core.database.datasource.MIGRATION_1_2
+import com.baltajmn.flowtime.core.database.datasource.MIGRATION_3_4
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -58,6 +59,45 @@ class MigrationTest {
                 "INSERT INTO tag (name, color, position, archived, createdAt) " +
                     "VALUES ('Estudio', 0, 0, 0, 0)"
             )
+        }
+    }
+
+    @Test
+    fun de_la_3_a_la_4_cada_tarea_pasa_a_su_fila_sin_perder_ninguna() {
+        helper.createDatabase(DB, 3).use { db ->
+            db.execSQL(
+                "INSERT INTO todoList (date, todoList) VALUES ('2026-09-28', " +
+                    "'[{\"id\":1,\"title\":\"Repasar\",\"description\":\"Tema 4\",\"done\":true}," +
+                    "{\"id\":2,\"title\":\"Leer\",\"description\":\"\",\"done\":false}]')"
+            )
+            db.execSQL(
+                "INSERT INTO todoList (date, todoList) VALUES ('2026-09-29', " +
+                    "'[{\"id\":3,\"title\":\"Correr\",\"description\":\"\",\"done\":false}]')"
+            )
+            db.execSQL("INSERT INTO todoList (date, todoList) VALUES ('2026-09-30', '[]')")
+        }
+
+        helper.runMigrationsAndValidate(DB, 4, true, MIGRATION_3_4).use { db ->
+            db.query("SELECT title, plannedFor, doneOn, createdAt, position FROM task ORDER BY createdAt").use {
+                val rows = mutableListOf<String>()
+                while (it.moveToNext()) {
+                    rows += listOf(it.getString(0), it.getString(1), it.getString(2), it.getLong(3), it.getInt(4))
+                        .joinToString("|")
+                }
+                assertEquals(
+                    listOf(
+                        "Repasar|2026-09-28|2026-09-28|1|0",
+                        "Leer|2026-09-28|null|2|1",
+                        "Correr|2026-09-29|null|3|0"
+                    ),
+                    rows
+                )
+            }
+            // La tabla antigua se queda, por si hubiera que volver atrás.
+            db.query("SELECT COUNT(*) FROM todoList").use {
+                it.moveToFirst()
+                assertEquals(3, it.getInt(0))
+            }
         }
     }
 

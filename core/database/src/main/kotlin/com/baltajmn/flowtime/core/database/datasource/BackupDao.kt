@@ -2,12 +2,11 @@ package com.baltajmn.flowtime.core.database.datasource
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.TagDb
-import com.baltajmn.flowtime.core.database.model.TodoListDB
+import com.baltajmn.flowtime.core.database.model.TaskDb
 
 /** Lo que sale y entra con la copia de seguridad a fichero. Importar solo añade: nunca borra nada. */
 @Dao
@@ -16,8 +15,8 @@ abstract class BackupDao {
     @Query("SELECT * FROM session ORDER BY startedAt")
     abstract suspend fun sessions(): List<SessionDb>
 
-    @Query("SELECT * FROM todoList ORDER BY date")
-    abstract suspend fun todoLists(): List<TodoListDB>
+    @Query("SELECT * FROM task ORDER BY plannedFor, position, id")
+    abstract suspend fun tasks(): List<TaskDb>
 
     @Query("SELECT * FROM tag ORDER BY position, id")
     abstract suspend fun tags(): List<TagDb>
@@ -39,11 +38,11 @@ abstract class BackupDao {
         focusSeconds: Long
     ): Int
 
-    @Query("SELECT * FROM todoList WHERE date = :date")
-    protected abstract suspend fun todoList(date: String): TodoListDB?
+    @Query("SELECT COUNT(*) FROM task WHERE createdAt = :createdAt")
+    protected abstract suspend fun countTasks(createdAt: Long): Int
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    protected abstract suspend fun putTodoList(todoList: TodoListDB)
+    @Insert
+    protected abstract suspend fun insertTask(task: TaskDb): Long
 
     /**
      * Añade las etiquetas, las sesiones y las tareas que falten, todo o nada.
@@ -53,13 +52,13 @@ abstract class BackupDao {
      * - Las sesiones se comparan enteras (salvo la etiqueta) y contando las repetidas: un día puede
      *   tener varias LEGACY iguales (el mismo tiempo añadido dos veces desde un texto) y hay que
      *   traerlas todas.
-     * - Una tarea ya está si tiene el mismo id (la hora en que se creó): si se editó después de la
-     *   copia, se queda como está ahora.
+     * - Una tarea ya está si se creó a la misma hora: si se editó después de la copia, se queda como
+     *   está ahora. Su `tagId` también es el del fichero.
      */
     @Transaction
     open suspend fun restore(
         sessions: List<SessionDb>,
-        todoLists: List<TodoListDB>,
+        tasks: List<TaskDb>,
         tags: List<TagDb> = emptyList()
     ): RestoreCount {
         val known = tags().toMutableList()
@@ -83,12 +82,10 @@ abstract class BackupDao {
                 sessionsAdded += (copies.size - existing).coerceAtLeast(0)
             }
         var tasksAdded = 0
-        todoLists.forEach { incoming ->
-            val current = todoList(incoming.date)?.todoList.orEmpty()
-            val missing = incoming.todoList.filter { item -> current.none { it.id == item.id } }
-            if (missing.isNotEmpty()) {
-                putTodoList(TodoListDB(date = incoming.date, todoList = current + missing))
-                tasksAdded += missing.size
+        tasks.forEach { task ->
+            if (countTasks(task.createdAt) == 0) {
+                insertTask(task.copy(id = 0, tagId = task.tagId?.let(tagIds::get)))
+                tasksAdded++
             }
         }
         return RestoreCount(
