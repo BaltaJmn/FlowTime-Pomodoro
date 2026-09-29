@@ -4,6 +4,13 @@
 
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Es un temporizador: Play permite USE_EXACT_ALARM declarándolo en la ficha. En Android 12
+         no existe, y SCHEDULE_EXACT_ALARM viene concedido. -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission
+        android:name="android.permission.SCHEDULE_EXACT_ALARM"
+        android:maxSdkVersion="32" />
 
     <application
         android:name=".App"
@@ -26,7 +33,12 @@
         </activity>
 
         <receiver
-            android:name=".session.SessionNotification$ActionReceiver"
-            android:exported="false" />
+            android:name=".session.SessionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

@@ -73,7 +73,7 @@
     <string name="on_board_finish">Завершить</string>
     <string name="user_progression_level">Уровень прогресса</string>
     <string name="show_sound">Показать фоновый звук</string>
-    <string name="show_alert">Включить звук по окончании таймера</string>
+    <string name="show_alert">Сообщать об окончании каждой фазы</string>
     <string name="alert_google_play">Ошибка подключения к Google Play</string>
     <string name="alert_google_play_desc">Убедитесь, что у вас есть активное интернет-соединение для получения необходимых данных.</string>
     <string name="advantage_title">Преимущества</string>
@@ -166,7 +166,13 @@
     <string name="channel_session">Текущая сессия</string>
     <string name="notifications_title">Показывать время в уведомлениях?</string>
     <string name="notifications_text">Вы увидите время и сможете приостановить или завершить сессию, не открывая приложение.</string>
-    <string name="notifications_allow">Включить</string>
     <string name="notifications_later">Не сейчас</string>
     <string name="notifications_off">Уведомления выключены. Включите их, чтобы видеть время, когда приложение закрыто.</string>
+    <string name="turn_on">Включить</string>
+    <string name="channel_work_end">Конец времени фокуса</string>
+    <string name="channel_break_end">Конец перерыва</string>
+    <string name="alert_break">Время перерыва!</string>
+    <string name="alert_focus">Снова за работу!</string>
+    <string name="alert_session_over">Сессия завершена</string>
+    <string name="exact_alarms_off">Оповещения могут приходить с опозданием на несколько минут. Разрешите будильники и напоминания, чтобы слышать их вовремя.</string>
 </resources>

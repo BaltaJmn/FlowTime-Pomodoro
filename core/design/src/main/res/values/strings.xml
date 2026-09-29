@@ -73,7 +73,7 @@
     <string name="on_board_finish">Finish</string>
     <string name="user_progression_level">Progress level</string>
     <string name="show_sound">Show Background Sound</string>
-    <string name="show_alert">Enable sound when timer ends</string>
+    <string name="show_alert">Alert me when each phase ends</string>
     <string name="alert_google_play">Error connecting to Google Play</string>
     <string name="alert_google_play_desc">Make sure you have an active internet connection to retrieve the necessary data.</string>
     <string name="advantage_title">Advantages</string>
@@ -162,7 +162,13 @@
     <string name="channel_session">Session in progress</string>
     <string name="notifications_title">See the time in your notifications?</string>
     <string name="notifications_text">You will see the time and can pause or stop the session without opening the app.</string>
-    <string name="notifications_allow">Turn on</string>
     <string name="notifications_later">Not now</string>
     <string name="notifications_off">Notifications are off. Turn them on to see the time with the app closed.</string>
+    <string name="turn_on">Turn on</string>
+    <string name="channel_work_end">End of focus time</string>
+    <string name="channel_break_end">End of break</string>
+    <string name="alert_break">Time for a break!</string>
+    <string name="alert_focus">Back to focus!</string>
+    <string name="alert_session_over">Session finished</string>
+    <string name="exact_alarms_off">Alerts may arrive a few minutes late. Allow alarms and reminders to hear them on time.</string>
 </resources>

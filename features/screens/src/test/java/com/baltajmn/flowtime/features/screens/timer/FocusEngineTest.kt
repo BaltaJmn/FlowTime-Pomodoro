@@ -9,10 +9,6 @@ import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import java.time.LocalDate
 
@@ -224,13 +220,9 @@ class FocusEngineTest {
     }
 
     @Test
-    fun `avisa del cambio de fase y de cuanto tarde se ha visto`() = runTest {
+    fun `avisa del cambio de fase y de cuanto tarde se ha visto`() {
         val changes = mutableListOf<PhaseChange>()
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            engine.changes.toList(
-                changes
-            )
-        }
+        engine.onPhaseChange = { changes += it }
         engine.start(TimerMode.POMODORO)
         time.advance(minutes(45) + seconds(5))
 

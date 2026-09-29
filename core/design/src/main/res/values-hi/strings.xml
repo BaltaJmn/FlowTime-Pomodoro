@@ -73,7 +73,7 @@
     <string name="on_board_finish">समाप्त</string>
     <string name="user_progression_level">उपयोगकर्ता प्रगति स्तर</string>
     <string name="show_sound">पृष्ठभूमि ध्वनि दिखाएँ</string>
-    <string name="show_alert">टाइमर समाप्त होने पर ध्वनि सक्रिय करें</string>
+    <string name="show_alert">हर चरण के अंत में सूचित करें</string>
     <string name="alert_google_play">Google Play से कनेक्ट करने में त्रुटि</string>
     <string name="alert_google_play_desc">आवश्यक डेटा प्राप्त करने के लिए सुनिश्चित करें कि आपके पास सक्रिय इंटरनेट कनेक्शन है।</string>
     <string name="advantage_title">लाभ</string>
@@ -160,7 +160,13 @@
     <string name="channel_session">चल रहा सत्र</string>
     <string name="notifications_title">सूचनाओं में समय देखें?</string>
     <string name="notifications_text">आप समय देख पाएंगे, और ऐप खोले बिना सत्र रोक या बंद कर सकेंगे।</string>
-    <string name="notifications_allow">चालू करें</string>
     <string name="notifications_later">अभी नहीं</string>
     <string name="notifications_off">सूचनाएं बंद हैं। ऐप बंद होने पर भी समय देखने के लिए इन्हें चालू करें।</string>
+    <string name="turn_on">चालू करें</string>
+    <string name="channel_work_end">फोकस समय का अंत</string>
+    <string name="channel_break_end">ब्रेक का अंत</string>
+    <string name="alert_break">ब्रेक का समय!</string>
+    <string name="alert_focus">फिर से ध्यान लगाएं!</string>
+    <string name="alert_session_over">सत्र समाप्त</string>
+    <string name="exact_alarms_off">सूचनाएं कुछ मिनट देर से आ सकती हैं। समय पर सुनने के लिए अलार्म और रिमाइंडर की अनुमति दें।</string>
 </resources>

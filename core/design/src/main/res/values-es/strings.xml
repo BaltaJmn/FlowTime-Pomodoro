@@ -73,7 +73,7 @@
     <string name="on_board_finish">Finalizar</string>
     <string name="user_progression_level">Nivel de progreso</string>
     <string name="show_sound">Mostrar sonido de fondo</string>
-    <string name="show_alert">Activar sonido al terminar temporizador</string>
+    <string name="show_alert">Avisar al terminar cada fase</string>
     <string name="alert_google_play">Error al conectar con Google Play</string>
     <string name="alert_google_play_desc">Asegúrate de que tienes conexión a internet para obtener los datos necesarios.</string>
     <string name="advantage_title">Ventajas</string>
@@ -163,7 +163,13 @@
     <string name="channel_session">Sesión en curso</string>
     <string name="notifications_title">¿Ver el tiempo en las notificaciones?</string>
     <string name="notifications_text">Verás el tiempo y podrás pausar o parar la sesión sin abrir la app.</string>
-    <string name="notifications_allow">Activar</string>
     <string name="notifications_later">Ahora no</string>
     <string name="notifications_off">Las notificaciones están desactivadas. Actívalas para ver el tiempo con la app cerrada.</string>
+    <string name="turn_on">Activar</string>
+    <string name="channel_work_end">Fin del tiempo de concentración</string>
+    <string name="channel_break_end">Fin del descanso</string>
+    <string name="alert_break">¡Descanso!</string>
+    <string name="alert_focus">¡A concentrarse!</string>
+    <string name="alert_session_over">Sesión terminada</string>
+    <string name="exact_alarms_off">Los avisos pueden llegar con unos minutos de retraso. Permite las alarmas y recordatorios para oírlos a su hora.</string>
 </resources>

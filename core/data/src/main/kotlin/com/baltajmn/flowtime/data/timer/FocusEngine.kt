@@ -8,11 +8,8 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.transformLatest
@@ -94,8 +91,12 @@ class FocusEngine(
     private val _state = MutableStateFlow(restore())
     val state: StateFlow<FocusState> = _state.asStateFlow()
 
-    private val _changes = MutableSharedFlow<PhaseChange>(extraBufferCapacity = 16)
-    val changes: SharedFlow<PhaseChange> = _changes.asSharedFlow()
+    /**
+     * Se llama en cada cambio de fase, en el mismo hilo y al momento, también en los que se ven tarde
+     * al volver a la app. Síncrono a propósito: con la app cerrada, quien despierta al motor es una
+     * alarma, y el aviso tiene que salir antes de que el sistema vuelva a dormir el proceso.
+     */
+    var onPhaseChange: (PhaseChange) -> Unit = {}
 
     fun snapshot(state: FocusState = _state.value) = FocusSnapshot(state, elapsedMillis(state))
 
@@ -271,7 +272,7 @@ class FocusEngine(
 
     private fun change(from: FocusState, to: FocusState, overshoot: Long) {
         set(to)
-        _changes.tryEmit(PhaseChange(from.mode, from.phase, to.phase, overshoot))
+        onPhaseChange(PhaseChange(from.mode, from.phase, to.phase, overshoot))
     }
 
     private fun set(s: FocusState) {

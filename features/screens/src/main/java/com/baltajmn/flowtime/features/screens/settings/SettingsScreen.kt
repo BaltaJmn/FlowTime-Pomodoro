@@ -1,6 +1,11 @@
 package com.baltajmn.flowtime.features.screens.settings
 
+import android.app.AlarmManager
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
 import android.provider.Settings.EXTRA_APP_PACKAGE
 import android.annotation.SuppressLint
@@ -255,7 +260,30 @@ fun SettingsContent(
                         onCheckedChange = viewModel::saveKeepScreenOn
                     )
 
-                    NotificationsOffRow()
+                    PermissionNotice(
+                        text = R.string.notifications_off,
+                        granted = { NotificationManagerCompat.from(it).areNotificationsEnabled() },
+                        settings = {
+                            Intent(ACTION_APP_NOTIFICATION_SETTINGS).putExtra(
+                                EXTRA_APP_PACKAGE,
+                                it.packageName
+                            )
+                        }
+                    )
+
+                    PermissionNotice(
+                        text = R.string.exact_alarms_off,
+                        granted = {
+                            Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+                                it.getSystemService(AlarmManager::class.java).canScheduleExactAlarms()
+                        },
+                        settings = {
+                            Intent(
+                                ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                                Uri.parse("package:${it.packageName}")
+                            )
+                        }
+                    )
                 }
             }
         }
@@ -265,22 +293,18 @@ fun SettingsContent(
     }
 }
 
-/** Solo si están desactivadas. Se vuelve a mirar al volver de los ajustes del sistema. */
+/** Solo se ve si falta un permiso. Se vuelve a mirar al volver de los ajustes del sistema. */
 @Composable
-fun NotificationsOffRow() {
+fun PermissionNotice(
+    @StringRes text: Int,
+    granted: (Context) -> Boolean,
+    settings: (Context) -> Intent
+) {
     val context = LocalContext.current
     val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
-    val enabled = remember(lifecycle) { NotificationManagerCompat.from(context).areNotificationsEnabled() }
-    if (enabled) return
+    if (remember(lifecycle) { granted(context) }) return
     Spacer(modifier = Modifier.height(8.dp))
-    ButtonRow(text = R.string.notifications_off, button = R.string.notifications_allow) {
-        context.startActivity(
-            Intent(ACTION_APP_NOTIFICATION_SETTINGS).putExtra(
-                EXTRA_APP_PACKAGE,
-                context.packageName
-            )
-        )
-    }
+    ButtonRow(text = text, button = R.string.turn_on) { context.startActivity(settings(context)) }
 }
 
 @Composable

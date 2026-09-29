@@ -64,7 +64,7 @@ fun TimerScreen(
                         explainNotifications = false
                         askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
                     }
-                ) { Text(stringResource(R.string.notifications_allow)) }
+                ) { Text(stringResource(R.string.turn_on)) }
             },
             dismissButton = {
                 TextButton(onClick = { explainNotifications = false }) {

@@ -73,7 +73,7 @@
     <string name="on_board_finish">Fertig</string>
     <string name="user_progression_level">Fortschrittsstufe</string>
     <string name="show_sound">Hintergrundgeräusch anzeigen</string>
-    <string name="show_alert">Ton aktivieren, wenn der Timer endet</string>
+    <string name="show_alert">Am Ende jeder Phase benachrichtigen</string>
     <string name="alert_google_play">Fehler beim Verbinden mit Google Play</string>
     <string name="alert_google_play_desc">Stelle sicher, dass du mit dem Internet verbunden bist, um die nötigen Daten abzurufen.</string>
     <string name="advantage_title">Vorteile</string>
@@ -160,7 +160,13 @@
     <string name="channel_session">Laufende Sitzung</string>
     <string name="notifications_title">Die Zeit in den Benachrichtigungen sehen?</string>
     <string name="notifications_text">Du siehst die Zeit und kannst die Sitzung anhalten oder beenden, ohne die App zu öffnen.</string>
-    <string name="notifications_allow">Aktivieren</string>
     <string name="notifications_later">Nicht jetzt</string>
     <string name="notifications_off">Benachrichtigungen sind aus. Aktiviere sie, um die Zeit bei geschlossener App zu sehen.</string>
+    <string name="turn_on">Aktivieren</string>
+    <string name="channel_work_end">Ende der Fokuszeit</string>
+    <string name="channel_break_end">Ende der Pause</string>
+    <string name="alert_break">Zeit für eine Pause!</string>
+    <string name="alert_focus">Zurück zum Fokus!</string>
+    <string name="alert_session_over">Sitzung beendet</string>
+    <string name="exact_alarms_off">Hinweise können einige Minuten zu spät kommen. Erlaube Wecker und Erinnerungen, um sie pünktlich zu hören.</string>
 </resources>

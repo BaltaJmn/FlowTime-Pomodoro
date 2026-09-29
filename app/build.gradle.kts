@@ -51,6 +51,7 @@ dependencies {
     implementation(projects.features.screens)
 
     implementation(libs.androidx.workmanager)
+    implementation(libs.androidx.lifecycle.process)
     implementation(libs.review.ktx)
     implementation(libs.billing)
     implementation(libs.billing.ktx)

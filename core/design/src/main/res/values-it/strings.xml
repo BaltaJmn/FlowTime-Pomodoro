@@ -73,7 +73,7 @@
     <string name="on_board_finish">Fine</string>
     <string name="user_progression_level">Livello di progresso</string>
     <string name="show_sound">Mostra suono di sottofondo</string>
-    <string name="show_alert">Attiva suono al termine del timer</string>
+    <string name="show_alert">Avvisami alla fine di ogni fase</string>
     <string name="alert_google_play">Errore di connessione a Google Play</string>
     <string name="alert_google_play_desc">Assicurati di avere una connessione internet attiva per recuperare i dati necessari.</string>
     <string name="advantage_title">Vantaggi</string>
@@ -163,7 +163,13 @@
     <string name="channel_session">Sessione in corso</string>
     <string name="notifications_title">Vedere il tempo nelle notifiche?</string>
     <string name="notifications_text">Vedrai il tempo e potrai mettere in pausa o fermare la sessione senza aprire l\'app.</string>
-    <string name="notifications_allow">Attiva</string>
     <string name="notifications_later">Non ora</string>
     <string name="notifications_off">Le notifiche sono disattivate. Attivale per vedere il tempo con l\'app chiusa.</string>
+    <string name="turn_on">Attiva</string>
+    <string name="channel_work_end">Fine del tempo di concentrazione</string>
+    <string name="channel_break_end">Fine della pausa</string>
+    <string name="alert_break">È ora di una pausa!</string>
+    <string name="alert_focus">Torna a concentrarti!</string>
+    <string name="alert_session_over">Sessione terminata</string>
+    <string name="exact_alarms_off">Gli avvisi possono arrivare con qualche minuto di ritardo. Consenti sveglie e promemoria per sentirli in orario.</string>
 </resources>

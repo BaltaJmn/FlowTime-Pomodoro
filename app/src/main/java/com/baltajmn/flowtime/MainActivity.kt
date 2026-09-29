@@ -101,6 +101,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         sessionNotification.update()
+        sessionNotification.dismissAlert()
     }
 
     private fun connectBillingClient() {
