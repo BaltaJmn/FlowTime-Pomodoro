@@ -3,6 +3,7 @@ package com.baltajmn.flowtime.core.design.service
 import android.media.AudioManager.STREAM_MUSIC
 import android.media.MediaPlayer
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baltajmn.flowtime.core.design.R
@@ -318,17 +319,17 @@ data class PlayerState(
     val isPlaying: Boolean = false
 )
 
-enum class PlayerType(@DrawableRes val icon: Int, val sound: String) {
-    RAIN(R.drawable.ic_rain, "cb"),
-    FIRE(R.drawable.ic_fire, "ea"),
-    WAVE(R.drawable.ic_wave, "be"),
-    THUNDER(R.drawable.ic_thunder, "cd"),
-    BIRDS(R.drawable.ic_bird, "da"),
-    HEAT(R.drawable.ic_heat, "dd"),
-    COFFEE_HOUSE(R.drawable.ic_coffee, "fa"),
-    MEDITATION(R.drawable.ic_meditation, "ga"),
-    WIND(R.drawable.ic_wind, "gb"),
-    BROWN(R.drawable.ic_brown, "ia"),
-    PINK(R.drawable.ic_pink, "ib"),
-    WHITE(R.drawable.ic_white, "ic")
+enum class PlayerType(@DrawableRes val icon: Int, val sound: String, @StringRes val label: Int) {
+    RAIN(R.drawable.ic_rain, "cb", R.string.sound_rain),
+    FIRE(R.drawable.ic_fire, "ea", R.string.sound_fire),
+    WAVE(R.drawable.ic_wave, "be", R.string.sound_wave),
+    THUNDER(R.drawable.ic_thunder, "cd", R.string.sound_thunder),
+    BIRDS(R.drawable.ic_bird, "da", R.string.sound_birds),
+    HEAT(R.drawable.ic_heat, "dd", R.string.sound_heat),
+    COFFEE_HOUSE(R.drawable.ic_coffee, "fa", R.string.sound_coffee_house),
+    MEDITATION(R.drawable.ic_meditation, "ga", R.string.sound_meditation),
+    WIND(R.drawable.ic_wind, "gb", R.string.sound_wind),
+    BROWN(R.drawable.ic_brown, "ia", R.string.sound_brown),
+    PINK(R.drawable.ic_pink, "ib", R.string.sound_pink),
+    WHITE(R.drawable.ic_white, "ic", R.string.sound_white)
 }

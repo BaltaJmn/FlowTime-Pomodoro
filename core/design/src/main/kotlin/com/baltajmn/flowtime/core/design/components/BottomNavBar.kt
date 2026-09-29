@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.core.design.components
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing
@@ -44,6 +45,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -210,7 +212,7 @@ fun BottomBarButton(
         ) {
             Image(
                 painter = painterResource(id = navItem.icon),
-                contentDescription = navItem.name,
+                contentDescription = stringResource(navItem.label),
                 modifier = Modifier
                     .drawBehind {
                         drawCircle(
@@ -243,12 +245,12 @@ fun BottomNavBarPreview() {
     )
 }
 
-enum class BottomNavBarItem(val icon: Int) {
-    Edit(icon = R.drawable.ic_edit),
-    Back(icon = R.drawable.ic_back),
-    Home(icon = R.drawable.ic_home),
-    TodoList(icon = R.drawable.ic_list),
-    Settings(icon = R.drawable.ic_settings);
+enum class BottomNavBarItem(val icon: Int, @StringRes val label: Int) {
+    Edit(icon = R.drawable.ic_edit, label = R.string.nav_edit),
+    Back(icon = R.drawable.ic_back, label = R.string.nav_back),
+    Home(icon = R.drawable.ic_home, label = R.string.nav_home),
+    TodoList(icon = R.drawable.ic_list, label = R.string.nav_todo_list),
+    Settings(icon = R.drawable.ic_settings, label = R.string.nav_settings);
 
     fun getScreenRoute() = when (this) {
         Edit -> MainGraph.Edit.route

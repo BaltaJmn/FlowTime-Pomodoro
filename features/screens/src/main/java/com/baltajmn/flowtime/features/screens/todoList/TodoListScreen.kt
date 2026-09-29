@@ -37,12 +37,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.common.model.ListItem
+import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
@@ -124,7 +126,7 @@ fun TodoListContent(
         item { Spacer(modifier = Modifier.height(16.dp)) }
         item {
             ScreenTitleWithIcon(
-                text = "Todo List",
+                text = stringResource(R.string.todo_list_title),
                 onIconClick = remember {
                     {
                         currentListItem = ListItem()
@@ -327,29 +329,29 @@ fun ItemDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = "Add Item") },
+        title = { Text(text = stringResource(R.string.todo_add_item)) },
         text = {
             Column {
                 TextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text("Title") }
+                    label = { Text(stringResource(R.string.todo_item_title)) }
                 )
                 TextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text("Description") }
+                    label = { Text(stringResource(R.string.todo_item_description)) }
                 )
             }
         },
         confirmButton = {
             Button(onClick = { onSave(title, description) }) {
-                Text("Save")
+                Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
             Button(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.dialog_cancel))
             }
         }
     )

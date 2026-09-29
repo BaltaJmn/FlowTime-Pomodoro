@@ -27,9 +27,13 @@ import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.design.R.drawable.ic_flowtime
 import com.baltajmn.flowtime.core.design.R.drawable.ic_percentage
 import com.baltajmn.flowtime.core.design.R.drawable.ic_pomodoro
-import com.baltajmn.flowtime.core.design.R.string.flow_time_title
-import com.baltajmn.flowtime.core.design.R.string.percentage_title
-import com.baltajmn.flowtime.core.design.R.string.pomodoro_title
+import com.baltajmn.flowtime.core.design.R.string.flow_time_advantages
+import com.baltajmn.flowtime.core.design.R.string.mode_flow_time
+import com.baltajmn.flowtime.core.design.R.string.mode_percentage
+import com.baltajmn.flowtime.core.design.R.string.mode_pomodoro
+import com.baltajmn.flowtime.core.design.R.string.nav_home
+import com.baltajmn.flowtime.core.design.R.string.percentage_advantages
+import com.baltajmn.flowtime.core.design.R.string.pomodoro_advantages
 import com.baltajmn.flowtime.core.design.extensions.noRippleClickable
 import com.baltajmn.flowtime.core.design.model.ScreenType
 import com.baltajmn.flowtime.core.design.model.ScreenType.FlowTime
@@ -70,7 +74,10 @@ fun HomeContent(
 
 @Composable
 fun HomeTitle() {
-    Text(text = "Home", style = LargeTitle.copy(color = MaterialTheme.colorScheme.primary))
+    Text(
+        text = stringResource(nav_home),
+        style = LargeTitle.copy(color = MaterialTheme.colorScheme.primary)
+    )
 }
 
 @Composable
@@ -124,15 +131,15 @@ private fun getIcon(screenType: ScreenType) = when (screenType) {
 }
 
 private fun getTitle(screenType: ScreenType) = when (screenType) {
-    Pomodoro -> pomodoro_title
-    FlowTime -> flow_time_title
-    Percentage -> percentage_title
+    Pomodoro -> mode_pomodoro
+    FlowTime -> mode_flow_time
+    Percentage -> mode_percentage
 }
 
 private fun getDescription(screenType: ScreenType) = when (screenType) {
-    Pomodoro -> pomodoro_title
-    FlowTime -> flow_time_title
-    Percentage -> percentage_title
+    Pomodoro -> pomodoro_advantages
+    FlowTime -> flow_time_advantages
+    Percentage -> percentage_advantages
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

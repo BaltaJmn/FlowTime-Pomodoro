@@ -44,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -174,12 +175,16 @@ fun SettingsContent(
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         items(AppTheme.entries) { color ->
+                            val colorDescription = stringResource(
+                                R.string.cd_theme_color,
+                                stringResource(color.label)
+                            )
                             Box(
                                 modifier = Modifier
                                     .background(color = color.color)
                                     .aspectRatio(1f)
                                     .size(32.dp)
-                                    .semantics { contentDescription = "Color $color" }
+                                    .semantics { contentDescription = colorDescription }
                                     .clickable {
                                         onThemeChanged.invoke(color)
                                         viewModel.saveColor(color)
@@ -452,7 +457,7 @@ fun ProgressLevel(
                     modifier = Modifier
                         .padding(horizontal = 12.dp)
                         .align(Alignment.CenterStart),
-                    text = "Lvl. $userLevel",
+                    text = stringResource(R.string.user_level_short, userLevel),
                     style = SubBody.copy(
                         fontWeight = FontWeight.W700,
                         color = Color.White

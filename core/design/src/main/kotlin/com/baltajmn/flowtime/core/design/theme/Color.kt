@@ -1,20 +1,22 @@
 package com.baltajmn.flowtime.core.design.theme
 
+import androidx.annotation.StringRes
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+import com.baltajmn.flowtime.core.design.R
 
-enum class AppTheme(val color: Color) {
-    Blue(com.baltajmn.flowtime.core.design.theme.Blue),
-    Pink(com.baltajmn.flowtime.core.design.theme.Pink),
-    Grey(com.baltajmn.flowtime.core.design.theme.Grey),
-    Beige(com.baltajmn.flowtime.core.design.theme.Beige),
-    Brown(com.baltajmn.flowtime.core.design.theme.Brown),
-    Olive(com.baltajmn.flowtime.core.design.theme.Olive),
-    Marine(com.baltajmn.flowtime.core.design.theme.Marine),
-    Green(com.baltajmn.flowtime.core.design.theme.Green),
-    Purple(com.baltajmn.flowtime.core.design.theme.Purple),
-    Orange(com.baltajmn.flowtime.core.design.theme.Orange),
-    Black(com.baltajmn.flowtime.core.design.theme.Black),
+enum class AppTheme(val color: Color, @StringRes val label: Int) {
+    Blue(com.baltajmn.flowtime.core.design.theme.Blue, R.string.theme_blue),
+    Pink(com.baltajmn.flowtime.core.design.theme.Pink, R.string.theme_pink),
+    Grey(com.baltajmn.flowtime.core.design.theme.Grey, R.string.theme_grey),
+    Beige(com.baltajmn.flowtime.core.design.theme.Beige, R.string.theme_beige),
+    Brown(com.baltajmn.flowtime.core.design.theme.Brown, R.string.theme_brown),
+    Olive(com.baltajmn.flowtime.core.design.theme.Olive, R.string.theme_olive),
+    Marine(com.baltajmn.flowtime.core.design.theme.Marine, R.string.theme_marine),
+    Green(com.baltajmn.flowtime.core.design.theme.Green, R.string.theme_green),
+    Purple(com.baltajmn.flowtime.core.design.theme.Purple, R.string.theme_purple),
+    Orange(com.baltajmn.flowtime.core.design.theme.Orange, R.string.theme_orange),
+    Black(com.baltajmn.flowtime.core.design.theme.Black, R.string.theme_black),
 }
 
 val Blue = Color(0xFF7aabc3)

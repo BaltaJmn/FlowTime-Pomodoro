@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -93,6 +94,8 @@ fun TopNavBar(
     viewModel: SoundViewModel = koinViewModel(),
     shouldShow: () -> Boolean
 ) {
+    val soundPanelDescription = stringResource(R.string.cd_sound_panel)
+
     // State management with performance optimizations
     var expanded by rememberSaveable { mutableStateOf(false) }
     var firstVisibility by rememberSaveable { mutableStateOf(false) }
@@ -157,7 +160,7 @@ fun TopNavBar(
                 bottom = TopNavBarConstants.Padding.BOTTOM
             )
             .semantics {
-                contentDescription = "Sound control panel"
+                contentDescription = soundPanelDescription
             },
         visible = shouldShow() && firstVisibility,
         enter = slideInHorizontally(
@@ -213,14 +216,14 @@ fun CurrentlyPlaying(
     rotationState: Float,
     hasActivePlayers: Boolean = false
 ) {
+    val playingDescription = stringResource(
+        if (hasActivePlayers) R.string.cd_sounds_playing else R.string.cd_sounds_stopped
+    )
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.semantics {
-            contentDescription = if (hasActivePlayers) {
-                "Sound controls - Currently playing audio"
-            } else {
-                "Sound controls - No audio playing"
-            }
+            contentDescription = playingDescription
         }
     ) {
         LottieImage(
@@ -253,12 +256,14 @@ fun ExpandedContent(
     onPlayClicked: (PlayerType, Boolean) -> Unit,
     onVolumeChanged: (PlayerType, Float) -> Unit
 ) {
+    val mixerDescription = stringResource(R.string.cd_sound_mixer)
+
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .semantics {
-                contentDescription = "Sound mixer controls"
+                contentDescription = mixerDescription
             }
     ) {
         PlayerType.entries.forEach { playerType ->
@@ -292,9 +297,7 @@ fun SliderItem(
         }
     }
 
-    val soundName = remember(type) {
-        type.name.lowercase().replaceFirstChar { it.uppercase() }
-    }
+    val soundName = stringResource(type.label)
 
     Row(
         modifier = Modifier
@@ -305,11 +308,8 @@ fun SliderItem(
     ) {
         Icon(
             painter = painterResource(type.icon),
-            contentDescription = "$soundName sound",
-            tint = iconTint ?: MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.semantics {
-                contentDescription = "$soundName sound icon"
-            }
+            contentDescription = soundName,
+            tint = iconTint ?: MaterialTheme.colorScheme.secondary
         )
 
         Slider(

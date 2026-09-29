@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.CircularButton
@@ -35,7 +36,7 @@ fun <T : TimerState<T>> ButtonsContent(
             CircularButton(onClick = onFinishClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stop),
-                    contentDescription = "Detener temporizador",
+                    contentDescription = stringResource(R.string.cd_stop_timer),
                     tint = MaterialTheme.colorScheme.surface
                 )
             }
@@ -43,7 +44,7 @@ fun <T : TimerState<T>> ButtonsContent(
                 CircularButton(onClick = onBreakClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_next),
-                        contentDescription = "Iniciar descanso",
+                        contentDescription = stringResource(R.string.cd_start_break),
                         tint = MaterialTheme.colorScheme.surface
                     )
                 }
@@ -52,7 +53,7 @@ fun <T : TimerState<T>> ButtonsContent(
             CircularButton(onClick = onStartClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_play),
-                    contentDescription = "Iniciar temporizador",
+                    contentDescription = stringResource(R.string.cd_start_timer),
                     tint = MaterialTheme.colorScheme.surface
                 )
             }
