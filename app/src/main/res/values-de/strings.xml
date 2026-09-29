@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="rating_dialog_title">Möchtest du die App bewerten?</string>
-    <string name="rating_dialog_message">Deine Meinung ist uns wichtig.</string>
-    <string name="rate_now">Jetzt bewerten</string>
-    <string name="remind_later">Später erinnern</string>
-    <string name="never_remind">Nicht mehr erinnern</string>
-</resources>

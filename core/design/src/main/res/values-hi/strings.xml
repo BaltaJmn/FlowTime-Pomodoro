@@ -23,6 +23,8 @@
     <string name="go_to_history">इतिहास पर जाएं</string>
     <string name="settings_intro">परिचय</string>
     <string name="settings_intro_button">देखें</string>
+    <string name="settings_rate">FlowTime पसंद आया?</string>
+    <string name="settings_rate_button">रेटिंग दें</string>
     <string name="others">अन्य</string>
     <string name="total_minutes">चयनित सप्ताह के कुल मिनट</string>
     <string name="best_day">सबसे अच्छा दिन</string>

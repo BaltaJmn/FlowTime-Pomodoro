@@ -33,7 +33,10 @@ class FakeSessionRepository : SessionRepository {
 
     override suspend fun totalSeconds() = days.value.values.sum()
 
-    override suspend fun countSessions(from: LocalDate, to: LocalDate) = 0
+    /** Las sesiones de trabajo guardadas, sin fechas: las cuenta igual en cualquier periodo. */
+    var sessionCount = 0
+
+    override suspend fun countSessions(from: LocalDate, to: LocalDate) = sessionCount
 
     override suspend fun addToDays(secondsByDay: Map<LocalDate, Long>, replace: Boolean) {
         secondsByDay.forEach { (day, seconds) -> add(day, seconds) }

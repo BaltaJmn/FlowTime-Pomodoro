@@ -23,6 +23,8 @@
     <string name="go_to_history">Zum Verlauf</string>
     <string name="settings_intro">Einführung</string>
     <string name="settings_intro_button">Ansehen</string>
+    <string name="settings_rate">Gefällt dir FlowTime?</string>
+    <string name="settings_rate_button">Bewerten</string>
     <string name="others">Andere</string>
     <string name="total_minutes">Gesamtminuten der ausgewählten Woche</string>
     <string name="best_day">Bester Tag</string>

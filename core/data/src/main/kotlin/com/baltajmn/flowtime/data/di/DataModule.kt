@@ -9,6 +9,7 @@ import com.baltajmn.flowtime.data.pro.ProGate
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.repository.DefaultSessionRepository
 import com.baltajmn.flowtime.data.repository.SessionRepository
+import com.baltajmn.flowtime.data.review.ReviewPolicy
 import com.baltajmn.flowtime.data.stats.DefaultStatsRepository
 import com.baltajmn.flowtime.data.stats.StatsRepository
 import com.baltajmn.flowtime.data.tag.DefaultTagRepository
@@ -47,4 +48,14 @@ val DataModule = module {
     single<StatsRepository> { DefaultStatsRepository(get()) }
     single<TimeSource> { SystemTimeSource(androidContext()) }
     singleOf(::FocusEngine)
+    single {
+        val context = androidContext()
+        val engine = get<FocusEngine>()
+        ReviewPolicy(
+            dataProvider = get(),
+            sessions = get(),
+            sessionRunning = { engine.state.value.isActive },
+            installedAt = { context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime }
+        )
+    }
 }

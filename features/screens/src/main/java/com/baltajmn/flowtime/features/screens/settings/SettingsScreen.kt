@@ -228,6 +228,13 @@ fun SettingsContent(
                         onClick = navigateToIntro
                     )
 
+                    val context = LocalContext.current
+                    ButtonRow(
+                        text = R.string.settings_rate,
+                        button = R.string.settings_rate_button,
+                        onClick = { openStoreListing(context) }
+                    )
+
                     Spacer(modifier = Modifier.height(8.dp))
 
                     CheckRow(
@@ -296,6 +303,17 @@ fun SettingsContent(
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item { PositiveText() }
         item { Spacer(modifier = Modifier.height(192.dp)) }
+    }
+}
+
+/** La ficha de la app en Play, para valorarla; sin Play Store, en el navegador. */
+private fun openStoreListing(context: Context) {
+    val id = context.packageName
+    runCatching {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$id")))
+    }.recoverCatching {
+        val web = Uri.parse("https://play.google.com/store/apps/details?id=$id")
+        context.startActivity(Intent(Intent.ACTION_VIEW, web))
     }
 }
 

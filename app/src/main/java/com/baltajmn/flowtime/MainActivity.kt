@@ -13,6 +13,9 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -26,9 +29,14 @@ import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
+import com.baltajmn.flowtime.data.review.calmMoments
+import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.goal.GoalWatcher
+import com.baltajmn.flowtime.review.ReviewPrompter
 import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.ui.FlowTimeApp
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
@@ -37,6 +45,8 @@ class MainActivity : ComponentActivity() {
     private val sessionNotification: SessionNotification by inject()
     private val appearanceRepository: AppearanceRepository by inject()
     private val goalWatcher: GoalWatcher by inject()
+    private val engine: FocusEngine by inject()
+    private val reviewPrompter: ReviewPrompter by inject()
     private val showSound: MutableState<Boolean> = mutableStateOf(true)
 
     private val queryProductDetailsParams =
@@ -102,17 +112,23 @@ class MainActivity : ComponentActivity() {
             }
             FlowTimeApp(
                 appearance = appearance,
-                showOnBoard = viewModel.getShowOnBoard(),
-                showRating = viewModel.getShowRating(),
-                rememberShowRating = viewModel.getRememberShowRating(),
                 showSound = showSound.value,
                 onSoundChange = { it: Boolean -> showSound.value = it },
-                onShowRatingChanged = { it: Boolean -> viewModel.setShowRating(it) },
                 onSupportDeveloperClick = { initiatePurchase() },
-                onRememberShowRating = { it: Boolean -> viewModel.setRememberShowRating(it) },
                 celebration = celebration,
                 onCelebrationShown = goalWatcher::onShown
             )
+        }
+
+        // La valoración, solo con la app a la vista y en un momento tranquilo: al terminar una sesión
+        // o al cerrar la celebración del objetivo. Nunca al abrir la app ni con una sesión en marcha.
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                calmMoments(
+                    sessionRunning = engine.state.map { it.isActive },
+                    celebrating = goalWatcher.celebration.map { it != null }
+                ).collect { reviewPrompter.askIfDue(this@MainActivity) }
+            }
         }
     }
 

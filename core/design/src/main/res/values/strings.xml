@@ -23,6 +23,8 @@
     <string name="go_to_history">Go to History</string>
     <string name="settings_intro">Introduction</string>
     <string name="settings_intro_button">View</string>
+    <string name="settings_rate">Do you like FlowTime?</string>
+    <string name="settings_rate_button">Rate it</string>
     <string name="others">Others</string>
     <string name="total_minutes">Total minutes in the selected week</string>
     <string name="best_day">Best day</string>

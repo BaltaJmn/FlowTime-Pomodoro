@@ -8,6 +8,7 @@ import com.baltajmn.flowtime.core.persistence.di.PersistenceModule
 import com.baltajmn.flowtime.data.di.DataModule
 import com.baltajmn.flowtime.features.screens.di.ScreensModule
 import com.baltajmn.flowtime.goal.GoalWatcher
+import com.baltajmn.flowtime.review.ReviewPrompter
 import com.baltajmn.flowtime.session.PhaseAlarm
 import com.baltajmn.flowtime.session.SessionNotification
 import org.koin.android.ext.koin.androidContext
@@ -30,6 +31,7 @@ val CoreModules: Module
         single { SessionNotification(androidContext(), get(), get()) }
         single { PhaseAlarm(androidContext(), get()) }
         single { GoalWatcher(androidContext(), get(), get()) }
+        single { ReviewPrompter(get()) }
         includes(
             listOf(
                 DispatchersModule,
