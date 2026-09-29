@@ -7,7 +7,8 @@ import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.KEEP_SCREEN_ON
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.NOTIFICATIONS_EXPLAINED
-import com.baltajmn.flowtime.data.repository.SessionRepository
+import com.baltajmn.flowtime.data.goal.DayProgress
+import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusSnapshot
 import com.baltajmn.flowtime.data.timer.Phase
@@ -18,8 +19,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
-import java.time.LocalDate
 
 data class TimerUiState(
     val mode: TimerMode,
@@ -27,6 +28,8 @@ data class TimerUiState(
     val paused: Boolean = false,
     val time: String = "00:00",
     val minutesToday: String = "",
+    /** El objetivo de hoy, ya formateado. Vacío hasta que se lee. */
+    val goalToday: String = "",
     val continueAfterBreak: Boolean = true,
     val keepScreenOn: Boolean = true
 ) {
@@ -39,23 +42,25 @@ class TimerViewModel(
     private val mode: TimerMode,
     private val engine: FocusEngine,
     private val dataProvider: DataProvider,
-    sessions: SessionRepository
+    goals: GoalRepository
 ) : ViewModel() {
 
     private val continueAfterBreak =
         MutableStateFlow(dataProvider.getCheckValue(mode.continueAfterBreakKey))
     private val keepScreenOn = dataProvider.getBoolean(KEEP_SCREEN_ON, true)
 
+    // El día sale del repositorio del objetivo: con la pantalla abierta pasada la medianoche, antes
+    // seguía sumando los minutos de ayer.
     val uiState: StateFlow<TimerUiState> =
         combine(
             engine.snapshots(),
             continueAfterBreak,
-            sessions.secondsOn(LocalDate.now()),
+            goals.today.onStart<DayProgress?> { emit(null) },
             ::toUiState
         ).stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
-            toUiState(engine.snapshot(), continueAfterBreak.value, secondsToday = 0)
+            toUiState(engine.snapshot(), continueAfterBreak.value, today = null)
         )
 
     fun onAction(action: TimerAction) = engine.perform(action, mode)
@@ -72,7 +77,11 @@ class TimerViewModel(
         continueAfterBreak.value = value
     }
 
-    private fun toUiState(snapshot: FocusSnapshot, continueAfter: Boolean, secondsToday: Long): TimerUiState {
+    private fun toUiState(
+        snapshot: FocusSnapshot,
+        continueAfter: Boolean,
+        today: DayProgress?
+    ): TimerUiState {
         val session = snapshot.state
         // Si la sesión en marcha es de otro modo, esta pantalla se ve parada.
         val mine = session.isActive && session.mode == mode
@@ -81,7 +90,8 @@ class TimerViewModel(
             phase = if (mine) session.phase else Phase.IDLE,
             paused = mine && session.isPaused,
             time = (if (mine) snapshot.displaySeconds else engine.workMillis(mode) / 1000).formatSecondsToTime(),
-            minutesToday = (secondsToday / 60).formatMinutesStudying(),
+            minutesToday = ((today?.seconds ?: 0) / 60).formatMinutesStudying(),
+            goalToday = today?.goalMinutes?.toLong()?.formatMinutesStudying().orEmpty(),
             continueAfterBreak = continueAfter,
             keepScreenOn = keepScreenOn
         )

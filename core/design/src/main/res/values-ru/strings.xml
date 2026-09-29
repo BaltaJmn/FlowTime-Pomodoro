@@ -197,4 +197,21 @@
     <string name="backup_too_new">Эта копия из более новой версии FlowTime. Обновите приложение, чтобы импортировать её.</string>
     <string name="backup_failed">Не удалось сохранить файл</string>
     <string name="backup_import_failed">Не удалось импортировать копию. Ничего не изменилось.</string>
+    <string name="goal_title">Цель на день</string>
+    <string name="goal_per_day">%1$s в день</string>
+    <string name="goal_today">%1$s из %2$s</string>
+    <string name="goal_decrease">Уменьшить цель</string>
+    <string name="goal_increase">Увеличить цель</string>
+    <string name="goal_reached">Цель на день выполнена!</string>
+    <string name="goal_reached_text">Сегодня вы уже сделали свои %1$s.</string>
+    <string name="streak_best">Рекорд: %1$d</string>
+    <string name="streak_free_day_used">Свободный день этой недели уже использован</string>
+    <string name="streak_milestone">%1$s. Так держать!</string>
+    <string name="streak_none">Выполните цель, чтобы начать серию</string>
+    <plurals name="streak_days">
+        <item quantity="one">%d день подряд</item>
+        <item quantity="few">%d дня подряд</item>
+        <item quantity="many">%d дней подряд</item>
+        <item quantity="other">%d дня подряд</item>
+    </plurals>
 </resources>

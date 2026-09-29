@@ -194,4 +194,19 @@
     <string name="backup_too_new">Esta copia es de una versión más nueva de FlowTime. Actualiza la app para importarla.</string>
     <string name="backup_failed">No se ha podido guardar el fichero</string>
     <string name="backup_import_failed">No se ha podido importar la copia. No ha cambiado nada.</string>
+    <string name="goal_title">Objetivo diario</string>
+    <string name="goal_per_day">%1$s al día</string>
+    <string name="goal_today">%1$s de %2$s</string>
+    <string name="goal_decrease">Bajar el objetivo</string>
+    <string name="goal_increase">Subir el objetivo</string>
+    <string name="goal_reached">¡Objetivo cumplido!</string>
+    <string name="goal_reached_text">Hoy ya has hecho tus %1$s.</string>
+    <string name="streak_best">Mejor: %1$d</string>
+    <string name="streak_free_day_used">Ya has usado el día libre de esta semana</string>
+    <string name="streak_milestone">%1$s. ¡Sigue así!</string>
+    <string name="streak_none">Cumple el objetivo para empezar una racha</string>
+    <plurals name="streak_days">
+        <item quantity="one">%d día seguido</item>
+        <item quantity="other">%d días seguidos</item>
+    </plurals>
 </resources>

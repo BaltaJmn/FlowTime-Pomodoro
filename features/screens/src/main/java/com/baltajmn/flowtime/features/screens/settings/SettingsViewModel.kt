@@ -13,10 +13,12 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.data.backup.BackupRead
 import com.baltajmn.flowtime.data.backup.BackupRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
+import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -25,7 +27,8 @@ class SettingsViewModel(
     private val getAllStudyTimeUseCase: GetAllStudyTimeUseCase,
     private val appearanceRepository: AppearanceRepository,
     private val backupRepository: BackupRepository,
-    private val files: DocumentFiles
+    private val files: DocumentFiles,
+    private val goals: GoalRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
@@ -38,7 +41,14 @@ class SettingsViewModel(
                 _uiState.update { it.copy(appearance = appearance) }
             }
         }
+        viewModelScope.launch {
+            combine(goals.goalMinutes, goals.streak, ::GoalUiState).collect { goal ->
+                _uiState.update { it.copy(goal = goal) }
+            }
+        }
     }
+
+    fun changeGoal(delta: Int) = goals.setGoal(goals.currentGoal + delta)
 
     private fun getUserLevel() {
         viewModelScope.launch {

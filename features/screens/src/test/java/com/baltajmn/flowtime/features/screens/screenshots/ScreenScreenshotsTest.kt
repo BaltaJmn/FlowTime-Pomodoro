@@ -13,6 +13,7 @@ import com.baltajmn.flowtime.core.design.sound.PlayerState
 import com.baltajmn.flowtime.core.design.sound.PlayerType
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
+import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.screen.TimerLandscapeContent
@@ -38,6 +39,7 @@ import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -92,12 +94,14 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
     @Test
     fun settings() {
         val prefs = FakeDataProvider()
+        val sessions = sessions()
         val viewModel = SettingsViewModel(
             prefs,
-            GetAllStudyTime(sessions()),
+            GetAllStudyTime(sessions),
             AppearanceRepository(prefs),
             FakeBackups(lastExportAt = System.currentTimeMillis()),
-            DocumentFiles(RuntimeEnvironment.getApplication())
+            DocumentFiles(RuntimeEnvironment.getApplication()),
+            GoalRepository(prefs, sessions, days = flowOf(LocalDate.now()))
         )
         compose.capture("settings_$mode", dark = dark) {
             val state by viewModel.uiState.collectAsState()

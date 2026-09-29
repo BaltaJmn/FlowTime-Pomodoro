@@ -62,7 +62,7 @@ fun TimerPortraitContent(
                 Spacer(modifier = Modifier.height(16.dp))
                 TimeContent(secondsFormatted = state.time)
                 Spacer(modifier = Modifier.height(16.dp))
-                MinutesStudying(minutesStudying = state.minutesToday)
+                MinutesStudying(minutesStudying = state.minutesToday, goal = state.goalToday)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }

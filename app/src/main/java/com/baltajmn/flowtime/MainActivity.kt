@@ -26,6 +26,7 @@ import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
+import com.baltajmn.flowtime.goal.GoalWatcher
 import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.ui.FlowTimeApp
 import org.koin.android.ext.android.inject
@@ -35,6 +36,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel = inject<MainViewModel>().value
     private val sessionNotification: SessionNotification by inject()
     private val appearanceRepository: AppearanceRepository by inject()
+    private val goalWatcher: GoalWatcher by inject()
     private val showSound: MutableState<Boolean> = mutableStateOf(true)
 
     private val queryProductDetailsParams =
@@ -87,6 +89,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val appearance by appearanceRepository.appearance.collectAsStateWithLifecycle()
+            val celebration by goalWatcher.celebration.collectAsStateWithLifecycle()
             val dark = appearance.isDark(isSystemInDarkTheme())
             // Los iconos de las barras del sistema siguen al tema de la app, no al del sistema: con el
             // modo oscuro forzado en un móvil claro, se quedaban oscuros sobre fondo oscuro.
@@ -106,7 +109,9 @@ class MainActivity : ComponentActivity() {
                 onSoundChange = { it: Boolean -> showSound.value = it },
                 onShowRatingChanged = { it: Boolean -> viewModel.setShowRating(it) },
                 onSupportDeveloperClick = { initiatePurchase() },
-                onRememberShowRating = { it: Boolean -> viewModel.setRememberShowRating(it) }
+                onRememberShowRating = { it: Boolean -> viewModel.setRememberShowRating(it) },
+                celebration = celebration,
+                onCelebrationShown = goalWatcher::onShown
             )
         }
     }

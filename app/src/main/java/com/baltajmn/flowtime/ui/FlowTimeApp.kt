@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.R
 import com.baltajmn.flowtime.core.design.theme.Appearance
 import com.baltajmn.flowtime.core.design.theme.FlowTimeTheme
+import com.baltajmn.flowtime.goal.Celebration
 import com.google.android.gms.tasks.Task
 import com.google.android.play.core.review.ReviewInfo
 import com.google.android.play.core.review.ReviewManager
@@ -45,7 +46,9 @@ fun FlowTimeApp(
     rememberShowRating: Boolean,
     onSupportDeveloperClick: () -> Unit,
     onShowRatingChanged: (Boolean) -> Unit,
-    onRememberShowRating: (Boolean) -> Unit
+    onRememberShowRating: (Boolean) -> Unit,
+    celebration: Celebration? = null,
+    onCelebrationShown: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val activity = LocalActivity.current
@@ -75,6 +78,8 @@ fun FlowTimeApp(
                 }
             )
         }
+
+        celebration?.let { CelebrationDialog(it, onDismiss = onCelebrationShown) }
 
         FlowTimeNavHost(
             flowTimeAppState = flowTimeAppState,

@@ -3,6 +3,7 @@ package com.baltajmn.flowtime.data.di
 import com.baltajmn.flowtime.data.backup.BackupRepository
 import com.baltajmn.flowtime.data.backup.DefaultBackupRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
+import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.repository.DefaultSessionRepository
 import com.baltajmn.flowtime.data.repository.DefaultTodoListRepository
 import com.baltajmn.flowtime.data.repository.SessionRepository
@@ -25,12 +26,14 @@ val DataModule = module {
             dataProvider = get(),
             appearance = get(),
             ambience = get(),
+            goals = get(),
             appVersion = version.orEmpty()
         )
     }
     singleOf(::DefaultTodoListRepository) bind TodoListRepository::class
     // A mano: el constructor tiene parámetros opcionales para los tests que Koin no sabría resolver.
     single<SessionRepository> { DefaultSessionRepository(get(), get()) }
+    single { GoalRepository(get(), get()) }
     single<TimeSource> { SystemTimeSource(androidContext()) }
     singleOf(::FocusEngine)
 }

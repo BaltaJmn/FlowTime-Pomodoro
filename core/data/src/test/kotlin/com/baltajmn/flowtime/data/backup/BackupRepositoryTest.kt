@@ -15,6 +15,9 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_ALERT
 import com.baltajmn.flowtime.data.fakes.FakeDataProvider
+import com.baltajmn.flowtime.data.fakes.FakeSessionRepository
+import com.baltajmn.flowtime.data.goal.GoalChange
+import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.timer.TimerMode
 import io.mockk.mockk
 import io.mockk.verify
@@ -67,11 +70,13 @@ class BackupRepositoryTest {
         val appearance = AppearanceRepository(prefs)
         // De verdad no se puede: el mezclador abre la salida de audio de Android.
         val ambience = mockk<Ambience>(relaxed = true)
+        val goals = GoalRepository(prefs, FakeSessionRepository())
         val backups = DefaultBackupRepository(
             dao = dao,
             dataProvider = prefs,
             appearance = appearance,
             ambience = ambience,
+            goals = goals,
             appVersion = "3.0",
             clock = { NOW }
         )
@@ -121,6 +126,8 @@ class BackupRepositoryTest {
             prefs.setCheckValue(TimerMode.POMODORO.continueAfterBreakKey, false)
             prefs.setBoolean(SHOW_ALERT, false)
             prefs.setFloat(PlayerType.RAIN.name, 0.8f)
+            goals.setGoal(45, LocalDate.of(2026, 1, 10))
+            goals.setGoal(90, LocalDate.of(2026, 9, 1))
         }
         val new = Device()
 
@@ -144,6 +151,10 @@ class BackupRepositoryTest {
             assertFalse(prefs.getCheckValue(TimerMode.POMODORO.continueAfterBreakKey))
             assertTrue(prefs.getCheckValue(TimerMode.FLOW_TIME.continueAfterBreakKey))
             assertFalse(prefs.getBoolean(SHOW_ALERT, true))
+            assertEquals(
+                listOf(GoalChange(LocalDate.of(2026, 1, 10), 45), GoalChange(LocalDate.of(2026, 9, 1), 90)),
+                goals.history.value
+            )
             // Solo el volumen que se tocó, y por Ambience: el panel no tiene que esperar a reiniciar.
             verify(exactly = 1) { ambience.setVolume(any(), any()) }
             verify { ambience.setVolume(PlayerType.RAIN, 0.8f) }
@@ -208,6 +219,7 @@ class BackupRepositoryTest {
             appearance.setTheme(AppTheme.Pink)
             prefs.setBoolean(SHOW_ALERT, false)
             prefs.setFloat(PlayerType.FIRE.name, 0.1f)
+            goals.setGoal(120, LocalDate.of(2026, 9, 1))
         }
         val new = Device()
 
@@ -216,6 +228,7 @@ class BackupRepositoryTest {
         assertEquals(AppTheme.Blue, new.appearance.appearance.value.theme)
         assertTrue(new.prefs.getBoolean(SHOW_ALERT, true))
         verify(exactly = 0) { new.ambience.setVolume(any(), any()) }
+        assertEquals(emptyList<GoalChange>(), new.goals.history.value)
     }
 
     @Test

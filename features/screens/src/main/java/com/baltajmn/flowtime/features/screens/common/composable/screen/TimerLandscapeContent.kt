@@ -59,7 +59,7 @@ fun TimerLandscapeContent(
                 Spacer(modifier = Modifier.height(8.dp))
                 TimeContent(secondsFormatted = state.time)
                 Spacer(modifier = Modifier.height(8.dp))
-                MinutesStudying(minutesStudying = state.minutesToday)
+                MinutesStudying(minutesStudying = state.minutesToday, goal = state.goalToday)
             }
             Column(
                 modifier = Modifier

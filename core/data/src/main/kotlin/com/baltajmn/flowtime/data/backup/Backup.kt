@@ -62,7 +62,16 @@ data class BackupSettings(
     val keepScreenOn: Boolean? = null,
     val showSound: Boolean? = null,
     /** Por el nombre del sonido, de 0 a 1. */
-    val soundVolumes: Map<String, Float> = emptyMap()
+    val soundVolumes: Map<String, Float> = emptyMap(),
+    /** El objetivo diario con su historial: cada día se mide con el que tenía entonces. */
+    val dailyGoal: List<BackupGoalChange>? = null
+)
+
+@Serializable
+data class BackupGoalChange(
+    /** yyyy-MM-dd del día desde el que vale. */
+    val from: String,
+    val minutes: Int
 )
 
 @Serializable

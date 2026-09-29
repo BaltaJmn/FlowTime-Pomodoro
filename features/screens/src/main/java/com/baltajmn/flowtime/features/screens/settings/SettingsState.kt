@@ -3,6 +3,8 @@ package com.baltajmn.flowtime.features.screens.settings
 import com.baltajmn.flowtime.core.design.theme.Appearance
 import com.baltajmn.flowtime.data.backup.Backup
 import com.baltajmn.flowtime.data.backup.RestoreResult
+import com.baltajmn.flowtime.data.goal.DailyGoal
+import com.baltajmn.flowtime.data.goal.Streak
 
 data class SettingsState(
     val isLoading: Boolean = false,
@@ -11,8 +13,11 @@ data class SettingsState(
     val showAlert: Boolean = true,
     val keepScreenOn: Boolean = true,
     val appearance: Appearance = Appearance(),
-    val backup: BackupUiState = BackupUiState()
+    val backup: BackupUiState = BackupUiState(),
+    val goal: GoalUiState = GoalUiState()
 )
+
+data class GoalUiState(val minutes: Int = DailyGoal.DEFAULT_MINUTES, val streak: Streak = Streak())
 
 data class BackupUiState(
     val lastExportAt: Long? = null,

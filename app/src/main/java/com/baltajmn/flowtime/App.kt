@@ -12,6 +12,7 @@ import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.PhaseChange
 import com.baltajmn.flowtime.di.CoreModules
 import com.baltajmn.flowtime.di.FeaturesModule
+import com.baltajmn.flowtime.goal.GoalWatcher
 import com.baltajmn.flowtime.session.PhaseAlarm
 import com.baltajmn.flowtime.session.SessionNotification
 import kotlinx.coroutines.MainScope
@@ -47,6 +48,7 @@ class App : Application() {
                 alarm.schedule(state)
             }
         }
+        get<GoalWatcher>().watch(scope)
     }
 
     /** Con la app a la vista suena sin más; si no, avisa una notificación con sonido y vibración. */

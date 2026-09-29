@@ -20,4 +20,6 @@ enum class SharedPreferencesItem {
     DARK_MODE,
     DYNAMIC_COLOR,
     LAST_BACKUP_AT,
+    DAILY_GOAL,
+    GOAL_CELEBRATED_ON,
 }

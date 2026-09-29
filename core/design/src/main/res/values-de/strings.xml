@@ -191,4 +191,19 @@
     <string name="backup_too_new">Diese Sicherung stammt aus einer neueren FlowTime-Version. Aktualisiere die App, um sie zu importieren.</string>
     <string name="backup_failed">Die Datei konnte nicht gespeichert werden</string>
     <string name="backup_import_failed">Die Sicherung konnte nicht importiert werden. Es wurde nichts geändert.</string>
+    <string name="goal_title">Tagesziel</string>
+    <string name="goal_per_day">%1$s pro Tag</string>
+    <string name="goal_today">%1$s von %2$s</string>
+    <string name="goal_decrease">Ziel senken</string>
+    <string name="goal_increase">Ziel erhöhen</string>
+    <string name="goal_reached">Tagesziel erreicht!</string>
+    <string name="goal_reached_text">Du hast heute deine %1$s geschafft.</string>
+    <string name="streak_best">Bestwert: %1$d</string>
+    <string name="streak_free_day_used">Der freie Tag dieser Woche ist verbraucht</string>
+    <string name="streak_milestone">%1$s. Weiter so!</string>
+    <string name="streak_none">Erreiche dein Ziel, um eine Serie zu starten</string>
+    <plurals name="streak_days">
+        <item quantity="one">%d Tag in Folge</item>
+        <item quantity="other">%d Tage in Folge</item>
+    </plurals>
 </resources>

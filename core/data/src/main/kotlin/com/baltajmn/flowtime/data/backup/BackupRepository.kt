@@ -19,6 +19,8 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_ALERT
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
+import com.baltajmn.flowtime.data.goal.GoalChange
+import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.timer.TimerMode
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
@@ -59,6 +61,7 @@ class DefaultBackupRepository(
     private val dataProvider: DataProvider,
     private val appearance: AppearanceRepository,
     private val ambience: Ambience,
+    private val goals: GoalRepository,
     private val appVersion: String,
     private val clock: () -> Long = System::currentTimeMillis
 ) : BackupRepository {
@@ -133,7 +136,10 @@ class DefaultBackupRepository(
         // Solo los que se han tocado alguna vez: los demás siguen con el volumen por defecto.
         soundVolumes = PlayerType.entries
             .associate { it.name to dataProvider.getFloat(it.name, UNSET) }
-            .filterValues { it != UNSET }
+            .filterValues { it != UNSET },
+        dailyGoal = goals.history.value
+            .map { BackupGoalChange(it.from.toString(), it.minutes) }
+            .takeIf { it.isNotEmpty() }
     )
 
     // Un valor que esta versión no conoce (un tema que ya no existe) se salta y se queda el actual.
@@ -156,6 +162,12 @@ class DefaultBackupRepository(
         settings.showAlert?.let { dataProvider.setBoolean(SHOW_ALERT, it) }
         settings.keepScreenOn?.let { dataProvider.setBoolean(KEEP_SCREEN_ON, it) }
         settings.showSound?.let { dataProvider.setBoolean(SHOW_SOUND, it) }
+        settings.dailyGoal?.let { changes ->
+            val history = changes
+                .filter { it.from.isDay() }
+                .map { GoalChange(LocalDate.parse(it.from), it.minutes) }
+            goals.restore(history)
+        }
         // Por Ambience y no directamente a las preferencias: tiene los volúmenes en memoria.
         settings.soundVolumes.forEach { (name, volume) ->
             PlayerType.entries.named(name)?.let { ambience.setVolume(it, volume.coerceIn(0f, 1f)) }

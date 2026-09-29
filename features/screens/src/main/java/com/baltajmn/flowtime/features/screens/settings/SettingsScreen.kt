@@ -162,6 +162,8 @@ fun SettingsContent(
             )
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
+        item { GoalCard(goal = state.goal, onChange = viewModel::changeGoal) }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
             SupportButton(
                 title = LocalContext.current.getString(R.string.support_developer_title),
