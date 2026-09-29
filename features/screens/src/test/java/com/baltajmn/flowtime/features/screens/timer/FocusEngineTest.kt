@@ -276,6 +276,24 @@ class FocusEngineTest {
     }
 
     @Test
+    fun `elegir modo con la sesion parada lo guarda como el ultimo usado`() {
+        engine.select(TimerMode.PERCENTAGE)
+
+        assertEquals(TimerMode.PERCENTAGE, engine.state.value.mode)
+        assertEquals(TimerMode.PERCENTAGE, FocusEngine(prefs, time, sessions).state.value.mode)
+    }
+
+    @Test
+    fun `con una sesion en marcha no se cambia de modo`() {
+        engine.start(TimerMode.FLOW_TIME)
+
+        engine.select(TimerMode.POMODORO)
+
+        assertEquals(TimerMode.FLOW_TIME, engine.state.value.mode)
+        assertEquals(Phase.WORK, engine.state.value.phase)
+    }
+
+    @Test
     fun `avisa del cambio de fase y de cuanto tarde se ha visto`() {
         val changes = mutableListOf<PhaseChange>()
         engine.onPhaseChange = { changes += it }

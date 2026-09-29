@@ -146,6 +146,16 @@ class FocusEngine(
         set(newWork(mode, overshoot = 0, current.tagId))
     }
 
+    /**
+     * Elige el modo con la sesión parada: es el que se ve al abrir la app y el que empieza, y se guarda
+     * como el último usado (#51). Con una sesión en marcha no hace nada: su modo no se cambia.
+     */
+    @Synchronized
+    fun select(mode: TimerMode) {
+        val s = _state.value
+        if (!s.isActive && s.mode != mode) set(s.copy(mode = mode))
+    }
+
     /** Con la sesión en marcha, cambia la del trabajo en curso, que es el que se guarda al terminar. */
     @Synchronized
     fun setTag(id: Long?) {
