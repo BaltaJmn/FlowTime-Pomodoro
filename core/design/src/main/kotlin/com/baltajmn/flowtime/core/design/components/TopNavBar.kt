@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -68,7 +72,7 @@ private object TopNavBarConstants {
     const val ELEVATION = 5
 
     object Padding {
-        val TOP = 40.dp
+        val TOP = 16.dp
         val START = 24.dp
         val END = 24.dp
         val BOTTOM = 96.dp
@@ -141,7 +145,11 @@ fun TopNavBar(
     // Optimized AnimatedVisibility with proper semantics
     AnimatedVisibility(
         modifier = modifier
-            .navigationBarsPadding()
+            // La barra de estado y la cámara miden distinto en cada móvil: con 40 dp fijos el
+            // panel quedaba debajo de la cámara en los que la tienen en la pantalla.
+            .windowInsetsPadding(
+                WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+            )
             .padding(
                 top = TopNavBarConstants.Padding.TOP,
                 start = TopNavBarConstants.Padding.START,

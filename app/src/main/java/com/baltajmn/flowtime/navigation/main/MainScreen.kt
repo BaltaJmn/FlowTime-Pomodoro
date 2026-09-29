@@ -2,6 +2,12 @@ package com.baltajmn.flowtime.navigation.main
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -11,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import com.baltajmn.flowtime.core.design.components.BottomNavBar
 import com.baltajmn.flowtime.core.design.components.BottomNavBarItem
@@ -71,18 +78,26 @@ fun MainScreen(
             )
         }
     ) { paddingValues ->
-        MainGraph(
-            appState = appState,
-            todoListState = todoListState,
-            settingsState = settingsState,
-            navigateToHistory = appState::navigateToHistory,
-            navigateUp = appState::navigateUp,
-            onThemeChanged = onThemeChanged,
-            showSound = showSound,
-            onSoundChange = onSoundChange,
-            onSupportDeveloperClick = onSupportDeveloperClick,
-            onTimerRunning = { isRunning -> isTimerRunning = isRunning }
-        )
+        // El contenido pasa por debajo de las barras a propósito, pero no por debajo de la cámara
+        // ni de la barra de navegación cuando quedan a un lado, en horizontal.
+        Box(
+            modifier = Modifier.windowInsetsPadding(
+                WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+            )
+        ) {
+            MainGraph(
+                appState = appState,
+                todoListState = todoListState,
+                settingsState = settingsState,
+                navigateToHistory = appState::navigateToHistory,
+                navigateUp = appState::navigateUp,
+                onThemeChanged = onThemeChanged,
+                showSound = showSound,
+                onSoundChange = onSoundChange,
+                onSupportDeveloperClick = onSupportDeveloperClick,
+                onTimerRunning = { isRunning -> isTimerRunning = isRunning }
+            )
+        }
     }
 
     if (showDialog) {
