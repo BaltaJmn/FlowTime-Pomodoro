@@ -49,17 +49,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import com.baltajmn.flowtime.core.design.R
-import com.baltajmn.flowtime.core.design.service.PlayerState
-import com.baltajmn.flowtime.core.design.service.PlayerType
-import com.baltajmn.flowtime.core.design.service.PlayerType.BROWN
-import com.baltajmn.flowtime.core.design.service.PlayerType.PINK
-import com.baltajmn.flowtime.core.design.service.PlayerType.WHITE
-import com.baltajmn.flowtime.core.design.service.SoundViewModel
+import com.baltajmn.flowtime.core.design.sound.Ambience
+import com.baltajmn.flowtime.core.design.sound.PlayerState
+import com.baltajmn.flowtime.core.design.sound.PlayerType
+import com.baltajmn.flowtime.core.design.sound.PlayerType.BROWN
+import com.baltajmn.flowtime.core.design.sound.PlayerType.PINK
+import com.baltajmn.flowtime.core.design.sound.PlayerType.WHITE
 import kotlinx.coroutines.delay
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 // Constants for better maintainability and performance
 private object TopNavBarConstants {
@@ -91,7 +89,7 @@ private object TopNavBarConstants {
 @Composable
 fun TopNavBar(
     modifier: Modifier = Modifier,
-    viewModel: SoundViewModel = koinViewModel(),
+    ambience: Ambience = koinInject(),
     shouldShow: () -> Boolean
 ) {
     val soundPanelDescription = stringResource(R.string.cd_sound_panel)
@@ -101,7 +99,7 @@ fun TopNavBar(
     var firstVisibility by rememberSaveable { mutableStateOf(false) }
 
     // Collect state efficiently to avoid unnecessary recompositions
-    val soundState by viewModel.uiState.collectAsState()
+    val soundState by ambience.state.collectAsState()
 
     // Optimized animation state
     val rotationState by animateFloatAsState(
@@ -112,32 +110,6 @@ fun TopNavBar(
         ),
         label = "rotation_animation"
     )
-
-    // Lifecycle handling with proper cleanup
-    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
-    LaunchedEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_PAUSE -> {
-                    viewModel.pauseAllPlayers()
-                }
-
-                Lifecycle.Event.ON_RESUME -> {
-                    viewModel.resumePlayingPlayers()
-                }
-
-                else -> {}
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-
-        // Cleanup when the effect leaves the composition
-        try {
-            kotlinx.coroutines.awaitCancellation()
-        } finally {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
 
     // Initial visibility delay
     LaunchedEffect(Unit) {
@@ -192,17 +164,17 @@ fun TopNavBar(
             CurrentlyPlaying(
                 onExpandedClick = { expanded = !expanded },
                 rotationState = rotationState,
-                hasActivePlayers = soundState.soundMap.values.any { it.isPlaying }
+                hasActivePlayers = soundState.playing.isNotEmpty()
             )
 
             if (expanded) {
                 ExpandedContent(
                     items = soundState.soundMap,
                     onPlayClicked = { playerType, playing ->
-                        viewModel.controlSounds(playerType = playerType, playing = playing)
+                        ambience.play(type = playerType, playing = playing)
                     },
                     onVolumeChanged = { itemPlayer, volume ->
-                        viewModel.setVolume(type = itemPlayer, volume = volume)
+                        ambience.setVolume(type = itemPlayer, volume = volume)
                     }
                 )
             }

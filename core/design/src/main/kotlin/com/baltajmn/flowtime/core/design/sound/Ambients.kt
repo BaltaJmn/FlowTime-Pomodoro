@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.core.design.sound
 
-import com.baltajmn.flowtime.core.design.service.PlayerType
 
 /**
  * Un sonido ambiental generado en tiempo real. No hay ficheros de audio: nada que descargar ni que

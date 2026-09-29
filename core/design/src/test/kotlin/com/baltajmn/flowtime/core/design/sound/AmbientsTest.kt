@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.core.design.sound
 
-import com.baltajmn.flowtime.core.design.service.PlayerType
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlin.math.abs

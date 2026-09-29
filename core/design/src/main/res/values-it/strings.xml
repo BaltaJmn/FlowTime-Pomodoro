@@ -172,4 +172,5 @@
     <string name="alert_focus">Torna a concentrarti!</string>
     <string name="alert_session_over">Sessione terminata</string>
     <string name="exact_alarms_off">Gli avvisi possono arrivare con qualche minuto di ritardo. Consenti sveglie e promemoria per sentirli in orario.</string>
+    <string name="channel_sounds">Suoni ambientali</string>
 </resources>

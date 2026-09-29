@@ -4,7 +4,6 @@ import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.util.Log
-import com.baltajmn.flowtime.core.design.service.PlayerType
 import kotlin.math.abs
 
 /**
@@ -95,12 +94,7 @@ class AmbientMixer {
             AudioFormat.ENCODING_PCM_FLOAT
         )
         return AudioTrack.Builder()
-            .setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build()
-            )
+            .setAudioAttributes(ATTRIBUTES)
             .setAudioFormat(
                 AudioFormat.Builder()
                     .setEncoding(AudioFormat.ENCODING_PCM_FLOAT)
@@ -113,13 +107,19 @@ class AmbientMixer {
             .build()
     }
 
-    private companion object {
-        const val FRAMES = 1024
-        const val BLOCKS_PER_SECOND = SAMPLE_RATE / FRAMES
-        const val RAMP = 1f / (0.05f * SAMPLE_RATE)
+    companion object {
+        /** Como música: va con el volumen multimedia y el sistema la baja sola con los avisos cortos. */
+        val ATTRIBUTES: AudioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+            .build()
+
+        private const val FRAMES = 1024
+        private const val BLOCKS_PER_SECOND = SAMPLE_RATE / FRAMES
+        private const val RAMP = 1f / (0.05f * SAMPLE_RATE)
 
         /** Deja pasar la señal hasta 0,7 y por encima la dobla poco a poco, sin pasar nunca de 1. */
-        fun softClip(x: Float): Float {
+        private fun softClip(x: Float): Float {
             val a = abs(x)
             if (a <= 0.7f) return x
             val over = (a - 0.7f) / 0.3f

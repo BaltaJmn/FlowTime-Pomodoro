@@ -171,4 +171,5 @@
     <string name="alert_focus">Back to focus!</string>
     <string name="alert_session_over">Session finished</string>
     <string name="exact_alarms_off">Alerts may arrive a few minutes late. Allow alarms and reminders to hear them on time.</string>
+    <string name="channel_sounds">Ambient sounds</string>
 </resources>
