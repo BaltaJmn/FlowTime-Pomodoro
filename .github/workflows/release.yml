@@ -1,0 +1,34 @@
+name: Release to Play
+
+# Por etiqueta y no en cada push a main: cada subida gasta un versionCode y sale a
+# produccion. Se etiqueta cuando se quiere publicar.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      track:
+        description: Canal de Play
+        type: choice
+        options: [production, beta, alpha, internal]
+        default: production
+
+jobs:
+  release:
+    # La secuencia entera vive en BaltaJmn/ci, igual que en las demas apps.
+    uses: BaltaJmn/ci/.github/workflows/android-play-release.yml@main
+    with:
+      package-name: com.baltajmn.flowtime
+      # El workflow compartido comprueba que el AAB lleve este texto en el certificado,
+      # y su valor por defecto es el de Quilt. Sin esta linea la firma correcta se rechaza.
+      signer-cn: CN=FlowTime
+      gradle-tasks: ':app:bundleRelease'
+      aab-path: app/build/outputs/bundle/release/app-release.aab
+      # Esta app ya esta en produccion, asi que la etiqueta publica ahi y no en alpha.
+      track: ${{ inputs.track || 'production' }}
+    secrets:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}

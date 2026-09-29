@@ -21,7 +21,8 @@ output.json
 *.iml
 .idea/
 
-# Keystore files
+# Firma de release: nunca al repositorio.
+keystore.properties
 *.jks
 *.keystore
 
