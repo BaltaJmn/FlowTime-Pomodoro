@@ -1,317 +1,63 @@
 package com.baltajmn.flowtime.core.design.service
 
-import android.media.AudioManager.STREAM_MUSIC
-import android.media.MediaPlayer
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.baltajmn.flowtime.core.design.R
-import com.baltajmn.flowtime.core.design.service.PlayerType.BIRDS
-import com.baltajmn.flowtime.core.design.service.PlayerType.BROWN
-import com.baltajmn.flowtime.core.design.service.PlayerType.COFFEE_HOUSE
-import com.baltajmn.flowtime.core.design.service.PlayerType.FIRE
-import com.baltajmn.flowtime.core.design.service.PlayerType.HEAT
-import com.baltajmn.flowtime.core.design.service.PlayerType.MEDITATION
-import com.baltajmn.flowtime.core.design.service.PlayerType.PINK
-import com.baltajmn.flowtime.core.design.service.PlayerType.RAIN
-import com.baltajmn.flowtime.core.design.service.PlayerType.THUNDER
-import com.baltajmn.flowtime.core.design.service.PlayerType.WAVE
-import com.baltajmn.flowtime.core.design.service.PlayerType.WHITE
-import com.baltajmn.flowtime.core.design.service.PlayerType.WIND
+import com.baltajmn.flowtime.core.design.sound.AmbientMixer
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.util.concurrent.ConcurrentHashMap
 
 class SoundViewModel(
-    private val dataProvider: DataProvider
+    private val dataProvider: DataProvider,
+    private val mixer: AmbientMixer
 ) : ViewModel() {
 
-    // Thread-safe map for MediaPlayer instances
-    private val players: ConcurrentHashMap<PlayerType, MediaPlayer> = ConcurrentHashMap()
-
-    // Thread-safe map for tracking preparation state
-    private val preparingPlayers: ConcurrentHashMap<PlayerType, Boolean> = ConcurrentHashMap()
-
-    private val _uiState = MutableStateFlow(SoundState())
+    private val _uiState = MutableStateFlow(
+        SoundState(
+            PlayerType.entries.associateWith {
+                PlayerState(volume = dataProvider.getFloat(it.name, DEFAULT_VOLUME))
+            }
+        )
+    )
     val uiState: StateFlow<SoundState> = _uiState.asStateFlow()
 
-    init {
-        initializeSoundState()
-    }
-
-    private fun initializeSoundState() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val soundMap = mutableMapOf<PlayerType, PlayerState>()
-
-            PlayerType.entries.forEach { type ->
-                val volume = dataProvider.getFloat(type.name, 0f)
-                soundMap[type] = PlayerState(volume = volume, isPlaying = false)
-            }
-
-            withContext(Dispatchers.Main) {
-                _uiState.update { state ->
-                    state.copy(soundMap = soundMap)
-                }
-            }
-        }
-    }
-
-    fun getItems(): Map<PlayerType, PlayerState> = _uiState.value.soundMap
-
-    fun muteAll() {
-        viewModelScope.launch(Dispatchers.IO) {
-            PlayerType.entries.forEach { type ->
-                controlSounds(type, false)
-            }
-        }
-    }
-
-    fun controlSounds(playerType: PlayerType, playing: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                if (playing) {
-                    startPlayer(playerType)
-                } else {
-                    pausePlayer(playerType)
-                }
-
-                withContext(Dispatchers.Main) {
-                    updateIsPlaying(playerType, playing)
-                }
-            } catch (e: Exception) {
-                // Log error and update UI state
-                withContext(Dispatchers.Main) {
-                    updateIsPlaying(playerType, false)
-                }
-            }
-        }
-    }
-
-    private suspend fun startPlayer(playerType: PlayerType) {
-        val player = getOrCreatePlayer(playerType)
-        if (player.isPlaying) return
-
-        // Wait for preparation if needed with timeout
-        var attempts = 0
-        while (preparingPlayers[playerType] == true && attempts < AudioConfig.MAX_RETRY_ATTEMPTS) {
-            kotlinx.coroutines.delay(AudioConfig.PREPARATION_CHECK_DELAY_MS)
-            attempts++
-        }
-
-        // Check if player is in valid state before starting
-        if (player.isInValidState()) {
-            val success = player.safeStart()
-            if (!success) {
-                // Player failed to start, recreate it
-                recreatePlayer(playerType)
-            }
-        } else {
-            // Player is in invalid state, recreate it
-            recreatePlayer(playerType)
-        }
-    }
-
-    private suspend fun pausePlayer(playerType: PlayerType) {
-        players[playerType]?.let { player ->
-            if (player.isInValidState()) {
-                player.safePause()
-            }
-        }
-    }
+    fun controlSounds(playerType: PlayerType, playing: Boolean) =
+        update(playerType) { it.copy(isPlaying = playing) }
 
     fun setVolume(type: PlayerType, volume: Float) {
-        viewModelScope.launch(Dispatchers.IO) {
-            // Save to preferences in background
-            dataProvider.setFloat(type.name, volume)
-
-            // Update player volume
-            players[type]?.setVolume(volume, volume)
-
-            // Update UI state on main thread
-            withContext(Dispatchers.Main) {
-                _uiState.update { state ->
-                    val newSoundMap = state.soundMap.toMutableMap()
-                    newSoundMap[type] = newSoundMap[type]?.copy(volume = volume)
-                        ?: PlayerState(volume = volume, isPlaying = false)
-                    state.copy(soundMap = newSoundMap)
-                }
-            }
-        }
+        dataProvider.setFloat(type.name, volume)
+        update(type) { it.copy(volume = volume) }
     }
 
-    private fun updateIsPlaying(playerType: PlayerType, playing: Boolean) {
-        _uiState.update { current ->
-            val newSoundMap = current.soundMap.toMutableMap()
-            newSoundMap[playerType] = newSoundMap[playerType]?.copy(isPlaying = playing)
-                ?: PlayerState(volume = 0f, isPlaying = playing)
-            current.copy(soundMap = newSoundMap)
+    /** Silencia sin olvidar que sonaba, para que [resumePlayingPlayers] lo recupere. */
+    fun pauseAllPlayers() = PlayerType.entries.forEach { mixer.setVolume(it, 0f) }
+
+    fun resumePlayingPlayers() = _uiState.value.soundMap.forEach(::apply)
+
+    private fun update(type: PlayerType, change: (PlayerState) -> PlayerState) {
+        _uiState.update { state ->
+            state.copy(soundMap = state.soundMap + (type to change(state.soundMap.getValue(type))))
         }
+        apply(type, _uiState.value.soundMap.getValue(type))
     }
 
-    private suspend fun getOrCreatePlayer(playerType: PlayerType): MediaPlayer {
-        return players[playerType] ?: createPlayer(playerType)
-    }
+    private fun apply(type: PlayerType, state: PlayerState) =
+        mixer.setVolume(type, if (state.isPlaying) state.volume else 0f)
 
-    private suspend fun createPlayer(type: PlayerType): MediaPlayer {
-        preparingPlayers[type] = true
+    override fun onCleared() = pauseAllPlayers()
 
-        return withContext(Dispatchers.Main) {
-            MediaPlayer().apply {
-                val selectedVolume = _uiState.value.soundMap[type]?.volume ?: 0f
-
-                isLooping = true
-                setAudioStreamType(STREAM_MUSIC)
-
-                try {
-                    setDataSource("https://mynoise.world/NoisesOnline/Audio/${type.sound}.ogg")
-                    setVolume(selectedVolume, selectedVolume)
-
-                    setOnPreparedListener { mp ->
-                        preparingPlayers[type] = false
-                        // Don't auto-start, let user control
-                    }
-
-                    setOnErrorListener { mp, what, extra ->
-                        preparingPlayers[type] = false
-                        // Handle error gracefully, try to recreate player
-                        viewModelScope.launch(Dispatchers.IO) {
-                            recreatePlayer(type)
-                        }
-                        true
-                    }
-
-                    setOnCompletionListener { mp ->
-                        // Update UI state when playback completes
-                        viewModelScope.launch(Dispatchers.Main) {
-                            updateIsPlaying(type, false)
-                        }
-                    }
-
-                    setOnBufferingUpdateListener { mp, percent ->
-                        // Could be used to show buffering progress in UI
-                    }
-
-                    prepareAsync()
-                    players[type] = this
-                } catch (e: Exception) {
-                    preparingPlayers[type] = false
-                    throw e
-                }
-            }
-        }
-    }
-
-    private suspend fun recreatePlayer(playerType: PlayerType) {
-        // Release old player safely
-        players[playerType]?.let { player ->
-            player.safeRelease()
-        }
-        players.remove(playerType)
-        preparingPlayers.remove(playerType)
-
-        // Create new player
-        try {
-            createPlayer(playerType)
-        } catch (e: Exception) {
-            // If recreation fails, update UI to reflect failure
-            withContext(Dispatchers.Main) {
-                updateIsPlaying(playerType, false)
-            }
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelScope.launch(Dispatchers.IO) {
-            releaseAllPlayers()
-        }
-    }
-
-    private suspend fun releaseAllPlayers() {
-        // Stop and release all players safely
-        players.values.forEach { player ->
-            player.safeStop()
-            player.safeRelease()
-        }
-        players.clear()
-        preparingPlayers.clear()
-    }
-
-    fun pauseAllPlayers() {
-        viewModelScope.launch(Dispatchers.IO) {
-            players.values.forEach { player ->
-                if (player.isInValidState()) {
-                    player.safePause()
-                }
-            }
-
-            withContext(Dispatchers.Main) {
-                _uiState.update { current ->
-                    val newSoundMap = current.soundMap.toMutableMap()
-                    newSoundMap.keys.forEach { type ->
-                        newSoundMap[type] = newSoundMap[type]?.copy(isPlaying = false)
-                            ?: PlayerState(volume = 0f, isPlaying = false)
-                    }
-                    current.copy(soundMap = newSoundMap)
-                }
-            }
-        }
-    }
-
-    fun resumePlayingPlayers() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _uiState.value.soundMap.forEach { (type, state) ->
-                if (state.isPlaying) {
-                    startPlayer(type)
-                }
-            }
-        }
-    }
-
-    fun setVolumeWithFade(type: PlayerType, targetVolume: Float) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val player = players[type]
-            if (player != null && player.isInValidState()) {
-                val currentVolume = _uiState.value.soundMap[type]?.volume ?: 0f
-                val steps = AudioConfig.VOLUME_FADE_STEPS
-                val stepDelay = AudioConfig.VOLUME_FADE_DURATION_MS / steps
-                val volumeStep = (targetVolume - currentVolume) / steps
-
-                repeat(steps) { step ->
-                    val newVolume = currentVolume + (volumeStep * (step + 1))
-                    player.safeSetVolume(newVolume, newVolume)
-                    kotlinx.coroutines.delay(stepDelay)
-                }
-            }
-
-            // Update final volume
-            setVolume(type, targetVolume)
-        }
+    private companion object {
+        // Antes era 0: al darle a reproducir un sonido nuevo no se oia nada.
+        const val DEFAULT_VOLUME = 0.5f
     }
 }
 
 data class SoundState(
-    val soundMap: Map<PlayerType, PlayerState> = mapOf(
-        RAIN to PlayerState(),
-        FIRE to PlayerState(),
-        WAVE to PlayerState(),
-        THUNDER to PlayerState(),
-        BIRDS to PlayerState(),
-        HEAT to PlayerState(),
-        COFFEE_HOUSE to PlayerState(),
-        MEDITATION to PlayerState(),
-        WIND to PlayerState(),
-        BROWN to PlayerState(),
-        PINK to PlayerState(),
-        WHITE to PlayerState()
-    )
+    val soundMap: Map<PlayerType, PlayerState> = PlayerType.entries.associateWith { PlayerState() }
 )
 
 data class PlayerState(
@@ -319,17 +65,17 @@ data class PlayerState(
     val isPlaying: Boolean = false
 )
 
-enum class PlayerType(@DrawableRes val icon: Int, val sound: String, @StringRes val label: Int) {
-    RAIN(R.drawable.ic_rain, "cb", R.string.sound_rain),
-    FIRE(R.drawable.ic_fire, "ea", R.string.sound_fire),
-    WAVE(R.drawable.ic_wave, "be", R.string.sound_wave),
-    THUNDER(R.drawable.ic_thunder, "cd", R.string.sound_thunder),
-    BIRDS(R.drawable.ic_bird, "da", R.string.sound_birds),
-    HEAT(R.drawable.ic_heat, "dd", R.string.sound_heat),
-    COFFEE_HOUSE(R.drawable.ic_coffee, "fa", R.string.sound_coffee_house),
-    MEDITATION(R.drawable.ic_meditation, "ga", R.string.sound_meditation),
-    WIND(R.drawable.ic_wind, "gb", R.string.sound_wind),
-    BROWN(R.drawable.ic_brown, "ia", R.string.sound_brown),
-    PINK(R.drawable.ic_pink, "ib", R.string.sound_pink),
-    WHITE(R.drawable.ic_white, "ic", R.string.sound_white)
+enum class PlayerType(@DrawableRes val icon: Int, @StringRes val label: Int) {
+    RAIN(R.drawable.ic_rain, R.string.sound_rain),
+    FIRE(R.drawable.ic_fire, R.string.sound_fire),
+    WAVE(R.drawable.ic_wave, R.string.sound_wave),
+    THUNDER(R.drawable.ic_thunder, R.string.sound_thunder),
+    BIRDS(R.drawable.ic_bird, R.string.sound_birds),
+    HEAT(R.drawable.ic_heat, R.string.sound_heat),
+    COFFEE_HOUSE(R.drawable.ic_coffee, R.string.sound_coffee_house),
+    MEDITATION(R.drawable.ic_meditation, R.string.sound_meditation),
+    WIND(R.drawable.ic_wind, R.string.sound_wind),
+    BROWN(R.drawable.ic_brown, R.string.sound_brown),
+    PINK(R.drawable.ic_pink, R.string.sound_pink),
+    WHITE(R.drawable.ic_white, R.string.sound_white)
 }
