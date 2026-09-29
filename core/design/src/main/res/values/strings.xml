@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="flow_time_title">Flow Time Ready</string>
+    <string name="flow_time_title">FlowTime Ready</string>
     <string name="pomodoro_title">Pomodoro Ready</string>
-    <string name="flow_time_settings_title">Flow Time Settings</string>
+    <string name="flow_time_settings_title">FlowTime Settings</string>
     <string name="flow_time_settings_in_the_first">In the first %1$s minutes</string>
     <string name="flow_time_settings_rest">I will rest</string>
     <string name="flow_time_settings_range">#%d range duration</string>
@@ -22,10 +22,10 @@
     <string name="dialog_subtitle">Your timer will be reset</string>
     <string name="dialog_confirm">Confirm</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="study_history">Study History</string>
+    <string name="study_history">History</string>
     <string name="go_to_history">Go to History</string>
     <string name="others">Others</string>
-    <string name="total_minutes">Total selected week minutes</string>
+    <string name="total_minutes">Total minutes in the selected week</string>
     <string name="best_day">Best day</string>
     <string name="remember">Remember</string>
     <string name="mot_1">You can do it! :)</string>
@@ -48,9 +48,9 @@
     <string name="mot_18">Persist, you\'re closer to success :)</string>
     <string name="mot_19">Success awaits you at the end of the road :)</string>
     <string name="mot_20">Stay firm, triumph is yours! :)</string>
-    <string name="percentage_title">Percentage Study Ready</string>
-    <string name="percentage_settings_title">Percentage of rest</string>
-    <string name="all_minutes_studying">You have been studying for a total of %s with us</string>
+    <string name="percentage_title">Percentage Ready</string>
+    <string name="percentage_settings_title">Break percentage</string>
+    <string name="all_minutes_studying">You\'ve focused for a total of %s with us</string>
     <string name="export">Export</string>
     <string name="import_button">Import</string>
     <string name="support_developer">Support Developer</string>
@@ -69,11 +69,11 @@
     <string name="on_board_subtitle_3">Adjust your rest in percentage of the worked time.</string>
     <string name="on_board_subtitle_4">Organize your tasks with a comprehensive list.</string>
     <string name="on_board_subtitle_5">Customize your app preferences and settings.</string>
-    <string name="on_board_subtitle_6">Listen to background music while you study</string>
+    <string name="on_board_subtitle_6">Listen to background sounds while you focus</string>
     <string name="on_board_skip">Skip</string>
     <string name="on_board_next">Next</string>
     <string name="on_board_finish">Finish</string>
-    <string name="user_progression_level">User Progression Level</string>
+    <string name="user_progression_level">Progress level</string>
     <string name="show_sound">Show Background Sound</string>
     <string name="show_alert">Enable sound when timer ends</string>
     <string name="alert_google_play">Error connecting to Google Play</string>
@@ -81,7 +81,7 @@
     <string name="advantage_title">Advantages</string>
     <string name="pomodoro_advantages">Improves focus, reduces mental fatigue, and encourages regular breaks to maintain productivity.</string>
     <string name="flow_time_advantages">Allows flexible work sessions, adapts to your pace, and helps achieve deep focus states.</string>
-    <string name="percentage_advantages">Adjusts breaks based on work time, balances effort and recovery, and personalizes your study experience.</string>
+    <string name="percentage_advantages">Adjusts breaks based on work time, balances effort and recovery, and adapts your sessions to you.</string>
 
     <string name="import_summary">Days imported: %1$d · Lines ignored: %2$d</string>
     <string name="import_nothing">No valid days found to import</string>
