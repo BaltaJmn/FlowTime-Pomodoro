@@ -1,23 +1,21 @@
 package com.baltajmn.flowtime.core.persistence.sharedpreferences
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.baltajmn.flowtime.core.persistence.encrypted.CryptoManager
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
-import java.text.SimpleDateFormat
+import java.time.Clock
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Date
-import java.util.Locale
 
 class SharedPreferencesProvider(
-    context: Context
+    context: Context,
+    private val clock: Clock = Clock.systemDefaultZone()
 ) : DataProvider {
 
     private val cryptoManager by lazy { CryptoManager() }
-    private val keyMinutes = SimpleDateFormat("ddMMyyyy", Locale.getDefault()).format(Date())
 
     companion object {
         const val SHARED_CONFIG = "shared_config"
@@ -25,6 +23,7 @@ class SharedPreferencesProvider(
 
     private val sharedPreferences by lazy {
         context.getSharedPreferences(SHARED_CONFIG, Context.MODE_PRIVATE)
+            .also(::migrateNonLatinDayKeys)
     }
 
     override fun getString(key: SharedPreferencesItem, decrypt: Boolean): String? {
@@ -87,47 +86,24 @@ class SharedPreferencesProvider(
     }
 
     override fun updateMinutes(minutes: Long): Long {
-        sharedPreferences.edit().putLong(keyMinutes, getMinutes() + minutes).apply()
-        return getMinutes()
+        val todayKey = DayKeys.today(clock)
+        val total = sharedPreferences.getLong(todayKey, 0L) + minutes
+        sharedPreferences.edit().putLong(todayKey, total).apply()
+        return total
     }
 
     override fun getMinutesByDate(date: LocalDate): Long {
-        return sharedPreferences.getLong(
-            date.format(
-                DateTimeFormatter.ofPattern("ddMMyyyy", Locale.getDefault())
-            ),
-            0L
-        )
+        return sharedPreferences.getLong(DayKeys.of(date), 0L)
     }
 
     override fun getAllDates(): List<LocalDate> {
-        val allKeys = sharedPreferences.all.keys
-        val dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy", Locale.getDefault())
-        return allKeys.mapNotNull { key ->
-            try {
-                LocalDate.parse(key, dateFormatter)
-            } catch (e: Exception) {
-                null
-            }
-        }
+        return sharedPreferences.all.keys.mapNotNull(DayKeys::parse)
     }
 
     override fun getStudyTimeMap(): Map<String, Long> {
-        val allKeys = sharedPreferences.all.keys
-        val dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy", Locale.getDefault())
-        val studyTimeMap = mutableMapOf<String, Long>()
-
-        allKeys.mapNotNull { key ->
-            try {
-                LocalDate.parse(key, dateFormatter)
-                val value = sharedPreferences.getLong(key, 0L)
-                studyTimeMap[key] = value
-            } catch (e: Exception) {
-                null
-            }
-        }
-
-        return studyTimeMap
+        return sharedPreferences.all
+            .filter { (key, value) -> value is Long && DayKeys.parse(key) != null }
+            .mapValues { (_, value) -> value as Long }
     }
 
     override fun setStudyTimeMap(map: Map<String, Long>) {
@@ -151,8 +127,24 @@ class SharedPreferencesProvider(
         )
     }
 
-    private fun getMinutes(): Long {
-        return sharedPreferences.getLong(keyMinutes, 0L)
+    /**
+     * Pasa a dígitos latinos las claves de días guardadas con los dígitos del idioma del sistema,
+     * sumando los minutos si ya existía la clave latina.
+     */
+    private fun migrateNonLatinDayKeys(prefs: SharedPreferences) {
+        val minutesByLatinKey = prefs.all
+            .filter { (key, value) -> value is Long && DayKeys.normalize(key).let { it != null && it != key } }
+            .entries
+            .groupBy { DayKeys.normalize(it.key)!! }
+        if (minutesByLatinKey.isEmpty()) return
+
+        val editor = prefs.edit()
+        minutesByLatinKey.forEach { (latinKey, entries) ->
+            val migrated = entries.sumOf { it.value as Long }
+            editor.putLong(latinKey, prefs.getLong(latinKey, 0L) + migrated)
+            entries.forEach { editor.remove(it.key) }
+        }
+        editor.apply()
     }
 
 }
