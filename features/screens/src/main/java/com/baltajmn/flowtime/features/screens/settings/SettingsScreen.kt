@@ -48,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -208,7 +209,9 @@ fun SettingsContent(
                 isSupporter = state.purchases.isSupporter,
                 onDarkMode = viewModel::setDarkMode,
                 onDynamicColor = viewModel::setDynamicColor,
-                onTheme = viewModel::setTheme
+                onTheme = viewModel::setTheme,
+                pro = state.purchases.pro,
+                onLockedTheme = { onOpenPro(ProFeature.THEMES) }
             )
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
@@ -609,7 +612,9 @@ fun AppearanceCard(
     isSupporter: Boolean,
     onDarkMode: (DarkMode) -> Unit,
     onDynamicColor: (Boolean) -> Unit,
-    onTheme: (AppTheme) -> Unit
+    onTheme: (AppTheme) -> Unit,
+    pro: ProAccess = ProAccess.HIDDEN,
+    onLockedTheme: () -> Unit = {}
 ) {
     val canUseWallpaper = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     // Con los colores del fondo de pantalla, el tema no se usa: se ve, pero apagado.
@@ -661,15 +666,21 @@ fun AppearanceCard(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = PaddingValues(vertical = 4.dp)
             ) {
-                // El tema Supporter es el regalo de las propinas (#58): solo lo ve quien lo tiene.
+                // El tema Supporter es el regalo de las propinas (#58): solo lo ve quien lo tiene. Los de
+                // Pro, solo con Pro a la venta. El que ya está puesto se ve siempre.
                 items(
-                    AppTheme.entries.filter { it != AppTheme.Supporter || isSupporter || it == appearance.theme }
+                    AppTheme.entries.filter { theme ->
+                        theme == appearance.theme ||
+                            (theme != AppTheme.Supporter || isSupporter) && (!theme.pro || pro != ProAccess.HIDDEN)
+                    }
                 ) { theme ->
+                    val locked = theme.pro && pro == ProAccess.LOCKED && theme != appearance.theme
                     ThemeSwatch(
                         theme = theme,
                         selected = theme == appearance.theme,
                         enabled = themesEnabled,
-                        onClick = { onTheme(theme) }
+                        locked = locked,
+                        onClick = { if (locked) onLockedTheme() else onTheme(theme) }
                     )
                 }
             }
@@ -684,9 +695,15 @@ private fun ThemeSwatch(
     theme: AppTheme,
     selected: Boolean,
     enabled: Boolean,
+    locked: Boolean,
     onClick: () -> Unit
 ) {
-    val description = stringResource(R.string.cd_theme_color, stringResource(theme.label))
+    val name = stringResource(theme.label)
+    val description = if (locked) {
+        stringResource(R.string.cd_pro_theme, name)
+    } else {
+        stringResource(R.string.cd_theme_color, name)
+    }
     Box(
         modifier = Modifier
             .size(40.dp)
@@ -706,12 +723,16 @@ private fun ThemeSwatch(
             .semantics { contentDescription = description },
         contentAlignment = Alignment.Center
     ) {
+        // Sobre el color de muestra, no sobre el tema: blanco o negro según lo claro que sea.
+        val ink = if (theme.color.luminance() > 0.5f) Color.Black else Color.White
         if (selected) {
-            // Sobre el color de muestra, no sobre el tema: blanco o negro según lo claro que sea.
+            Icon(imageVector = Icons.Filled.Check, contentDescription = null, tint = ink)
+        } else if (locked) {
             Icon(
-                imageVector = Icons.Filled.Check,
+                painter = painterResource(R.drawable.ic_lock_on),
                 contentDescription = null,
-                tint = if (theme.color.luminance() > 0.5f) Color.Black else Color.White
+                tint = ink,
+                modifier = Modifier.size(18.dp)
             )
         }
     }

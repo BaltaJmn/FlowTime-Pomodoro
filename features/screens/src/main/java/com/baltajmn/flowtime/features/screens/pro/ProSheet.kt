@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayArrow
@@ -258,6 +259,11 @@ private fun FeatureRow(feature: ProFeature) {
             Icons.Filled.PlayArrow,
             R.string.pro_sounds_title,
             R.string.pro_sounds_text
+        )
+        ProFeature.THEMES -> Triple(
+            Icons.Filled.Face,
+            R.string.pro_themes_title,
+            R.string.pro_themes_text
         )
         ProFeature.DND -> Triple(
             Icons.Filled.Notifications,

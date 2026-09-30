@@ -293,7 +293,7 @@
     <string name="pro_restore_nothing">No se ha encontrado Pro en esta cuenta de Google. Comprueba la conexión.</string>
     <string name="pro_thanks_text">Ya tienes FlowTime Pro: todo lo de Pro está desbloqueado. Gracias por apoyar FlowTime.</string>
     <string name="pro_see">Ver Pro</string>
-    <string name="pro_settings_text">Estadísticas avanzadas, exportar a CSV, etiquetas, tareas y mezclas sin límite, 6 sonidos nuevos y No molestar automático. Pago único, sin suscripción.</string>
+    <string name="pro_settings_text">Estadísticas avanzadas, exportar a CSV, etiquetas, tareas y mezclas sin límite, 6 sonidos y 6 temas nuevos, y No molestar automático. Pago único, sin suscripción.</string>
     <string name="pro_settings_owned">Tienes Pro. Gracias por apoyar FlowTime.</string>
     <string name="pro_card_text">Con Pro ves a qué horas y en qué te concentras mejor.</string>
     <string name="pro_card_dismiss">Ahora no</string>
@@ -340,4 +340,13 @@
     <string name="pro_sounds_title">6 sonidos nuevos</string>
     <string name="pro_sounds_text">Arroyo, grillos de noche, ventilador, tren, tecleo y lluvia en la tienda. Puedes escuchar cada uno 10 segundos antes de comprar.</string>
     <string name="cd_pro_sound">%1$s, sonido de Pro</string>
+    <string name="theme_lavender">Lavanda</string>
+    <string name="theme_mint">Menta</string>
+    <string name="theme_coral">Coral</string>
+    <string name="theme_sand">Arena</string>
+    <string name="theme_night">Noche</string>
+    <string name="theme_cherry">Cereza</string>
+    <string name="cd_pro_theme">Tema %1$s, de Pro</string>
+    <string name="pro_themes_title">6 temas nuevos</string>
+    <string name="pro_themes_text">Lavanda, menta, coral, arena, noche y cereza, en claro y en oscuro.</string>
 </resources>

@@ -12,7 +12,13 @@ import com.materialkolor.dynamicColorScheme
  * que da a cada color uno de encima con el contraste suficiente. Antes eran once esquemas escritos a
  * mano, todos claros, y tres no se leían.
  */
-enum class AppTheme(val color: Color, @StringRes val label: Int, private val tint: Tint = Tint.COLOR) {
+enum class AppTheme(
+    val color: Color,
+    @StringRes val label: Int,
+    private val tint: Tint = Tint.COLOR,
+    /** De Pro (#56): sin Pro a la venta no salen; sin comprar, con candado. Uno ya elegido no se quita. */
+    val pro: Boolean = false
+) {
     Blue(Color(0xFF7AABC3), R.string.theme_blue),
     Pink(Color(0xFFF07C83), R.string.theme_pink),
     Grey(Color(0xFF999997), R.string.theme_grey, Tint.GREY),
@@ -26,7 +32,14 @@ enum class AppTheme(val color: Color, @StringRes val label: Int, private val tin
     Black(Color(0xFF16161D), R.string.theme_black, Tint.INK),
 
     /** El regalo de las propinas (#58): solo aparece en la lista para quien ha dejado alguna. */
-    Supporter(Color(0xFFE2B04A), R.string.theme_supporter);
+    Supporter(Color(0xFFE2B04A), R.string.theme_supporter),
+
+    Lavender(Color(0xFFA99BD6), R.string.theme_lavender, pro = true),
+    Mint(Color(0xFF8FCFB5), R.string.theme_mint, pro = true),
+    Coral(Color(0xFFF28B6E), R.string.theme_coral, pro = true),
+    Sand(Color(0xFFD8C08E), R.string.theme_sand, pro = true),
+    Night(Color(0xFF2E3A59), R.string.theme_night, pro = true),
+    Cherry(Color(0xFFC2445E), R.string.theme_cherry, pro = true);
 
     fun colorScheme(dark: Boolean): ColorScheme = when (tint) {
         // TonalSpot es el estilo más suave: mantiene el aire pastel de siempre.

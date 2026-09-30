@@ -34,7 +34,7 @@ import kotlinx.coroutines.flow.asStateFlow
  * se abrió. Solo lo que ya existe: lo de Pro que llegue después se añade aquí, en la
  * descripción del producto en Play y en la ficha a la vez.
  */
-enum class ProFeature { STATS, CSV, TAGS, TASKS, MIXES, SOUNDS, DND }
+enum class ProFeature { STATS, CSV, TAGS, TASKS, MIXES, SOUNDS, THEMES, DND }
 
 /** Cómo se ve algo de Pro: nada mientras Pro no se venda, difuminado sin Pro, o abierto. */
 enum class ProAccess {

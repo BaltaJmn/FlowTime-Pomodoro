@@ -294,7 +294,7 @@
     <string name="pro_restore_nothing">Pro wasn\'t found on this Google account. Check your connection.</string>
     <string name="pro_thanks_text">You have FlowTime Pro: everything in Pro is unlocked. Thanks for supporting FlowTime.</string>
     <string name="pro_see">See Pro</string>
-    <string name="pro_settings_text">Advanced stats, CSV export, unlimited tags, tasks and mixes, 6 new sounds and automatic Do Not Disturb. One-time payment, no subscription.</string>
+    <string name="pro_settings_text">Advanced stats, CSV export, unlimited tags, tasks and mixes, 6 new sounds, 6 new themes and automatic Do Not Disturb. One-time payment, no subscription.</string>
     <string name="pro_settings_owned">You have Pro. Thanks for supporting FlowTime.</string>
     <string name="pro_card_text">With Pro you can see at what times and on what you focus best.</string>
     <string name="pro_card_dismiss">Not now</string>
@@ -341,4 +341,13 @@
     <string name="pro_sounds_title">6 new sounds</string>
     <string name="pro_sounds_text">Stream, night crickets, fan, train, typing and rain on a tent. Listen to each one for 10 seconds before buying.</string>
     <string name="cd_pro_sound">%1$s, Pro sound</string>
+    <string name="theme_lavender">Lavender</string>
+    <string name="theme_mint">Mint</string>
+    <string name="theme_coral">Coral</string>
+    <string name="theme_sand">Sand</string>
+    <string name="theme_night">Night</string>
+    <string name="theme_cherry">Cherry</string>
+    <string name="cd_pro_theme">%1$s theme, Pro</string>
+    <string name="pro_themes_title">6 new themes</string>
+    <string name="pro_themes_text">Lavender, mint, coral, sand, night and cherry, in light and dark.</string>
 </resources>

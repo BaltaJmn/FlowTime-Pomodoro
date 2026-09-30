@@ -290,7 +290,7 @@
     <string name="pro_restore_nothing">इस Google खाते में Pro नहीं मिला। कनेक्शन जाँचें।</string>
     <string name="pro_thanks_text">आपके पास FlowTime Pro है: Pro की हर चीज़ अनलॉक है। FlowTime का साथ देने के लिए धन्यवाद।</string>
     <string name="pro_see">Pro देखें</string>
-    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग, कार्य और मिक्स, 6 नई ध्वनियाँ, और अपने-आप \'परेशान न करें\'। एक बार भुगतान, कोई सदस्यता नहीं।</string>
+    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग, कार्य और मिक्स, 6 नई ध्वनियाँ, 6 नई थीम, और अपने-आप \'परेशान न करें\'। एक बार भुगतान, कोई सदस्यता नहीं।</string>
     <string name="pro_settings_owned">आपके पास Pro है। FlowTime का साथ देने के लिए धन्यवाद।</string>
     <string name="pro_card_text">Pro के साथ देखें कि आप किस समय और किस पर सबसे अच्छा ध्यान लगाते हैं।</string>
     <string name="pro_card_dismiss">अभी नहीं</string>
@@ -337,4 +337,13 @@
     <string name="pro_sounds_title">6 नई ध्वनियाँ</string>
     <string name="pro_sounds_text">झरना, रात के झींगुर, पंखा, रेलगाड़ी, टाइपिंग और तंबू पर बारिश। खरीदने से पहले हर एक 10 सेकंड सुन सकते हैं।</string>
     <string name="cd_pro_sound">%1$s, Pro ध्वनि</string>
+    <string name="theme_lavender">लैवेंडर</string>
+    <string name="theme_mint">पुदीना</string>
+    <string name="theme_coral">मूंगा</string>
+    <string name="theme_sand">रेत</string>
+    <string name="theme_night">रात</string>
+    <string name="theme_cherry">चेरी</string>
+    <string name="cd_pro_theme">%1$s थीम, Pro</string>
+    <string name="pro_themes_title">6 नई थीम</string>
+    <string name="pro_themes_text">लैवेंडर, पुदीना, मूंगा, रेत, रात और चेरी, हल्के और गहरे रंग में।</string>
 </resources>
