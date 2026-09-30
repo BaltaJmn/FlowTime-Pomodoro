@@ -22,6 +22,7 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
 import com.baltajmn.flowtime.data.goal.GoalChange
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.timer.TimerMode
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
@@ -68,6 +69,7 @@ class DefaultBackupRepository(
     private val appearance: AppearanceRepository,
     private val ambience: Ambience,
     private val goals: GoalRepository,
+    private val reminders: ReminderRepository,
     private val appVersion: String,
     private val clock: () -> Long = System::currentTimeMillis
 ) : BackupRepository {
@@ -143,7 +145,8 @@ class DefaultBackupRepository(
             .filterValues { it != UNSET },
         dailyGoal = goals.history.value
             .map { BackupGoalChange(it.from.toString(), it.minutes) }
-            .takeIf { it.isNotEmpty() }
+            .takeIf { it.isNotEmpty() },
+        reminder = reminders.reminder.value
     )
 
     // Un valor que esta versión no conoce (un tema que ya no existe) se salta y se queda el actual.
@@ -172,6 +175,7 @@ class DefaultBackupRepository(
                 .map { GoalChange(LocalDate.parse(it.from), it.minutes) }
             goals.restore(history)
         }
+        settings.reminder?.takeIf { it.minuteOfDay in 0 until MAX_MINUTES }?.let(reminders::set)
         // Por Ambience y no directamente a las preferencias: tiene los volúmenes en memoria.
         settings.soundVolumes.forEach { (name, volume) ->
             PlayerType.entries.named(name)?.let { ambience.setVolume(it, volume.coerceIn(0f, 1f)) }

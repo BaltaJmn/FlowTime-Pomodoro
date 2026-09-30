@@ -51,7 +51,7 @@ class SessionNotification(
         val snapshot = engine.snapshot(state)
         val builder = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(state.mode.icon)
-            .setContentTitle(context.getString(title(state)))
+            .setContentTitle(context.getString(state.title))
             .setSubText(subText(state))
             .setContentIntent(openTimer(state.mode))
             .setOngoing(true)
@@ -148,12 +148,6 @@ class SessionNotification(
         return listOfNotNull(context.getString(state.mode.label), tag?.name).joinToString(" · ")
     }
 
-    private fun title(state: FocusState) = when {
-        state.isPaused -> R.string.time_title_paused
-        state.phase == Phase.BREAK -> R.string.time_title_resting
-        else -> R.string.time_title_working
-    }
-
     private fun openTimer(mode: TimerMode) = PendingIntent.getActivity(
         context,
         0,
@@ -198,19 +192,28 @@ class SessionNotification(
             intent.removeExtra(EXTRA_OPEN_TIMER)
             return TimerMode.entries.firstOrNull { it.name == name }
         }
-
-        private val TimerMode.label
-            get() = when (this) {
-                TimerMode.POMODORO -> R.string.mode_pomodoro
-                TimerMode.FLOW_TIME -> R.string.mode_flow_time
-                TimerMode.PERCENTAGE -> R.string.mode_percentage
-            }
-
-        private val TimerMode.icon
-            get() = when (this) {
-                TimerMode.POMODORO -> R.drawable.ic_pomodoro
-                TimerMode.FLOW_TIME -> R.drawable.ic_flowtime
-                TimerMode.PERCENTAGE -> R.drawable.ic_percentage
-            }
     }
 }
+
+/** Trabajando, descansando o en pausa. */
+internal val FocusState.title
+    get() = when {
+        isPaused -> R.string.time_title_paused
+        phase == Phase.BREAK -> R.string.time_title_resting
+        else -> R.string.time_title_working
+    }
+
+/** El nombre y el icono monocromo de cada modo, para la notificación, el widget y el botón rápido. */
+internal val TimerMode.label
+    get() = when (this) {
+        TimerMode.POMODORO -> R.string.mode_pomodoro
+        TimerMode.FLOW_TIME -> R.string.mode_flow_time
+        TimerMode.PERCENTAGE -> R.string.mode_percentage
+    }
+
+internal val TimerMode.icon
+    get() = when (this) {
+        TimerMode.POMODORO -> R.drawable.ic_pomodoro
+        TimerMode.FLOW_TIME -> R.drawable.ic_flowtime
+        TimerMode.PERCENTAGE -> R.drawable.ic_percentage
+    }

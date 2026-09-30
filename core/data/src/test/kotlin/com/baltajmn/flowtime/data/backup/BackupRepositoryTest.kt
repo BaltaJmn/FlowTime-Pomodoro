@@ -18,6 +18,8 @@ import com.baltajmn.flowtime.data.fakes.FakeDataProvider
 import com.baltajmn.flowtime.data.fakes.FakeSessionRepository
 import com.baltajmn.flowtime.data.goal.GoalChange
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.reminder.Reminder
+import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.timer.TimerMode
 import io.mockk.mockk
 import io.mockk.verify
@@ -83,12 +85,14 @@ class BackupRepositoryTest {
         // De verdad no se puede: el mezclador abre la salida de audio de Android.
         val ambience = mockk<Ambience>(relaxed = true)
         val goals = GoalRepository(prefs, FakeSessionRepository())
+        val reminders = ReminderRepository(prefs)
         val backups = DefaultBackupRepository(
             dao = dao,
             dataProvider = prefs,
             appearance = appearance,
             ambience = ambience,
             goals = goals,
+            reminders = reminders,
             appVersion = "3.0",
             clock = { NOW }
         )
@@ -146,6 +150,7 @@ class BackupRepositoryTest {
             prefs.setFloat(PlayerType.RAIN.name, 0.8f)
             goals.setGoal(45, LocalDate.of(2026, 1, 10))
             goals.setGoal(90, LocalDate.of(2026, 9, 1))
+            reminders.set(Reminder(enabled = true, minuteOfDay = 7 * 60))
         }
         val new = Device()
 
@@ -173,6 +178,7 @@ class BackupRepositoryTest {
                 listOf(GoalChange(LocalDate.of(2026, 1, 10), 45), GoalChange(LocalDate.of(2026, 9, 1), 90)),
                 goals.history.value
             )
+            assertEquals(Reminder(enabled = true, minuteOfDay = 7 * 60), reminders.reminder.value)
             // Solo el volumen que se tocó, y por Ambience: el panel no tiene que esperar a reiniciar.
             verify(exactly = 1) { ambience.setVolume(any(), any()) }
             verify { ambience.setVolume(PlayerType.RAIN, 0.8f) }

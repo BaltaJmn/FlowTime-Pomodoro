@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -435,7 +436,7 @@ private fun ProStreakCard(days: Int, onOpen: () -> Unit, onDismiss: () -> Unit) 
                 )
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(R.string.pro_card_title, days),
+                        text = pluralStringResource(R.plurals.streak_days, days, days),
                         style = MaterialTheme.typography.titleSmall
                     )
                     Text(

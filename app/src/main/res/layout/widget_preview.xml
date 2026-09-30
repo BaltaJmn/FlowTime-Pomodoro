@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- La vista previa en el selector de widgets (Android 12 o posterior): el widget mediano, parado.
+     Un widget no tiene AppCompat: app:tint no existe aquí. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_preview_background"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="25:00"
+        android:textColor="#FF1A1C20"
+        android:textSize="36sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@drawable/widget_preview_button"
+        android:contentDescription="@null"
+        android:padding="11dp"
+        android:src="@drawable/ic_play"
+        android:tint="#FFFFFFFF"
+        tools:ignore="UseAppTint" />
+</LinearLayout>

@@ -296,7 +296,18 @@
     <string name="pro_see">See Pro</string>
     <string name="pro_settings_text">Advanced stats, CSV export, and unlimited tags and tasks. One-time payment, no subscription.</string>
     <string name="pro_settings_owned">You have Pro. Thanks for supporting FlowTime.</string>
-    <string name="pro_card_title">%1$d days in a row</string>
     <string name="pro_card_text">With Pro you can see at what times and on what you focus best.</string>
     <string name="pro_card_dismiss">Not now</string>
+    <string name="widget_description">Start, pause and stop a session, with today\'s goal and your streak.</string>
+    <string name="tile_ends_at">ends at %1$s</string>
+    <string name="tile_since">since %1$s</string>
+    <string name="settings_quick_tile">Quick settings button</string>
+    <string name="settings_quick_tile_button">Add</string>
+    <string name="reminder_title">Daily reminder</string>
+    <string name="reminder_text">A reminder at the time you choose, if you haven\'t reached your goal yet.</string>
+    <string name="channel_reminder">Reminders</string>
+    <string name="reminder_left">%1$s left to reach your goal</string>
+    <string name="reminder_streak">You\'re on a %1$d-day streak. Keep it going?</string>
+    <string name="reminder_short">A short session?</string>
+    <string name="reminder_start">Start now</string>
 </resources>

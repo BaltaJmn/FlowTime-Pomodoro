@@ -1,11 +1,13 @@
 package com.baltajmn.flowtime.navigation.main
 
 import android.content.Intent
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.util.Consumer
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,6 +20,7 @@ import com.baltajmn.flowtime.features.screens.focus.FocusScreen
 import com.baltajmn.flowtime.features.screens.settings.SettingsScreen
 import com.baltajmn.flowtime.features.screens.stats.StatsScreen
 import com.baltajmn.flowtime.features.screens.todoList.TodoListScreen
+import com.baltajmn.flowtime.session.FocusTileService
 import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.ui.FlowTimeAppState
 
@@ -47,11 +50,17 @@ fun MainGraph(
         }
 
         composable(route = Settings.route) {
+            val context = LocalContext.current
             SettingsScreen(
                 listState = settingsState,
                 navigateToIntro = appState::navigateToOnBoard,
                 showSound = showSound,
-                onSoundChange = onSoundChange
+                onSoundChange = onSoundChange,
+                onAddQuickTile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    { FocusTileService.requestAdd(context) }
+                } else {
+                    null
+                }
             )
         }
     }

@@ -302,7 +302,18 @@
     <string name="pro_see">Узнать о Pro</string>
     <string name="pro_settings_text">Расширенная статистика, экспорт в CSV и неограниченные метки и задачи. Разовая оплата, без подписки.</string>
     <string name="pro_settings_owned">У вас Pro. Спасибо за поддержку FlowTime.</string>
-    <string name="pro_card_title">Серия: %1$d дн. подряд</string>
     <string name="pro_card_text">С Pro видно, в какие часы и над чем вам лучше всего работается.</string>
     <string name="pro_card_dismiss">Не сейчас</string>
+    <string name="widget_description">Запускайте, ставьте на паузу и останавливайте сессию, с целью на сегодня и вашей серией.</string>
+    <string name="tile_ends_at">закончится в %1$s</string>
+    <string name="tile_since">с %1$s</string>
+    <string name="settings_quick_tile">Кнопка в быстрых настройках</string>
+    <string name="settings_quick_tile_button">Добавить</string>
+    <string name="reminder_title">Ежедневное напоминание</string>
+    <string name="reminder_text">Напоминание в выбранное время, если цель ещё не достигнута.</string>
+    <string name="channel_reminder">Напоминания</string>
+    <string name="reminder_left">До цели осталось %1$s</string>
+    <string name="reminder_streak">Ваша серия: %1$d дн. Продолжим?</string>
+    <string name="reminder_short">Короткая сессия?</string>
+    <string name="reminder_start">Начать сейчас</string>
 </resources>

@@ -15,6 +15,8 @@ import com.baltajmn.flowtime.data.backup.BackupRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
+import com.baltajmn.flowtime.data.reminder.Reminder
+import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.tag.TagResult
@@ -33,7 +35,8 @@ class SettingsViewModel(
     private val files: DocumentFiles,
     private val goals: GoalRepository,
     private val tags: TagRepository,
-    private val purchases: PurchasesRepository
+    private val purchases: PurchasesRepository,
+    private val reminders: ReminderRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
@@ -52,6 +55,9 @@ class SettingsViewModel(
             }
         }
         viewModelScope.launch {
+            reminders.reminder.collect { reminder -> _uiState.update { it.copy(reminder = reminder) } }
+        }
+        viewModelScope.launch {
             combine(tags.active, tags.archived, ::Pair).collect { (active, archived) ->
                 updateTags { it.copy(active = active, archived = archived) }
             }
@@ -62,6 +68,8 @@ class SettingsViewModel(
             }
         }
     }
+
+    fun setReminder(reminder: Reminder) = reminders.set(reminder)
 
     fun restorePurchases() {
         updatePurchases { it.copy(restoring = true) }

@@ -5,6 +5,7 @@ import com.baltajmn.flowtime.data.backup.Backup
 import com.baltajmn.flowtime.data.backup.RestoreResult
 import com.baltajmn.flowtime.data.goal.DailyGoal
 import com.baltajmn.flowtime.data.goal.Streak
+import com.baltajmn.flowtime.data.reminder.Reminder
 import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.features.screens.pro.ProAccess
 
@@ -15,6 +16,7 @@ data class SettingsState(
     val appearance: Appearance = Appearance(),
     val backup: BackupUiState = BackupUiState(),
     val goal: GoalUiState = GoalUiState(),
+    val reminder: Reminder = Reminder(),
     val tags: TagsUiState = TagsUiState(),
     val purchases: PurchasesUiState = PurchasesUiState()
 )

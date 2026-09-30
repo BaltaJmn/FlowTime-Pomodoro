@@ -53,5 +53,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.navigation.suite)
     implementation(libs.review.ktx)
+    implementation(libs.glance.appwidget)
+    implementation(libs.glance.material3)
     implementation(libs.androidx.foundation.layout.android)
 }

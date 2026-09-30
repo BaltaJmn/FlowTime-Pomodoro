@@ -1,5 +1,7 @@
 package com.baltajmn.flowtime.data.backup
 
+import com.baltajmn.flowtime.data.reminder.Reminder
+
 import kotlinx.serialization.Required
 import kotlinx.serialization.Serializable
 
@@ -85,7 +87,8 @@ data class BackupSettings(
     /** Por el nombre del sonido, de 0 a 1. */
     val soundVolumes: Map<String, Float> = emptyMap(),
     /** El objetivo diario con su historial: cada día se mide con el que tenía entonces. */
-    val dailyGoal: List<BackupGoalChange>? = null
+    val dailyGoal: List<BackupGoalChange>? = null,
+    val reminder: Reminder? = null
 )
 
 @Serializable

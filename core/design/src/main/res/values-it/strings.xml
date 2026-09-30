@@ -295,7 +295,18 @@
     <string name="pro_see">Scopri Pro</string>
     <string name="pro_settings_text">Statistiche avanzate, esportazione CSV, ed etichette e attività illimitate. Pagamento unico, senza abbonamento.</string>
     <string name="pro_settings_owned">Hai Pro. Grazie per il tuo supporto a FlowTime.</string>
-    <string name="pro_card_title">%1$d giorni di fila</string>
     <string name="pro_card_text">Con Pro vedi in quali ore e su cosa ti concentri meglio.</string>
     <string name="pro_card_dismiss">Non ora</string>
+    <string name="widget_description">Avvia, metti in pausa e ferma una sessione, con l\'obiettivo di oggi e la tua serie.</string>
+    <string name="tile_ends_at">finisce alle %1$s</string>
+    <string name="tile_since">dalle %1$s</string>
+    <string name="settings_quick_tile">Pulsante nelle impostazioni rapide</string>
+    <string name="settings_quick_tile_button">Aggiungi</string>
+    <string name="reminder_title">Promemoria giornaliero</string>
+    <string name="reminder_text">Un promemoria all\'ora che scegli, se non hai ancora raggiunto l\'obiettivo.</string>
+    <string name="channel_reminder">Promemoria</string>
+    <string name="reminder_left">Ti mancano %1$s per l\'obiettivo</string>
+    <string name="reminder_streak">Sei a una serie di %1$d giorni. La mantieni?</string>
+    <string name="reminder_short">Una sessione breve?</string>
+    <string name="reminder_start">Inizia ora</string>
 </resources>

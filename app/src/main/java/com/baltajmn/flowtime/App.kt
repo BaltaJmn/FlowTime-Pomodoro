@@ -12,7 +12,10 @@ import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.service.SoundService
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
+import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
+import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
+import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.repository.SessionRepository
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
@@ -21,9 +24,13 @@ import com.baltajmn.flowtime.data.timer.PhaseChange
 import com.baltajmn.flowtime.di.CoreModules
 import com.baltajmn.flowtime.di.FeaturesModule
 import com.baltajmn.flowtime.goal.GoalWatcher
+import com.baltajmn.flowtime.reminder.DailyReminder
+import com.baltajmn.flowtime.session.FocusTileService
 import com.baltajmn.flowtime.session.PhaseAlarm
 import com.baltajmn.flowtime.session.SessionNotification
+import com.baltajmn.flowtime.widget.FocusWidget
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
@@ -47,6 +54,7 @@ class App : Application() {
         val engine = get<FocusEngine>()
         val notification = get<SessionNotification>()
         val alarm = get<PhaseAlarm>()
+        val reminder = get<DailyReminder>()
         engine.onPhaseChange = ::alert
         val scope = MainScope()
         engine.runIn(scope)
@@ -54,9 +62,22 @@ class App : Application() {
             engine.state.collect { state ->
                 notification.update(state)
                 alarm.schedule(state)
+                FocusTileService.refresh(this@App)
+                if (state.isActive) reminder.dismiss()
             }
         }
         get<GoalWatcher>().watch(scope)
+        // Al arrancar (también tras actualizar la app) y con cada cambio en Ajustes.
+        scope.launch { get<ReminderRepository>().reminder.collect { reminder.schedule() } }
+        // El widget, con cada cambio de la sesión, del progreso de hoy (también a medianoche) o del tema.
+        scope.launch {
+            combine(
+                engine.state,
+                get<GoalRepository>().today,
+                get<AppearanceRepository>().appearance
+            ) { _, _, _ -> }
+                .collect { FocusWidget.update(this@App) }
+        }
         // Configura RevenueCat. Después, sus propios avisos lo tienen al día al volver a la app.
         val purchases = get<PurchasesRepository>()
         scope.launch { purchases.refresh() }

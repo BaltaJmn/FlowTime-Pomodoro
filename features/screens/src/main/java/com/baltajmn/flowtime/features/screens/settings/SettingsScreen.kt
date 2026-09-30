@@ -94,6 +94,8 @@ fun SettingsScreen(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToIntro: () -> Unit,
+    /** Pide al sistema poner el botón en los ajustes rápidos; null antes de Android 13. */
+    onAddQuickTile: (() -> Unit)? = null,
     proLauncher: ProLauncher = koinInject()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -105,6 +107,7 @@ fun SettingsScreen(
         showSound = showSound,
         onSoundChange = onSoundChange,
         navigateToIntro = navigateToIntro,
+        onAddQuickTile = onAddQuickTile,
         onOpenPro = proLauncher::open
     )
 }
@@ -117,6 +120,7 @@ fun AnimatedSettingsContent(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToIntro: () -> Unit,
+    onAddQuickTile: (() -> Unit)?,
     onOpenPro: (ProFeature?) -> Unit
 ) {
     AnimatedContent(
@@ -133,6 +137,7 @@ fun AnimatedSettingsContent(
                 showSound = showSound,
                 onSoundChange = onSoundChange,
                 navigateToIntro = navigateToIntro,
+                onAddQuickTile = onAddQuickTile,
                 onOpenPro = onOpenPro
             )
         }
@@ -147,7 +152,8 @@ fun SettingsContent(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToIntro: () -> Unit,
-    onOpenPro: (ProFeature?) -> Unit
+    onOpenPro: (ProFeature?) -> Unit,
+    onAddQuickTile: (() -> Unit)? = null
 ) {
     var showSupport by rememberSaveable { mutableStateOf(false) }
     if (showSupport) SupportSheet(onDismiss = { showSupport = false })
@@ -160,6 +166,8 @@ fun SettingsContent(
     ) {
         item { Spacer(modifier = Modifier.height(80.dp)) }
         item { GoalCard(goal = state.goal, onChange = viewModel::changeGoal) }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
+        item { ReminderCard(reminder = state.reminder, onChange = viewModel::setReminder) }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
             TagsCard(
@@ -232,6 +240,14 @@ fun SettingsContent(
                         button = R.string.settings_rate_button,
                         onClick = { openStoreListing(context) }
                     )
+
+                    onAddQuickTile?.let {
+                        ButtonRow(
+                            text = R.string.settings_quick_tile,
+                            button = R.string.settings_quick_tile_button,
+                            onClick = it
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(8.dp))
 

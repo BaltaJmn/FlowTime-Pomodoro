@@ -16,6 +16,8 @@ import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.goal.DayProgress
 import com.baltajmn.flowtime.data.goal.Streak
+import com.baltajmn.flowtime.data.reminder.Reminder
+import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.stats.PeriodKind
 import com.baltajmn.flowtime.data.stats.StatsPeriod
 import com.baltajmn.flowtime.data.stats.StatsSummary
@@ -141,7 +143,8 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
             DocumentFiles(RuntimeEnvironment.getApplication()),
             GoalRepository(prefs, sessions, days = flowOf(LocalDate.now())),
             FakeTags("Estudio", "Trabajo", "Lectura", "Casa"),
-            FakePurchases(supporter = true)
+            FakePurchases(supporter = true),
+            ReminderRepository(prefs).apply { set(Reminder(enabled = true)) }
         )
         compose.capture("settings_$mode", dark = dark) {
             val state by viewModel.uiState.collectAsState()

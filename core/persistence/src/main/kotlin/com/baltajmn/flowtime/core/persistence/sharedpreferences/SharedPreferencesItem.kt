@@ -26,4 +26,5 @@ enum class SharedPreferencesItem {
     IS_PRO,
     IS_SUPPORTER,
     PRO_CARD_DISMISSED_AT,
+    DAILY_REMINDER,
 }

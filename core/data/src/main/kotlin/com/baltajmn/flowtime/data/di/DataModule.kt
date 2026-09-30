@@ -11,6 +11,7 @@ import com.baltajmn.flowtime.data.pro.REVENUECAT_API_KEY
 import com.baltajmn.flowtime.data.pro.RevenueCatStore
 import com.baltajmn.flowtime.data.repository.DefaultSessionRepository
 import com.baltajmn.flowtime.data.repository.SessionRepository
+import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.review.ReviewPolicy
 import com.baltajmn.flowtime.data.stats.DefaultStatsRepository
 import com.baltajmn.flowtime.data.stats.StatsRepository
@@ -36,12 +37,14 @@ val DataModule = module {
             appearance = get(),
             ambience = get(),
             goals = get(),
+            reminders = get(),
             appVersion = version.orEmpty()
         )
     }
     // A mano: el constructor tiene parámetros opcionales para los tests que Koin no sabría resolver.
     single<SessionRepository> { DefaultSessionRepository(get(), get()) }
     single { GoalRepository(get(), get()) }
+    single { ReminderRepository(get()) }
     // Crearlo configura RevenueCat; App lo pide al arrancar. Mientras ProFeatures esté apagado, no
     // hay límites aunque no se tenga Pro.
     single<PurchasesRepository> {

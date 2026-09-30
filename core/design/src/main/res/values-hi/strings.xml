@@ -292,7 +292,18 @@
     <string name="pro_see">Pro देखें</string>
     <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, और असीमित टैग और कार्य। एक बार भुगतान, कोई सदस्यता नहीं।</string>
     <string name="pro_settings_owned">आपके पास Pro है। FlowTime का साथ देने के लिए धन्यवाद।</string>
-    <string name="pro_card_title">लगातार %1$d दिन</string>
     <string name="pro_card_text">Pro के साथ देखें कि आप किस समय और किस पर सबसे अच्छा ध्यान लगाते हैं।</string>
     <string name="pro_card_dismiss">अभी नहीं</string>
+    <string name="widget_description">सत्र शुरू करें, रोकें और बंद करें, आज के लक्ष्य और आपके लगातार दिनों के साथ।</string>
+    <string name="tile_ends_at">%1$s पर खत्म</string>
+    <string name="tile_since">%1$s से</string>
+    <string name="settings_quick_tile">त्वरित सेटिंग्स में बटन</string>
+    <string name="settings_quick_tile_button">जोड़ें</string>
+    <string name="reminder_title">दैनिक रिमाइंडर</string>
+    <string name="reminder_text">आपके चुने समय पर एक रिमाइंडर, अगर लक्ष्य अभी पूरा नहीं हुआ है।</string>
+    <string name="channel_reminder">रिमाइंडर</string>
+    <string name="reminder_left">लक्ष्य तक पहुँचने में %1$s बाकी</string>
+    <string name="reminder_streak">आपके लगातार %1$d दिन हो गए हैं। जारी रखें?</string>
+    <string name="reminder_short">एक छोटा सत्र?</string>
+    <string name="reminder_start">अभी शुरू करें</string>
 </resources>
