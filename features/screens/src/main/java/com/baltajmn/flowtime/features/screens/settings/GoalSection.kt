@@ -95,7 +95,7 @@ private fun StepButton(text: String, description: String, enabled: Boolean, onCl
 }
 
 @Composable
-private fun streakText(streak: Streak): String {
+internal fun streakText(streak: Streak): String {
     val best = stringResource(R.string.streak_best, streak.best)
     if (streak.current == 0) {
         val none = stringResource(R.string.streak_none)

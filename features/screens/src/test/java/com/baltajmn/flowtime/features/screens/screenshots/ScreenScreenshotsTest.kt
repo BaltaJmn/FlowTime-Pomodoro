@@ -14,7 +14,13 @@ import com.baltajmn.flowtime.core.design.sound.PlayerType
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.goal.DayProgress
+import com.baltajmn.flowtime.data.goal.Streak
+import com.baltajmn.flowtime.data.stats.PeriodKind
+import com.baltajmn.flowtime.data.stats.StatsPeriod
 import com.baltajmn.flowtime.data.stats.StatsSummary
+import com.baltajmn.flowtime.data.stats.TaskTime
+import com.baltajmn.flowtime.data.stats.level
 import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.data.timer.Phase
@@ -25,15 +31,12 @@ import com.baltajmn.flowtime.features.screens.focus.FocusUiState
 import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
 import com.baltajmn.flowtime.features.screens.fakes.FakePurchases
 import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
-import com.baltajmn.flowtime.features.screens.fakes.FakeStats
 import com.baltajmn.flowtime.features.screens.fakes.FakeTags
 import com.baltajmn.flowtime.features.screens.fakes.FakeTasks
-import com.baltajmn.flowtime.features.screens.history.HistoryContent
-import com.baltajmn.flowtime.features.screens.history.HistoryViewModel
-import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
-import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTime
-import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboard
-import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboard
+import com.baltajmn.flowtime.features.screens.pro.ProAccess
+import com.baltajmn.flowtime.features.screens.stats.StatsContent
+import com.baltajmn.flowtime.features.screens.stats.StatsDetails
+import com.baltajmn.flowtime.features.screens.stats.StatsUiState
 import com.baltajmn.flowtime.features.screens.settings.SettingsContent
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.support.SupportContent
@@ -130,7 +133,6 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
         val sessions = sessions()
         val viewModel = SettingsViewModel(
             prefs,
-            GetAllStudyTime(sessions),
             AppearanceRepository(prefs),
             FakeBackups(lastExportAt = System.currentTimeMillis()),
             DocumentFiles(RuntimeEnvironment.getApplication()),
@@ -151,29 +153,86 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
         }
     }
 
-    @Test
-    fun history() {
-        val sessions = sessions()
-        val viewModel = HistoryViewModel(
-            GetStudyTime(sessions),
-            GetAllStudyTime(sessions),
-            GetStudyTimeToClipboard(sessions),
-            SetStudyTimeFromClipboard(sessions),
-            FakeStats(
-                StatsSummary(
-                    totalSeconds = 6 * 3600L,
-                    sessions = 9,
-                    averageSessionSeconds = 40 * 60L,
-                    dailyAverageSeconds = 51 * 60L,
-                    bestDay = LocalDate.now(),
-                    bestDaySeconds = 130 * 60L
+    /** Un mes con algo de todo; [pro] decide si lo de Pro se ve abierto o difuminado. */
+    private fun statsState(pro: ProAccess): StatsUiState {
+        val today = LocalDate.now()
+        val period = StatsPeriod(PeriodKind.MONTH)
+        val range = period.range(today)
+        val minutes = listOf(95L, 40L, 130L, 0L, 75L, 20L, 0L, 60L, 45L, 110L)
+        return StatsUiState(
+            loading = false,
+            hasSessions = true,
+            level = level(totalMinutes = 3000),
+            today = DayProgress(today, seconds = 35 * 60L, goalMinutes = 60),
+            streak = Streak(current = 4, best = 9),
+            period = period,
+            range = range,
+            summary = StatsSummary(
+                totalSeconds = 10 * 3600L,
+                sessions = 14,
+                averageSessionSeconds = 43 * 60L,
+                dailyAverageSeconds = 60 * 60L,
+                bestDay = range.start.plusDays(2),
+                bestDaySeconds = 130 * 60L,
+                byDay = minutes.mapIndexed { day, it -> range.start.plusDays(day.toLong()) to it * 60 }.toMap()
+            ),
+            pro = pro,
+            details = StatsDetails(
+                change = 0.12f,
+                byHour = List(24) { hour -> if (hour in 8..22) ((hour * 37) % 11) * 600L else 0L },
+                byMode = listOf(TimerMode.POMODORO to 6 * 3600L, TimerMode.FLOW_TIME to 4 * 3600L),
+                byTag = listOf(1L to 5 * 3600L, 2L to 3 * 3600L, null to 2 * 3600L),
+                topTasks = listOf(
+                    TaskTime(1, "Repasar el tema 4", 3 * 3600L),
+                    TaskTime(2, "Leer 20 páginas", 5400L)
                 )
-            )
+            ),
+            tags = listOf(Tag(1, "Estudio", 0), Tag(2, "Trabajo", 1))
         )
-        compose.capture("history_$mode", dark = dark) {
-            val state by viewModel.uiState.collectAsState()
-            HistoryContent(state = state, viewModel = viewModel, navigateUp = {})
-        }
+    }
+
+    @Test
+    @Config(qualifiers = "+h1700dp")
+    fun stats() = compose.capture("stats_$mode", dark = dark) {
+        StatsContent(
+            state = statsState(ProAccess.OPEN),
+            onPeriod = {},
+            onPrevious = {},
+            onNext = {},
+            onUnlock = {},
+            onCopyHistory = {},
+            onPasteHistory = {},
+            onExportCsv = {}
+        )
+    }
+
+    @Test
+    @Config(qualifiers = "+h1700dp")
+    fun statsLocked() = compose.capture("stats_locked_$mode", dark = dark) {
+        StatsContent(
+            state = statsState(ProAccess.LOCKED),
+            onPeriod = {},
+            onPrevious = {},
+            onNext = {},
+            onUnlock = {},
+            onCopyHistory = {},
+            onPasteHistory = {},
+            onExportCsv = {}
+        )
+    }
+
+    @Test
+    fun statsEmpty() = compose.capture("stats_empty_$mode", dark = dark) {
+        StatsContent(
+            state = StatsUiState(loading = false, today = DayProgress(LocalDate.now(), 0, 60)),
+            onPeriod = {},
+            onPrevious = {},
+            onNext = {},
+            onUnlock = {},
+            onCopyHistory = {},
+            onPasteHistory = {},
+            onExportCsv = {}
+        )
     }
 
     @Test

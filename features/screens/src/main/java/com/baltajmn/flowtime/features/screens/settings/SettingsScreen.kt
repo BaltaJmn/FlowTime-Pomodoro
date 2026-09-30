@@ -8,19 +8,13 @@ import android.os.Build
 import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
 import android.provider.Settings.EXTRA_APP_PACKAGE
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -34,7 +28,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.TextButton
@@ -56,7 +49,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -158,13 +150,6 @@ fun SettingsContent(
         modifier = Modifier.fillMaxSize()
     ) {
         item { Spacer(modifier = Modifier.height(80.dp)) }
-        item {
-            ProgressLevel(
-                userLevel = state.userLevel,
-                progressPercentage = state.progressPercentage
-            )
-        }
-        item { Spacer(modifier = Modifier.height(24.dp)) }
         item { GoalCard(goal = state.goal, onChange = viewModel::changeGoal) }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
@@ -475,77 +460,6 @@ fun SupportCard(
             }
             TextButton(onClick = onRestore, enabled = !state.restoring) {
                 Text(text = stringResource(R.string.restore_purchases))
-            }
-        }
-    }
-}
-
-@SuppressLint("UnusedBoxWithConstraintsScope")
-@Composable
-fun ProgressLevel(
-    userLevel: Long,
-    progressPercentage: Long
-) {
-    Card {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = LocalContext.current.getString(R.string.user_progression_level),
-                style = LargeTitle.copy(fontSize = 26.sp, color = MaterialTheme.colorScheme.primary)
-            )
-
-            var animateWidth by rememberSaveable {
-                mutableStateOf(false)
-            }
-
-            LaunchedEffect(key1 = Unit) {
-                if (animateWidth) return@LaunchedEffect
-                animateWidth = true
-            }
-
-            val width by animateFloatAsState(
-                if (animateWidth) progressPercentage.toFloat() else 0f,
-                label = "",
-                animationSpec = tween(
-                    durationMillis = 1000,
-                    delayMillis = 100,
-                    easing = LinearOutSlowInEasing
-                )
-            )
-
-            // El nivel va encima de la barra y no dentro: en blanco sobre la parte vacía no se leía.
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                text = stringResource(R.string.user_level_short, userLevel),
-                style = SubBody.copy(
-                    fontWeight = FontWeight.W700,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            )
-
-            BoxWithConstraints(
-                Modifier
-                    .padding(vertical = 8.dp)
-                    .clip(RoundedCornerShape(30))
-                    .border(1.dp, MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(30))
-                    .height(24.dp)
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primaryContainer)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .animateContentSize()
-                        .clip(RoundedCornerShape(30))
-                        .height(24.dp)
-                        .fillMaxWidth(fraction = width / 100)
-                        .background(color = MaterialTheme.colorScheme.primary)
-                )
             }
         }
     }

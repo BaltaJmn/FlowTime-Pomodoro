@@ -19,15 +19,12 @@
     <string name="button_break">Перерыв</string>
     <string name="dialog_confirm">Подтвердить</string>
     <string name="dialog_cancel">Отмена</string>
-    <string name="study_history">История</string>
     <string name="go_to_history">Перейти в историю</string>
     <string name="settings_intro">Введение</string>
     <string name="settings_intro_button">Открыть</string>
     <string name="settings_rate">Нравится FlowTime?</string>
     <string name="settings_rate_button">Оценить</string>
     <string name="others">Другие</string>
-    <string name="total_minutes">Всего минут за выбранную неделю</string>
-    <string name="best_day">Лучший день</string>
     <string name="remember">Помни</string>
     <string name="mot_1">Ты сможешь! :)</string>
     <string name="mot_2">Не останавливайся, продолжай! :)</string>
@@ -51,9 +48,6 @@
     <string name="mot_20">Будь стойким, победа твоя! :)</string>
     <string name="percentage_title">Процентный режим: готово</string>
     <string name="percentage_settings_title">Процент отдыха</string>
-    <string name="all_minutes_studying">Всего времени концентрации с нами: %s</string>
-    <string name="export">Экспорт</string>
-    <string name="import_button">Импорт</string>
     <string name="support_developer">Оставить чаевые</string>
     <string name="support_developer_title">Поддержите FlowTime</string>
     <string name="support_developer_description">FlowTime делает один человек. Чаевые помогают развивать приложение и ничего не блокируют: всё бесплатное остаётся бесплатным.</string>
@@ -125,9 +119,6 @@
     <string name="sound_brown">Коричневый шум</string>
     <string name="sound_pink">Розовый шум</string>
     <string name="sound_white">Белый шум</string>
-
-    <string name="cd_previous_week">Предыдущая неделя</string>
-    <string name="cd_next_week">Следующая неделя</string>
     <string name="cd_edit_task">Изменить задачу</string>
     <string name="cd_delete_task">Удалить задачу</string>
     <string name="cd_play_sound">Воспроизвести: %1$s</string>
@@ -277,4 +268,19 @@
     <string name="cd_mode_settings">Настройки режима</string>
     <string name="focus_mode_locked">Остановите сессию, чтобы сменить режим</string>
     <string name="sounds_title">Звуки</string>
+    <string name="stats_year">Год</string>
+    <string name="stats_first_session">Здесь появится ваша первая сессия</string>
+    <string name="stats_change">По сравнению с прошлым периодом</string>
+    <string name="stats_by_hour">По часам</string>
+    <string name="stats_best_hour">Самый продуктивный час: %1$s</string>
+    <string name="stats_by_mode">По режимам</string>
+    <string name="stats_by_tag">По меткам</string>
+    <string name="stats_top_tasks">Задачи, на которые ушло больше всего времени</string>
+    <string name="stats_export_csv">Экспорт в CSV</string>
+    <string name="stats_copy_history">Скопировать историю как текст</string>
+    <string name="stats_paste_history">Вставить историю из текста</string>
+    <string name="stats_csv_saved">Файл CSV сохранён</string>
+    <string name="stats_csv_failed">Не удалось сохранить файл</string>
+    <string name="pro_unlock">Открыть с Pro</string>
+    <string name="more_options">Другие параметры</string>
 </resources>

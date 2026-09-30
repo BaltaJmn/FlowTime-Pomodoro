@@ -15,11 +15,9 @@ import com.baltajmn.flowtime.data.backup.BackupRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
-import com.baltajmn.flowtime.data.stats.level
 import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.tag.TagResult
-import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +27,6 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val dataProvider: DataProvider,
-    private val getAllStudyTimeUseCase: GetAllStudyTimeUseCase,
     private val appearanceRepository: AppearanceRepository,
     private val backupRepository: BackupRepository,
     private val files: DocumentFiles,
@@ -41,7 +38,7 @@ class SettingsViewModel(
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
 
     init {
-        getUserLevel()
+        loadSwitches()
         updateBackup { it.copy(lastExportAt = backupRepository.lastExportAt) }
         viewModelScope.launch {
             appearanceRepository.appearance.collect { appearance ->
@@ -117,18 +114,11 @@ class SettingsViewModel(
 
     fun changeGoal(delta: Int) = goals.setGoal(goals.currentGoal + delta)
 
-    private fun getUserLevel() {
-        viewModelScope.launch {
-            val level = level(totalMinutes = getAllStudyTimeUseCase())
-            _uiState.update {
-                it.copy(
-                    userLevel = level.level,
-                    progressPercentage = level.progressPercentage,
-                    showAlert = dataProvider.getBoolean(SHOW_ALERT, true),
-                    keepScreenOn = dataProvider.getBoolean(KEEP_SCREEN_ON, true)
-                )
-            }
-        }
+    private fun loadSwitches() = _uiState.update {
+        it.copy(
+            showAlert = dataProvider.getBoolean(SHOW_ALERT, true),
+            keepScreenOn = dataProvider.getBoolean(KEEP_SCREEN_ON, true)
+        )
     }
 
     fun setTheme(theme: AppTheme) = appearanceRepository.setTheme(theme)
@@ -175,7 +165,8 @@ class SettingsViewModel(
                 onFailure = { BackupMessage.ImportFailed }
             )
             updateBackup { it.copy(message = message) }
-            getUserLevel()
+            // Con los ajustes de la copia, los interruptores pueden haber cambiado.
+            loadSwitches()
         }
     }
 

@@ -18,9 +18,16 @@ class StatsRepositoryTest {
     private val today = LocalDate.of(2026, 9, 29)
     private val week = StatsPeriod(PeriodKind.WEEK)
 
-    private fun session(day: LocalDate, hour: Int, minutes: Long, mode: String = "POMODORO", tagId: Long? = null) {
+    private fun session(
+        day: LocalDate,
+        hour: Int,
+        minutes: Long,
+        mode: String = "POMODORO",
+        tagId: Long? = null,
+        taskId: Long? = null
+    ) {
         val start = day.atTime(hour, 0).toInstant(ZoneOffset.UTC).toEpochMilli()
-        dao.rows += SessionDb(0, start, start + minutes * 60_000, day.toString(), mode, minutes * 60, tagId)
+        dao.rows += SessionDb(0, start, start + minutes * 60_000, day.toString(), mode, minutes * 60, tagId, taskId)
     }
 
     @Test
@@ -90,14 +97,14 @@ class StatsRepositoryTest {
     }
 
     @Test
-    fun `el CSV lleva cada sesion con su etiqueta y escapa las comas`() = runTest {
-        session(today, 9, 25, tagId = 1)
+    fun `el CSV lleva cada sesion con su etiqueta y su tarea y escapa las comas`() = runTest {
+        session(today, 9, 25, tagId = 1, taskId = 7)
 
         val csv = stats.csv(tagNames = mapOf(1L to "Estudio, tema 4"))
 
         assertEquals(
             "startedAt,endedAt,date,mode,tag,task,focusMinutes\n" +
-                "2026-09-29 09:00,2026-09-29 09:25,2026-09-29,POMODORO,\"Estudio, tema 4\",,25.0\n",
+                "2026-09-29 09:00,2026-09-29 09:25,2026-09-29,POMODORO,\"Estudio, tema 4\",7,25.0\n",
             csv
         )
     }

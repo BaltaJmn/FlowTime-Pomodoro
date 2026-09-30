@@ -19,15 +19,12 @@
     <string name="button_break">Pause</string>
     <string name="dialog_confirm">Bestätigen</string>
     <string name="dialog_cancel">Abbrechen</string>
-    <string name="study_history">Verlauf</string>
     <string name="go_to_history">Zum Verlauf</string>
     <string name="settings_intro">Einführung</string>
     <string name="settings_intro_button">Ansehen</string>
     <string name="settings_rate">Gefällt dir FlowTime?</string>
     <string name="settings_rate_button">Bewerten</string>
     <string name="others">Andere</string>
-    <string name="total_minutes">Gesamtminuten der ausgewählten Woche</string>
-    <string name="best_day">Bester Tag</string>
     <string name="remember">Denk dran</string>
     <string name="mot_1">Du schaffst das! :)</string>
     <string name="mot_2">Hör nicht auf, mach weiter :)</string>
@@ -51,9 +48,6 @@
     <string name="mot_20">Bleib standhaft, der Triumph gehört dir! :)</string>
     <string name="percentage_title">Prozent-Modus bereit</string>
     <string name="percentage_settings_title">Pausenanteil</string>
-    <string name="all_minutes_studying">Du hast dich insgesamt %s mit uns konzentriert</string>
-    <string name="export">Exportieren</string>
-    <string name="import_button">Importieren</string>
     <string name="support_developer">Trinkgeld geben</string>
     <string name="support_developer_title">FlowTime unterstützen</string>
     <string name="support_developer_description">FlowTime wird von einer einzigen Person entwickelt. Trinkgelder helfen, die App weiter zu verbessern, und sperren nie etwas: Alles Kostenlose bleibt kostenlos.</string>
@@ -125,9 +119,6 @@
     <string name="sound_brown">Braunes Rauschen</string>
     <string name="sound_pink">Rosa Rauschen</string>
     <string name="sound_white">Weißes Rauschen</string>
-
-    <string name="cd_previous_week">Vorherige Woche</string>
-    <string name="cd_next_week">Nächste Woche</string>
     <string name="cd_edit_task">Aufgabe bearbeiten</string>
     <string name="cd_delete_task">Aufgabe löschen</string>
     <string name="cd_play_sound">%1$s abspielen</string>
@@ -267,4 +258,19 @@
     <string name="cd_mode_settings">Einstellungen des Modus</string>
     <string name="focus_mode_locked">Beende die Sitzung, um den Modus zu wechseln</string>
     <string name="sounds_title">Klänge</string>
+    <string name="stats_year">Jahr</string>
+    <string name="stats_first_session">Deine erste Sitzung erscheint hier</string>
+    <string name="stats_change">Im Vergleich zum Vorzeitraum</string>
+    <string name="stats_by_hour">Nach Tageszeit</string>
+    <string name="stats_best_hour">Stunde mit dem meisten Fokus: %1$s</string>
+    <string name="stats_by_mode">Nach Modus</string>
+    <string name="stats_by_tag">Nach Label</string>
+    <string name="stats_top_tasks">Aufgaben mit der meisten Zeit</string>
+    <string name="stats_export_csv">Als CSV exportieren</string>
+    <string name="stats_copy_history">Verlauf als Text kopieren</string>
+    <string name="stats_paste_history">Verlauf aus Text einfügen</string>
+    <string name="stats_csv_saved">CSV-Datei gespeichert</string>
+    <string name="stats_csv_failed">Die Datei konnte nicht gespeichert werden</string>
+    <string name="pro_unlock">Mit Pro freischalten</string>
+    <string name="more_options">Weitere Optionen</string>
 </resources>

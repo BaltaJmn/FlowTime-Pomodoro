@@ -2,18 +2,17 @@ package com.baltajmn.flowtime.features.screens.di
 
 import com.baltajmn.flowtime.features.screens.edit.EditViewModel
 import com.baltajmn.flowtime.features.screens.focus.FocusViewModel
-import com.baltajmn.flowtime.features.screens.history.HistoryViewModel
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
-import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboard
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboardUseCase
-import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboard
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboardUseCase
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel
+import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.splash.SplashViewModel
+import com.baltajmn.flowtime.features.screens.stats.StatsViewModel
 import com.baltajmn.flowtime.features.screens.support.SupportViewModel
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -36,7 +35,6 @@ private val ScreensDataModule: Module
 
 private val ScreensDomainModule: Module
     get() = module {
-        factoryOf(::GetStudyTime) bind GetStudyTimeUseCase::class
         factoryOf(::GetAllStudyTime) bind GetAllStudyTimeUseCase::class
         factoryOf(::SetStudyTimeFromClipboard) bind SetStudyTimeFromClipboardUseCase::class
         factoryOf(::GetStudyTimeToClipboard) bind GetStudyTimeToClipboardUseCase::class
@@ -49,8 +47,9 @@ private val ScreensPresentationModule: Module
         viewModelOf(::SettingsViewModel)
         // A mano: el constructor tiene un parámetro opcional para los tests que Koin no sabría resolver.
         viewModel { TodoListViewModel(get()) }
-        viewModel { HistoryViewModel(get(), get(), get(), get(), get()) }
+        viewModel { StatsViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModelOf(::OnBoardViewModel)
         viewModelOf(::SplashViewModel)
         viewModelOf(::SupportViewModel)
+        single { ProLauncher() }
     }

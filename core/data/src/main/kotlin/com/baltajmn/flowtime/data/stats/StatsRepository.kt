@@ -70,8 +70,8 @@ interface StatsRepository {
     /** Las tareas con más tiempo del periodo (#40), la primera la que más. Es de Pro. */
     suspend fun topTasks(period: StatsPeriod, today: LocalDate): List<TaskTime>
 
-    /** Todas las sesiones en CSV, con el nombre de su etiqueta y de su tarea. Es de Pro (#38). */
-    suspend fun csv(tagNames: Map<Long, String>, taskTitles: Map<Long, String> = emptyMap()): String
+    /** Todas las sesiones en CSV, con el nombre de su etiqueta y el título de su tarea. Es de Pro (#38). */
+    suspend fun csv(tagNames: Map<Long, String>): String
 }
 
 class DefaultStatsRepository(
@@ -129,7 +129,9 @@ class DefaultStatsRepository(
             .map { TaskTime(it.taskId, it.title, it.seconds) }
     }
 
-    override suspend fun csv(tagNames: Map<Long, String>, taskTitles: Map<Long, String>): String = buildString {
+    override suspend fun csv(tagNames: Map<Long, String>): String = buildString {
+        // Las tareas borradas no salen: su columna queda vacía.
+        val taskTitles = dao.topTasks(FIRST_DAY, LAST_DAY).associate { it.taskId to it.title }
         appendLine("startedAt,endedAt,date,mode,tag,task,focusMinutes")
         dao.all().forEach { session ->
             appendLine(
@@ -158,5 +160,7 @@ class DefaultStatsRepository(
 
     private companion object {
         val DATE_TIME: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ROOT)
+        const val FIRST_DAY = "0000-01-01"
+        const val LAST_DAY = "9999-12-31"
     }
 }

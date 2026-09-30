@@ -15,8 +15,8 @@ import com.baltajmn.flowtime.core.navigation.MainGraph.Settings
 import com.baltajmn.flowtime.core.navigation.MainGraph.Stats
 import com.baltajmn.flowtime.core.navigation.MainGraph.TodoList
 import com.baltajmn.flowtime.features.screens.focus.FocusScreen
-import com.baltajmn.flowtime.features.screens.history.HistoryScreen
 import com.baltajmn.flowtime.features.screens.settings.SettingsScreen
+import com.baltajmn.flowtime.features.screens.stats.StatsScreen
 import com.baltajmn.flowtime.features.screens.todoList.TodoListScreen
 import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.ui.FlowTimeAppState
@@ -43,7 +43,7 @@ fun MainGraph(
         }
 
         composable(route = Stats.route) {
-            HistoryScreen(navigateUp = appState::navigateToFocus)
+            StatsScreen()
         }
 
         composable(route = Settings.route) {

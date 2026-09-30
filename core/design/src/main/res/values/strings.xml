@@ -19,15 +19,12 @@
     <string name="button_break">Break</string>
     <string name="dialog_confirm">Confirm</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="study_history">History</string>
     <string name="go_to_history">Go to History</string>
     <string name="settings_intro">Introduction</string>
     <string name="settings_intro_button">View</string>
     <string name="settings_rate">Do you like FlowTime?</string>
     <string name="settings_rate_button">Rate it</string>
     <string name="others">Others</string>
-    <string name="total_minutes">Total minutes in the selected week</string>
-    <string name="best_day">Best day</string>
     <string name="remember">Remember</string>
     <string name="mot_1">You can do it! :)</string>
     <string name="mot_2">Don\'t stop, keep going :)</string>
@@ -51,9 +48,6 @@
     <string name="mot_20">Stay firm, triumph is yours! :)</string>
     <string name="percentage_title">Percentage Ready</string>
     <string name="percentage_settings_title">Break percentage</string>
-    <string name="all_minutes_studying">You\'ve focused for a total of %s with us</string>
-    <string name="export">Export</string>
-    <string name="import_button">Import</string>
     <string name="support_developer">Leave a tip</string>
     <string name="support_developer_title">Support FlowTime</string>
     <string name="support_developer_description">FlowTime is made by one person. Tips help keep improving it, and they never lock anything: everything free stays free.</string>
@@ -128,9 +122,6 @@
     <string name="sound_brown">Brown noise</string>
     <string name="sound_pink">Pink noise</string>
     <string name="sound_white">White noise</string>
-
-    <string name="cd_previous_week">Previous week</string>
-    <string name="cd_next_week">Next week</string>
     <string name="cd_edit_task">Edit task</string>
     <string name="cd_delete_task">Delete task</string>
     <string name="cd_play_sound">Play %1$s</string>
@@ -270,4 +261,19 @@
     <string name="cd_mode_settings">Settings for this mode</string>
     <string name="focus_mode_locked">Stop the session to change mode</string>
     <string name="sounds_title">Sounds</string>
+    <string name="stats_year">Year</string>
+    <string name="stats_first_session">Your first session will appear here</string>
+    <string name="stats_change">Vs. previous period</string>
+    <string name="stats_by_hour">By hour of day</string>
+    <string name="stats_best_hour">Hour with the most focus: %1$s</string>
+    <string name="stats_by_mode">By mode</string>
+    <string name="stats_by_tag">By tag</string>
+    <string name="stats_top_tasks">Tasks with the most time</string>
+    <string name="stats_export_csv">Export to CSV</string>
+    <string name="stats_copy_history">Copy history as text</string>
+    <string name="stats_paste_history">Paste history from text</string>
+    <string name="stats_csv_saved">CSV file saved</string>
+    <string name="stats_csv_failed">The file could not be saved</string>
+    <string name="pro_unlock">Unlock with Pro</string>
+    <string name="more_options">More options</string>
 </resources>

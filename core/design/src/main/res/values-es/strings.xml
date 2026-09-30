@@ -19,15 +19,12 @@
     <string name="button_break">Descanso</string>
     <string name="dialog_confirm">Confirmar</string>
     <string name="dialog_cancel">Cancelar</string>
-    <string name="study_history">Historial</string>
     <string name="go_to_history">Ir al historial</string>
     <string name="settings_intro">Introducción</string>
     <string name="settings_intro_button">Ver</string>
     <string name="settings_rate">¿Te gusta FlowTime?</string>
     <string name="settings_rate_button">Valorar</string>
     <string name="others">Otros</string>
-    <string name="total_minutes">Minutos totales de la semana seleccionada</string>
-    <string name="best_day">Mejor día</string>
     <string name="remember">Recuerda</string>
     <string name="mot_1">¡Tú puedes hacerlo! :)</string>
     <string name="mot_2">No te detengas, sigue :)</string>
@@ -51,9 +48,6 @@
     <string name="mot_20">¡Sigue firme, el triunfo es tuyo! :)</string>
     <string name="percentage_title">Porcentaje listo</string>
     <string name="percentage_settings_title">Porcentaje de descanso</string>
-    <string name="all_minutes_studying">Llevas un total de %s de concentración con nosotros</string>
-    <string name="export">Exportar</string>
-    <string name="import_button">Importar</string>
     <string name="support_developer">Dejar una propina</string>
     <string name="support_developer_title">Apoya FlowTime</string>
     <string name="support_developer_description">FlowTime lo hace una persona. Las propinas ayudan a seguir mejorándola y nunca bloquean nada: todo lo gratis sigue gratis.</string>
@@ -125,9 +119,6 @@
     <string name="sound_brown">Ruido marrón</string>
     <string name="sound_pink">Ruido rosa</string>
     <string name="sound_white">Ruido blanco</string>
-
-    <string name="cd_previous_week">Semana anterior</string>
-    <string name="cd_next_week">Semana siguiente</string>
     <string name="cd_edit_task">Editar tarea</string>
     <string name="cd_delete_task">Borrar tarea</string>
     <string name="cd_play_sound">Reproducir %1$s</string>
@@ -270,4 +261,19 @@
     <string name="cd_mode_settings">Ajustes del modo</string>
     <string name="focus_mode_locked">Para la sesión para cambiar de modo</string>
     <string name="sounds_title">Sonidos</string>
+    <string name="stats_year">Año</string>
+    <string name="stats_first_session">Tu primera sesión aparecerá aquí</string>
+    <string name="stats_change">Frente al periodo anterior</string>
+    <string name="stats_by_hour">Por hora del día</string>
+    <string name="stats_best_hour">Hora con más concentración: %1$s</string>
+    <string name="stats_by_mode">Por modo</string>
+    <string name="stats_by_tag">Por etiqueta</string>
+    <string name="stats_top_tasks">Tareas con más tiempo</string>
+    <string name="stats_export_csv">Exportar a CSV</string>
+    <string name="stats_copy_history">Copiar historial como texto</string>
+    <string name="stats_paste_history">Pegar historial desde texto</string>
+    <string name="stats_csv_saved">Archivo CSV guardado</string>
+    <string name="stats_csv_failed">No se ha podido guardar el archivo</string>
+    <string name="pro_unlock">Desbloquear con Pro</string>
+    <string name="more_options">Más opciones</string>
 </resources>
