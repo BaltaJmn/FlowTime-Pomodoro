@@ -3,6 +3,8 @@ package com.baltajmn.flowtime.features.screens.stats
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.PRO_CARD_DISMISSED_AT
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.DayProgress
 import com.baltajmn.flowtime.data.goal.GoalRepository
@@ -26,6 +28,7 @@ import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromC
 import com.baltajmn.flowtime.features.screens.history.usecases.StudyTimeImport
 import com.baltajmn.flowtime.features.screens.pro.ProAccess
 import java.time.LocalDate
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,8 +51,11 @@ class StatsViewModel(
     private val getAllStudyTime: GetAllStudyTimeUseCase,
     private val getStudyTimeToClipboard: GetStudyTimeToClipboardUseCase,
     private val setStudyTimeFromClipboard: SetStudyTimeFromClipboardUseCase,
+    private val prefs: DataProvider,
+    private val sessionActive: () -> Boolean,
     private val proEnabled: Boolean = ProFeatures.enabled,
-    private val today: () -> LocalDate = { LocalDate.now() }
+    private val today: () -> LocalDate = { LocalDate.now() },
+    private val clock: () -> Long = System::currentTimeMillis
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(StatsUiState())
@@ -90,8 +96,18 @@ class StatsViewModel(
         if (period.offset > 0) load(period.copy(offset = period.offset - 1))
     }
 
+    /** "Ahora no": la tarjeta de Pro no vuelve en 30 días. */
+    fun dismissProCard() {
+        prefs.setLong(PRO_CARD_DISMISSED_AT, clock())
+        _uiState.update { it.copy(proCardAllowed = false) }
+    }
+
     // Con las flechas pulsadas deprisa, solo cuenta la última: una consulta lenta no pisa a otra.
     private fun load(period: StatsPeriod) {
+        // Nunca sale sola con una sesión en marcha, y cerrada, no vuelve en 30 días.
+        val dismissedAt = prefs.getLong(PRO_CARD_DISMISSED_AT)
+        val proCardAllowed = !sessionActive() && (dismissedAt == 0L || clock() - dismissedAt > PRO_CARD_PAUSE_MILLIS)
+        _uiState.update { it.copy(proCardAllowed = proCardAllowed) }
         loading?.cancel()
         loading = viewModelScope.launch {
             val now = today()
@@ -218,9 +234,18 @@ data class StatsUiState(
     val range: ClosedRange<LocalDate> = StatsPeriod(PeriodKind.WEEK).range(LocalDate.now()),
     val summary: StatsSummary = StatsSummary(),
     val pro: ProAccess = ProAccess.HIDDEN,
+    /** Si la tarjeta de Pro puede salir: sin sesión en marcha y sin cerrarla hace poco. */
+    val proCardAllowed: Boolean = false,
     val details: StatsDetails = StatsDetails(),
     /** Todas, también las archivadas: el tiempo de antes sigue siendo suyo. */
     val tags: List<Tag> = emptyList(),
     val pendingImport: StudyTimeImport? = null,
     val message: StatsMessage? = null
-)
+) {
+    /** La tarjeta discreta de Pro (#57): sin Pro y al llegar a una racha de 7 días. */
+    val showProCard: Boolean
+        get() = proCardAllowed && pro == ProAccess.LOCKED && streak.current >= PRO_CARD_STREAK
+}
+
+const val PRO_CARD_STREAK = 7
+private val PRO_CARD_PAUSE_MILLIS = TimeUnit.DAYS.toMillis(30)

@@ -79,6 +79,7 @@
 
     <string name="mode_pomodoro" translatable="false">Pomodoro</string>
     <string name="mode_flow_time" translatable="false">FlowTime</string>
+    <string name="pro_title" translatable="false">FlowTime Pro</string>
     <string name="nav_back">Back</string>
     <string name="nav_todo_list">Tasks</string>
     <string name="nav_settings">Settings</string>
@@ -276,4 +277,26 @@
     <string name="stats_csv_failed">The file could not be saved</string>
     <string name="pro_unlock">Unlock with Pro</string>
     <string name="more_options">More options</string>
+    <string name="pro_headline">Understand when and on what you focus best</string>
+    <string name="pro_stats_title">Advanced stats</string>
+    <string name="pro_stats_text">The year as a heatmap, by hour, mode, tag and task, and a comparison with the previous period.</string>
+    <string name="pro_csv_title">Export to CSV</string>
+    <string name="pro_csv_text">All your sessions, to open in a spreadsheet.</string>
+    <string name="pro_tags_title">Unlimited tags</string>
+    <string name="pro_tags_text">Without Pro, %1$d active at a time.</string>
+    <string name="pro_tasks_title">Unlimited pending tasks</string>
+    <string name="pro_tasks_text">Without Pro, %1$d at a time.</string>
+    <string name="pro_future">And everything added to Pro later on, without paying again.</string>
+    <string name="pro_free_title">Always free</string>
+    <string name="pro_free_text">The three timers, which keep counting with the app closed, the alerts, the streak and the daily goal, stats for today, the week and the month, the sounds, the themes and the backup.</string>
+    <string name="pro_one_time">One-time payment · No subscription</string>
+    <string name="pro_buy">Get Pro</string>
+    <string name="pro_restore_nothing">Pro wasn\'t found on this Google account. Check your connection.</string>
+    <string name="pro_thanks_text">You have FlowTime Pro: everything in Pro is unlocked. Thanks for supporting FlowTime.</string>
+    <string name="pro_see">See Pro</string>
+    <string name="pro_settings_text">Advanced stats, CSV export, and unlimited tags and tasks. One-time payment, no subscription.</string>
+    <string name="pro_settings_owned">You have Pro. Thanks for supporting FlowTime.</string>
+    <string name="pro_card_title">%1$d days in a row</string>
+    <string name="pro_card_text">With Pro you can see at what times and on what you focus best.</string>
+    <string name="pro_card_dismiss">Not now</string>
 </resources>

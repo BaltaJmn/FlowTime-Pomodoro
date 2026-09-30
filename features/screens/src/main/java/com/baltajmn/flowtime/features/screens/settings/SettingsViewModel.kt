@@ -18,6 +18,7 @@ import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.tag.TagResult
+import com.baltajmn.flowtime.features.screens.pro.ProAccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -57,7 +58,7 @@ class SettingsViewModel(
         }
         viewModelScope.launch {
             combine(purchases.isPro, purchases.isSupporter, ::Pair).collect { (pro, supporter) ->
-                updatePurchases { it.copy(isPro = pro, isSupporter = supporter) }
+                updatePurchases { it.copy(pro = ProAccess.of(pro), isSupporter = supporter) }
             }
         }
     }

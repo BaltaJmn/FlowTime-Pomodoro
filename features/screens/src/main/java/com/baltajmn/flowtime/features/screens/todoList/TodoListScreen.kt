@@ -60,19 +60,24 @@ import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.data.pro.Limits
 import com.baltajmn.flowtime.data.task.Task
+import com.baltajmn.flowtime.features.screens.pro.ProFeature
+import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun TodoListScreen(
     viewModel: TodoListViewModel = koinViewModel(),
-    listState: LazyListState
+    listState: LazyListState,
+    proLauncher: ProLauncher = koinInject()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     AnimatedTodoListContent(
         state = state,
         listState = listState,
-        viewModel = viewModel
+        viewModel = viewModel,
+        onSeePro = { proLauncher.open(ProFeature.TASKS) }
     )
 }
 
@@ -80,7 +85,8 @@ fun TodoListScreen(
 fun AnimatedTodoListContent(
     state: TodoListState,
     listState: LazyListState,
-    viewModel: TodoListViewModel
+    viewModel: TodoListViewModel,
+    onSeePro: () -> Unit
 ) {
     AnimatedContent(
         targetState = state.isLoading,
@@ -92,7 +98,8 @@ fun AnimatedTodoListContent(
             TodoListContent(
                 state = state,
                 listState = listState,
-                viewModel = viewModel
+                viewModel = viewModel,
+                onSeePro = onSeePro
             )
         }
     }
@@ -102,7 +109,8 @@ fun AnimatedTodoListContent(
 fun TodoListContent(
     state: TodoListState,
     listState: LazyListState,
-    viewModel: TodoListViewModel
+    viewModel: TodoListViewModel,
+    onSeePro: () -> Unit
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
     // La que se está editando, o null para una nueva.
@@ -148,6 +156,18 @@ fun TodoListContent(
             confirmButton = {
                 TextButton(onClick = viewModel::onMessageShown) {
                     Text(text = stringResource(R.string.dialog_confirm))
+                }
+            },
+            dismissButton = {
+                if (message == TaskMessage.LIMIT) {
+                    TextButton(
+                        onClick = {
+                            viewModel.onMessageShown()
+                            onSeePro()
+                        }
+                    ) {
+                        Text(text = stringResource(R.string.pro_see))
+                    }
                 }
             }
         )

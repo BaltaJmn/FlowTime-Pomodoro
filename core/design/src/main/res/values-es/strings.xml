@@ -276,4 +276,26 @@
     <string name="stats_csv_failed">No se ha podido guardar el archivo</string>
     <string name="pro_unlock">Desbloquear con Pro</string>
     <string name="more_options">Más opciones</string>
+    <string name="pro_headline">Entiende cuándo y en qué te concentras mejor</string>
+    <string name="pro_stats_title">Estadísticas avanzadas</string>
+    <string name="pro_stats_text">El año con mapa de calor, por hora, por modo, por etiqueta y por tarea, y la comparación con el periodo anterior.</string>
+    <string name="pro_csv_title">Exportar a CSV</string>
+    <string name="pro_csv_text">Todas tus sesiones, para abrirlas en una hoja de cálculo.</string>
+    <string name="pro_tags_title">Etiquetas sin límite</string>
+    <string name="pro_tags_text">Sin Pro, %1$d activas a la vez.</string>
+    <string name="pro_tasks_title">Tareas pendientes sin límite</string>
+    <string name="pro_tasks_text">Sin Pro, %1$d a la vez.</string>
+    <string name="pro_future">Y todo lo que se añada a Pro más adelante, sin pagar otra vez.</string>
+    <string name="pro_free_title">Siempre gratis</string>
+    <string name="pro_free_text">Los tres temporizadores, que siguen contando con la app cerrada, los avisos, la racha y el objetivo diario, las estadísticas de hoy, la semana y el mes, los sonidos, los temas y la copia de seguridad.</string>
+    <string name="pro_one_time">Pago único · Sin suscripción</string>
+    <string name="pro_buy">Comprar Pro</string>
+    <string name="pro_restore_nothing">No se ha encontrado Pro en esta cuenta de Google. Comprueba la conexión.</string>
+    <string name="pro_thanks_text">Ya tienes FlowTime Pro: todo lo de Pro está desbloqueado. Gracias por apoyar FlowTime.</string>
+    <string name="pro_see">Ver Pro</string>
+    <string name="pro_settings_text">Estadísticas avanzadas, exportar a CSV, y etiquetas y tareas sin límite. Pago único, sin suscripción.</string>
+    <string name="pro_settings_owned">Tienes Pro. Gracias por apoyar FlowTime.</string>
+    <string name="pro_card_title">%1$d días seguidos</string>
+    <string name="pro_card_text">Con Pro ves a qué horas y en qué te concentras mejor.</string>
+    <string name="pro_card_dismiss">Ahora no</string>
 </resources>

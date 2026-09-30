@@ -276,4 +276,26 @@
     <string name="stats_csv_failed">Non è stato possibile salvare il file</string>
     <string name="pro_unlock">Sblocca con Pro</string>
     <string name="more_options">Altre opzioni</string>
+    <string name="pro_headline">Scopri quando e su cosa ti concentri meglio</string>
+    <string name="pro_stats_title">Statistiche avanzate</string>
+    <string name="pro_stats_text">L\'anno con la mappa di calore, per ora, modalità, etichetta e attività, e il confronto con il periodo precedente.</string>
+    <string name="pro_csv_title">Esporta in CSV</string>
+    <string name="pro_csv_text">Tutte le tue sessioni, da aprire in un foglio di calcolo.</string>
+    <string name="pro_tags_title">Etichette illimitate</string>
+    <string name="pro_tags_text">Senza Pro, %1$d attive alla volta.</string>
+    <string name="pro_tasks_title">Attività in sospeso illimitate</string>
+    <string name="pro_tasks_text">Senza Pro, %1$d alla volta.</string>
+    <string name="pro_future">E tutto ciò che verrà aggiunto a Pro in futuro, senza pagare di nuovo.</string>
+    <string name="pro_free_title">Sempre gratis</string>
+    <string name="pro_free_text">I tre timer, che continuano a contare con l\'app chiusa, gli avvisi, la serie e l\'obiettivo giornaliero, le statistiche di oggi, della settimana e del mese, i suoni, i temi e il backup.</string>
+    <string name="pro_one_time">Pagamento unico · Senza abbonamento</string>
+    <string name="pro_buy">Acquista Pro</string>
+    <string name="pro_restore_nothing">Pro non è stato trovato in questo account Google. Controlla la connessione.</string>
+    <string name="pro_thanks_text">Hai FlowTime Pro: tutto ciò che è Pro è sbloccato. Grazie per il tuo supporto a FlowTime.</string>
+    <string name="pro_see">Scopri Pro</string>
+    <string name="pro_settings_text">Statistiche avanzate, esportazione CSV, ed etichette e attività illimitate. Pagamento unico, senza abbonamento.</string>
+    <string name="pro_settings_owned">Hai Pro. Grazie per il tuo supporto a FlowTime.</string>
+    <string name="pro_card_title">%1$d giorni di fila</string>
+    <string name="pro_card_text">Con Pro vedi in quali ore e su cosa ti concentri meglio.</string>
+    <string name="pro_card_dismiss">Non ora</string>
 </resources>

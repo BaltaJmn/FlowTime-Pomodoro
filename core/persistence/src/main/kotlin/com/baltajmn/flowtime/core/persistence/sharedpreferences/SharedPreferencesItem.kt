@@ -25,4 +25,5 @@ enum class SharedPreferencesItem {
     REVIEW_ASKED_AT,
     IS_PRO,
     IS_SUPPORTER,
+    PRO_CARD_DISMISSED_AT,
 }

@@ -80,8 +80,12 @@ import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.features.screens.settings.enum.MotivationalPhrases
+import com.baltajmn.flowtime.features.screens.pro.ProAccess
+import com.baltajmn.flowtime.features.screens.pro.ProFeature
+import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.features.screens.support.SupportSheet
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun SettingsScreen(
@@ -89,7 +93,8 @@ fun SettingsScreen(
     listState: LazyListState,
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
-    navigateToIntro: () -> Unit
+    navigateToIntro: () -> Unit,
+    proLauncher: ProLauncher = koinInject()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -99,7 +104,8 @@ fun SettingsScreen(
         viewModel = viewModel,
         showSound = showSound,
         onSoundChange = onSoundChange,
-        navigateToIntro = navigateToIntro
+        navigateToIntro = navigateToIntro,
+        onOpenPro = proLauncher::open
     )
 }
 
@@ -110,7 +116,8 @@ fun AnimatedSettingsContent(
     viewModel: SettingsViewModel,
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
-    navigateToIntro: () -> Unit
+    navigateToIntro: () -> Unit,
+    onOpenPro: (ProFeature?) -> Unit
 ) {
     AnimatedContent(
         targetState = state.isLoading,
@@ -125,7 +132,8 @@ fun AnimatedSettingsContent(
                 viewModel = viewModel,
                 showSound = showSound,
                 onSoundChange = onSoundChange,
-                navigateToIntro = navigateToIntro
+                navigateToIntro = navigateToIntro,
+                onOpenPro = onOpenPro
             )
         }
     }
@@ -138,7 +146,8 @@ fun SettingsContent(
     viewModel: SettingsViewModel,
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
-    navigateToIntro: () -> Unit
+    navigateToIntro: () -> Unit,
+    onOpenPro: (ProFeature?) -> Unit
 ) {
     var showSupport by rememberSaveable { mutableStateOf(false) }
     if (showSupport) SupportSheet(onDismiss = { showSupport = false })
@@ -160,10 +169,20 @@ fun SettingsContent(
                 onRecolor = viewModel::recolorTag,
                 onArchive = viewModel::archiveTag,
                 onUnarchive = viewModel::unarchiveTag,
-                onMessageShown = viewModel::onTagMessageShown
+                onMessageShown = viewModel::onTagMessageShown,
+                onSeePro = { onOpenPro(ProFeature.TAGS) }
             )
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
+        if (state.purchases.pro != ProAccess.HIDDEN) {
+            item {
+                ProCard(
+                    owned = state.purchases.pro == ProAccess.OPEN,
+                    onOpen = { onOpenPro(null) }
+                )
+            }
+            item { Spacer(modifier = Modifier.height(24.dp)) }
+        }
         item {
             SupportCard(
                 state = state.purchases,
@@ -387,6 +406,46 @@ fun PositiveText() {
                 style = SmallTitle,
                 color = MaterialTheme.colorScheme.primary
             )
+        }
+    }
+}
+
+/** Ajustes › FlowTime Pro: lo que incluye, o las gracias a quien ya lo tiene. */
+@Composable
+fun ProCard(owned: Boolean, onOpen: () -> Unit) {
+    Card {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.pro_title),
+                textAlign = TextAlign.Center,
+                style = LargeTitle.copy(fontSize = 25.sp, color = MaterialTheme.colorScheme.primary)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(
+                    if (owned) R.string.pro_settings_owned else R.string.pro_settings_text
+                ),
+                style = SubBody.copy(
+                    fontSize = 15.sp,
+                    color = MaterialTheme.colorScheme.primary,
+                    textAlign = TextAlign.Center
+                )
+            )
+            if (!owned) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(modifier = Modifier.fillMaxWidth(), onClick = onOpen) {
+                    Text(
+                        text = stringResource(R.string.pro_see),
+                        style = SubBody.copy(color = MaterialTheme.colorScheme.onPrimary)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

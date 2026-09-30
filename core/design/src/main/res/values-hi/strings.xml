@@ -273,4 +273,26 @@
     <string name="stats_csv_failed">फ़ाइल सेव नहीं हो सकी</string>
     <string name="pro_unlock">Pro से अनलॉक करें</string>
     <string name="more_options">और विकल्प</string>
+    <string name="pro_headline">जानिए आप कब और किस पर सबसे अच्छा ध्यान लगाते हैं</string>
+    <string name="pro_stats_title">उन्नत आँकड़े</string>
+    <string name="pro_stats_text">साल का हीटमैप, घंटे, मोड, टैग और कार्य के हिसाब से, और पिछली अवधि से तुलना।</string>
+    <string name="pro_csv_title">CSV में एक्सपोर्ट</string>
+    <string name="pro_csv_text">आपके सभी सत्र, स्प्रेडशीट में खोलने के लिए।</string>
+    <string name="pro_tags_title">असीमित टैग</string>
+    <string name="pro_tags_text">Pro के बिना, एक साथ %1$d सक्रिय।</string>
+    <string name="pro_tasks_title">असीमित बाकी कार्य</string>
+    <string name="pro_tasks_text">Pro के बिना, एक साथ %1$d।</string>
+    <string name="pro_future">और आगे Pro में जो भी जुड़ेगा, बिना दोबारा भुगतान किए।</string>
+    <string name="pro_free_title">हमेशा मुफ़्त</string>
+    <string name="pro_free_text">तीनों टाइमर, जो ऐप बंद होने पर भी चलते रहते हैं, सूचनाएँ, लगातार दिन और दैनिक लक्ष्य, आज, हफ़्ते और महीने के आँकड़े, ध्वनियाँ, थीम और बैकअप।</string>
+    <string name="pro_one_time">एक बार भुगतान · कोई सदस्यता नहीं</string>
+    <string name="pro_buy">Pro खरीदें</string>
+    <string name="pro_restore_nothing">इस Google खाते में Pro नहीं मिला। कनेक्शन जाँचें।</string>
+    <string name="pro_thanks_text">आपके पास FlowTime Pro है: Pro की हर चीज़ अनलॉक है। FlowTime का साथ देने के लिए धन्यवाद।</string>
+    <string name="pro_see">Pro देखें</string>
+    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, और असीमित टैग और कार्य। एक बार भुगतान, कोई सदस्यता नहीं।</string>
+    <string name="pro_settings_owned">आपके पास Pro है। FlowTime का साथ देने के लिए धन्यवाद।</string>
+    <string name="pro_card_title">लगातार %1$d दिन</string>
+    <string name="pro_card_text">Pro के साथ देखें कि आप किस समय और किस पर सबसे अच्छा ध्यान लगाते हैं।</string>
+    <string name="pro_card_dismiss">अभी नहीं</string>
 </resources>

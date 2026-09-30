@@ -273,4 +273,26 @@
     <string name="stats_csv_failed">Die Datei konnte nicht gespeichert werden</string>
     <string name="pro_unlock">Mit Pro freischalten</string>
     <string name="more_options">Weitere Optionen</string>
+    <string name="pro_headline">Finde heraus, wann und woran du dich am besten konzentrierst</string>
+    <string name="pro_stats_title">Erweiterte Statistiken</string>
+    <string name="pro_stats_text">Das Jahr als Heatmap, nach Uhrzeit, Modus, Label und Aufgabe, und der Vergleich mit dem vorherigen Zeitraum.</string>
+    <string name="pro_csv_title">Als CSV exportieren</string>
+    <string name="pro_csv_text">Alle deine Sitzungen, zum Öffnen in einer Tabellenkalkulation.</string>
+    <string name="pro_tags_title">Unbegrenzte Labels</string>
+    <string name="pro_tags_text">Ohne Pro %1$d aktive gleichzeitig.</string>
+    <string name="pro_tasks_title">Unbegrenzte offene Aufgaben</string>
+    <string name="pro_tasks_text">Ohne Pro %1$d gleichzeitig.</string>
+    <string name="pro_future">Und alles, was später zu Pro dazukommt, ohne erneut zu zahlen.</string>
+    <string name="pro_free_title">Immer kostenlos</string>
+    <string name="pro_free_text">Die drei Timer, die auch bei geschlossener App weiterlaufen, die Hinweise, die Serie und das Tagesziel, die Statistik für heute, die Woche und den Monat, die Klänge, die Designs und die Sicherung.</string>
+    <string name="pro_one_time">Einmalzahlung · Kein Abo</string>
+    <string name="pro_buy">Pro kaufen</string>
+    <string name="pro_restore_nothing">Pro wurde in diesem Google-Konto nicht gefunden. Prüfe die Verbindung.</string>
+    <string name="pro_thanks_text">Du hast FlowTime Pro: Alles aus Pro ist freigeschaltet. Danke, dass du FlowTime unterstützt.</string>
+    <string name="pro_see">Pro ansehen</string>
+    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export sowie unbegrenzte Labels und Aufgaben. Einmalzahlung, kein Abo.</string>
+    <string name="pro_settings_owned">Du hast Pro. Danke, dass du FlowTime unterstützt.</string>
+    <string name="pro_card_title">%1$d Tage in Folge</string>
+    <string name="pro_card_text">Mit Pro siehst du, zu welchen Zeiten und woran du dich am besten konzentrierst.</string>
+    <string name="pro_card_dismiss">Jetzt nicht</string>
 </resources>

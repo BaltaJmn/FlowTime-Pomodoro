@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.data.review.calmMoments
 import com.baltajmn.flowtime.data.timer.FocusEngine
+import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.goal.GoalWatcher
 import com.baltajmn.flowtime.review.ReviewPrompter
 import com.baltajmn.flowtime.session.SessionNotification
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
     private val goalWatcher: GoalWatcher by inject()
     private val engine: FocusEngine by inject()
     private val reviewPrompter: ReviewPrompter by inject()
+    private val proLauncher: ProLauncher by inject()
     private val showSound: MutableState<Boolean> = mutableStateOf(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +48,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val appearance by appearanceRepository.appearance.collectAsStateWithLifecycle()
             val celebration by goalWatcher.celebration.collectAsStateWithLifecycle()
+            val proRequest by proLauncher.request.collectAsStateWithLifecycle()
             val dark = appearance.isDark(isSystemInDarkTheme())
             // Los iconos de las barras del sistema siguen al tema de la app, no al del sistema: con el
             // modo oscuro forzado en un móvil claro, se quedaban oscuros sobre fondo oscuro.
@@ -61,7 +64,9 @@ class MainActivity : ComponentActivity() {
                 showSound = showSound.value,
                 onSoundChange = { it: Boolean -> showSound.value = it },
                 celebration = celebration,
-                onCelebrationShown = goalWatcher::onShown
+                onCelebrationShown = goalWatcher::onShown,
+                proRequest = proRequest,
+                onProClosed = proLauncher::close
             )
         }
 

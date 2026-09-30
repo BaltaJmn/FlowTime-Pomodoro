@@ -125,6 +125,7 @@ fun StatsScreen(
         onPrevious = viewModel::previousPeriod,
         onNext = viewModel::nextPeriod,
         onUnlock = proLauncher::open,
+        onDismissProCard = viewModel::dismissProCard,
         onCopyHistory = { viewModel.exportStudyTime { clipboard.setText(AnnotatedString(it)) } },
         onPasteHistory = { viewModel.importStudyTime(clipboard.getText()?.text.orEmpty()) },
         onExportCsv = { csvFile.launch("flowtime-${LocalDate.now()}.csv") }
@@ -138,6 +139,7 @@ fun StatsContent(
     onPrevious: () -> Unit,
     onNext: () -> Unit,
     onUnlock: (ProFeature) -> Unit,
+    onDismissProCard: () -> Unit,
     onCopyHistory: () -> Unit,
     onPasteHistory: () -> Unit,
     onExportCsv: () -> Unit
@@ -167,6 +169,15 @@ fun StatsContent(
             return@LazyColumn
         }
         item { PeriodCard(state, onPeriod, onPrevious, onNext, unlockStats) }
+        if (state.showProCard) {
+            item {
+                ProStreakCard(
+                    state.streak.current,
+                    onOpen = unlockStats,
+                    onDismiss = onDismissProCard
+                )
+            }
+        }
 
         val details = state.details
         if (state.pro == ProAccess.HIDDEN || state.summary.totalSeconds == 0L) return@LazyColumn
@@ -403,6 +414,45 @@ private fun FirstSessionCard() {
                 style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
                 textAlign = TextAlign.Center
             )
+        }
+    }
+}
+
+/** Sin Pro y con una racha de 7 días: se puede cerrar, y entonces no vuelve en 30 días. */
+@Composable
+private fun ProStreakCard(days: Int, onOpen: () -> Unit, onDismiss: () -> Unit) {
+    Card {
+        Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 8.dp, bottom = 4.dp)) {
+            Row(
+                modifier = Modifier.padding(end = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_fire),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(28.dp)
+                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.pro_card_title, days),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Text(
+                        text = stringResource(R.string.pro_card_text),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            Row(modifier = Modifier.align(Alignment.End)) {
+                TextButton(onClick = onDismiss) {
+                    Text(
+                        text = stringResource(R.string.pro_card_dismiss)
+                    )
+                }
+                TextButton(onClick = onOpen) { Text(text = stringResource(R.string.pro_see)) }
+            }
         }
     }
 }

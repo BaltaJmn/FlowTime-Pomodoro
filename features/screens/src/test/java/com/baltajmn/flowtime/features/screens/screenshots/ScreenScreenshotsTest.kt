@@ -34,6 +34,9 @@ import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
 import com.baltajmn.flowtime.features.screens.fakes.FakeTags
 import com.baltajmn.flowtime.features.screens.fakes.FakeTasks
 import com.baltajmn.flowtime.features.screens.pro.ProAccess
+import com.baltajmn.flowtime.features.screens.pro.ProContent
+import com.baltajmn.flowtime.features.screens.pro.ProFeature
+import com.baltajmn.flowtime.features.screens.pro.ProUiState
 import com.baltajmn.flowtime.features.screens.stats.StatsContent
 import com.baltajmn.flowtime.features.screens.stats.StatsDetails
 import com.baltajmn.flowtime.features.screens.stats.StatsUiState
@@ -148,7 +151,8 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
                 viewModel = viewModel,
                 showSound = true,
                 onSoundChange = {},
-                navigateToIntro = {}
+                navigateToIntro = {},
+                onOpenPro = {}
             )
         }
     }
@@ -200,6 +204,7 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
             onPrevious = {},
             onNext = {},
             onUnlock = {},
+            onDismissProCard = {},
             onCopyHistory = {},
             onPasteHistory = {},
             onExportCsv = {}
@@ -210,14 +215,45 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
     @Config(qualifiers = "+h1700dp")
     fun statsLocked() = compose.capture("stats_locked_$mode", dark = dark) {
         StatsContent(
-            state = statsState(ProAccess.LOCKED),
+            // Con la racha de 7 días, sale también la tarjeta de Pro.
+            state = statsState(ProAccess.LOCKED).copy(
+                streak = Streak(current = 7, best = 9),
+                proCardAllowed = true
+            ),
             onPeriod = {},
             onPrevious = {},
             onNext = {},
             onUnlock = {},
+            onDismissProCard = {},
             onCopyHistory = {},
             onPasteHistory = {},
             onExportCsv = {}
+        )
+    }
+
+    @Test
+    @Config(qualifiers = "+h1000dp")
+    fun pro() = compose.capture("pro_$mode", dark = dark) {
+        ProContent(
+            state = ProUiState(loading = false, product = FakePurchases.CATALOG.pro),
+            from = ProFeature.TAGS,
+            onBuy = {},
+            onRestore = {},
+            onRetry = {},
+            onClose = {}
+        )
+    }
+
+    @Test
+    @Config(qualifiers = "+h1000dp")
+    fun proOffline() = compose.capture("pro_offline_$mode", dark = dark) {
+        ProContent(
+            state = ProUiState(loading = false),
+            from = null,
+            onBuy = {},
+            onRestore = {},
+            onRetry = {},
+            onClose = {}
         )
     }
 
@@ -229,6 +265,7 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
             onPrevious = {},
             onNext = {},
             onUnlock = {},
+            onDismissProCard = {},
             onCopyHistory = {},
             onPasteHistory = {},
             onExportCsv = {}
@@ -254,7 +291,8 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
             TodoListContent(
                 state = state,
                 listState = rememberLazyListState(),
-                viewModel = viewModel
+                viewModel = viewModel,
+                onSeePro = {}
             )
         }
     }

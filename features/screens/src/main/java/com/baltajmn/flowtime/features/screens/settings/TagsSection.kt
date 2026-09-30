@@ -51,7 +51,8 @@ fun TagsCard(
     onRecolor: (Tag) -> Unit,
     onArchive: (Long) -> Unit,
     onUnarchive: (Long) -> Unit,
-    onMessageShown: () -> Unit
+    onMessageShown: () -> Unit,
+    onSeePro: () -> Unit
 ) {
     // La que se está renombrando, o NEW para una nueva.
     var editing by rememberSaveable { mutableStateOf<Long?>(null) }
@@ -164,6 +165,18 @@ fun TagsCard(
             confirmButton = {
                 TextButton(onClick = onMessageShown) {
                     Text(text = stringResource(R.string.dialog_confirm))
+                }
+            },
+            dismissButton = {
+                if (message == TagMessage.LIMIT) {
+                    TextButton(
+                        onClick = {
+                            onMessageShown()
+                            onSeePro()
+                        }
+                    ) {
+                        Text(text = stringResource(R.string.pro_see))
+                    }
                 }
             }
         )

@@ -29,8 +29,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-/** Lo que abre la pantalla de Pro (#57), que enseña esa función la primera. */
-enum class ProFeature { STATS, CSV }
+/**
+ * Lo que incluye Pro, en el orden de la pantalla de Pro, que pone la primera la función desde la que
+ * se abrió. Solo lo que ya existe: lo de Pro que llegue después (#43, #44) se añade aquí, en la
+ * descripción del producto en Play y en la ficha a la vez.
+ */
+enum class ProFeature { STATS, CSV, TAGS, TASKS }
 
 /** Cómo se ve algo de Pro: nada mientras Pro no se venda, difuminado sin Pro, o abierto. */
 enum class ProAccess {
@@ -47,13 +51,16 @@ enum class ProAccess {
     }
 }
 
-/** Abre la pantalla de Pro desde cualquier pantalla. La enseña la raíz de la app (#57). */
-class ProLauncher {
-    private val _request = MutableStateFlow<ProFeature?>(null)
-    val request: StateFlow<ProFeature?> = _request.asStateFlow()
+/** La pantalla de Pro abierta, desde una función de Pro o, sin ella, desde Ajustes. */
+data class ProRequest(val from: ProFeature?)
 
-    fun open(feature: ProFeature) {
-        _request.value = feature
+/** Abre la pantalla de Pro desde cualquier pantalla. La enseña la raíz de la app. */
+class ProLauncher {
+    private val _request = MutableStateFlow<ProRequest?>(null)
+    val request: StateFlow<ProRequest?> = _request.asStateFlow()
+
+    fun open(from: ProFeature?) {
+        _request.value = ProRequest(from)
     }
 
     fun close() {

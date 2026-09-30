@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.features.screens.di
 
+import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.features.screens.edit.EditViewModel
 import com.baltajmn.flowtime.features.screens.focus.FocusViewModel
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
@@ -10,6 +11,7 @@ import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromC
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboardUseCase
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
+import com.baltajmn.flowtime.features.screens.pro.ProViewModel
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.splash.SplashViewModel
 import com.baltajmn.flowtime.features.screens.stats.StatsViewModel
@@ -47,9 +49,13 @@ private val ScreensPresentationModule: Module
         viewModelOf(::SettingsViewModel)
         // A mano: el constructor tiene un parámetro opcional para los tests que Koin no sabría resolver.
         viewModel { TodoListViewModel(get()) }
-        viewModel { StatsViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel {
+            val engine = get<FocusEngine>()
+            StatsViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), { engine.state.value.isActive })
+        }
         viewModelOf(::OnBoardViewModel)
         viewModelOf(::SplashViewModel)
         viewModelOf(::SupportViewModel)
+        viewModelOf(::ProViewModel)
         single { ProLauncher() }
     }

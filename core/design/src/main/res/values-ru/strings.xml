@@ -283,4 +283,26 @@
     <string name="stats_csv_failed">Не удалось сохранить файл</string>
     <string name="pro_unlock">Открыть с Pro</string>
     <string name="more_options">Другие параметры</string>
+    <string name="pro_headline">Узнайте, когда и над чем вам лучше всего работается</string>
+    <string name="pro_stats_title">Расширенная статистика</string>
+    <string name="pro_stats_text">Год в виде тепловой карты, по часам, режимам, меткам и задачам, и сравнение с прошлым периодом.</string>
+    <string name="pro_csv_title">Экспорт в CSV</string>
+    <string name="pro_csv_text">Все ваши сессии, чтобы открыть их в таблице.</string>
+    <string name="pro_tags_title">Неограниченные метки</string>
+    <string name="pro_tags_text">Без Pro до %1$d активных одновременно.</string>
+    <string name="pro_tasks_title">Неограниченные незавершённые задачи</string>
+    <string name="pro_tasks_text">Без Pro до %1$d одновременно.</string>
+    <string name="pro_future">И всё, что появится в Pro позже, без повторной оплаты.</string>
+    <string name="pro_free_title">Всегда бесплатно</string>
+    <string name="pro_free_text">Три таймера, которые продолжают идти при закрытом приложении, уведомления, серия и дневная цель, статистика за сегодня, неделю и месяц, звуки, темы и резервная копия.</string>
+    <string name="pro_one_time">Разовая оплата · Без подписки</string>
+    <string name="pro_buy">Купить Pro</string>
+    <string name="pro_restore_nothing">Pro не найден в этом аккаунте Google. Проверьте подключение.</string>
+    <string name="pro_thanks_text">У вас FlowTime Pro: всё из Pro открыто. Спасибо за поддержку FlowTime.</string>
+    <string name="pro_see">Узнать о Pro</string>
+    <string name="pro_settings_text">Расширенная статистика, экспорт в CSV и неограниченные метки и задачи. Разовая оплата, без подписки.</string>
+    <string name="pro_settings_owned">У вас Pro. Спасибо за поддержку FlowTime.</string>
+    <string name="pro_card_title">Серия: %1$d дн. подряд</string>
+    <string name="pro_card_text">С Pro видно, в какие часы и над чем вам лучше всего работается.</string>
+    <string name="pro_card_dismiss">Не сейчас</string>
 </resources>

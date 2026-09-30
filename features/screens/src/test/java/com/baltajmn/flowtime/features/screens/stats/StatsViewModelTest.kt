@@ -16,6 +16,7 @@ import com.baltajmn.flowtime.features.screens.history.usecases.ImportMode
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboard
 import com.baltajmn.flowtime.features.screens.pro.ProAccess
 import java.time.LocalDate
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -55,6 +56,9 @@ class StatsViewModelTest {
     @After
     fun tearDown() = Dispatchers.resetMain()
 
+    private var now = 1_000_000_000_000L
+    private var sessionActive = false
+
     private fun viewModel(
         stats: FakeStats = FakeStats(),
         proEnabled: Boolean = false,
@@ -69,9 +73,21 @@ class StatsViewModelTest {
             getAllStudyTime = GetAllStudyTime(sessions),
             getStudyTimeToClipboard = GetStudyTimeToClipboard(sessions),
             setStudyTimeFromClipboard = SetStudyTimeFromClipboard(sessions),
+            prefs = prefs,
+            sessionActive = { sessionActive },
             proEnabled = proEnabled,
-            today = { sep30 }
+            today = { sep30 },
+            clock = { now }
         )
+
+    /** El objetivo cumplido los 7 días hasta el 30 de septiembre. */
+    private fun sevenDayStreak() = repeat(PRO_CARD_STREAK) {
+        sessions.days[
+            sep30.minusDays(
+                it.toLong()
+            )
+        ] = 3 * 3600L
+    }
 
     @Test
     fun `sin Pro a la venta lo de Pro ni se ve ni se consulta`() {
@@ -106,6 +122,38 @@ class StatsViewModelTest {
         viewModel.load()
 
         assertEquals(ProAccess.OPEN, viewModel.uiState.value.pro)
+    }
+
+    @Test
+    fun `la tarjeta de Pro sale sin Pro y con 7 dias de racha, y cerrada no vuelve en 30 dias`() {
+        sevenDayStreak()
+        viewModel(proEnabled = true).apply { load() }.let { viewModel ->
+            assertTrue(viewModel.uiState.value.showProCard)
+            viewModel.dismissProCard()
+            assertFalse(viewModel.uiState.value.showProCard)
+        }
+
+        now += TimeUnit.DAYS.toMillis(29)
+        assertFalse(viewModel(proEnabled = true).apply { load() }.uiState.value.showProCard)
+
+        now += TimeUnit.DAYS.toMillis(2)
+        assertTrue(viewModel(proEnabled = true).apply { load() }.uiState.value.showProCard)
+    }
+
+    @Test
+    fun `la tarjeta de Pro no sale con Pro, sin Pro a la venta, con menos racha ni con una sesion en marcha`() {
+        sevenDayStreak()
+        assertFalse(
+            viewModel(proEnabled = true, pro = true).apply { load() }.uiState.value.showProCard
+        )
+        assertFalse(viewModel(proEnabled = false).apply { load() }.uiState.value.showProCard)
+
+        sessionActive = true
+        assertFalse(viewModel(proEnabled = true).apply { load() }.uiState.value.showProCard)
+
+        sessionActive = false
+        sessions.days.remove(sep30.minusDays(6))
+        assertFalse(viewModel(proEnabled = true).apply { load() }.uiState.value.showProCard)
     }
 
     @Test

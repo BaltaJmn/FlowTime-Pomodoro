@@ -6,6 +6,7 @@ import com.baltajmn.flowtime.data.backup.RestoreResult
 import com.baltajmn.flowtime.data.goal.DailyGoal
 import com.baltajmn.flowtime.data.goal.Streak
 import com.baltajmn.flowtime.data.tag.Tag
+import com.baltajmn.flowtime.features.screens.pro.ProAccess
 
 data class SettingsState(
     val isLoading: Boolean = false,
@@ -19,7 +20,7 @@ data class SettingsState(
 )
 
 data class PurchasesUiState(
-    val isPro: Boolean = false,
+    val pro: ProAccess = ProAccess.HIDDEN,
     val isSupporter: Boolean = false,
     val restoring: Boolean = false,
     val message: RestoreMessage? = null
