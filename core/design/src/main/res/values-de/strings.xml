@@ -290,7 +290,7 @@
     <string name="pro_restore_nothing">Pro wurde in diesem Google-Konto nicht gefunden. Prüfe die Verbindung.</string>
     <string name="pro_thanks_text">Du hast FlowTime Pro: Alles aus Pro ist freigeschaltet. Danke, dass du FlowTime unterstützt.</string>
     <string name="pro_see">Pro ansehen</string>
-    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels und Aufgaben sowie automatisch \"Nicht stören\". Einmalzahlung, kein Abo.</string>
+    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels, Aufgaben und Mixe sowie automatisch \"Nicht stören\". Einmalzahlung, kein Abo.</string>
     <string name="pro_settings_owned">Du hast Pro. Danke, dass du FlowTime unterstützt.</string>
     <string name="pro_card_text">Mit Pro siehst du, zu welchen Zeiten und woran du dich am besten konzentrierst.</string>
     <string name="pro_card_dismiss">Jetzt nicht</string>
@@ -312,4 +312,20 @@
     <string name="focus_mode_rule">Konzentration</string>
     <string name="pro_dnd_title">Automatisch \"Nicht stören\"</string>
     <string name="pro_dnd_text">Schaltet sich beim Konzentrieren ein und in der Pause aus.</string>
+    <string name="mix_rainy_cafe">Regen im Café</string>
+    <string name="mix_distant_storm">Fernes Gewitter</string>
+    <string name="mix_soft_brown">Sanftes braunes Rauschen</string>
+    <string name="sleep_title">Ausschalt-Timer</string>
+    <string name="sleep_off">Nicht ausschalten</string>
+    <string name="sleep_minutes">In %1$d Min.</string>
+    <string name="sleep_session_end">Am Ende der Sitzung</string>
+    <string name="sleep_at">Klänge gehen um %1$s aus</string>
+    <string name="sleep_at_session_end">Klänge gehen am Ende der Sitzung aus</string>
+    <string name="mix_save">Mix speichern</string>
+    <string name="mix_name">Name des Mixes</string>
+    <string name="mix_delete">Löschen</string>
+    <string name="mix_hide">Ausblenden</string>
+    <string name="mix_limit">Ohne Pro kannst du %1$d Mixe speichern. Lösche einen, um einen neuen zu speichern.</string>
+    <string name="pro_mixes_title">Unbegrenzte Mixe</string>
+    <string name="pro_mixes_text">Ohne Pro %1$d gespeichert.</string>
 </resources>

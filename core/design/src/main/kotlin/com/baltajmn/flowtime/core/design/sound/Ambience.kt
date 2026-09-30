@@ -7,6 +7,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,11 +31,49 @@ class Ambience(
     )
     val state: StateFlow<SoundState> = _state.asStateFlow()
 
+    private val _sleep = MutableStateFlow<SleepTimer?>(null)
+
+    /** Cuándo se apagan solos los sonidos (#44); null, nunca. Lo cumple [AmbientService]. */
+    val sleep: StateFlow<SleepTimer?> = _sleep.asStateFlow()
+
     /** Solo desde la app a la vista: arrancar el servicio desde segundo plano no está permitido. */
     fun play(type: PlayerType, playing: Boolean) {
         edit { it.copy(soundMap = it.soundMap.with(type) { copy(isPlaying = playing) }, paused = emptySet()) }
-        if (playing) ContextCompat.startForegroundService(context, Intent(context, AmbientService::class.java))
+        if (playing) startService()
     }
+
+    /** Lo que suena ahora, con su volumen: lo que se guarda como mezcla. */
+    fun current(): Map<PlayerType, Float> = _state.value.soundMap.filterValues { it.isPlaying }.mapValues { it.value.volume }
+
+    /** Suenan los sonidos de la mezcla, con sus volúmenes, y se paran los demás. */
+    fun load(mix: SoundMix) {
+        mix.volumes.forEach { (type, volume) -> dataProvider.setFloat(type.name, volume) }
+        edit { s ->
+            SoundState(
+                s.soundMap.mapValues { (type, p) ->
+                    mix.volumes[type]?.let { PlayerState(volume = it, isPlaying = true) } ?: p.copy(isPlaying = false)
+                }
+            )
+        }
+        if (mix.volumes.isNotEmpty()) startService()
+    }
+
+    fun setSleep(timer: SleepTimer?) {
+        _sleep.value = timer
+    }
+
+    /** Baja el volumen de toda la mezcla en 5 segundos y para. */
+    suspend fun fadeOutAndStop() {
+        for (step in FADE_STEPS - 1 downTo 0) {
+            mixer.master = step / FADE_STEPS.toFloat()
+            delay(FADE_MILLIS / FADE_STEPS)
+        }
+        stop()
+        mixer.master = 1f
+    }
+
+    private fun startService() =
+        ContextCompat.startForegroundService(context, Intent(context, AmbientService::class.java))
 
     fun setVolume(type: PlayerType, volume: Float) {
         dataProvider.setFloat(type.name, volume)
@@ -49,7 +88,10 @@ class Ambience(
         SoundState(s.soundMap.mapValues { (type, p) -> p.copy(isPlaying = p.isPlaying || type in s.paused) })
     }
 
-    fun stop() = edit { SoundState(it.soundMap.stopped()) }
+    fun stop() {
+        edit { SoundState(it.soundMap.stopped()) }
+        _sleep.value = null
+    }
 
     private fun edit(change: (SoundState) -> SoundState) {
         _state.update(change)
@@ -64,7 +106,16 @@ class Ambience(
     private companion object {
         // Antes era 0: al darle a reproducir un sonido nuevo no se oia nada.
         const val DEFAULT_VOLUME = 0.5f
+        const val FADE_STEPS = 50
+        const val FADE_MILLIS = 5_000L
     }
+}
+
+/** El temporizador de apagado: a una hora, o al terminar la sesión. */
+sealed interface SleepTimer {
+    data class At(val millis: Long) : SleepTimer
+
+    data object SessionEnd : SleepTimer
 }
 
 data class SoundState(

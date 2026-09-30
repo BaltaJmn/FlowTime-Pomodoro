@@ -38,6 +38,7 @@ val DataModule = module {
             ambience = get(),
             goals = get(),
             reminders = get(),
+            mixes = get(),
             appVersion = version.orEmpty()
         )
     }

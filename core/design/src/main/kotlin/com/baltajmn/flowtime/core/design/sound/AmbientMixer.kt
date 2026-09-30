@@ -17,6 +17,10 @@ class AmbientMixer {
     // Se sustituye entera en cada cambio: el hilo de audio siempre lee una copia completa.
     @Volatile
     private var targets = FloatArray(PlayerType.entries.size)
+
+    /** El volumen de toda la mezcla, para el fundido del temporizador de apagado. */
+    @Volatile
+    var master = 1f
     private var thread: Thread? = null
 
     /** Volumen de 0 a 1 de un sonido; 0 lo para. */
@@ -68,9 +72,10 @@ class AmbientMixer {
                 }
                 gains[i] = gain
             }
+            val master = master
             for (n in 0 until FRAMES) {
-                out[2 * n] = softClip(left[n])
-                out[2 * n + 1] = softClip(right[n])
+                out[2 * n] = softClip(left[n] * master)
+                out[2 * n + 1] = softClip(right[n] * master)
             }
             track.write(out, 0, out.size, AudioTrack.WRITE_BLOCKING)
 

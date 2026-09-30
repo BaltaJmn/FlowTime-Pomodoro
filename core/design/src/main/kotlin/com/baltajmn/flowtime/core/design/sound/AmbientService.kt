@@ -20,6 +20,8 @@ import androidx.core.content.ContextCompat
 import com.baltajmn.flowtime.core.design.R
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -74,6 +76,14 @@ class AmbientService : Service() {
             IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY),
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
+        // El temporizador de apagado: con la app cerrada, lo que sigue vivo es este servicio.
+        scope.launch {
+            ambience.sleep.collectLatest { timer ->
+                if (timer !is SleepTimer.At) return@collectLatest
+                delay(timer.millis - System.currentTimeMillis())
+                ambience.fadeOutAndStop()
+            }
+        }
         scope.launch {
             ambience.state.collect { state ->
                 if (state.playing.isEmpty() && state.paused.isEmpty()) return@collect stopSelf()

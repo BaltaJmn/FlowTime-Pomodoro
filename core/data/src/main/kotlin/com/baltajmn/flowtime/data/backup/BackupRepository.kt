@@ -21,6 +21,7 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_ALERT
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
 import com.baltajmn.flowtime.data.goal.GoalChange
+import com.baltajmn.flowtime.core.design.sound.SoundMixes
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.timer.TimerMode
@@ -70,6 +71,7 @@ class DefaultBackupRepository(
     private val ambience: Ambience,
     private val goals: GoalRepository,
     private val reminders: ReminderRepository,
+    private val mixes: SoundMixes,
     private val appVersion: String,
     private val clock: () -> Long = System::currentTimeMillis
 ) : BackupRepository {
@@ -146,7 +148,8 @@ class DefaultBackupRepository(
         dailyGoal = goals.history.value
             .map { BackupGoalChange(it.from.toString(), it.minutes) }
             .takeIf { it.isNotEmpty() },
-        reminder = reminders.reminder.value
+        reminder = reminders.reminder.value,
+        soundMixes = mixes.export().map { (name, volumes) -> BackupSoundMix(name, volumes) }.takeIf { it.isNotEmpty() }
     )
 
     // Un valor que esta versión no conoce (un tema que ya no existe) se salta y se queda el actual.
@@ -174,6 +177,9 @@ class DefaultBackupRepository(
                 .filter { it.from.isDay() }
                 .map { GoalChange(LocalDate.parse(it.from), it.minutes) }
             goals.restore(history)
+        }
+        settings.soundMixes?.let { saved ->
+            mixes.restore(saved.filter { it.name.isNotBlank() }.map { it.name.take(MAX_TAG_NAME) to it.volumes })
         }
         settings.reminder?.takeIf { it.minuteOfDay in 0 until MAX_MINUTES }?.let(reminders::set)
         // Por Ambience y no directamente a las preferencias: tiene los volúmenes en memoria.

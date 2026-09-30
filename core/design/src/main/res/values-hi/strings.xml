@@ -290,7 +290,7 @@
     <string name="pro_restore_nothing">इस Google खाते में Pro नहीं मिला। कनेक्शन जाँचें।</string>
     <string name="pro_thanks_text">आपके पास FlowTime Pro है: Pro की हर चीज़ अनलॉक है। FlowTime का साथ देने के लिए धन्यवाद।</string>
     <string name="pro_see">Pro देखें</string>
-    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग और कार्य, और अपने-आप \'परेशान न करें\'। एक बार भुगतान, कोई सदस्यता नहीं।</string>
+    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग, कार्य और मिक्स, और अपने-आप \'परेशान न करें\'। एक बार भुगतान, कोई सदस्यता नहीं।</string>
     <string name="pro_settings_owned">आपके पास Pro है। FlowTime का साथ देने के लिए धन्यवाद।</string>
     <string name="pro_card_text">Pro के साथ देखें कि आप किस समय और किस पर सबसे अच्छा ध्यान लगाते हैं।</string>
     <string name="pro_card_dismiss">अभी नहीं</string>
@@ -312,4 +312,20 @@
     <string name="focus_mode_rule">ध्यान</string>
     <string name="pro_dnd_title">अपने-आप \'परेशान न करें\'</string>
     <string name="pro_dnd_text">ध्यान शुरू होने पर चालू होता है और ब्रेक में बंद।</string>
+    <string name="mix_rainy_cafe">कैफ़े में बारिश</string>
+    <string name="mix_distant_storm">दूर का तूफ़ान</string>
+    <string name="mix_soft_brown">हल्का ब्राउन नॉइज़</string>
+    <string name="sleep_title">बंद होने का टाइमर</string>
+    <string name="sleep_off">बंद न करें</string>
+    <string name="sleep_minutes">%1$d मिनट में</string>
+    <string name="sleep_session_end">सत्र खत्म होने पर</string>
+    <string name="sleep_at">ध्वनियाँ %1$s पर बंद होंगी</string>
+    <string name="sleep_at_session_end">सत्र खत्म होने पर ध्वनियाँ बंद होंगी</string>
+    <string name="mix_save">मिक्स सेव करें</string>
+    <string name="mix_name">मिक्स का नाम</string>
+    <string name="mix_delete">हटाएँ</string>
+    <string name="mix_hide">छिपाएँ</string>
+    <string name="mix_limit">Pro के बिना आप %1$d मिक्स सेव कर सकते हैं। नया सेव करने के लिए कोई एक हटाएँ।</string>
+    <string name="pro_mixes_title">असीमित मिक्स</string>
+    <string name="pro_mixes_text">Pro के बिना, %1$d सेव।</string>
 </resources>

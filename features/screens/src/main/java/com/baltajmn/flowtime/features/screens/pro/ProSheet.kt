@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -247,6 +248,11 @@ private fun FeatureRow(feature: ProFeature) {
             R.string.pro_tasks_title,
             R.string.pro_tasks_text
         )
+        ProFeature.MIXES -> Triple(
+            Icons.Filled.PlayArrow,
+            R.string.pro_mixes_title,
+            R.string.pro_mixes_text
+        )
         ProFeature.DND -> Triple(
             Icons.Filled.Notifications,
             R.string.pro_dnd_title,
@@ -256,6 +262,7 @@ private fun FeatureRow(feature: ProFeature) {
     val limit = when (feature) {
         ProFeature.TAGS -> Limits.FREE_TAGS
         ProFeature.TASKS -> Limits.FREE_PENDING_TASKS
+        ProFeature.MIXES -> Limits.FREE_MIXES
         else -> null
     }
     FeatureRow(

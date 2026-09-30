@@ -88,7 +88,16 @@ data class BackupSettings(
     val soundVolumes: Map<String, Float> = emptyMap(),
     /** El objetivo diario con su historial: cada día se mide con el que tenía entonces. */
     val dailyGoal: List<BackupGoalChange>? = null,
-    val reminder: Reminder? = null
+    val reminder: Reminder? = null,
+    /** Las mezclas de sonidos guardadas (#44), sin las de ejemplo. */
+    val soundMixes: List<BackupSoundMix>? = null
+)
+
+@Serializable
+data class BackupSoundMix(
+    val name: String,
+    /** Por el nombre del sonido, de 0 a 1. */
+    val volumes: Map<String, Float>
 )
 
 @Serializable

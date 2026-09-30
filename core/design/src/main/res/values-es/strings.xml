@@ -293,7 +293,7 @@
     <string name="pro_restore_nothing">No se ha encontrado Pro en esta cuenta de Google. Comprueba la conexión.</string>
     <string name="pro_thanks_text">Ya tienes FlowTime Pro: todo lo de Pro está desbloqueado. Gracias por apoyar FlowTime.</string>
     <string name="pro_see">Ver Pro</string>
-    <string name="pro_settings_text">Estadísticas avanzadas, exportar a CSV, etiquetas y tareas sin límite, y No molestar automático. Pago único, sin suscripción.</string>
+    <string name="pro_settings_text">Estadísticas avanzadas, exportar a CSV, etiquetas, tareas y mezclas sin límite, y No molestar automático. Pago único, sin suscripción.</string>
     <string name="pro_settings_owned">Tienes Pro. Gracias por apoyar FlowTime.</string>
     <string name="pro_card_text">Con Pro ves a qué horas y en qué te concentras mejor.</string>
     <string name="pro_card_dismiss">Ahora no</string>
@@ -315,4 +315,20 @@
     <string name="focus_mode_rule">Concentrándote</string>
     <string name="pro_dnd_title">No molestar automático</string>
     <string name="pro_dnd_text">Se activa al empezar a concentrarte y se quita en el descanso.</string>
+    <string name="mix_rainy_cafe">Lluvia en la cafetería</string>
+    <string name="mix_distant_storm">Tormenta lejana</string>
+    <string name="mix_soft_brown">Ruido marrón suave</string>
+    <string name="sleep_title">Temporizador de apagado</string>
+    <string name="sleep_off">No apagar</string>
+    <string name="sleep_minutes">En %1$d min</string>
+    <string name="sleep_session_end">Al terminar la sesión</string>
+    <string name="sleep_at">Se apagan a las %1$s</string>
+    <string name="sleep_at_session_end">Se apagan al terminar la sesión</string>
+    <string name="mix_save">Guardar mezcla</string>
+    <string name="mix_name">Nombre de la mezcla</string>
+    <string name="mix_delete">Borrar</string>
+    <string name="mix_hide">Ocultar</string>
+    <string name="mix_limit">Sin Pro puedes guardar %1$d mezclas. Borra una para guardar otra.</string>
+    <string name="pro_mixes_title">Mezclas sin límite</string>
+    <string name="pro_mixes_text">Sin Pro, %1$d guardadas.</string>
 </resources>

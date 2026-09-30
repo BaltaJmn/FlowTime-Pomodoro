@@ -74,6 +74,10 @@ import com.baltajmn.flowtime.features.screens.common.composable.components.Timer
 import com.baltajmn.flowtime.features.screens.common.composable.components.advantages
 import com.baltajmn.flowtime.features.screens.common.composable.components.label
 import com.baltajmn.flowtime.features.screens.edit.ModeSettingsSheet
+import com.baltajmn.flowtime.data.pro.Limits
+import com.baltajmn.flowtime.data.pro.ProGate
+import com.baltajmn.flowtime.features.screens.pro.ProFeature
+import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -84,7 +88,9 @@ private enum class FocusSheet { SOUNDS, MODE }
 fun FocusScreen(
     showSound: Boolean,
     viewModel: FocusViewModel = koinViewModel(),
-    ambience: Ambience = koinInject()
+    ambience: Ambience = koinInject(),
+    gate: ProGate = koinInject(),
+    proLauncher: ProLauncher = koinInject()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val sound by ambience.state.collectAsStateWithLifecycle()
@@ -116,7 +122,11 @@ fun FocusScreen(
     )
 
     when (sheet) {
-        FocusSheet.SOUNDS -> SoundSheet(onDismiss = { sheet = null })
+        FocusSheet.SOUNDS -> SoundSheet(
+            onDismiss = { sheet = null },
+            mixLimit = gate.limit(Limits.FREE_MIXES),
+            onSeePro = { proLauncher.open(ProFeature.MIXES) }
+        )
         FocusSheet.MODE -> ModeSettingsSheet(mode = state.mode, onDismiss = { sheet = null })
         null -> Unit
     }

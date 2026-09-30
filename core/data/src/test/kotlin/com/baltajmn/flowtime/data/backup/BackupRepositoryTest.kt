@@ -17,6 +17,7 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.data.fakes.FakeDataProvider
 import com.baltajmn.flowtime.data.fakes.FakeSessionRepository
 import com.baltajmn.flowtime.data.goal.GoalChange
+import com.baltajmn.flowtime.core.design.sound.SoundMixes
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.reminder.Reminder
 import com.baltajmn.flowtime.data.reminder.ReminderRepository
@@ -86,6 +87,7 @@ class BackupRepositoryTest {
         val ambience = mockk<Ambience>(relaxed = true)
         val goals = GoalRepository(prefs, FakeSessionRepository())
         val reminders = ReminderRepository(prefs)
+        val mixes = SoundMixes(prefs)
         val backups = DefaultBackupRepository(
             dao = dao,
             dataProvider = prefs,
@@ -93,6 +95,7 @@ class BackupRepositoryTest {
             ambience = ambience,
             goals = goals,
             reminders = reminders,
+            mixes = mixes,
             appVersion = "3.0",
             clock = { NOW }
         )
@@ -151,6 +154,7 @@ class BackupRepositoryTest {
             goals.setGoal(45, LocalDate.of(2026, 1, 10))
             goals.setGoal(90, LocalDate.of(2026, 9, 1))
             reminders.set(Reminder(enabled = true, minuteOfDay = 7 * 60))
+            mixes.save("Lluvia y fuego", mapOf(PlayerType.RAIN to 0.4f, PlayerType.FIRE to 0.8f))
         }
         val new = Device()
 
@@ -179,6 +183,10 @@ class BackupRepositoryTest {
                 goals.history.value
             )
             assertEquals(Reminder(enabled = true, minuteOfDay = 7 * 60), reminders.reminder.value)
+            assertEquals(
+                mapOf(PlayerType.RAIN to 0.4f, PlayerType.FIRE to 0.8f),
+                mixes.all.value.single { it.name == "Lluvia y fuego" }.volumes
+            )
             // Solo el volumen que se tocó, y por Ambience: el panel no tiene que esperar a reiniciar.
             verify(exactly = 1) { ambience.setVolume(any(), any()) }
             verify { ambience.setVolume(PlayerType.RAIN, 0.8f) }

@@ -10,6 +10,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.service.SoundService
+import com.baltajmn.flowtime.core.design.sound.Ambience
+import com.baltajmn.flowtime.core.design.sound.SleepTimer
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
@@ -32,6 +34,10 @@ import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.widget.FocusWidget
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
@@ -77,6 +83,13 @@ class App : Application() {
         }
         // Al arrancar (también tras actualizar la app) y con cada cambio en Ajustes.
         scope.launch { get<ReminderRepository>().reminder.collect { reminder.schedule() } }
+        // "Al terminar la sesión" del temporizador de apagado de los sonidos (#44).
+        val ambience = get<Ambience>()
+        scope.launch {
+            engine.state.map { it.isActive }.distinctUntilChanged().drop(1).filter { !it }.collect {
+                if (ambience.sleep.value == SleepTimer.SessionEnd) ambience.fadeOutAndStop()
+            }
+        }
         // El widget, con cada cambio de la sesión, del progreso de hoy (también a medianoche) o del tema.
         scope.launch {
             combine(
