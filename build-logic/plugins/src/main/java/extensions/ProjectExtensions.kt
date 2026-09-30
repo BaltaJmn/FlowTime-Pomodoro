@@ -38,6 +38,11 @@ internal fun Project.configureKotlinAndroid(
     }
 }
 
+// OJO: con AGP 9 (Kotlin integrado) ktlint-gradle 11.5.1 no detecta el Kotlin de Android, ya no crea las
+// tareas por conjunto de fuentes (ktlintMainSourceSetCheck...) y solo revisa los .kts. Arreglarlo pide
+// ktlint-gradle 14.1.0 o mas, que exige el motor ktlint 1.x (con el 0.47.1 de ahora falla) y trae otras
+// reglas: con el estilo android_studio salen unas 230 infracciones, 129 de ellas function-naming.
+// Pendiente de decidir: corregirlas o partir de un baseline.
 fun Project.configureKtlint() {
     plugins.apply("org.jlleitschuh.gradle.ktlint")
 
