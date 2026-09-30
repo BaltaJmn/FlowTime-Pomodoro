@@ -68,11 +68,16 @@ enum class AppIcon(val theme: AppTheme, @DrawableRes val icon: Int, private val 
     )
 }
 
-/** El icono activo es el alias encendido: se enciende el elegido y se apagan los demás. */
+/**
+ * El icono activo es el alias encendido: se enciende el elegido y se apagan los demás. El cambio espera
+ * a que la app pase a segundo plano ([applyPending]): apagar el alias con el que se abrió la app cierra
+ * su tarea, y con la app delante se iría de golpe al lanzador.
+ */
 class AppIcons(private val context: Context) {
     private val packages = context.packageManager
+    private var pending: AppIcon? = null
 
-    fun current(): AppIcon = AppIcon.entries.firstOrNull { icon ->
+    fun current(): AppIcon = pending ?: AppIcon.entries.firstOrNull { icon ->
         when (packages.getComponentEnabledSetting(icon.component(context))) {
             PackageManager.COMPONENT_ENABLED_STATE_ENABLED -> true
             // Sin tocar nunca, vale el manifiesto: solo el de siempre está encendido.
@@ -82,6 +87,12 @@ class AppIcons(private val context: Context) {
     } ?: AppIcon.DEFAULT
 
     fun set(icon: AppIcon) {
+        pending = icon
+    }
+
+    fun applyPending() {
+        val icon = pending ?: return
+        pending = null
         // Primero el nuevo: la app no se queda ni un momento sin icono en el lanzador.
         (listOf(icon) + AppIcon.entries.filter { it != icon }).forEach {
             packages.setComponentEnabledSetting(

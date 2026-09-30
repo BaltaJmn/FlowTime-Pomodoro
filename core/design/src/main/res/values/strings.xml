@@ -354,6 +354,6 @@
     <string name="cd_app_icon">%1$s icon</string>
     <string name="cd_pro_app_icon">%1$s icon, Pro</string>
     <string name="app_icon_change_title">Change the icon?</string>
-    <string name="app_icon_change_text">On some phones the icon disappears from the home screen when it changes. If that happens, add it again from the app list.</string>
+    <string name="app_icon_change_text">The icon changes when you leave the app. On some phones it disappears from the home screen; if that happens, add it again from the app list.</string>
     <string name="app_icon_change">Change</string>
 </resources>

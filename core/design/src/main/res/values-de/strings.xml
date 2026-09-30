@@ -350,6 +350,6 @@
     <string name="cd_app_icon">Symbol %1$s</string>
     <string name="cd_pro_app_icon">Symbol %1$s, Pro</string>
     <string name="app_icon_change_title">Symbol ändern?</string>
-    <string name="app_icon_change_text">Auf manchen Handys verschwindet das Symbol beim Ändern vom Startbildschirm. Falls das passiert, füge es aus der App-Liste wieder hinzu.</string>
+    <string name="app_icon_change_text">Das Symbol ändert sich, wenn du die App verlässt. Auf manchen Handys verschwindet es dann vom Startbildschirm; falls das passiert, füge es aus der App-Liste wieder hinzu.</string>
     <string name="app_icon_change">Ändern</string>
 </resources>

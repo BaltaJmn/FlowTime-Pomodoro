@@ -353,6 +353,6 @@
     <string name="cd_app_icon">Icona %1$s</string>
     <string name="cd_pro_app_icon">Icona %1$s, Pro</string>
     <string name="app_icon_change_title">Cambiare l\'icona?</string>
-    <string name="app_icon_change_text">Su alcuni telefoni l\'icona sparisce dalla schermata Home quando la cambi. Se succede, aggiungila di nuovo dall\'elenco delle app.</string>
+    <string name="app_icon_change_text">L\'icona cambia quando esci dall\'app. Su alcuni telefoni sparisce dalla schermata Home; se succede, aggiungila di nuovo dall\'elenco delle app.</string>
     <string name="app_icon_change">Cambia</string>
 </resources>

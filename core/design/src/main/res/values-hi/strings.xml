@@ -350,6 +350,6 @@
     <string name="cd_app_icon">%1$s आइकन</string>
     <string name="cd_pro_app_icon">%1$s आइकन, Pro</string>
     <string name="app_icon_change_title">आइकन बदलें?</string>
-    <string name="app_icon_change_text">कुछ फ़ोन में आइकन बदलने पर वह होम स्क्रीन से हट जाता है। ऐसा हो तो उसे ऐप सूची से फिर से जोड़ें।</string>
+    <string name="app_icon_change_text">ऐप से बाहर निकलने पर आइकन बदल जाता है। कुछ फ़ोन में वह होम स्क्रीन से हट जाता है; ऐसा हो तो उसे ऐप सूची से फिर से जोड़ें।</string>
     <string name="app_icon_change">बदलें</string>
 </resources>

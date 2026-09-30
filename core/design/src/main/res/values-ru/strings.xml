@@ -360,6 +360,6 @@
     <string name="cd_app_icon">Значок: %1$s</string>
     <string name="cd_pro_app_icon">Значок %1$s, Pro</string>
     <string name="app_icon_change_title">Сменить значок?</string>
-    <string name="app_icon_change_text">На некоторых телефонах после смены значок пропадает с главного экрана. Если так случится, добавьте его снова из списка приложений.</string>
+    <string name="app_icon_change_text">Значок сменится, когда вы выйдете из приложения. На некоторых телефонах он при этом пропадает с главного экрана; если так случится, добавьте его снова из списка приложений.</string>
     <string name="app_icon_change">Сменить</string>
 </resources>

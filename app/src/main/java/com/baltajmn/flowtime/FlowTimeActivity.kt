@@ -19,6 +19,7 @@ import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.data.review.calmMoments
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
+import com.baltajmn.flowtime.features.screens.settings.AppIcons
 import com.baltajmn.flowtime.goal.GoalWatcher
 import com.baltajmn.flowtime.review.ReviewPrompter
 import com.baltajmn.flowtime.session.SessionNotification
@@ -36,6 +37,7 @@ class FlowTimeActivity : ComponentActivity() {
     private val engine: FocusEngine by inject()
     private val reviewPrompter: ReviewPrompter by inject()
     private val proLauncher: ProLauncher by inject()
+    private val appIcons: AppIcons by inject()
     private val showSound: MutableState<Boolean> = mutableStateOf(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +90,12 @@ class FlowTimeActivity : ComponentActivity() {
         super.onResume()
         sessionNotification.update()
         sessionNotification.dismissAlert()
+    }
+
+    // El icono elegido en Apariencia, al salir de la app: con ella delante, el sistema la cerraría.
+    override fun onStop() {
+        super.onStop()
+        if (!isChangingConfigurations) appIcons.applyPending()
     }
 
     private companion object {

@@ -353,6 +353,6 @@
     <string name="cd_app_icon">Icono %1$s</string>
     <string name="cd_pro_app_icon">Icono %1$s, de Pro</string>
     <string name="app_icon_change_title">¿Cambiar el icono?</string>
-    <string name="app_icon_change_text">En algunos móviles el icono desaparece de la pantalla de inicio al cambiarlo. Si pasa, vuelve a ponerlo desde la lista de apps.</string>
+    <string name="app_icon_change_text">El icono cambia al salir de la app. En algunos móviles desaparece de la pantalla de inicio; si pasa, vuelve a ponerlo desde la lista de apps.</string>
     <string name="app_icon_change">Cambiar</string>
 </resources>
