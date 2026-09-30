@@ -34,7 +34,11 @@ Confirmar la edición cuenta como publicar, así que va con el sí expreso del u
 
 - En una sola edición: los textos de los 6 idiomas, el icono, el gráfico y las capturas de móvil.
 - `<correo>` es el de contacto que ya tiene la ficha. La ficha no tiene web: `""` la deja vacía.
-- Las capturas de tablet no las sube `play.sh`: van a mano en Play Console (*Ficha de Play Store >
-  Tablets de 10 pulgadas*), o se le añade a `play.sh` el tipo `tenInchScreenshots`.
+- Las capturas de tablet no las sube `play.sh`. Van por la API en otra edición, con el token de
+  `~/keys/LEEME.md` (subidas el 30-09-2026): por idioma, `DELETE .../edits/<id>/listings/<idioma>/tenInchScreenshots`
+  y un `POST https://androidpublisher.googleapis.com/upload/androidpublisher/v3/applications/com.baltajmn.flowtime/edits/<id>/listings/<idioma>/tenInchScreenshots?uploadType=media`
+  por imagen (`Content-Type: image/png`). Al final `POST .../edits/<id>:commit` con
+  `Content-Length: 0`: sin esa cabecera Google responde 404. En zsh, `${E}:commit` con llaves, porque
+  `$E:c` es un modificador y se come la `c`.
 - El gráfico va solo en el idioma por defecto (es-ES) y Play lo enseña en todos: por eso no lleva
   texto que traducir.
