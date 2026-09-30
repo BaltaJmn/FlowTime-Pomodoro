@@ -14,6 +14,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
@@ -23,6 +25,7 @@ import com.baltajmn.flowtime.core.design.sound.SleepTimer
 import com.baltajmn.flowtime.core.design.sound.SoundMix
 import com.baltajmn.flowtime.core.design.sound.SoundMixes
 import java.util.Date
+import kotlinx.coroutines.delay
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -94,7 +97,10 @@ fun SoundButton(playing: Boolean, onClick: () -> Unit) {
 fun SoundSheet(
     onDismiss: () -> Unit,
     mixLimit: Int? = null,
-    onSeePro: () -> Unit = {},
+    onSeeProMixes: () -> Unit = {},
+    showProSounds: Boolean = false,
+    proSoundsLocked: Boolean = false,
+    onSeeProSounds: () -> Unit = {},
     ambience: Ambience = koinInject(),
     mixes: SoundMixes = koinInject()
 ) {
@@ -102,6 +108,17 @@ fun SoundSheet(
     val sleep by ambience.sleep.collectAsState()
     val all by mixes.all.collectAsState()
     var dialog by remember { mutableStateOf<MixDialog?>(null) }
+
+    // Un sonido de Pro sin Pro se escucha 10 segundos; al cerrar la hoja, se corta.
+    var preview by remember { mutableStateOf<PlayerType?>(null) }
+    LaunchedEffect(preview) {
+        val type = preview ?: return@LaunchedEffect
+        delay(PREVIEW_MILLIS)
+        ambience.play(type, false)
+        preview = null
+    }
+    DisposableEffect(Unit) { onDispose { preview?.let { ambience.play(it, false) } } }
+    val locked = { type: PlayerType -> type.pro && proSoundsLocked }
 
     ModalBottomSheet(onDismissRequest = onDismiss) {
         Column(
@@ -157,8 +174,14 @@ fun SoundSheet(
             }
             ExpandedContent(
                 items = sound.soundMap,
-                onPlayClicked = { type, playing -> ambience.play(type = type, playing = playing) },
-                onVolumeChanged = { type, volume -> ambience.setVolume(type = type, volume = volume) }
+                onPlayClicked = { type, playing ->
+                    ambience.play(type = type, playing = playing)
+                    if (locked(type)) preview = type.takeIf { playing }
+                },
+                onVolumeChanged = { type, volume -> ambience.setVolume(type = type, volume = volume) },
+                showPro = showProSounds,
+                proLocked = proSoundsLocked,
+                onLocked = { onSeeProSounds() }
             )
         }
     }
@@ -167,7 +190,7 @@ fun SoundSheet(
         MixDialog.Save -> NameDialog(
             initial = "",
             onConfirm = { name ->
-                mixes.save(name, ambience.current())
+                mixes.save(name, ambience.current().filterKeys { !locked(it) })
                 dialog = null
             },
             onDismiss = { dialog = null }
@@ -194,7 +217,7 @@ fun SoundSheet(
                 TextButton(
                     onClick = {
                         dialog = null
-                        onSeePro()
+                        onSeeProMixes()
                     }
                 ) { Text(text = stringResource(R.string.pro_see)) }
             }
@@ -244,6 +267,7 @@ private fun SleepButton(sleep: SleepTimer?, onSleep: (SleepTimer?) -> Unit) {
 }
 
 private val SLEEP_MINUTES = listOf(15, 30, 45, 60)
+private const val PREVIEW_MILLIS = 10_000L
 
 /** Un chip que también se puede mantener pulsado: los de Material no lo permiten. */
 @OptIn(ExperimentalFoundationApi::class)
@@ -332,7 +356,11 @@ private const val MAX_NAME = 30
 fun ExpandedContent(
     items: Map<PlayerType, PlayerState>,
     onPlayClicked: (PlayerType, Boolean) -> Unit,
-    onVolumeChanged: (PlayerType, Float) -> Unit
+    onVolumeChanged: (PlayerType, Float) -> Unit,
+    /** Los sonidos de Pro: sin Pro a la venta no salen; sin comprar, con un candado. */
+    showPro: Boolean = false,
+    proLocked: Boolean = false,
+    onLocked: (PlayerType) -> Unit = {}
 ) {
     val mixerDescription = stringResource(R.string.cd_sound_mixer)
 
@@ -344,14 +372,15 @@ fun ExpandedContent(
                 contentDescription = mixerDescription
             }
     ) {
-        PlayerType.entries.forEach { playerType ->
+        PlayerType.entries.filter { !it.pro || showPro }.forEach { playerType ->
             val playerState = items[playerType]
             if (playerState != null) {
                 SliderItem(
                     type = playerType,
                     playerState = playerState,
                     onPlayClicked = onPlayClicked,
-                    onVolumeChanged = onVolumeChanged
+                    onVolumeChanged = onVolumeChanged,
+                    onLocked = if (playerType.pro && proLocked) ({ onLocked(playerType) }) else null
                 )
             }
         }
@@ -363,7 +392,9 @@ fun SliderItem(
     type: PlayerType,
     playerState: PlayerState,
     onPlayClicked: (PlayerType, Boolean) -> Unit,
-    onVolumeChanged: (PlayerType, Float) -> Unit
+    onVolumeChanged: (PlayerType, Float) -> Unit,
+    /** Con candado: un sonido de Pro sin Pro, que abre la pantalla de Pro. */
+    onLocked: (() -> Unit)? = null
 ) {
     val isPlaying = playerState.isPlaying
     val volume = playerState.volume
@@ -427,6 +458,16 @@ fun SliderItem(
                     soundName
                 )
             )
+        }
+
+        onLocked?.let {
+            IconButton(onClick = it) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_lock_on),
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = stringResource(R.string.cd_pro_sound, soundName)
+                )
+            }
         }
     }
 }

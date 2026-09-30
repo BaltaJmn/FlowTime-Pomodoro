@@ -131,7 +131,8 @@ data class PlayerState(
     val isPlaying: Boolean = false
 )
 
-enum class PlayerType(@DrawableRes val icon: Int, @StringRes val label: Int) {
+/** Los sonidos, en el orden del panel. Los de [pro] se oyen 10 segundos sin Pro, y sin Pro a la venta no salen. */
+enum class PlayerType(@DrawableRes val icon: Int, @StringRes val label: Int, val pro: Boolean = false) {
     RAIN(R.drawable.ic_rain, R.string.sound_rain),
     FIRE(R.drawable.ic_fire, R.string.sound_fire),
     WAVE(R.drawable.ic_wave, R.string.sound_wave),
@@ -143,5 +144,11 @@ enum class PlayerType(@DrawableRes val icon: Int, @StringRes val label: Int) {
     WIND(R.drawable.ic_wind, R.string.sound_wind),
     BROWN(R.drawable.ic_brown, R.string.sound_brown),
     PINK(R.drawable.ic_pink, R.string.sound_pink),
-    WHITE(R.drawable.ic_white, R.string.sound_white)
+    WHITE(R.drawable.ic_white, R.string.sound_white),
+    STREAM(R.drawable.ic_stream, R.string.sound_stream, pro = true),
+    CRICKETS(R.drawable.ic_crickets, R.string.sound_crickets, pro = true),
+    FAN(R.drawable.ic_fan, R.string.sound_fan, pro = true),
+    TRAIN(R.drawable.ic_train, R.string.sound_train, pro = true),
+    TYPING(R.drawable.ic_typing, R.string.sound_typing, pro = true),
+    TENT(R.drawable.ic_tent, R.string.sound_tent, pro = true)
 }

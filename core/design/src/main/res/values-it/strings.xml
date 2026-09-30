@@ -293,7 +293,7 @@
     <string name="pro_restore_nothing">Pro non è stato trovato in questo account Google. Controlla la connessione.</string>
     <string name="pro_thanks_text">Hai FlowTime Pro: tutto ciò che è Pro è sbloccato. Grazie per il tuo supporto a FlowTime.</string>
     <string name="pro_see">Scopri Pro</string>
-    <string name="pro_settings_text">Statistiche avanzate, esportazione CSV, etichette, attività e mix illimitati e Non disturbare automatico. Pagamento unico, senza abbonamento.</string>
+    <string name="pro_settings_text">Statistiche avanzate, esportazione CSV, etichette, attività e mix illimitati, 6 nuovi suoni e Non disturbare automatico. Pagamento unico, senza abbonamento.</string>
     <string name="pro_settings_owned">Hai Pro. Grazie per il tuo supporto a FlowTime.</string>
     <string name="pro_card_text">Con Pro vedi in quali ore e su cosa ti concentri meglio.</string>
     <string name="pro_card_dismiss">Non ora</string>
@@ -331,4 +331,13 @@
     <string name="mix_limit">Senza Pro puoi salvare %1$d mix. Eliminane uno per salvarne un altro.</string>
     <string name="pro_mixes_title">Mix illimitati</string>
     <string name="pro_mixes_text">Senza Pro, %1$d salvati.</string>
+    <string name="sound_stream">Ruscello</string>
+    <string name="sound_crickets">Grilli di notte</string>
+    <string name="sound_fan">Ventilatore</string>
+    <string name="sound_train">Treno</string>
+    <string name="sound_typing">Digitazione</string>
+    <string name="sound_tent">Pioggia sulla tenda</string>
+    <string name="pro_sounds_title">6 nuovi suoni</string>
+    <string name="pro_sounds_text">Ruscello, grilli di notte, ventilatore, treno, digitazione e pioggia sulla tenda. Puoi ascoltarli 10 secondi prima di acquistare.</string>
+    <string name="cd_pro_sound">%1$s, suono Pro</string>
 </resources>

@@ -31,10 +31,10 @@ import kotlinx.coroutines.flow.asStateFlow
 
 /**
  * Lo que incluye Pro, en el orden de la pantalla de Pro, que pone la primera la función desde la que
- * se abrió. Solo lo que ya existe: lo de Pro que llegue después (#44) se añade aquí, en la
+ * se abrió. Solo lo que ya existe: lo de Pro que llegue después se añade aquí, en la
  * descripción del producto en Play y en la ficha a la vez.
  */
-enum class ProFeature { STATS, CSV, TAGS, TASKS, MIXES, DND }
+enum class ProFeature { STATS, CSV, TAGS, TASKS, MIXES, SOUNDS, DND }
 
 /** Cómo se ve algo de Pro: nada mientras Pro no se venda, difuminado sin Pro, o abierto. */
 enum class ProAccess {

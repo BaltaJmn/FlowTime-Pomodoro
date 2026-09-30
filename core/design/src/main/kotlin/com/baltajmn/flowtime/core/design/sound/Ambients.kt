@@ -23,6 +23,12 @@ internal fun ambientFor(type: PlayerType): Ambient = when (type) {
     PlayerType.BROWN -> BrownNoise()
     PlayerType.PINK -> PinkNoise()
     PlayerType.WHITE -> WhiteNoise()
+    PlayerType.STREAM -> Stream()
+    PlayerType.CRICKETS -> Crickets()
+    PlayerType.FAN -> Fan()
+    PlayerType.TRAIN -> Train()
+    PlayerType.TYPING -> Typing()
+    PlayerType.TENT -> TentRain()
 }
 
 private class WhiteNoise : Ambient {

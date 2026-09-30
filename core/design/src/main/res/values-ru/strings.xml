@@ -300,7 +300,7 @@
     <string name="pro_restore_nothing">Pro не найден в этом аккаунте Google. Проверьте подключение.</string>
     <string name="pro_thanks_text">У вас FlowTime Pro: всё из Pro открыто. Спасибо за поддержку FlowTime.</string>
     <string name="pro_see">Узнать о Pro</string>
-    <string name="pro_settings_text">Расширенная статистика, экспорт в CSV, неограниченные метки, задачи и миксы и автоматический «Не беспокоить». Разовая оплата, без подписки.</string>
+    <string name="pro_settings_text">Расширенная статистика, экспорт в CSV, неограниченные метки, задачи и миксы, 6 новых звуков и автоматический «Не беспокоить». Разовая оплата, без подписки.</string>
     <string name="pro_settings_owned">У вас Pro. Спасибо за поддержку FlowTime.</string>
     <string name="pro_card_text">С Pro видно, в какие часы и над чем вам лучше всего работается.</string>
     <string name="pro_card_dismiss">Не сейчас</string>
@@ -338,4 +338,13 @@
     <string name="mix_limit">Без Pro можно сохранить %1$d микса. Удалите один, чтобы сохранить новый.</string>
     <string name="pro_mixes_title">Неограниченные миксы</string>
     <string name="pro_mixes_text">Без Pro до %1$d сохранённых.</string>
+    <string name="sound_stream">Ручей</string>
+    <string name="sound_crickets">Ночные сверчки</string>
+    <string name="sound_fan">Вентилятор</string>
+    <string name="sound_train">Поезд</string>
+    <string name="sound_typing">Печать на клавиатуре</string>
+    <string name="sound_tent">Дождь по палатке</string>
+    <string name="pro_sounds_title">6 новых звуков</string>
+    <string name="pro_sounds_text">Ручей, ночные сверчки, вентилятор, поезд, печать на клавиатуре и дождь по палатке. Каждый можно послушать 10 секунд до покупки.</string>
+    <string name="cd_pro_sound">%1$s, звук Pro</string>
 </resources>

@@ -22,8 +22,11 @@ class ProGate(
     private val isPro: StateFlow<Boolean>,
     private val enabled: Boolean = ProFeatures.enabled
 ) {
-    /** El límite gratis [free], si se aplica: con Pro a la venta y sin comprar. */
-    fun limit(free: Int): Int? = free.takeIf { enabled && !isPro.value }
+    /** Lo de Pro está cerrado: con Pro a la venta y sin comprar. */
+    val locked: Boolean get() = enabled && !isPro.value
+
+    /** El límite gratis [free], si se aplica. */
+    fun limit(free: Int): Int? = free.takeIf { locked }
 
     /** Si se puede tener uno más cuando ya hay [current] y el límite gratis es [limit]. */
     fun allowsOneMore(current: Int, limit: Int) = limit(limit)?.let { current < it } ?: true

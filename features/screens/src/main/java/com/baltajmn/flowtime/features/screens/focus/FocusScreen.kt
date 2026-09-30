@@ -75,6 +75,7 @@ import com.baltajmn.flowtime.features.screens.common.composable.components.advan
 import com.baltajmn.flowtime.features.screens.common.composable.components.label
 import com.baltajmn.flowtime.features.screens.edit.ModeSettingsSheet
 import com.baltajmn.flowtime.data.pro.Limits
+import com.baltajmn.flowtime.data.pro.ProFeatures
 import com.baltajmn.flowtime.data.pro.ProGate
 import com.baltajmn.flowtime.features.screens.pro.ProFeature
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
@@ -125,7 +126,10 @@ fun FocusScreen(
         FocusSheet.SOUNDS -> SoundSheet(
             onDismiss = { sheet = null },
             mixLimit = gate.limit(Limits.FREE_MIXES),
-            onSeePro = { proLauncher.open(ProFeature.MIXES) }
+            onSeeProMixes = { proLauncher.open(ProFeature.MIXES) },
+            showProSounds = ProFeatures.enabled,
+            proSoundsLocked = gate.locked,
+            onSeeProSounds = { proLauncher.open(ProFeature.SOUNDS) }
         )
         FocusSheet.MODE -> ModeSettingsSheet(mode = state.mode, onDismiss = { sheet = null })
         null -> Unit

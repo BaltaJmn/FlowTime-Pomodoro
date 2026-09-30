@@ -290,7 +290,7 @@
     <string name="pro_restore_nothing">Pro wurde in diesem Google-Konto nicht gefunden. Prüfe die Verbindung.</string>
     <string name="pro_thanks_text">Du hast FlowTime Pro: Alles aus Pro ist freigeschaltet. Danke, dass du FlowTime unterstützt.</string>
     <string name="pro_see">Pro ansehen</string>
-    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels, Aufgaben und Mixe sowie automatisch \"Nicht stören\". Einmalzahlung, kein Abo.</string>
+    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels, Aufgaben und Mixe, 6 neue Klänge und automatisch \"Nicht stören\". Einmalzahlung, kein Abo.</string>
     <string name="pro_settings_owned">Du hast Pro. Danke, dass du FlowTime unterstützt.</string>
     <string name="pro_card_text">Mit Pro siehst du, zu welchen Zeiten und woran du dich am besten konzentrierst.</string>
     <string name="pro_card_dismiss">Jetzt nicht</string>
@@ -328,4 +328,13 @@
     <string name="mix_limit">Ohne Pro kannst du %1$d Mixe speichern. Lösche einen, um einen neuen zu speichern.</string>
     <string name="pro_mixes_title">Unbegrenzte Mixe</string>
     <string name="pro_mixes_text">Ohne Pro %1$d gespeichert.</string>
+    <string name="sound_stream">Bach</string>
+    <string name="sound_crickets">Grillen bei Nacht</string>
+    <string name="sound_fan">Ventilator</string>
+    <string name="sound_train">Zug</string>
+    <string name="sound_typing">Tippen</string>
+    <string name="sound_tent">Regen aufs Zelt</string>
+    <string name="pro_sounds_title">6 neue Klänge</string>
+    <string name="pro_sounds_text">Bach, Grillen bei Nacht, Ventilator, Zug, Tippen und Regen aufs Zelt. Jeden kannst du vor dem Kauf 10 Sekunden anhören.</string>
+    <string name="cd_pro_sound">%1$s, Pro-Klang</string>
 </resources>
