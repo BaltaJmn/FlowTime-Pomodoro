@@ -6,6 +6,8 @@ import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.model.TimerDefaults
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.getObject
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.setObject
 import com.baltajmn.flowtime.data.repository.SessionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
 enum class TimerMode(val continueAfterBreakKey: SharedPreferencesItem) {
     POMODORO(SharedPreferencesItem.CONTINUE_AFTER_BREAK_POMODORO),
@@ -50,6 +53,7 @@ fun actionsFor(mode: TimerMode, phase: Phase, paused: Boolean): List<TimerAction
  * La sesión tal como se guarda. El tiempo no se va sumando cada segundo: se calcula a partir del
  * ancla (cuándo empezó a contar la fase, o cuándo se reanudó) y de lo que ya llevaba contado.
  */
+@Serializable
 data class FocusState(
     val mode: TimerMode = TimerMode.POMODORO,
     val phase: Phase = Phase.IDLE,
@@ -232,7 +236,7 @@ class FocusEngine(
 
     /** Los tramos de FlowTime con sus totales acumulados: los mismos para el motor y para el anillo. */
     fun flowTimeRanges(): List<RangeModel> = (
-        dataProvider.getRangeModelList(SharedPreferencesItem.FLOW_TIME_RANGE)
+        dataProvider.getObject<List<RangeModel>>(SharedPreferencesItem.FLOW_TIME_RANGE)
             ?: TimerDefaults.flowTimeRanges()
         ).withCumulativeTotals()
 
@@ -245,7 +249,7 @@ class FocusEngine(
     }
 
     private fun pomodoroRange() =
-        dataProvider.getRangeModel(SharedPreferencesItem.POMODORO_RANGE) ?: TimerDefaults.pomodoro()
+        dataProvider.getObject<RangeModel>(SharedPreferencesItem.POMODORO_RANGE) ?: TimerDefaults.pomodoro()
 
     private fun finishWork(s: FocusState, workedMillis: Long, overshoot: Long) {
         record(s, workedMillis, overshoot)
@@ -338,13 +342,11 @@ class FocusEngine(
         dataProvider.setObject(SharedPreferencesItem.TIMER_SESSION, s)
     }
 
-    // Un estado a medias (de otra versión, o un fichero dañado) no puede impedir que la app arranque.
-    // Sin sesión guardada (la primera vez, o tras restaurar una copia en otro móvil), la etiqueta es
-    // la última que se usó.
-    private fun restore(): FocusState = runCatching {
-        dataProvider.getObject(SharedPreferencesItem.TIMER_SESSION, FocusState::class.java)
-            ?.takeIf { it.mode.name.isNotEmpty() && it.phase.name.isNotEmpty() }
-    }.getOrNull() ?: FocusState(tagId = dataProvider.getLong(SharedPreferencesItem.LAST_TAG_ID).takeIf { it != NO_TAG })
+    // Un estado a medias (de otra versión, o un fichero dañado) se lee como si no hubiera sesión. Sin
+    // sesión guardada (la primera vez, o tras restaurar una copia en otro móvil), la etiqueta es la
+    // última que se usó.
+    private fun restore(): FocusState = dataProvider.getObject<FocusState>(SharedPreferencesItem.TIMER_SESSION)
+        ?: FocusState(tagId = dataProvider.getLong(SharedPreferencesItem.LAST_TAG_ID).takeIf { it != NO_TAG })
 
     private companion object {
         const val MINUTE = 60_000L

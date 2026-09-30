@@ -4,10 +4,13 @@ import androidx.annotation.StringRes
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SOUND_MIXES
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.getObject
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.setObject
 import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.serialization.Serializable
 
 /** Una mezcla: el volumen de cada sonido que suena. Las de ejemplo llevan su nombre traducido en [label]. */
 data class SoundMix(
@@ -25,8 +28,7 @@ data class SoundMix(
  */
 class SoundMixes(private val prefs: DataProvider, private val newId: () -> String = { UUID.randomUUID().toString() }) {
 
-    private var stored = runCatching { prefs.getObject(SOUND_MIXES, StoredMixes::class.java) }.getOrNull()
-        ?: StoredMixes()
+    private var stored = prefs.getObject<StoredMixes>(SOUND_MIXES) ?: StoredMixes()
     private val _all = MutableStateFlow(visible())
     val all: StateFlow<List<SoundMix>> = _all.asStateFlow()
 
@@ -69,8 +71,10 @@ class SoundMixes(private val prefs: DataProvider, private val newId: () -> Strin
     }
 
     // Como se guardan: por el nombre del sonido, para no depender del orden de PlayerType.
+    @Serializable
     private data class StoredMixes(val mixes: List<StoredMix> = emptyList(), val hidden: List<String> = emptyList())
 
+    @Serializable
     private data class StoredMix(val id: String = "", val name: String = "", val volumes: Map<String, Float> = emptyMap())
 
     companion object {

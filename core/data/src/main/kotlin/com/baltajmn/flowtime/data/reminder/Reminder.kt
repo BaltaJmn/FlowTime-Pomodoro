@@ -2,6 +2,8 @@ package com.baltajmn.flowtime.data.reminder
 
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.DAILY_REMINDER
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.getObject
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.setObject
 import com.baltajmn.flowtime.data.goal.DayProgress
 import com.baltajmn.flowtime.data.goal.Streak
 import java.time.DayOfWeek
@@ -65,9 +67,7 @@ fun nudge(today: DayProgress, streak: Streak, sessionActive: Boolean): Nudge? = 
 }
 
 class ReminderRepository(private val prefs: DataProvider) {
-    private val _reminder = MutableStateFlow(
-        runCatching { prefs.getObject(DAILY_REMINDER, Reminder::class.java) }.getOrNull() ?: Reminder()
-    )
+    private val _reminder = MutableStateFlow(prefs.getObject<Reminder>(DAILY_REMINDER) ?: Reminder())
     val reminder: StateFlow<Reminder> = _reminder.asStateFlow()
 
     fun set(reminder: Reminder) {

@@ -20,6 +20,8 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_ALERT
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.getObject
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.setObject
 import com.baltajmn.flowtime.data.goal.GoalChange
 import com.baltajmn.flowtime.core.design.sound.SoundMixes
 import com.baltajmn.flowtime.data.goal.GoalRepository
@@ -132,8 +134,8 @@ class DefaultBackupRepository(
         theme = appearance.appearance.value.theme.name,
         darkMode = appearance.appearance.value.darkMode.name,
         dynamicColor = appearance.appearance.value.dynamicColor,
-        pomodoro = dataProvider.getRangeModel(POMODORO_RANGE)?.toBackup(),
-        flowTime = dataProvider.getRangeModelList(FLOW_TIME_RANGE)?.map { it.toBackup() },
+        pomodoro = dataProvider.getObject<RangeModel>(POMODORO_RANGE)?.toBackup(),
+        flowTime = dataProvider.getObject<List<RangeModel>>(FLOW_TIME_RANGE)?.map { it.toBackup() },
         percentage = dataProvider.getLong(PERCENTAGE_RANGE).takeIf { it > 0 },
         continueAfterBreak = TimerMode.entries.associate { mode ->
             mode.name to dataProvider.getCheckValue(mode.continueAfterBreakKey)
@@ -161,7 +163,7 @@ class DefaultBackupRepository(
             dataProvider.setObject(POMODORO_RANGE, it.toModel())
         }
         settings.flowTime?.takeIf { ranges -> ranges.isNotEmpty() && ranges.all { it.isValid() } }?.let {
-            dataProvider.setObject(FLOW_TIME_RANGE, it.map { range -> range.toModel() }.toMutableList())
+            dataProvider.setObject(FLOW_TIME_RANGE, it.map { range -> range.toModel() })
         }
         settings.percentage?.let {
             dataProvider.setLong(PERCENTAGE_RANGE, TimerDefaults.percentage(it))

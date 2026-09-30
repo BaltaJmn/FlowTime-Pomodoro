@@ -7,6 +7,8 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.FLOW_TIME_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.PERCENTAGE_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.getObject
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.setObject
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.data.timer.withCumulativeTotals
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,10 +33,10 @@ class EditViewModel(
         _uiState.update {
             it.copy(
                 flowTimeRanges = (
-                    dataProvider.getRangeModelList(FLOW_TIME_RANGE)
+                    dataProvider.getObject<List<RangeModel>>(FLOW_TIME_RANGE)
                         ?: TimerDefaults.flowTimeRanges()
                     ).withCumulativeTotals(),
-                pomodoroRange = dataProvider.getRangeModel(POMODORO_RANGE)
+                pomodoroRange = dataProvider.getObject<RangeModel>(POMODORO_RANGE)
                     ?: TimerDefaults.pomodoro(),
                 percentage = TimerDefaults.percentage(dataProvider.getLong(PERCENTAGE_RANGE)),
                 continueAfterBreak = dataProvider.getCheckValue(mode.continueAfterBreakKey)

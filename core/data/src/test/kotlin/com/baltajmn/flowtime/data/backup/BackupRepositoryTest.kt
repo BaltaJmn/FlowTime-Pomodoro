@@ -14,6 +14,8 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.PERCENTAGE_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_ALERT
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.getObject
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.setObject
 import com.baltajmn.flowtime.data.fakes.FakeDataProvider
 import com.baltajmn.flowtime.data.fakes.FakeSessionRepository
 import com.baltajmn.flowtime.data.goal.GoalChange
@@ -170,10 +172,10 @@ class BackupRepositoryTest {
         with(new) {
             assertEquals(AppTheme.Green, appearance.appearance.value.theme)
             assertEquals(DarkMode.DARK, appearance.appearance.value.darkMode)
-            assertEquals(RangeModel(50, 50, 10), prefs.getRangeModel(POMODORO_RANGE))
+            assertEquals(RangeModel(50, 50, 10), prefs.getObject<RangeModel>(POMODORO_RANGE))
             assertEquals(
                 listOf(RangeModel(25, 25, 5), RangeModel(60, 35, 9)),
-                prefs.getRangeModelList(FLOW_TIME_RANGE)
+                prefs.getObject<List<RangeModel>>(FLOW_TIME_RANGE)
             )
             assertEquals(30L, prefs.getLong(PERCENTAGE_RANGE))
             assertFalse(prefs.getCheckValue(TimerMode.POMODORO.continueAfterBreakKey))
@@ -353,7 +355,7 @@ class BackupRepositoryTest {
 
         assertEquals(RestoreResult(sessionsAdded = 1, sessionsExisting = 0, tasksAdded = 1), result)
         assertEquals(AppTheme.Blue, device.appearance.appearance.value.theme)
-        assertNull(device.prefs.getRangeModel(POMODORO_RANGE))
+        assertNull(device.prefs.getObject<RangeModel>(POMODORO_RANGE))
         assertEquals(100L, device.prefs.getLong(PERCENTAGE_RANGE))
         verify(exactly = 1) { device.ambience.setVolume(any(), any()) }
         verify { device.ambience.setVolume(PlayerType.RAIN, 1f) }

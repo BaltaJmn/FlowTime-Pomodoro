@@ -1,11 +1,10 @@
 package com.baltajmn.flowtime.features.screens.fakes
 
-import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DayKeys
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
 
-/** Preferencias en memoria. Los objetos se guardan tal cual, sin pasar por JSON. */
+/** Preferencias en memoria. Los objetos pasan por JSON, como en el móvil. */
 class FakeDataProvider : DataProvider {
 
     val values = mutableMapOf<String, Any>()
@@ -35,23 +34,6 @@ class FakeDataProvider : DataProvider {
 
     override fun setFloat(key: String, value: Float) {
         values[key] = value
-    }
-
-    override fun setObject(key: SharedPreferencesItem, value: Any) {
-        values[key.key] = value
-    }
-
-    override fun <T> getObject(key: SharedPreferencesItem, type: Class<T>): T? =
-        values[key.key]?.takeIf(type::isInstance)?.let(type::cast)
-
-    override fun getRangeModel(key: SharedPreferencesItem) = values[key.key] as? RangeModel
-
-    @Suppress("UNCHECKED_CAST")
-    override fun getRangeModelList(key: SharedPreferencesItem) =
-        (values[key.key] as? List<RangeModel>)?.toMutableList()
-
-    override fun setRangeModel(key: SharedPreferencesItem, value: RangeModel) {
-        values[key.key] = value
     }
 
     override fun getStudyTimeMap() = values

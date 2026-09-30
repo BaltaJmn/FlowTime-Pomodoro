@@ -16,7 +16,6 @@ dependencies {
     // Testing dependencies
     testImplementation(libs.junit)
     testImplementation(libs.mock)
-    testImplementation(libs.gson)
     testImplementation(libs.coroutines.test)
     testImplementation(kotlin("test"))
 }

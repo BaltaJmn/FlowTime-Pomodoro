@@ -6,6 +6,8 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.PERCENTAGE_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.CONTINUE_AFTER_BREAK_POMODORO
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.getObject
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.setObject
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
 import org.junit.Assert.assertEquals
@@ -54,7 +56,7 @@ class EditViewModelTest {
 
         assertEquals(
             RangeModel(totalRange = 30, endRange = 30, rest = 10),
-            dataProvider.getRangeModel(POMODORO_RANGE)
+            dataProvider.getObject<RangeModel>(POMODORO_RANGE)
         )
         assertFalse(dataProvider.values.containsKey(FLOW_TIME_RANGE.name.lowercase()))
         assertFalse(dataProvider.values.containsKey(PERCENTAGE_RANGE.name.lowercase()))

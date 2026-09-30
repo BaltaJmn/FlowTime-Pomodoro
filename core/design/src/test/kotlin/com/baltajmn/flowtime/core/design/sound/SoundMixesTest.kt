@@ -2,7 +2,6 @@ package com.baltajmn.flowtime.core.design.sound
 
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
-import com.google.gson.Gson
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
@@ -11,13 +10,11 @@ import org.junit.Test
 
 class SoundMixesTest {
 
-    // Con Gson de verdad, como las preferencias: así se prueba también que se lee lo que se guarda.
+    // El JSON de verdad, como las preferencias: así se prueba también que se lee lo que se guarda.
     private val json = mutableMapOf<SharedPreferencesItem, String>()
     private val prefs = mockk<DataProvider> {
-        every { setObject(any(), any()) } answers { json[firstArg()] = Gson().toJson(secondArg<Any>()) }
-        every { getObject<Any>(any(), any()) } answers {
-            json[firstArg()]?.let { Gson().fromJson(it, secondArg<Class<Any>>()) }
-        }
+        every { setString(any(), any()) } answers { json[firstArg()] = secondArg() }
+        every { getString(any()) } answers { json[firstArg()] }
     }
     private var ids = 0
     private fun mixes() = SoundMixes(prefs) { "mix${++ids}" }
@@ -63,5 +60,15 @@ class SoundMixesTest {
 
         assertEquals(listOf("Una", "Dos"), mixes.export().map { it.first })
         assertEquals(mapOf(PlayerType.WIND to 1f), mixes().all.value.last().volumes)
+    }
+
+    @Test
+    fun `se leen las mezclas que se guardaban con Gson`() {
+        json[SharedPreferencesItem.SOUND_MIXES] =
+            """{"mixes":[{"id":"mix1","name":"Lluvia y fuego","volumes":{"RAIN":0.4,"FIRE":0.8}}],"hidden":["rainy_cafe"]}"""
+
+        val all = mixes().all.value
+
+        assertEquals(SoundMixes.BUILT_IN.drop(1) + SoundMix("mix1", "Lluvia y fuego", rainy), all)
     }
 }
