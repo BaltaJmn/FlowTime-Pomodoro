@@ -14,6 +14,7 @@ import com.baltajmn.flowtime.data.backup.BackupRead
 import com.baltajmn.flowtime.data.backup.BackupRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.stats.level
 import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.tag.TagRepository
@@ -33,7 +34,8 @@ class SettingsViewModel(
     private val backupRepository: BackupRepository,
     private val files: DocumentFiles,
     private val goals: GoalRepository,
-    private val tags: TagRepository
+    private val tags: TagRepository,
+    private val purchases: PurchasesRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
@@ -56,7 +58,27 @@ class SettingsViewModel(
                 updateTags { it.copy(active = active, archived = archived) }
             }
         }
+        viewModelScope.launch {
+            combine(purchases.isPro, purchases.isSupporter, ::Pair).collect { (pro, supporter) ->
+                updatePurchases { it.copy(isPro = pro, isSupporter = supporter) }
+            }
+        }
     }
+
+    fun restorePurchases() {
+        updatePurchases { it.copy(restoring = true) }
+        viewModelScope.launch {
+            val found = purchases.restore()
+            updatePurchases {
+                it.copy(restoring = false, message = if (found) RestoreMessage.RESTORED else RestoreMessage.NOTHING)
+            }
+        }
+    }
+
+    fun onRestoreMessageShown() = updatePurchases { it.copy(message = null) }
+
+    private fun updatePurchases(change: (PurchasesUiState) -> PurchasesUiState) =
+        _uiState.update { it.copy(purchases = change(it.purchases)) }
 
     fun addTag(name: String) = changeTags { tags.create(name) }
 

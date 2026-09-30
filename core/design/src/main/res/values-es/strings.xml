@@ -54,9 +54,9 @@
     <string name="all_minutes_studying">Llevas un total de %s de concentración con nosotros</string>
     <string name="export">Exportar</string>
     <string name="import_button">Importar</string>
-    <string name="support_developer">Apoyar al desarrollador</string>
-    <string name="support_developer_title">Apoya nuestro desarrollo</string>
-    <string name="support_developer_description">Tu contribución nos ayuda a seguir mejorando y añadiendo nuevas funciones. ¡Apóyanos y ayúdanos a crecer!</string>
+    <string name="support_developer">Dejar una propina</string>
+    <string name="support_developer_title">Apoya FlowTime</string>
+    <string name="support_developer_description">FlowTime lo hace una persona. Las propinas ayudan a seguir mejorándola y nunca bloquean nada: todo lo gratis sigue gratis.</string>
     <string name="on_board_skip">Saltar</string>
     <string name="on_board_next">Siguiente</string>
     <string name="on_board_intro_title">Concéntrate a tu ritmo</string>
@@ -252,4 +252,21 @@
     <string name="task_done_yes">Sí, hecha</string>
     <string name="task_done_not_yet">Aún no</string>
     <string name="task_done_action">Hecha</string>
+    <string name="close">Cerrar</string>
+    <string name="retry">Reintentar</string>
+    <string name="support_sheet_title">Deja una propina</string>
+    <string name="support_sheet_text">FlowTime lo hace una persona. Las propinas ayudan a seguir mejorándola. No desbloquean Pro: todo lo gratis sigue gratis. De regalo, la insignia y el tema Supporter.</string>
+    <string name="tip_small">Propina pequeña</string>
+    <string name="tip_medium">Propina mediana</string>
+    <string name="tip_large">Propina grande</string>
+    <string name="support_thanks_title">¡Gracias!</string>
+    <string name="support_thanks_text">Tu propina ayuda a que FlowTime siga mejorando. La insignia y el tema Supporter ya son tuyos.</string>
+    <string name="support_use_theme">Usar el tema Supporter</string>
+    <string name="purchase_failed">No se ha podido completar la compra. Inténtalo de nuevo.</string>
+    <string name="supporter_badge">Supporter</string>
+    <string name="supporter_thanks">Gracias por apoyar FlowTime. Puedes dejar otra propina cuando quieras.</string>
+    <string name="restore_purchases">Restaurar compras</string>
+    <string name="restore_done">Compras restauradas</string>
+    <string name="restore_nothing">No se ha encontrado ninguna compra. Comprueba la conexión y que usas la misma cuenta de Google.</string>
+    <string name="theme_supporter">Supporter</string>
 </resources>

@@ -11,7 +11,6 @@ fun FlowTimeApp(
     appearance: Appearance,
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
-    onSupportDeveloperClick: () -> Unit,
     celebration: Celebration? = null,
     onCelebrationShown: () -> Unit = {}
 ) {
@@ -21,8 +20,7 @@ fun FlowTimeApp(
         FlowTimeNavHost(
             flowTimeAppState = flowTimeAppState,
             showSound = showSound,
-            onSoundChange = onSoundChange,
-            onSupportDeveloperClick = onSupportDeveloperClick
+            onSoundChange = onSoundChange
         )
     }
 }

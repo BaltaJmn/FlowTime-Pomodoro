@@ -54,9 +54,9 @@
     <string name="all_minutes_studying">Ti sei concentrato con noi per un totale di %s</string>
     <string name="export">Esporta</string>
     <string name="import_button">Importa</string>
-    <string name="support_developer">Supporta lo sviluppatore</string>
-    <string name="support_developer_title">Supporta il nostro sviluppo</string>
-    <string name="support_developer_description">Il tuo contributo ci aiuta a continuare a migliorare e ad aggiungere nuove funzionalità. Supportaci e aiutaci a crescere!</string>
+    <string name="support_developer">Lascia una mancia</string>
+    <string name="support_developer_title">Sostieni FlowTime</string>
+    <string name="support_developer_description">FlowTime è fatta da una sola persona. Le mance aiutano a migliorarla e non bloccano mai nulla: tutto ciò che è gratis resta gratis.</string>
     <string name="on_board_skip">Salta</string>
     <string name="on_board_next">Avanti</string>
     <string name="on_board_intro_title">Concentrati al tuo ritmo</string>
@@ -252,4 +252,21 @@
     <string name="task_done_yes">Sì, fatta</string>
     <string name="task_done_not_yet">Non ancora</string>
     <string name="task_done_action">Fatta</string>
+    <string name="close">Chiudi</string>
+    <string name="retry">Riprova</string>
+    <string name="support_sheet_title">Lascia una mancia</string>
+    <string name="support_sheet_text">FlowTime è fatta da una sola persona. Le mance aiutano a migliorarla. Non sbloccano Pro: tutto ciò che è gratis resta gratis. In regalo, il badge e il tema Supporter.</string>
+    <string name="tip_small">Mancia piccola</string>
+    <string name="tip_medium">Mancia media</string>
+    <string name="tip_large">Mancia grande</string>
+    <string name="support_thanks_title">Grazie!</string>
+    <string name="support_thanks_text">La tua mancia aiuta FlowTime a migliorare. Il badge e il tema Supporter ora sono tuoi.</string>
+    <string name="support_use_theme">Usa il tema Supporter</string>
+    <string name="purchase_failed">Non è stato possibile completare l\'acquisto. Riprova.</string>
+    <string name="supporter_badge">Supporter</string>
+    <string name="supporter_thanks">Grazie per sostenere FlowTime. Puoi lasciare un\'altra mancia quando vuoi.</string>
+    <string name="restore_purchases">Ripristina acquisti</string>
+    <string name="restore_done">Acquisti ripristinati</string>
+    <string name="restore_nothing">Nessun acquisto trovato. Controlla la connessione e di usare lo stesso account Google.</string>
+    <string name="theme_supporter">Supporter</string>
 </resources>

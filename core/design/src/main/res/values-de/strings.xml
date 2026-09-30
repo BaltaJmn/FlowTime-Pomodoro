@@ -54,9 +54,9 @@
     <string name="all_minutes_studying">Du hast dich insgesamt %s mit uns konzentriert</string>
     <string name="export">Exportieren</string>
     <string name="import_button">Importieren</string>
-    <string name="support_developer">Entwickler unterstützen</string>
-    <string name="support_developer_title">Unterstütze unsere Entwicklung</string>
-    <string name="support_developer_description">Dein Beitrag hilft uns, die App weiter zu verbessern und neue Funktionen hinzuzufügen. Unterstütze uns und hilf uns zu wachsen!</string>
+    <string name="support_developer">Trinkgeld geben</string>
+    <string name="support_developer_title">FlowTime unterstützen</string>
+    <string name="support_developer_description">FlowTime wird von einer einzigen Person entwickelt. Trinkgelder helfen, die App weiter zu verbessern, und sperren nie etwas: Alles Kostenlose bleibt kostenlos.</string>
     <string name="on_board_skip">Überspringen</string>
     <string name="on_board_next">Weiter</string>
     <string name="on_board_intro_title">Konzentriere dich in deinem Tempo</string>
@@ -249,4 +249,21 @@
     <string name="task_done_yes">Ja, erledigt</string>
     <string name="task_done_not_yet">Noch nicht</string>
     <string name="task_done_action">Erledigt</string>
+    <string name="close">Schließen</string>
+    <string name="retry">Erneut versuchen</string>
+    <string name="support_sheet_title">Trinkgeld geben</string>
+    <string name="support_sheet_text">FlowTime wird von einer einzigen Person entwickelt. Trinkgelder helfen, die App weiter zu verbessern. Sie schalten Pro nicht frei: Alles Kostenlose bleibt kostenlos. Als Geschenk gibt es das Supporter-Abzeichen und -Design.</string>
+    <string name="tip_small">Kleines Trinkgeld</string>
+    <string name="tip_medium">Mittleres Trinkgeld</string>
+    <string name="tip_large">Großes Trinkgeld</string>
+    <string name="support_thanks_title">Danke!</string>
+    <string name="support_thanks_text">Dein Trinkgeld hilft, FlowTime weiter zu verbessern. Das Supporter-Abzeichen und -Design gehören jetzt dir.</string>
+    <string name="support_use_theme">Supporter-Design verwenden</string>
+    <string name="purchase_failed">Der Kauf konnte nicht abgeschlossen werden. Bitte versuche es erneut.</string>
+    <string name="supporter_badge">Supporter</string>
+    <string name="supporter_thanks">Danke, dass du FlowTime unterstützt. Du kannst jederzeit ein weiteres Trinkgeld geben.</string>
+    <string name="restore_purchases">Käufe wiederherstellen</string>
+    <string name="restore_done">Käufe wiederhergestellt</string>
+    <string name="restore_nothing">Keine Käufe gefunden. Prüfe deine Verbindung und ob du dasselbe Google-Konto verwendest.</string>
+    <string name="theme_supporter">Supporter</string>
 </resources>

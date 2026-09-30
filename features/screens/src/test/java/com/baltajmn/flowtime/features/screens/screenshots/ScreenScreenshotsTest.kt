@@ -19,6 +19,7 @@ import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.screen.TimerLandscapeContent
 import com.baltajmn.flowtime.features.screens.fakes.FakeBackups
 import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
+import com.baltajmn.flowtime.features.screens.fakes.FakePurchases
 import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
 import com.baltajmn.flowtime.features.screens.fakes.FakeStats
 import com.baltajmn.flowtime.features.screens.fakes.FakeTags
@@ -32,6 +33,8 @@ import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromC
 import com.baltajmn.flowtime.features.screens.home.HomeContent
 import com.baltajmn.flowtime.features.screens.settings.SettingsContent
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
+import com.baltajmn.flowtime.features.screens.support.SupportContent
+import com.baltajmn.flowtime.features.screens.support.SupportState
 import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 import com.baltajmn.flowtime.features.screens.todoList.TodoListContent
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
@@ -104,7 +107,8 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
             FakeBackups(lastExportAt = System.currentTimeMillis()),
             DocumentFiles(RuntimeEnvironment.getApplication()),
             GoalRepository(prefs, sessions, days = flowOf(LocalDate.now())),
-            FakeTags("Estudio", "Trabajo", "Lectura", "Casa")
+            FakeTags("Estudio", "Trabajo", "Lectura", "Casa"),
+            FakePurchases(supporter = true)
         )
         compose.capture("settings_$mode", dark = dark) {
             val state by viewModel.uiState.collectAsState()
@@ -115,8 +119,7 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
                 showSound = true,
                 onSoundChange = {},
                 navigateToHistory = {},
-                navigateToIntro = {},
-                onSupportDeveloperClick = {}
+                navigateToIntro = {}
             )
         }
     }
@@ -168,6 +171,22 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
                 viewModel = viewModel
             )
         }
+    }
+
+    @Test
+    fun support() = compose.capture("support_$mode", dark = dark) {
+        SupportContent(
+            state = SupportState(loading = false, tips = FakePurchases.CATALOG.tips),
+            onTip = {},
+            onRetry = {},
+            onUseTheme = {},
+            onClose = {}
+        )
+    }
+
+    @Test
+    fun supportThanks() = compose.capture("support_thanks_$mode", dark = dark) {
+        SupportContent(state = SupportState(thanked = true), onTip = {}, onRetry = {}, onUseTheme = {}, onClose = {})
     }
 
     @Test

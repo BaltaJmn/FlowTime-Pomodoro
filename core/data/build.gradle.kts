@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.core.design)
     implementation(projects.core.persistence)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.revenuecat)
 
     testImplementation(libs.mock)
 }

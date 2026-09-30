@@ -4,9 +4,7 @@ import com.baltajmn.flowtime.core.database.datasource.TagDao
 import com.baltajmn.flowtime.core.database.model.TagDb
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.TAGS_SEEDED
 import com.baltajmn.flowtime.data.fakes.FakeDataProvider
-import com.baltajmn.flowtime.data.pro.NoPurchases
 import com.baltajmn.flowtime.data.pro.ProGate
-import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -51,23 +49,19 @@ class TagRepositoryTest {
             rows.update { tags -> tags.map { if (it.id == id) it.edit() else it } }
     }
 
-    private class FakePurchases(pro: Boolean) : PurchasesRepository {
-        override val isPro = MutableStateFlow(pro)
-    }
-
     private val dao = FakeTagDao()
     private val prefs = FakeDataProvider()
     private val defaults = listOf("Estudio", "Trabajo", "Lectura", "Casa")
 
     /** Con Pro ya publicado ([ProGate] encendido), salvo que se diga lo contrario. */
-    private fun TestScope.repository(purchases: PurchasesRepository, enabled: Boolean = true) =
-        DefaultTagRepository(dao, prefs, ProGate(purchases, enabled), scope = backgroundScope, clock = { 0 })
+    private fun TestScope.repository(isPro: MutableStateFlow<Boolean>, enabled: Boolean = true) =
+        DefaultTagRepository(dao, prefs, ProGate(isPro, enabled), scope = backgroundScope, clock = { 0 })
 
     private fun names() = dao.rows.value.filterNot { it.archived }.sortedBy { it.position }.map { it.name }
 
     @Test
     fun `las sugeridas se crean una sola vez`() = runTest {
-        val tags = repository(FakePurchases(pro = false))
+        val tags = repository(MutableStateFlow(false))
 
         tags.ensureDefaults(defaults)
         tags.ensureDefaults(defaults)
@@ -79,7 +73,7 @@ class TagRepositoryTest {
 
     @Test
     fun `sin Pro no se puede tener una quinta activa`() = runTest {
-        val tags = repository(FakePurchases(pro = false))
+        val tags = repository(MutableStateFlow(false))
         tags.ensureDefaults(defaults)
 
         assertEquals(TagResult.LimitReached, tags.create("Correr"))
@@ -88,7 +82,7 @@ class TagRepositoryTest {
 
     @Test
     fun `archivar una libera su hueco`() = runTest {
-        val tags = repository(FakePurchases(pro = false))
+        val tags = repository(MutableStateFlow(false))
         tags.ensureDefaults(defaults)
 
         tags.archive(dao.rows.value.first { it.name == "Casa" }.id)
@@ -100,7 +94,7 @@ class TagRepositoryTest {
 
     @Test
     fun `con Pro no hay limite`() = runTest {
-        val tags = repository(FakePurchases(pro = true))
+        val tags = repository(MutableStateFlow(true))
         tags.ensureDefaults(defaults)
 
         assertTrue(tags.create("Correr") is TagResult.Done)
@@ -110,14 +104,14 @@ class TagRepositoryTest {
 
     @Test
     fun `perder Pro no bloquea las que ya existen`() = runTest {
-        val purchases = FakePurchases(pro = true)
-        val tags = repository(purchases)
+        val isPro = MutableStateFlow(true)
+        val tags = repository(isPro)
         tags.ensureDefaults(defaults)
         tags.create("Correr")
         tags.create("Cocinar")
 
         // Un reembolso, por ejemplo.
-        purchases.isPro.value = false
+        isPro.value = false
         val running = dao.rows.value.first { it.name == "Correr" }.id
 
         assertTrue(tags.rename(running, "Correr por la mañana") is TagResult.Done)
@@ -129,7 +123,7 @@ class TagRepositoryTest {
 
     @Test
     fun `mientras Pro no exista no hay limite`() = runTest {
-        val tags = DefaultTagRepository(dao, prefs, ProGate(NoPurchases()), scope = backgroundScope)
+        val tags = DefaultTagRepository(dao, prefs, ProGate(MutableStateFlow(false)), scope = backgroundScope)
         tags.ensureDefaults(defaults)
 
         assertTrue(tags.create("Correr") is TagResult.Done)
@@ -137,7 +131,7 @@ class TagRepositoryTest {
 
     @Test
     fun `sin nombres vacios ni repetidos`() = runTest {
-        val tags = repository(FakePurchases(pro = true))
+        val tags = repository(MutableStateFlow(true))
         tags.ensureDefaults(defaults)
         tags.archive(dao.rows.value.first { it.name == "Casa" }.id)
 
@@ -150,7 +144,7 @@ class TagRepositoryTest {
 
     @Test
     fun `una nueva coge el primer color libre`() = runTest {
-        val tags = repository(FakePurchases(pro = true))
+        val tags = repository(MutableStateFlow(true))
         tags.ensureDefaults(defaults)
 
         tags.create("Correr")
@@ -160,7 +154,7 @@ class TagRepositoryTest {
 
     @Test
     fun `se ordenan como se diga`() = runTest {
-        val tags = repository(FakePurchases(pro = true))
+        val tags = repository(MutableStateFlow(true))
         tags.ensureDefaults(defaults)
         val ids = dao.rows.value.associate { it.name to it.id }
 

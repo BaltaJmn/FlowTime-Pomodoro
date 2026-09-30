@@ -41,8 +41,7 @@ fun MainGraph(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateUp: () -> Unit,
-    navigateToHistory: () -> Unit,
-    onSupportDeveloperClick: () -> Unit
+    navigateToHistory: () -> Unit
 ) {
     NavHost(
         navController = appState.mainNavController,
@@ -136,8 +135,7 @@ fun MainGraph(
                 navigateToHistory = navigateToHistory,
                 navigateToIntro = appState::navigateToOnBoard,
                 showSound = showSound,
-                onSoundChange = onSoundChange,
-                onSupportDeveloperClick = onSupportDeveloperClick
+                onSoundChange = onSoundChange
             )
         }
 

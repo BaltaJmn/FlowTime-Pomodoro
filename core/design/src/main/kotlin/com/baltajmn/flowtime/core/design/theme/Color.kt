@@ -23,7 +23,10 @@ enum class AppTheme(val color: Color, @StringRes val label: Int, private val tin
     Green(Color(0xFF95A893), R.string.theme_green),
     Purple(Color(0xFFC6A9C6), R.string.theme_purple),
     Orange(Color(0xFFFF9966), R.string.theme_orange),
-    Black(Color(0xFF16161D), R.string.theme_black, Tint.INK);
+    Black(Color(0xFF16161D), R.string.theme_black, Tint.INK),
+
+    /** El regalo de las propinas (#58): solo aparece en la lista para quien ha dejado alguna. */
+    Supporter(Color(0xFFE2B04A), R.string.theme_supporter);
 
     fun colorScheme(dark: Boolean): ColorScheme = when (tint) {
         // TonalSpot es el estilo más suave: mantiene el aire pastel de siempre.

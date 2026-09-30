@@ -1,8 +1,6 @@
 package com.baltajmn.flowtime.data.pro
 
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 object ProFeatures {
     /**
@@ -19,21 +17,11 @@ object Limits {
     const val FREE_PENDING_TASKS = 15
 }
 
-/** Si el usuario tiene Pro: la única comprobación de toda la app. */
-interface PurchasesRepository {
-    val isPro: StateFlow<Boolean>
-}
-
-/** Hasta que llegue RevenueCat (#55), nadie tiene Pro. */
-class NoPurchases : PurchasesRepository {
-    override val isPro: StateFlow<Boolean> = MutableStateFlow(false).asStateFlow()
-}
-
 /** Los límites de la versión gratis, solo si Pro ya existe en esta versión y no se ha comprado. */
 class ProGate(
-    private val purchases: PurchasesRepository,
+    private val isPro: StateFlow<Boolean>,
     private val enabled: Boolean = ProFeatures.enabled
 ) {
     /** Si se puede tener uno más cuando ya hay [current] y el límite gratis es [limit]. */
-    fun allowsOneMore(current: Int, limit: Int) = !enabled || purchases.isPro.value || current < limit
+    fun allowsOneMore(current: Int, limit: Int) = !enabled || isPro.value || current < limit
 }

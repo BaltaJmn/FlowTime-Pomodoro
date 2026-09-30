@@ -1,9 +1,7 @@
 package com.baltajmn.flowtime
 
-import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -17,17 +15,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.android.billingclient.api.BillingClient
-import com.android.billingclient.api.BillingClientStateListener
-import com.android.billingclient.api.BillingFlowParams
-import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.ConsumeParams
-import com.android.billingclient.api.PendingPurchasesParams
-import com.android.billingclient.api.Purchase
-import com.android.billingclient.api.PurchasesUpdatedListener
-import com.android.billingclient.api.QueryProductDetailsParams
-import com.android.billingclient.api.QueryPurchasesParams
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.data.review.calmMoments
 import com.baltajmn.flowtime.data.timer.FocusEngine
@@ -49,53 +36,12 @@ class MainActivity : ComponentActivity() {
     private val reviewPrompter: ReviewPrompter by inject()
     private val showSound: MutableState<Boolean> = mutableStateOf(true)
 
-    private val queryProductDetailsParams =
-        QueryProductDetailsParams.newBuilder()
-            .setProductList(
-                listOf(
-                    QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("support_developer")
-                        .setProductType(BillingClient.ProductType.INAPP)
-                        .build()
-                )
-            )
-            .build()
-
-    private val purchasesUpdatedListener =
-        PurchasesUpdatedListener { billingResult, purchases ->
-            when (billingResult.responseCode) {
-                BillingClient.BillingResponseCode.OK -> {
-                    purchases?.forEach(::consume)
-                }
-
-                BillingClient.BillingResponseCode.USER_CANCELED -> {
-                    Log.d("MainActivity", "Purchase canceled by user")
-                }
-
-                else -> {
-                    Log.e("MainActivity", "Purchase failed: ${billingResult.debugMessage}")
-                }
-            }
-        }
-
-    private lateinit var billingClient: BillingClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         this.enableEdgeToEdge()
 
         showSound.value = viewModel.getShowSound()
-
-        billingClient = BillingClient.newBuilder(this)
-            .setListener(purchasesUpdatedListener)
-            .enablePendingPurchases(
-                PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()
-            )
-            .enableAutoServiceReconnection()
-            .build()
-
-        connectBillingClient()
 
         setContent {
             val appearance by appearanceRepository.appearance.collectAsStateWithLifecycle()
@@ -114,7 +60,6 @@ class MainActivity : ComponentActivity() {
                 appearance = appearance,
                 showSound = showSound.value,
                 onSoundChange = { it: Boolean -> showSound.value = it },
-                onSupportDeveloperClick = { initiatePurchase() },
                 celebration = celebration,
                 onCelebrationShown = goalWatcher::onShown
             )
@@ -138,102 +83,6 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         sessionNotification.update()
         sessionNotification.dismissAlert()
-    }
-
-    private fun connectBillingClient() {
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(billingResult: BillingResult) {
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    queryProductDetails()
-                    consumePendingPurchases()
-                } else {
-                    Log.e(
-                        "MainActivity",
-                        "Billing client setup failed: ${billingResult.debugMessage}"
-                    )
-                }
-            }
-
-            // enableAutoServiceReconnection() reconecta sola en la siguiente llamada.
-            override fun onBillingServiceDisconnected() = Unit
-        })
-    }
-
-    private fun queryProductDetails() {
-        billingClient.queryProductDetailsAsync(
-            queryProductDetailsParams
-        ) { billingResult, result ->
-            when (billingResult.responseCode) {
-                BillingClient.BillingResponseCode.OK -> {
-                    viewModel.setProductDetailsList(result.productDetailsList)
-                }
-
-                else -> {
-                    Log.e(
-                        "MainActivity",
-                        "Product details query failed: ${billingResult.debugMessage}"
-                    )
-                }
-            }
-        }
-    }
-
-    // Compras que terminaron con la app cerrada, o pendientes que se pagaron despues.
-    private fun consumePendingPurchases() {
-        billingClient.queryPurchasesAsync(
-            QueryPurchasesParams.newBuilder()
-                .setProductType(BillingClient.ProductType.INAPP)
-                .build()
-        ) { billingResult, purchases ->
-            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                purchases.forEach(::consume)
-            }
-        }
-    }
-
-    // Play reembolsa cualquier compra que no se reconozca en tres dias. Consumir la donacion la
-    // reconoce y deja volver a donar.
-    private fun consume(purchase: Purchase) {
-        if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) return
-        billingClient.consumeAsync(
-            ConsumeParams.newBuilder().setPurchaseToken(purchase.purchaseToken).build()
-        ) { billingResult, _ ->
-            if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
-                Log.e("MainActivity", "Consume failed: ${billingResult.debugMessage}")
-            }
-        }
-    }
-
-    private fun initiatePurchase() {
-        viewModel
-            .getProductDetailsList()
-            .takeIf { it.isNotEmpty() }
-            ?.let {
-                val billingFlowParams = BillingFlowParams
-                    .newBuilder()
-                    .setProductDetailsParamsList(
-                        it.map {
-                            BillingFlowParams.ProductDetailsParams.newBuilder()
-                                .setProductDetails(it)
-                                .build()
-                        }
-                    )
-                    .build()
-                billingClient.launchBillingFlow(this, billingFlowParams)
-            } ?: launchAlert()
-    }
-
-    private fun launchAlert() {
-        AlertDialog
-            .Builder(this)
-            .setTitle(applicationContext.getString(R.string.alert_google_play))
-            .setMessage(applicationContext.getString(R.string.alert_google_play_desc))
-            .setPositiveButton(applicationContext.getString(R.string.dialog_confirm)) { dialog, which ->
-                connectBillingClient()
-                dialog.dismiss()
-            }
-            .create()
-            .show()
     }
 
     private companion object {

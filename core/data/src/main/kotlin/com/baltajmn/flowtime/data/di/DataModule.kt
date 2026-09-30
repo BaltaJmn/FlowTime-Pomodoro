@@ -4,9 +4,11 @@ import com.baltajmn.flowtime.data.backup.BackupRepository
 import com.baltajmn.flowtime.data.backup.DefaultBackupRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
-import com.baltajmn.flowtime.data.pro.NoPurchases
+import com.baltajmn.flowtime.data.pro.DefaultPurchasesRepository
 import com.baltajmn.flowtime.data.pro.ProGate
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
+import com.baltajmn.flowtime.data.pro.REVENUECAT_API_KEY
+import com.baltajmn.flowtime.data.pro.RevenueCatStore
 import com.baltajmn.flowtime.data.repository.DefaultSessionRepository
 import com.baltajmn.flowtime.data.repository.SessionRepository
 import com.baltajmn.flowtime.data.review.ReviewPolicy
@@ -40,9 +42,12 @@ val DataModule = module {
     // A mano: el constructor tiene parámetros opcionales para los tests que Koin no sabría resolver.
     single<SessionRepository> { DefaultSessionRepository(get(), get()) }
     single { GoalRepository(get(), get()) }
-    // Hasta RevenueCat (#55), nadie tiene Pro; y mientras ProFeatures esté apagado, no hay límites.
-    single<PurchasesRepository> { NoPurchases() }
-    single { ProGate(get()) }
+    // Crearlo configura RevenueCat; App lo pide al arrancar. Mientras ProFeatures esté apagado, no
+    // hay límites aunque no se tenga Pro.
+    single<PurchasesRepository> {
+        DefaultPurchasesRepository(REVENUECAT_API_KEY?.let { RevenueCatStore(androidContext(), it) }, get())
+    }
+    single { ProGate(get<PurchasesRepository>().isPro) }
     single<TagRepository> { DefaultTagRepository(get(), get(), get()) }
     single<TaskRepository> { DefaultTaskRepository(get(), get(), get()) }
     single<StatsRepository> { DefaultStatsRepository(get()) }

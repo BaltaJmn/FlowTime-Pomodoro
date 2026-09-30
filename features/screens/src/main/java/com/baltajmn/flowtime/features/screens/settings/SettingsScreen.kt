@@ -9,6 +9,7 @@ import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
 import android.provider.Settings.EXTRA_APP_PACKAGE
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
@@ -34,7 +35,9 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -69,6 +72,7 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SegmentedButton
@@ -84,6 +88,7 @@ import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.features.screens.settings.enum.MotivationalPhrases
+import com.baltajmn.flowtime.features.screens.support.SupportSheet
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -93,8 +98,7 @@ fun SettingsScreen(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
-    navigateToIntro: () -> Unit,
-    onSupportDeveloperClick: () -> Unit
+    navigateToIntro: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -105,8 +109,7 @@ fun SettingsScreen(
         showSound = showSound,
         onSoundChange = onSoundChange,
         navigateToHistory = navigateToHistory,
-        navigateToIntro = navigateToIntro,
-        onSupportDeveloperClick = onSupportDeveloperClick
+        navigateToIntro = navigateToIntro
     )
 }
 
@@ -118,8 +121,7 @@ fun AnimatedSettingsContent(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
-    navigateToIntro: () -> Unit,
-    onSupportDeveloperClick: () -> Unit
+    navigateToIntro: () -> Unit
 ) {
     AnimatedContent(
         targetState = state.isLoading,
@@ -135,8 +137,7 @@ fun AnimatedSettingsContent(
                 showSound = showSound,
                 onSoundChange = onSoundChange,
                 navigateToHistory = navigateToHistory,
-                navigateToIntro = navigateToIntro,
-                onSupportDeveloperClick = onSupportDeveloperClick
+                navigateToIntro = navigateToIntro
             )
         }
     }
@@ -150,9 +151,11 @@ fun SettingsContent(
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
     navigateToHistory: () -> Unit,
-    navigateToIntro: () -> Unit,
-    onSupportDeveloperClick: () -> Unit
+    navigateToIntro: () -> Unit
 ) {
+    var showSupport by rememberSaveable { mutableStateOf(false) }
+    if (showSupport) SupportSheet(onDismiss = { showSupport = false })
+
     LazyColumn(
         state = listState,
         verticalArrangement = Arrangement.Top,
@@ -182,16 +185,18 @@ fun SettingsContent(
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
-            SupportButton(
-                title = LocalContext.current.getString(R.string.support_developer_title),
-                description = LocalContext.current.getString(R.string.support_developer_description),
-                onSupportDeveloperClick = onSupportDeveloperClick
+            SupportCard(
+                state = state.purchases,
+                onTip = { showSupport = true },
+                onRestore = viewModel::restorePurchases,
+                onMessageShown = viewModel::onRestoreMessageShown
             )
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
             AppearanceCard(
                 appearance = state.appearance,
+                isSupporter = state.purchases.isSupporter,
                 onDarkMode = viewModel::setDarkMode,
                 onDynamicColor = viewModel::setDynamicColor,
                 onTheme = viewModel::setTheme
@@ -412,12 +417,24 @@ fun PositiveText() {
     }
 }
 
+/** Las propinas, la insignia de quien ya ha dejado alguna y "Restaurar compras", siempre a la vista. */
 @Composable
-fun SupportButton(
-    title: String,
-    description: String,
-    onSupportDeveloperClick: () -> Unit
+fun SupportCard(
+    state: PurchasesUiState,
+    onTip: () -> Unit,
+    onRestore: () -> Unit,
+    onMessageShown: () -> Unit
 ) {
+    val context = LocalContext.current
+    LaunchedEffect(state.message) {
+        val message = state.message ?: return@LaunchedEffect
+        val text = when (message) {
+            RestoreMessage.RESTORED -> R.string.restore_done
+            RestoreMessage.NOTHING -> R.string.restore_nothing
+        }
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+        onMessageShown()
+    }
     Card {
         Column(
             modifier = Modifier
@@ -426,15 +443,26 @@ fun SupportButton(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = title,
+                text = stringResource(R.string.support_developer_title),
+                textAlign = TextAlign.Center,
                 style = LargeTitle.copy(
                     fontSize = 25.sp,
                     color = MaterialTheme.colorScheme.primary
                 )
             )
+            if (state.isSupporter) {
+                Spacer(modifier = Modifier.height(8.dp))
+                AssistChip(
+                    onClick = onTip,
+                    label = { Text(text = stringResource(R.string.supporter_badge)) },
+                    leadingIcon = { Icon(imageVector = Icons.Filled.Favorite, contentDescription = null) }
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = description,
+                text = stringResource(
+                    if (state.isSupporter) R.string.supporter_thanks else R.string.support_developer_description
+                ),
                 style = SubBody.copy(
                     fontSize = 15.sp,
                     color = MaterialTheme.colorScheme.primary,
@@ -444,12 +472,15 @@ fun SupportButton(
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = onSupportDeveloperClick
+                onClick = onTip
             ) {
                 Text(
-                    text = LocalContext.current.getString(R.string.support_developer),
+                    text = stringResource(R.string.support_developer),
                     style = SubBody.copy(color = MaterialTheme.colorScheme.onPrimary)
                 )
+            }
+            TextButton(onClick = onRestore, enabled = !state.restoring) {
+                Text(text = stringResource(R.string.restore_purchases))
             }
         }
     }
@@ -531,6 +562,7 @@ fun ProgressLevel(
 @Composable
 fun AppearanceCard(
     appearance: Appearance,
+    isSupporter: Boolean,
     onDarkMode: (DarkMode) -> Unit,
     onDynamicColor: (Boolean) -> Unit,
     onTheme: (AppTheme) -> Unit
@@ -585,7 +617,8 @@ fun AppearanceCard(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = PaddingValues(vertical = 4.dp)
             ) {
-                items(AppTheme.entries) { theme ->
+                // El tema Supporter es el regalo de las propinas (#58): solo lo ve quien lo tiene.
+                items(AppTheme.entries.filter { it != AppTheme.Supporter || isSupporter || it == appearance.theme }) { theme ->
                     ThemeSwatch(
                         theme = theme,
                         selected = theme == appearance.theme,

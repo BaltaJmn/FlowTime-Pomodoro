@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="com.android.vending.BILLING" />
+    <!-- BILLING lo añade RevenueCat. Su SDK trae además el identificador de publicidad, que FlowTime
+         no usa: sin este permiso no se lee, y la ficha no tiene que declararlo. -->
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- La vibración al cambiar de fase con la app a la vista (#50). Es un permiso normal. -->
     <uses-permission android:name="android.permission.VIBRATE" />

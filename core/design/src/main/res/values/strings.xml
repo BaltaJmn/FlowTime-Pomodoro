@@ -54,9 +54,9 @@
     <string name="all_minutes_studying">You\'ve focused for a total of %s with us</string>
     <string name="export">Export</string>
     <string name="import_button">Import</string>
-    <string name="support_developer">Support Developer</string>
-    <string name="support_developer_title">Support Our Development</string>
-    <string name="support_developer_description">Your contribution helps us to keep improving and adding new features. Support us and help us grow!</string>
+    <string name="support_developer">Leave a tip</string>
+    <string name="support_developer_title">Support FlowTime</string>
+    <string name="support_developer_description">FlowTime is made by one person. Tips help keep improving it, and they never lock anything: everything free stays free.</string>
     <string name="on_board_skip">Skip</string>
     <string name="on_board_next">Next</string>
     <string name="on_board_intro_title">Focus at your own pace</string>
@@ -251,4 +251,21 @@
     <string name="task_done_yes">Yes, done</string>
     <string name="task_done_not_yet">Not yet</string>
     <string name="task_done_action">Done</string>
+    <string name="close">Close</string>
+    <string name="retry">Retry</string>
+    <string name="support_sheet_title">Leave a tip</string>
+    <string name="support_sheet_text">FlowTime is made by one person. Tips help keep improving it. They do not unlock Pro: everything free stays free. As a gift, you get the Supporter badge and theme.</string>
+    <string name="tip_small">Small tip</string>
+    <string name="tip_medium">Medium tip</string>
+    <string name="tip_large">Large tip</string>
+    <string name="support_thanks_title">Thank you!</string>
+    <string name="support_thanks_text">Your tip helps FlowTime keep getting better. The Supporter badge and theme are yours.</string>
+    <string name="support_use_theme">Use the Supporter theme</string>
+    <string name="purchase_failed">The purchase could not be completed. Please try again.</string>
+    <string name="supporter_badge">Supporter</string>
+    <string name="supporter_thanks">Thank you for supporting FlowTime. You can leave another tip whenever you like.</string>
+    <string name="restore_purchases">Restore purchases</string>
+    <string name="restore_done">Purchases restored</string>
+    <string name="restore_nothing">No purchases found. Check your connection and that you are using the same Google account.</string>
+    <string name="theme_supporter">Supporter</string>
 </resources>

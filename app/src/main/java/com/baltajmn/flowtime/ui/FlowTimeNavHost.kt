@@ -18,8 +18,7 @@ import com.baltajmn.flowtime.navigation.main.MainScreen
 fun FlowTimeNavHost(
     flowTimeAppState: FlowTimeAppState,
     showSound: Boolean,
-    onSoundChange: (Boolean) -> Unit,
-    onSupportDeveloperClick: () -> Unit
+    onSoundChange: (Boolean) -> Unit
 ) {
     NavHost(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
@@ -33,8 +32,7 @@ fun FlowTimeNavHost(
             MainScreen(
                 appState = flowTimeAppState,
                 showSound = showSound,
-                onSoundChange = onSoundChange,
-                onSupportDeveloperClick = onSupportDeveloperClick
+                onSoundChange = onSoundChange
             )
         }
     }

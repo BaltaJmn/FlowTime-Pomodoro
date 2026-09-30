@@ -16,8 +16,18 @@ data class SettingsState(
     val appearance: Appearance = Appearance(),
     val backup: BackupUiState = BackupUiState(),
     val goal: GoalUiState = GoalUiState(),
-    val tags: TagsUiState = TagsUiState()
+    val tags: TagsUiState = TagsUiState(),
+    val purchases: PurchasesUiState = PurchasesUiState()
 )
+
+data class PurchasesUiState(
+    val isPro: Boolean = false,
+    val isSupporter: Boolean = false,
+    val restoring: Boolean = false,
+    val message: RestoreMessage? = null
+)
+
+enum class RestoreMessage { RESTORED, NOTHING }
 
 data class TagsUiState(
     val active: List<Tag> = emptyList(),

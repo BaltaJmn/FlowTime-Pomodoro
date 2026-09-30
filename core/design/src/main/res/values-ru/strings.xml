@@ -54,9 +54,9 @@
     <string name="all_minutes_studying">Всего времени концентрации с нами: %s</string>
     <string name="export">Экспорт</string>
     <string name="import_button">Импорт</string>
-    <string name="support_developer">Поддержать разработчика</string>
-    <string name="support_developer_title">Поддержите наше развитие</string>
-    <string name="support_developer_description">Ваш вклад помогает нам продолжать улучшаться и добавлять новые функции. Поддержите нас и помогите нам расти!</string>
+    <string name="support_developer">Оставить чаевые</string>
+    <string name="support_developer_title">Поддержите FlowTime</string>
+    <string name="support_developer_description">FlowTime делает один человек. Чаевые помогают развивать приложение и ничего не блокируют: всё бесплатное остаётся бесплатным.</string>
     <string name="on_board_skip">Пропустить</string>
     <string name="on_board_next">Далее</string>
     <string name="on_board_intro_title">Работайте в своём ритме</string>
@@ -259,4 +259,21 @@
     <string name="task_done_yes">Да, готово</string>
     <string name="task_done_not_yet">Ещё нет</string>
     <string name="task_done_action">Готово</string>
+    <string name="close">Закрыть</string>
+    <string name="retry">Повторить</string>
+    <string name="support_sheet_title">Оставить чаевые</string>
+    <string name="support_sheet_text">FlowTime делает один человек. Чаевые помогают развивать приложение. Они не открывают Pro: всё бесплатное остаётся бесплатным. В подарок вы получите значок и тему Supporter.</string>
+    <string name="tip_small">Маленькие чаевые</string>
+    <string name="tip_medium">Средние чаевые</string>
+    <string name="tip_large">Большие чаевые</string>
+    <string name="support_thanks_title">Спасибо!</string>
+    <string name="support_thanks_text">Ваши чаевые помогают FlowTime становиться лучше. Значок и тема Supporter теперь ваши.</string>
+    <string name="support_use_theme">Включить тему Supporter</string>
+    <string name="purchase_failed">Не удалось завершить покупку. Попробуйте ещё раз.</string>
+    <string name="supporter_badge">Supporter</string>
+    <string name="supporter_thanks">Спасибо, что поддерживаете FlowTime. Вы можете оставить чаевые ещё раз в любое время.</string>
+    <string name="restore_purchases">Восстановить покупки</string>
+    <string name="restore_done">Покупки восстановлены</string>
+    <string name="restore_nothing">Покупки не найдены. Проверьте подключение и то, что вы используете тот же аккаунт Google.</string>
+    <string name="theme_supporter">Supporter</string>
 </resources>

@@ -13,6 +13,7 @@ import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromC
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.splash.SplashViewModel
+import com.baltajmn.flowtime.features.screens.support.SupportViewModel
 import com.baltajmn.flowtime.features.screens.timer.TimerViewModel
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -51,4 +52,5 @@ private val ScreensPresentationModule: Module
         viewModel { HistoryViewModel(get(), get(), get(), get(), get()) }
         viewModelOf(::OnBoardViewModel)
         viewModelOf(::SplashViewModel)
+        viewModelOf(::SupportViewModel)
     }

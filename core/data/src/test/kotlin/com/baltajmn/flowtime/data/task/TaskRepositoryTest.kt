@@ -4,9 +4,7 @@ import com.baltajmn.flowtime.core.database.datasource.TaskDao
 import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.TaskDb
 import com.baltajmn.flowtime.data.fakes.FakeSessionDao
-import com.baltajmn.flowtime.data.pro.NoPurchases
 import com.baltajmn.flowtime.data.pro.ProGate
-import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import java.time.LocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -50,17 +48,13 @@ class TaskRepositoryTest {
             rows.update { tasks -> tasks.map { if (it.id == id) it.copy(position = position) else it } }
     }
 
-    private class FakePurchases(pro: Boolean) : PurchasesRepository {
-        override val isPro = MutableStateFlow(pro)
-    }
-
     private val today = LocalDate.of(2026, 9, 29)
     private val yesterday = today.minusDays(1)
     private val dao = FakeTaskDao()
     private val sessions = FakeSessionDao()
 
-    private fun repository(purchases: PurchasesRepository = NoPurchases(), enabled: Boolean = false) =
-        DefaultTaskRepository(dao, sessions, ProGate(purchases, enabled), clock = { 0 })
+    private fun repository(isPro: MutableStateFlow<Boolean> = MutableStateFlow(false), enabled: Boolean = false) =
+        DefaultTaskRepository(dao, sessions, ProGate(isPro, enabled), clock = { 0 })
 
     private suspend fun TaskRepository.titles(day: LocalDate) = day(day, today).first().map { it.title }
 
@@ -113,7 +107,7 @@ class TaskRepositoryTest {
 
     @Test
     fun `sin Pro la tarea 16 no se crea y completar una deja crear otra`() = runTest {
-        val tasks = repository(FakePurchases(pro = false), enabled = true)
+        val tasks = repository(MutableStateFlow(false), enabled = true)
         repeat(15) { tasks.add("Tarea $it", "", today) }
 
         assertEquals(TaskResult.LimitReached, tasks.add("Una más", "", today))
@@ -124,7 +118,7 @@ class TaskRepositoryTest {
 
     @Test
     fun `con Pro no hay limite`() = runTest {
-        val tasks = repository(FakePurchases(pro = true), enabled = true)
+        val tasks = repository(MutableStateFlow(true), enabled = true)
 
         repeat(20) { assertTrue(tasks.add("Tarea $it", "", today) is TaskResult.Done) }
     }
@@ -132,7 +126,7 @@ class TaskRepositoryTest {
     @Test
     fun `quien ya tenia 20 pendientes las conserva y puede editarlas y completarlas`() = runTest {
         dao.rows.value = (1L..20L).map { TaskDb(it, "Tarea $it", "", today.toString(), null, 0, it.toInt()) }
-        val tasks = repository(FakePurchases(pro = false), enabled = true)
+        val tasks = repository(MutableStateFlow(false), enabled = true)
 
         assertEquals(20, tasks.day(today, today).first().size)
         assertTrue(tasks.edit(3, "Tarea tres", "") is TaskResult.Done)

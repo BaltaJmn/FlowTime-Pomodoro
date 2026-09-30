@@ -12,6 +12,7 @@ import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.service.SoundService
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
+import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.repository.SessionRepository
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
@@ -56,6 +57,9 @@ class App : Application() {
             }
         }
         get<GoalWatcher>().watch(scope)
+        // Configura RevenueCat. Después, sus propios avisos lo tienen al día al volver a la app.
+        val purchases = get<PurchasesRepository>()
+        scope.launch { purchases.refresh() }
 
         val tags = get<TagRepository>()
         scope.launch {

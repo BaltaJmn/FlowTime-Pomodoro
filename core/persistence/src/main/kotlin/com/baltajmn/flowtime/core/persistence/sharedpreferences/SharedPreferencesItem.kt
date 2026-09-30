@@ -23,4 +23,6 @@ enum class SharedPreferencesItem {
     TAGS_SEEDED,
     LAST_TAG_ID,
     REVIEW_ASKED_AT,
+    IS_PRO,
+    IS_SUPPORTER,
 }

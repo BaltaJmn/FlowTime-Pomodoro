@@ -21,8 +21,7 @@ import com.baltajmn.flowtime.ui.FlowTimeAppState
 fun MainScreen(
     appState: FlowTimeAppState,
     showSound: Boolean,
-    onSoundChange: (Boolean) -> Unit,
-    onSupportDeveloperClick: () -> Unit
+    onSoundChange: (Boolean) -> Unit
 ) {
     val currentRoute = appState.currentRoute
 
@@ -64,8 +63,7 @@ fun MainScreen(
                 navigateToHistory = appState::navigateToHistory,
                 navigateUp = appState::navigateUp,
                 showSound = showSound,
-                onSoundChange = onSoundChange,
-                onSupportDeveloperClick = onSupportDeveloperClick
+                onSoundChange = onSoundChange
             )
         }
     }
