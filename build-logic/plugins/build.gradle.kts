@@ -16,6 +16,9 @@ java {
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
+        // Gradle compila build-logic con el Kotlin que lleva dentro, mas viejo que el del proyecto, y
+        // los plugins de Kotlin y KSP de la version del proyecto estan hechos con metadatos mas nuevos.
+        freeCompilerArgs.add("-Xskip-metadata-version-check")
     }
 }
 
