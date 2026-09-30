@@ -33,6 +33,9 @@ class KmpLibraryPlugin : Plugin<Project> {
             iosArm64()
             iosSimulatorArm64()
 
+            // Room pide un expect object (AppDatabaseConstructor) y escribe sus actual.
+            compilerOptions.freeCompilerArgs.add("-Xexpect-actual-classes")
+
             sourceSets.commonTest.configure {
                 dependencies { implementation(kotlin("test")) }
             }

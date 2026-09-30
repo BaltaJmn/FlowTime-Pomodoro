@@ -1,6 +1,7 @@
 package extensions
 
 import com.android.build.api.dsl.CommonExtension
+import java.io.File
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -54,7 +55,10 @@ fun Project.configureKtlint() {
             reporter(ReporterType.CHECKSTYLE)
             reporter(ReporterType.SARIF)
         }
-
+        // Lo que escribe KSP (Room) en build/generated: en los módulos multiplataforma entra en las fuentes.
+        filter {
+            exclude { it.file.path.contains("${File.separator}build${File.separator}generated${File.separator}") }
+        }
     }
 
 }

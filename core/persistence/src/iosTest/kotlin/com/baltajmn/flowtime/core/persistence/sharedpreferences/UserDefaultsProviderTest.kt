@@ -5,6 +5,7 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.DAILY_GOAL
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.POMODORO_RANGE
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.THEME_COLOR
+import kotlin.random.Random
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -15,7 +16,8 @@ import platform.Foundation.NSUserDefaults
 
 class UserDefaultsProviderTest {
 
-    private val suite = "UserDefaultsProviderTest"
+    // Uno por test: NSUserDefaults guarda en memoria cada suite y borrarla no siempre se ve al momento.
+    private val suite = "UserDefaultsProviderTest-${Random.nextLong()}"
     private val prefs = UserDefaultsProvider(NSUserDefaults(suiteName = suite))
 
     @AfterTest

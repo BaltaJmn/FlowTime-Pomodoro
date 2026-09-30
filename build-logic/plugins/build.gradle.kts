@@ -36,11 +36,6 @@ gradlePlugin {
             implementationClass = "plugins.ComposePlugin"
         }
 
-        register("flowtimeRoomLibrary") {
-            id = "flowtime.room.library"
-            implementationClass = "plugins.AndroidRoomPlugin"
-        }
-
         register("flowtimeKmpLibrary") {
             id = "flowtime.kmp.library"
             implementationClass = "plugins.KmpLibraryPlugin"
@@ -65,4 +60,5 @@ dependencies {
     implementation(libs.plugin.ktlint)
     implementation(libs.plugin.kotlin.serialization)
     implementation(libs.plugin.kotlin.ksp)
+    implementation(libs.plugin.room)
 }

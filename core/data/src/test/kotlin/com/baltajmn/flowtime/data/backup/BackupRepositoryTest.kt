@@ -29,6 +29,8 @@ import io.mockk.verify
 import java.time.LocalDate
 import java.time.ZoneOffset
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toKotlinLocalDate
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -140,7 +142,7 @@ class BackupRepositoryTest {
         val old = Device().apply {
             dao.rows += session("2026-09-29", 10, mode = "FLOW_TIME", minutes = 50)
             dao.rows += session("2026-09-28", 9)
-            dao.rows += SessionDb.legacy(LocalDate.of(2025, 1, 5), 3600, ZoneOffset.UTC)
+            dao.rows += SessionDb.legacy(LocalDate.of(2025, 1, 5).toKotlinLocalDate(), 3600, TimeZone.UTC)
             dao.taskRows += task(2, "Leer", position = 0)
             dao.taskRows += task(1, "Repasar", doneOn = "2026-09-30", position = 1).copy(description = "Tema 4")
             appearance.setTheme(AppTheme.Green)
@@ -215,7 +217,7 @@ class BackupRepositoryTest {
     @Test
     fun `las sesiones iguales de un dia se traen todas`() = runTest {
         // El mismo tiempo añadido dos veces desde un texto: dos filas idénticas, y cuentan las dos.
-        val legacy = SessionDb.legacy(LocalDate.of(2026, 3, 1), 1800, ZoneOffset.UTC)
+        val legacy = SessionDb.legacy(LocalDate.of(2026, 3, 1).toKotlinLocalDate(), 1800, TimeZone.UTC)
         val old = Device().apply { dao.rows += listOf(legacy, legacy) }
         val new = Device().apply { dao.rows += legacy }
 

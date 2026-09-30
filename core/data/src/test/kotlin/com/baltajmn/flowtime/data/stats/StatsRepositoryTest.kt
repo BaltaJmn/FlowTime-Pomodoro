@@ -5,6 +5,8 @@ import com.baltajmn.flowtime.data.fakes.FakeSessionDao
 import java.time.LocalDate
 import java.time.ZoneOffset
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toKotlinLocalDate
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -58,7 +60,7 @@ class StatsRepositoryTest {
 
     @Test
     fun `el tiempo importado suma pero no es sesion, ni tiene hora ni modo`() = runTest {
-        dao.rows += SessionDb.legacy(today, 2 * 3600, ZoneOffset.UTC)
+        dao.rows += SessionDb.legacy(today.toKotlinLocalDate(), 2 * 3600, TimeZone.UTC)
         session(today, 9, 30)
 
         val summary = stats.summary(week, today)

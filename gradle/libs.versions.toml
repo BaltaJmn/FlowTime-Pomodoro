@@ -7,6 +7,9 @@ gradle = "9.0.1"
 ktlint = "14.2.0"
 ktlintEngine = "1.8.0"
 room = "2.8.5"
+# La de Room 2.8.5. En el iPhone, Room va con su propio SQLite (sqlite-bundled).
+sqlite = "2.6.2"
+kotlinxDatetime = "0.8.0"
 composeBom = "2026.06.01"
 junit = "4.13.2"
 testJunit = "1.2.1"
@@ -74,9 +77,10 @@ compose-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "
 
 play-publisher = { module = "com.github.triplet.gradle:play-publisher", version.ref = "playPublisher" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 junit-junit = { module = "androidx.test.ext:junit", version.ref = "testJunit" }
@@ -94,6 +98,7 @@ plugin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 plugin-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
 plugin-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 plugin-kotlin-ksp = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+plugin-room = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
 
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }

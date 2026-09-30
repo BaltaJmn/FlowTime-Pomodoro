@@ -14,6 +14,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.toKotlinLocalDate
+import kotlinx.datetime.toKotlinTimeZone
 
 /** Los bloques de trabajo terminados. Los totales van en segundos; cada pantalla redondea como quiera. */
 interface SessionRepository {
@@ -98,7 +100,7 @@ class DefaultSessionRepository(
 
     override suspend fun addToDays(secondsByDay: Map<LocalDate, Long>, replace: Boolean) {
         legacyImport?.join()
-        dao.addToDays(secondsByDay, replace, zone())
+        dao.addToDays(secondsByDay.mapKeys { it.key.toKotlinLocalDate() }, replace, zone().toKotlinTimeZone())
     }
 
     // Solo sustituye el tiempo LEGACY de cada día: si el proceso muere antes de marcarlo como hecho y
@@ -112,7 +114,7 @@ class DefaultSessionRepository(
                 val days = dataProvider.getStudyTimeMap().mapNotNull { (key, minutes) ->
                     DayKeys.parse(key)?.let { it to minutes * 60 }
                 }.toMap()
-                dao.importLegacy(days, zone())
+                dao.importLegacy(days.mapKeys { it.key.toKotlinLocalDate() }, zone().toKotlinTimeZone())
             }.onSuccess { dataProvider.setBoolean(SESSIONS_IMPORTED, true) }
         }
     }

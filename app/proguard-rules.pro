@@ -42,10 +42,6 @@
 -dontwarn com.baltajmn.flowtime.features.screens.todoList.TodoListScreenKt
 -dontwarn com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
 
--keep class com.google.gson.reflect.TypeToken
--keep class * extends com.google.gson.reflect.TypeToken
--keep public class * implements java.lang.reflect.Type
-
 -keepclassmembers class io.ktor.http.** { *; }
 ### your config ....
 
