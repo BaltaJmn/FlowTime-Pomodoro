@@ -25,6 +25,8 @@ import com.baltajmn.flowtime.data.stats.TaskTime
 import com.baltajmn.flowtime.data.stats.level
 import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.task.Task
+import com.baltajmn.flowtime.data.timer.DoNotDisturb
+import com.baltajmn.flowtime.data.timer.FocusMode
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.fakes.FakeBackups
@@ -52,6 +54,7 @@ import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
@@ -144,7 +147,8 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
             GoalRepository(prefs, sessions, days = flowOf(LocalDate.now())),
             FakeTags("Estudio", "Trabajo", "Lectura", "Casa"),
             FakePurchases(supporter = true),
-            ReminderRepository(prefs).apply { set(Reminder(enabled = true)) }
+            ReminderRepository(prefs).apply { set(Reminder(enabled = true)) },
+            FocusMode(prefs, NoDoNotDisturb, MutableStateFlow(false))
         )
         compose.capture("settings_$mode", dark = dark) {
             val state by viewModel.uiState.collectAsState()
@@ -343,4 +347,12 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
         @ParameterizedRobolectricTestRunner.Parameters(name = "oscuro={0}")
         fun parameters() = listOf(arrayOf<Any>(false), arrayOf<Any>(true))
     }
+}
+
+/** Un móvil sin acceso a No molestar: la captura de Ajustes no lo necesita. */
+private object NoDoNotDisturb : DoNotDisturb {
+    override val granted = false
+    override val hasRules = true
+    override var filter = 0
+    override fun setRule(active: Boolean) = Unit
 }

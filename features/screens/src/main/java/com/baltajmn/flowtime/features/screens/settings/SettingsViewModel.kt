@@ -20,6 +20,7 @@ import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.tag.TagResult
+import com.baltajmn.flowtime.data.timer.FocusMode
 import com.baltajmn.flowtime.features.screens.pro.ProAccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +37,8 @@ class SettingsViewModel(
     private val goals: GoalRepository,
     private val tags: TagRepository,
     private val purchases: PurchasesRepository,
-    private val reminders: ReminderRepository
+    private val reminders: ReminderRepository,
+    private val focusMode: FocusMode
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
@@ -55,6 +57,9 @@ class SettingsViewModel(
             }
         }
         viewModelScope.launch {
+            focusMode.enabled.collect { on -> _uiState.update { it.copy(focusMode = on) } }
+        }
+        viewModelScope.launch {
             reminders.reminder.collect { reminder -> _uiState.update { it.copy(reminder = reminder) } }
         }
         viewModelScope.launch {
@@ -70,6 +75,11 @@ class SettingsViewModel(
     }
 
     fun setReminder(reminder: Reminder) = reminders.set(reminder)
+
+    fun setFocusMode(on: Boolean) = focusMode.setEnabled(on)
+
+    /** Si ya se puede cambiar No molestar; si no, hay que mandar al usuario a darle acceso. */
+    val focusModeGranted: Boolean get() = focusMode.granted
 
     fun restorePurchases() {
         updatePurchases { it.copy(restoring = true) }

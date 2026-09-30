@@ -19,6 +19,7 @@ import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.repository.SessionRepository
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
+import com.baltajmn.flowtime.data.timer.FocusMode
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.PhaseChange
 import com.baltajmn.flowtime.di.CoreModules
@@ -67,6 +68,13 @@ class App : Application() {
             }
         }
         get<GoalWatcher>().watch(scope)
+        // No molestar sigue a la sesión, y también al ajuste y a Pro. Al arrancar, por si la app se
+        // cerró a mitad de una sesión.
+        val focusMode = get<FocusMode>()
+        scope.launch {
+            combine(engine.state, focusMode.enabled, get<PurchasesRepository>().isPro) { state, _, _ -> state }
+                .collect(focusMode::apply)
+        }
         // Al arrancar (también tras actualizar la app) y con cada cambio en Ajustes.
         scope.launch { get<ReminderRepository>().reminder.collect { reminder.schedule() } }
         // El widget, con cada cambio de la sesión, del progreso de hoy (también a medianoche) o del tema.

@@ -13,6 +13,8 @@ data class SettingsState(
     val isLoading: Boolean = false,
     val showAlert: Boolean = true,
     val keepScreenOn: Boolean = true,
+    /** No molestar mientras se trabaja (#43), de Pro. */
+    val focusMode: Boolean = false,
     val appearance: Appearance = Appearance(),
     val backup: BackupUiState = BackupUiState(),
     val goal: GoalUiState = GoalUiState(),

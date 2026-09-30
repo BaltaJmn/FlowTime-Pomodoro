@@ -290,7 +290,7 @@
     <string name="pro_restore_nothing">इस Google खाते में Pro नहीं मिला। कनेक्शन जाँचें।</string>
     <string name="pro_thanks_text">आपके पास FlowTime Pro है: Pro की हर चीज़ अनलॉक है। FlowTime का साथ देने के लिए धन्यवाद।</string>
     <string name="pro_see">Pro देखें</string>
-    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, और असीमित टैग और कार्य। एक बार भुगतान, कोई सदस्यता नहीं।</string>
+    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग और कार्य, और अपने-आप \'परेशान न करें\'। एक बार भुगतान, कोई सदस्यता नहीं।</string>
     <string name="pro_settings_owned">आपके पास Pro है। FlowTime का साथ देने के लिए धन्यवाद।</string>
     <string name="pro_card_text">Pro के साथ देखें कि आप किस समय और किस पर सबसे अच्छा ध्यान लगाते हैं।</string>
     <string name="pro_card_dismiss">अभी नहीं</string>
@@ -306,4 +306,10 @@
     <string name="reminder_streak">आपके लगातार %1$d दिन हो गए हैं। जारी रखें?</string>
     <string name="reminder_short">एक छोटा सत्र?</string>
     <string name="reminder_start">अभी शुरू करें</string>
+    <string name="focus_mode">ध्यान लगाते समय परेशान न करें</string>
+    <string name="focus_mode_access_text">ध्यान शुरू होने पर \'परेशान न करें\' चालू करने और ब्रेक में बंद करने के लिए FlowTime को \'परेशान न करें\' की अनुमति चाहिए। अगली स्क्रीन पर FlowTime के लिए इसे चालू करें।</string>
+    <string name="focus_mode_access_off">FlowTime के पास \'परेशान न करें\' की अनुमति नहीं है</string>
+    <string name="focus_mode_rule">ध्यान</string>
+    <string name="pro_dnd_title">अपने-आप \'परेशान न करें\'</string>
+    <string name="pro_dnd_text">ध्यान शुरू होने पर चालू होता है और ब्रेक में बंद।</string>
 </resources>

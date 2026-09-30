@@ -290,7 +290,7 @@
     <string name="pro_restore_nothing">Pro wurde in diesem Google-Konto nicht gefunden. Prüfe die Verbindung.</string>
     <string name="pro_thanks_text">Du hast FlowTime Pro: Alles aus Pro ist freigeschaltet. Danke, dass du FlowTime unterstützt.</string>
     <string name="pro_see">Pro ansehen</string>
-    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export sowie unbegrenzte Labels und Aufgaben. Einmalzahlung, kein Abo.</string>
+    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels und Aufgaben sowie automatisch \"Nicht stören\". Einmalzahlung, kein Abo.</string>
     <string name="pro_settings_owned">Du hast Pro. Danke, dass du FlowTime unterstützt.</string>
     <string name="pro_card_text">Mit Pro siehst du, zu welchen Zeiten und woran du dich am besten konzentrierst.</string>
     <string name="pro_card_dismiss">Jetzt nicht</string>
@@ -306,4 +306,10 @@
     <string name="reminder_streak">Deine Serie steht bei %1$d Tagen. Machst du weiter?</string>
     <string name="reminder_short">Eine kurze Sitzung?</string>
     <string name="reminder_start">Jetzt starten</string>
+    <string name="focus_mode">Nicht stören, während ich mich konzentriere</string>
+    <string name="focus_mode_access_text">Um \"Nicht stören\" beim Konzentrieren einzuschalten und in der Pause auszuschalten, braucht FlowTime Zugriff auf \"Nicht stören\". Aktiviere ihn auf dem nächsten Bildschirm für FlowTime.</string>
+    <string name="focus_mode_access_off">FlowTime hat keinen Zugriff auf \"Nicht stören\"</string>
+    <string name="focus_mode_rule">Konzentration</string>
+    <string name="pro_dnd_title">Automatisch \"Nicht stören\"</string>
+    <string name="pro_dnd_text">Schaltet sich beim Konzentrieren ein und in der Pause aus.</string>
 </resources>

@@ -294,7 +294,7 @@
     <string name="pro_restore_nothing">Pro wasn\'t found on this Google account. Check your connection.</string>
     <string name="pro_thanks_text">You have FlowTime Pro: everything in Pro is unlocked. Thanks for supporting FlowTime.</string>
     <string name="pro_see">See Pro</string>
-    <string name="pro_settings_text">Advanced stats, CSV export, and unlimited tags and tasks. One-time payment, no subscription.</string>
+    <string name="pro_settings_text">Advanced stats, CSV export, unlimited tags and tasks, and automatic Do Not Disturb. One-time payment, no subscription.</string>
     <string name="pro_settings_owned">You have Pro. Thanks for supporting FlowTime.</string>
     <string name="pro_card_text">With Pro you can see at what times and on what you focus best.</string>
     <string name="pro_card_dismiss">Not now</string>
@@ -310,4 +310,10 @@
     <string name="reminder_streak">You\'re on a %1$d-day streak. Keep it going?</string>
     <string name="reminder_short">A short session?</string>
     <string name="reminder_start">Start now</string>
+    <string name="focus_mode">Do Not Disturb while I focus</string>
+    <string name="focus_mode_access_text">To turn on Do Not Disturb when you start focusing and turn it off on breaks, FlowTime needs Do Not Disturb access. On the next screen, turn it on for FlowTime.</string>
+    <string name="focus_mode_access_off">FlowTime doesn\'t have Do Not Disturb access</string>
+    <string name="focus_mode_rule">Focusing</string>
+    <string name="pro_dnd_title">Automatic Do Not Disturb</string>
+    <string name="pro_dnd_text">It turns on when you start focusing and off on breaks.</string>
 </resources>

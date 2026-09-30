@@ -293,7 +293,7 @@
     <string name="pro_restore_nothing">No se ha encontrado Pro en esta cuenta de Google. Comprueba la conexión.</string>
     <string name="pro_thanks_text">Ya tienes FlowTime Pro: todo lo de Pro está desbloqueado. Gracias por apoyar FlowTime.</string>
     <string name="pro_see">Ver Pro</string>
-    <string name="pro_settings_text">Estadísticas avanzadas, exportar a CSV, y etiquetas y tareas sin límite. Pago único, sin suscripción.</string>
+    <string name="pro_settings_text">Estadísticas avanzadas, exportar a CSV, etiquetas y tareas sin límite, y No molestar automático. Pago único, sin suscripción.</string>
     <string name="pro_settings_owned">Tienes Pro. Gracias por apoyar FlowTime.</string>
     <string name="pro_card_text">Con Pro ves a qué horas y en qué te concentras mejor.</string>
     <string name="pro_card_dismiss">Ahora no</string>
@@ -309,4 +309,10 @@
     <string name="reminder_streak">Llevas una racha de %1$d días. ¿La mantienes?</string>
     <string name="reminder_short">¿Una sesión corta?</string>
     <string name="reminder_start">Empezar ahora</string>
+    <string name="focus_mode">No molestar mientras me concentro</string>
+    <string name="focus_mode_access_text">Para activar No molestar al empezar a concentrarte y quitarlo en el descanso, FlowTime necesita acceso a No molestar. En la pantalla siguiente, actívalo para FlowTime.</string>
+    <string name="focus_mode_access_off">FlowTime no tiene acceso a No molestar</string>
+    <string name="focus_mode_rule">Concentrándote</string>
+    <string name="pro_dnd_title">No molestar automático</string>
+    <string name="pro_dnd_text">Se activa al empezar a concentrarte y se quita en el descanso.</string>
 </resources>

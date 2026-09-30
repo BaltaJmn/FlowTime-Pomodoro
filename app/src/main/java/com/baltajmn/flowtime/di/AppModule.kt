@@ -10,8 +10,11 @@ import com.baltajmn.flowtime.features.screens.di.ScreensModule
 import com.baltajmn.flowtime.goal.GoalWatcher
 import com.baltajmn.flowtime.reminder.DailyReminder
 import com.baltajmn.flowtime.review.ReviewPrompter
+import com.baltajmn.flowtime.data.pro.PurchasesRepository
+import com.baltajmn.flowtime.data.timer.FocusMode
 import com.baltajmn.flowtime.session.PhaseAlarm
 import com.baltajmn.flowtime.session.SessionNotification
+import com.baltajmn.flowtime.session.SystemDoNotDisturb
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
@@ -34,6 +37,13 @@ val CoreModules: Module
         single { GoalWatcher(androidContext(), get(), get()) }
         single { ReviewPrompter(get()) }
         single { DailyReminder(androidContext(), get(), get(), get()) }
+        single {
+            FocusMode(
+                get(),
+                SystemDoNotDisturb(androidContext(), get()),
+                get<PurchasesRepository>().isPro
+            )
+        }
         includes(
             listOf(
                 DispatchersModule,

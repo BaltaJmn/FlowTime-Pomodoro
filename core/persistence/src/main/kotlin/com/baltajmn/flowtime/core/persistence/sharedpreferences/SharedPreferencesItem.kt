@@ -27,4 +27,7 @@ enum class SharedPreferencesItem {
     IS_SUPPORTER,
     PRO_CARD_DISMISSED_AT,
     DAILY_REMINDER,
+    FOCUS_MODE,
+    DND_PREVIOUS_FILTER,
+    DND_RULE_ID,
 }

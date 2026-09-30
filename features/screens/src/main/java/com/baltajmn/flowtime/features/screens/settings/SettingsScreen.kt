@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
+import android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS
 import android.provider.Settings.EXTRA_APP_PACKAGE
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -29,6 +30,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.Card
@@ -276,6 +278,20 @@ fun SettingsContent(
                         onCheckedChange = viewModel::saveKeepScreenOn
                     )
 
+                    if (state.purchases.pro != ProAccess.HIDDEN) {
+                        FocusModeRow(
+                            checked = state.focusMode && state.purchases.pro == ProAccess.OPEN,
+                            granted = { viewModel.focusModeGranted },
+                            onChange = { on ->
+                                if (on && state.purchases.pro != ProAccess.OPEN) {
+                                    onOpenPro(ProFeature.DND)
+                                } else {
+                                    viewModel.setFocusMode(on)
+                                }
+                            }
+                        )
+                    }
+
                     PermissionNotice(
                         text = R.string.notifications_off,
                         granted = { NotificationManagerCompat.from(it).areNotificationsEnabled() },
@@ -328,6 +344,51 @@ private fun openStoreListing(context: Context) {
     }.recoverCatching {
         val web = Uri.parse("https://play.google.com/store/apps/details?id=$id")
         context.startActivity(Intent(Intent.ACTION_VIEW, web))
+    }
+}
+
+/**
+ * No molestar mientras se trabaja (#43). Sin acceso a No molestar, primero se explica y después se
+ * manda a los ajustes del sistema; si se quita más tarde, un aviso como el de las alarmas exactas.
+ */
+@Composable
+private fun FocusModeRow(checked: Boolean, granted: () -> Boolean, onChange: (Boolean) -> Unit) {
+    val context = LocalContext.current
+    var explain by rememberSaveable { mutableStateOf(false) }
+    val openAccess = { context.startActivity(Intent(ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)) }
+    Spacer(modifier = Modifier.height(8.dp))
+    CheckRow(
+        text = R.string.focus_mode,
+        checked = checked,
+        onCheckedChange = { on ->
+            onChange(on)
+            if (on && !granted()) explain = true
+        }
+    )
+    if (checked) {
+        PermissionNotice(text = R.string.focus_mode_access_off, granted = { granted() }, settings = {
+            Intent(ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+        })
+    }
+    if (explain) {
+        AlertDialog(
+            onDismissRequest = { explain = false },
+            title = { Text(text = stringResource(R.string.focus_mode)) },
+            text = { Text(text = stringResource(R.string.focus_mode_access_text)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        explain = false
+                        openAccess()
+                    }
+                ) { Text(text = stringResource(R.string.turn_on)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { explain = false }) {
+                    Text(text = stringResource(R.string.notifications_later))
+                }
+            }
+        )
     }
 }
 

@@ -11,6 +11,8 @@
     <!-- La vibración al cambiar de fase con la app a la vista (#50). Es un permiso normal. -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- No molestar mientras se trabaja (#43). Es un permiso normal; el acceso lo da el usuario. -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <!-- Es un temporizador: Play permite USE_EXACT_ALARM declarándolo en la ficha. En Android 12
          no existe, y SCHEDULE_EXACT_ALARM viene concedido. -->
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />

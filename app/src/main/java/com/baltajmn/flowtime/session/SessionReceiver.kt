@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.baltajmn.flowtime.data.task.TaskRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
+import com.baltajmn.flowtime.data.timer.FocusMode
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.reminder.DailyReminder
 import com.baltajmn.flowtime.widget.FocusWidget
@@ -32,6 +33,7 @@ class SessionReceiver : BroadcastReceiver(), KoinComponent {
         // onReceive el sistema puede cerrar el proceso.
         get<SessionNotification>().update()
         get<PhaseAlarm>().schedule()
+        get<FocusMode>().apply(engine.state.value)
         FocusTileService.refresh(context)
         // Al reiniciar el sistema borra las alarmas, y con otra hora o zona horaria hay que recolocarla.
         if (action == null) get<DailyReminder>().schedule()

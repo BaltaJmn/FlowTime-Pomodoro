@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -245,6 +246,11 @@ private fun FeatureRow(feature: ProFeature) {
             Icons.Filled.CheckCircle,
             R.string.pro_tasks_title,
             R.string.pro_tasks_text
+        )
+        ProFeature.DND -> Triple(
+            Icons.Filled.Notifications,
+            R.string.pro_dnd_title,
+            R.string.pro_dnd_text
         )
     }
     val limit = when (feature) {
