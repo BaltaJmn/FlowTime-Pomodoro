@@ -251,6 +251,12 @@ fun SettingsContent(
                         onClick = { openStoreListing(context) }
                     )
 
+                    ButtonRow(
+                        text = R.string.settings_privacy,
+                        button = R.string.settings_intro_button,
+                        onClick = { openPrivacyPolicy(context) }
+                    )
+
                     onAddQuickTile?.let {
                         ButtonRow(
                             text = R.string.settings_quick_tile,
@@ -353,6 +359,14 @@ private fun openStoreListing(context: Context) {
         val web = Uri.parse("https://play.google.com/store/apps/details?id=$id")
         context.startActivity(Intent(Intent.ACTION_VIEW, web))
     }
+}
+
+/** La misma dirección que la de Play Console: `store/privacy/README.md`. */
+private const val PRIVACY_URL = "https://flowtime.baltajmn.dev/"
+
+/** Sin navegador no hay a dónde ir, y no es motivo para cerrar la app. */
+private fun openPrivacyPolicy(context: Context) {
+    runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_URL))) }
 }
 
 /**

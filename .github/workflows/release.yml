@@ -12,6 +12,11 @@ on:
         type: choice
         options: [production, beta, alpha, internal]
         default: production
+      status:
+        description: draft sube la version sin publicarla, para revisarla o probarla antes en la consola
+        type: choice
+        options: [completed, draft]
+        default: completed
 
 # Lo unico que estos trabajos necesitan de GitHub es leer el codigo; las credenciales de Play van
 # como secretos.
@@ -31,6 +36,7 @@ jobs:
       aab-path: app/build/outputs/bundle/release/app-release.aab
       # Esta app ya esta en produccion, asi que la etiqueta publica ahi y no en alpha.
       track: ${{ inputs.track || 'production' }}
+      status: ${{ inputs.status || 'completed' }}
       whatsnew-dir: store/whatsnew
     secrets:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
