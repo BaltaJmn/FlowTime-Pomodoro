@@ -30,9 +30,9 @@ import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.data.timer.TimerMode
-import com.baltajmn.flowtime.features.screens.common.composable.components.FlowTimeRanges
 import com.baltajmn.flowtime.features.screens.common.composable.components.PercentageRange
 import com.baltajmn.flowtime.features.screens.common.composable.components.PomodoroRange
+import com.baltajmn.flowtime.features.screens.common.composable.components.flowTimeRanges
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -76,9 +76,9 @@ fun ModeSettingsContent(state: EditState, viewModel: EditViewModel, onSave: () -
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         when (state.mode) {
-            TimerMode.POMODORO -> PomodoroSettings(state, viewModel)
-            TimerMode.FLOW_TIME -> FlowTimeSettings(state, viewModel)
-            TimerMode.PERCENTAGE -> PercentageSettings(state, viewModel)
+            TimerMode.POMODORO -> pomodoroSettings(state, viewModel)
+            TimerMode.FLOW_TIME -> flowTimeSettings(state, viewModel)
+            TimerMode.PERCENTAGE -> percentageSettings(state, viewModel)
         }
 
         item {
@@ -114,15 +114,15 @@ fun ModeSettingsContent(state: EditState, viewModel: EditViewModel, onSave: () -
     }
 }
 
-private fun LazyListScope.Title(text: Int) = item {
+private fun LazyListScope.title(text: Int) = item {
     Text(
         text = stringResource(text),
         style = LargeTitle.copy(fontSize = 26.sp, color = MaterialTheme.colorScheme.primary)
     )
 }
 
-fun LazyListScope.PomodoroSettings(state: EditState, viewModel: EditViewModel) {
-    Title(R.string.pomodoro_settings_title)
+fun LazyListScope.pomodoroSettings(state: EditState, viewModel: EditViewModel) {
+    title(R.string.pomodoro_settings_title)
     item {
         PomodoroRange(
             range = state.pomodoroRange,
@@ -131,9 +131,9 @@ fun LazyListScope.PomodoroSettings(state: EditState, viewModel: EditViewModel) {
     }
 }
 
-fun LazyListScope.FlowTimeSettings(state: EditState, viewModel: EditViewModel) {
-    Title(R.string.flow_time_settings_title)
-    FlowTimeRanges(
+fun LazyListScope.flowTimeSettings(state: EditState, viewModel: EditViewModel) {
+    title(R.string.flow_time_settings_title)
+    flowTimeRanges(
         ranges = state.flowTimeRanges,
         onValueChanged = { index: Int, range: RangeModel ->
             viewModel.modifyRange(
@@ -146,8 +146,8 @@ fun LazyListScope.FlowTimeSettings(state: EditState, viewModel: EditViewModel) {
     )
 }
 
-fun LazyListScope.PercentageSettings(state: EditState, viewModel: EditViewModel) {
-    Title(R.string.percentage_settings_title)
+fun LazyListScope.percentageSettings(state: EditState, viewModel: EditViewModel) {
+    title(R.string.percentage_settings_title)
     item {
         PercentageRange(
             percentage = state.percentage,

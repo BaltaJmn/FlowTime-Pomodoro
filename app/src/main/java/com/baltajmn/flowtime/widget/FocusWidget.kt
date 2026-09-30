@@ -86,7 +86,9 @@ private val NARROW_WIDTH = 180.dp
  * el objetivo de hoy y la racha. Los botones van a [SessionReceiver], como los de la notificación, y
  * el reloj lo anima el sistema: no hay que actualizarlo cada segundo.
  */
-class FocusWidget : GlanceAppWidget(), KoinComponent {
+class FocusWidget :
+    GlanceAppWidget(),
+    KoinComponent {
 
     override val sizeMode = SizeMode.Responsive(setOf(SMALL, WIDE, MEDIUM))
 

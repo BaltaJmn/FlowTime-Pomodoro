@@ -133,7 +133,6 @@ class SharedPreferencesProvider(context: Context) : DataProvider {
         }
         editor.apply()
     }
-
 }
 
 /**

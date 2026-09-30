@@ -38,25 +38,17 @@ internal fun Project.configureKotlinAndroid(
     }
 }
 
-// OJO: con AGP 9 (Kotlin integrado) ktlint-gradle 11.5.1 no detecta el Kotlin de Android, ya no crea las
-// tareas por conjunto de fuentes (ktlintMainSourceSetCheck...) y solo revisa los .kts. Arreglarlo pide
-// ktlint-gradle 14.1.0 o mas, que exige el motor ktlint 1.x (con el 0.47.1 de ahora falla) y trae otras
-// reglas: con el estilo android_studio salen unas 230 infracciones, 129 de ellas function-naming.
-// Pendiente de decidir: corregirlas o partir de un baseline.
+// ktlint-gradle 14.x (desde la 14.1.0 entiende el Kotlin integrado de AGP 9) con el motor ktlint 1.x
+// (ktlintEngine en libs.versions.toml): vuelve a crear las tareas por conjunto de fuentes
+// (ktlintMainSourceSetCheck...) y check depende de ellas, asi que ./gradlew build revisa las fuentes de
+// Kotlin. Con el motor 1.x el plugin ya no tiene disabledRules ni hace caso de android: el estilo
+// android_studio y las reglas desactivadas viven en el .editorconfig de la raiz.
 fun Project.configureKtlint() {
     plugins.apply("org.jlleitschuh.gradle.ktlint")
 
     configure<KtlintExtension> {
-        android.set(true)
+        version.set(libs.versions.ktlintEngine)
         ignoreFailures.set(false)
-        disabledRules.set(
-            setOf(
-                "final-newline",
-                "no-wildcard-imports",
-                "max-line-length",
-                "import-ordering"
-            )
-        )
         reporters {
             reporter(ReporterType.PLAIN)
             reporter(ReporterType.CHECKSTYLE)

@@ -22,7 +22,9 @@ import org.koin.core.component.get
  * fin de fase, el reinicio del móvil y los cambios de hora. El motor se reconstruye solo; aquí se
  * aplica la acción o se le pone al día, y se dejan listas la notificación y la siguiente alarma.
  */
-class SessionReceiver : BroadcastReceiver(), KoinComponent {
+class SessionReceiver :
+    BroadcastReceiver(),
+    KoinComponent {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == SessionNotification.ACTION_COMPLETE_TASK) return completeTask(intent)
         if (intent.action == DailyReminder.ACTION) return later { get<DailyReminder>().fire() }

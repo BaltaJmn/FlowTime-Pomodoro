@@ -25,7 +25,7 @@ fun ButtonDefault(
     modifier: Modifier = Modifier,
     text: String,
     icon: ImageVector,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Button(
         modifier = modifier,
@@ -47,11 +47,10 @@ fun ButtonDefault(
             Icon(
                 modifier = Modifier.wrapContentSize(),
                 imageVector = icon,
-                contentDescription = null,
+                contentDescription = null
             )
         }
     }
-
 }
 
 @Preview

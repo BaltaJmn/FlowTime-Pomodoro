@@ -699,7 +699,7 @@ fun AppearanceCard(
                 items(
                     AppTheme.entries.filter { theme ->
                         theme == appearance.theme ||
-                            (theme != AppTheme.Supporter || isSupporter) && (!theme.pro || pro != ProAccess.HIDDEN)
+                            ((theme != AppTheme.Supporter || isSupporter) && (!theme.pro || pro != ProAccess.HIDDEN))
                     }
                 ) { theme ->
                     val locked = theme.pro && pro == ProAccess.LOCKED && theme != appearance.theme

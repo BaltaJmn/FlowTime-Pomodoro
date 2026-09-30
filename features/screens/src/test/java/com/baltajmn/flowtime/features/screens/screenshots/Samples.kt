@@ -140,6 +140,7 @@ internal fun sampleTodo(): TodoListViewModel {
     return TodoListViewModel(tasks, today = { today })
 }
 
+/** Un móvil sin acceso a No molestar: la captura de Ajustes no lo necesita. */
 private object NoDoNotDisturb : DoNotDisturb {
     override val granted = false
     override val hasRules = true

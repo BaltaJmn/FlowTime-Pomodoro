@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.core.design.sound
 
-
 /**
  * Un sonido ambiental generado en tiempo real. No hay ficheros de audio: nada que descargar ni que
  * licenciar, funciona sin conexion y suena sin fin y sin cortes.

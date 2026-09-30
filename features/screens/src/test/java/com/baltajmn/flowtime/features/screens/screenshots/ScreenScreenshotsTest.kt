@@ -255,5 +255,3 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
         fun parameters() = listOf(arrayOf<Any>(false), arrayOf<Any>(true))
     }
 }
-
-/** Un móvil sin acceso a No molestar: la captura de Ajustes no lo necesita. */

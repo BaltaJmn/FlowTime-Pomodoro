@@ -18,7 +18,7 @@ fun LoadingView(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.primaryContainer),
+            .background(color = MaterialTheme.colorScheme.primaryContainer)
     ) {
         LottieImage(
             modifier = Modifier

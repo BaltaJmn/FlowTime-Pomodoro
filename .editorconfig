@@ -1,0 +1,18 @@
+root = true
+
+[*.{kt,kts}]
+ktlint_code_style = android_studio
+# Las funciones @Composable llevan nombre en PascalCase.
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+# Reglas de solo formato que el codigo no sigue a proposito. Las tres primeras ya estaban desactivadas
+# con ktlint 0.47 (42 ficheros sin salto de linea final, ~380 lineas de mas de 100 caracteres, orden de
+# imports propio). no-wildcard-imports se queda activa: el codigo no usa imports con asterisco.
+ktlint_standard_final-newline = disabled
+ktlint_standard_max-line-length = disabled
+ktlint_standard_import-ordering = disabled
+
+# Nuevas en ktlint 1.x: el codigo parte las firmas y los when a su manera y usa cuerpos de bloque con return.
+ktlint_standard_function-signature = disabled
+ktlint_standard_function-expression-body = disabled
+ktlint_standard_blank-line-between-when-conditions = disabled

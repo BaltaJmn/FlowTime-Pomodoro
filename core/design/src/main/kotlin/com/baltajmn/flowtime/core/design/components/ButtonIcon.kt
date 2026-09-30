@@ -24,7 +24,7 @@ fun ButtonIcon(
     modifier: Modifier = Modifier,
     text: String,
     icon: ImageVector,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Button(
         modifier = modifier,
@@ -49,11 +49,10 @@ fun ButtonIcon(
                     .width(50.dp),
                 imageVector = icon,
                 tint = MaterialTheme.colorScheme.onBackground,
-                contentDescription = null,
+                contentDescription = null
             )
         }
     }
-
 }
 
 @Preview

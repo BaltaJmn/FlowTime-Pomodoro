@@ -17,7 +17,7 @@ import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 
-fun LazyListScope.FlowTimeRanges(
+fun LazyListScope.flowTimeRanges(
     ranges: MutableList<RangeModel>,
     onValueChanged: (Int, RangeModel) -> Unit,
     onDeleteClicked: (Int) -> Unit,

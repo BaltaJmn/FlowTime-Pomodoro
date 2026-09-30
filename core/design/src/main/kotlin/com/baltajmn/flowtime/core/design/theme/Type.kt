@@ -54,6 +54,5 @@ val FontFamily.Companion.Poppins: FontFamily
         Font(R.font.poppins_light, FontWeight.W300),
         Font(R.font.poppins_regular, FontWeight.W400),
         Font(R.font.poppins_bold, FontWeight.W700),
-        Font(R.font.poppins_black, FontWeight.W900),
+        Font(R.font.poppins_black, FontWeight.W900)
     )
-

@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 class SoundService(
     private val dataProvider: DataProvider,
     private val startPlayer: MediaPlayer,
-    private val confirmationPlayer: MediaPlayer,
+    private val confirmationPlayer: MediaPlayer
 ) {
     private val serviceScope = CoroutineScope(Dispatchers.IO)
 

@@ -16,5 +16,5 @@ enum class MainGraph(val route: String) {
     Focus("focus"),
     TodoList("todoList"),
     Stats("stats"),
-    Settings("settings"),
+    Settings("settings")
 }

@@ -34,7 +34,7 @@ fun LottieImage(
         composition = composition,
         isPlaying = playing,
         iterations = LottieConstants.IterateForever,
-        restartOnPlay = false,
+        restartOnPlay = false
     )
     LottieAnimation(
         modifier = modifier,

@@ -15,9 +15,8 @@ fun SquareBox(
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     roundedCornersPercent: Int = 15,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
-
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(roundedCornersPercent))
@@ -26,5 +25,4 @@ fun SquareBox(
     ) {
         content()
     }
-
 }

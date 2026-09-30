@@ -83,6 +83,7 @@ class BackupRepositoryTest {
         val dao = FakeBackupDao()
         val prefs = FakeDataProvider()
         val appearance = AppearanceRepository(prefs)
+
         // De verdad no se puede: el mezclador abre la salida de audio de Android.
         val ambience = mockk<Ambience>(relaxed = true)
         val goals = GoalRepository(prefs, FakeSessionRepository())
