@@ -1,7 +1,9 @@
 plugins {
-    alias(libs.plugins.flowtime.android.library)
+    id("flowtime.kmp.library")
 }
 
-android {
-    namespace = Config.Core.Common
+kotlin {
+    android {
+        namespace = Config.Core.Common
+    }
 }

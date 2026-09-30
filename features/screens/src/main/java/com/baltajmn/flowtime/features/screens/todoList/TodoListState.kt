@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.features.screens.todoList
 
-import com.baltajmn.flowtime.core.common.extensions.toShowInList
 import com.baltajmn.flowtime.data.task.Task
 import java.time.LocalDate
 

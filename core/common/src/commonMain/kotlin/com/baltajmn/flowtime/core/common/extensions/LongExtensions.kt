@@ -24,9 +24,9 @@ fun Long.formatSecondsToTime(): String {
     val minutes = (this % 3600) / 60
     val remainingSeconds = this % 60
 
-    return if (hours > 0) {
-        String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
-    } else {
-        String.format("%02d:%02d", minutes, remainingSeconds)
-    }
+    val clock = "${minutes.twoDigits()}:${remainingSeconds.twoDigits()}"
+    return if (hours > 0) "${hours.twoDigits()}:$clock" else clock
 }
+
+/** Sin String.format, que no existe en Kotlin común; siempre con dígitos latinos. */
+private fun Long.twoDigits() = toString().padStart(2, '0')

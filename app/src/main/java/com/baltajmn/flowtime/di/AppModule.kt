@@ -1,7 +1,6 @@
 package com.baltajmn.flowtime.di
 
 import com.baltajmn.flowtime.MainViewModel
-import com.baltajmn.flowtime.core.common.dispatchers.DispatchersModule
 import com.baltajmn.flowtime.core.database.di.DatabaseModule
 import com.baltajmn.flowtime.core.design.module.DesignModule
 import com.baltajmn.flowtime.core.persistence.di.PersistenceModule
@@ -46,7 +45,6 @@ val CoreModules: Module
         }
         includes(
             listOf(
-                DispatchersModule,
                 PersistenceModule,
                 DataModule,
                 DatabaseModule,

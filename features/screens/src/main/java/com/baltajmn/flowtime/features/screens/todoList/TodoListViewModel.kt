@@ -2,7 +2,6 @@ package com.baltajmn.flowtime.features.screens.todoList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.baltajmn.flowtime.core.common.extensions.toShowInList
 import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.data.task.TaskRepository
 import com.baltajmn.flowtime.data.task.TaskResult

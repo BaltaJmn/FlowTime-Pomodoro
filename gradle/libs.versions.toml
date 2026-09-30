@@ -109,10 +109,6 @@ androidx-foundation-layout-android = { group = "androidx.compose.foundation", na
 
 [plugins]
 
-flowtime-android-application = { id = "flowtime.android.application", version = "unspecified" }
-flowtime-android-library = { id = "flowtime.android.library", version = "unspecified" }
-flowtime-android-compose-library = { id = "flowtime.compose.library", version = "unspecified" }
-flowtime-android-room-library = { id = "flowtime.room.library", version = "unspecified" }
 flowtime-kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 

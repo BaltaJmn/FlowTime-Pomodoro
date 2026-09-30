@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.flowtime.android.library)
+    id("flowtime.android.library")
 }
 
 android {

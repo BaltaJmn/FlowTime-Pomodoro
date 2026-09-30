@@ -40,6 +40,11 @@ gradlePlugin {
             id = "flowtime.room.library"
             implementationClass = "plugins.AndroidRoomPlugin"
         }
+
+        register("flowtimeKmpLibrary") {
+            id = "flowtime.kmp.library"
+            implementationClass = "plugins.KmpLibraryPlugin"
+        }
     }
 }
 

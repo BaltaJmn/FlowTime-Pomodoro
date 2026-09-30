@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.flowtime.android.library)
+    id("flowtime.android.library")
     alias(libs.plugins.flowtime.kotlin.plugin.compose)
-    alias(libs.plugins.flowtime.android.compose.library)
+    id("flowtime.compose.library")
 }
 
 android {

@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.flowtime.android.library)
-    alias(libs.plugins.flowtime.android.room.library)
+    id("flowtime.android.library")
+    id("flowtime.room.library")
 }
 
 android {
