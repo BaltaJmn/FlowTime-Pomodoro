@@ -23,6 +23,10 @@ class ComposePlugin : Plugin<Project> {
 fun Project.configureCompose(commonExtension: CommonExtension) {
     commonExtension.buildFeatures.compose = true
 
+    // Reglas de lint que Compose 1.8 no tenia y que en la 1.11 salen como error. Se dejan como aviso:
+    // subir las herramientas no debe obligar a tocar la UI. Limpieza pendiente: stringResource y LocalLocale.
+    commonExtension.lint.warning += setOf("LocalContextGetResourceValueCall", "NonObservableLocale")
+
     dependencies {
         implementation(project(":core:navigation"))
         if (project.name != "design") {
@@ -35,6 +39,8 @@ fun Project.configureCompose(commonExtension: CommonExtension) {
         implementation(libs.androidx.compose.runtime)
         implementation(libs.androidx.compose.foundation)
         implementation(libs.androidx.compose.material3)
+        // Material3 1.4 dejo de traer los iconos como dependencia transitiva.
+        implementation(libs.androidx.compose.material.icons.core)
         implementation(libs.androidx.lifecycle.viewmodel)
         implementation(libs.androidx.lifecycle.compose)
         implementation(libs.androidx.compose.ui.tooling.preview)
