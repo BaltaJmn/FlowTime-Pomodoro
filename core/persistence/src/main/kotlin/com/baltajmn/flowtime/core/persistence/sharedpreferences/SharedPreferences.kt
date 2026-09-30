@@ -69,25 +69,14 @@ class SharedPreferencesProvider(context: Context) : DataProvider {
         prefs(key).edit().putString(key.name.lowercase(), rawString).apply()
     }
 
-    override fun <T> getObject(key: SharedPreferencesItem, type: Class<T>): T? {
-        val rawString = getString(key) ?: return null
-        return try {
-            Gson().fromJson(rawString, type)
-        } catch (e: JsonParseException) {
-            null
-        }
-    }
+    override fun <T> getObject(key: SharedPreferencesItem, type: Class<T>): T? =
+        parseJsonOrNull(getString(key), type)
 
-    override fun getRangeModel(key: SharedPreferencesItem): RangeModel? {
-        val rawString = getString(key) ?: return null
-        return Gson().fromJson(rawString, RangeModel::class.java)
-    }
+    override fun getRangeModel(key: SharedPreferencesItem): RangeModel? =
+        parseJsonOrNull(getString(key), RangeModel::class.java)
 
-    override fun getRangeModelList(key: SharedPreferencesItem): MutableList<RangeModel>? {
-        val rawString = getString(key) ?: return null
-        val type: Type = object : TypeToken<MutableList<RangeModel>>() {}.type
-        return Gson().fromJson(rawString, type)
-    }
+    override fun getRangeModelList(key: SharedPreferencesItem): MutableList<RangeModel>? =
+        parseJsonOrNull(getString(key), object : TypeToken<MutableList<RangeModel>>() {}.type)
 
     override fun setRangeModel(key: SharedPreferencesItem, value: RangeModel) {
         val rawString = Gson().toJson(value)
@@ -145,4 +134,17 @@ class SharedPreferencesProvider(context: Context) : DataProvider {
         editor.apply()
     }
 
+}
+
+/**
+ * Un JSON guardado que ya no se entiende (corrupto, o de otra versión) se lee como si no estuviera, y
+ * valen los valores por defecto. Si lanzara, la app se cerraría en cada arranque sin forma de salir (#24).
+ */
+internal fun <T> parseJsonOrNull(raw: String?, type: Type): T? {
+    raw ?: return null
+    return try {
+        Gson().fromJson<T>(raw, type)
+    } catch (e: JsonParseException) {
+        null
+    }
 }
