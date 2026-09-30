@@ -295,6 +295,7 @@ fun SettingsContent(
                     if (state.purchases.pro != ProAccess.HIDDEN) {
                         FocusModeRow(
                             checked = state.focusMode && state.purchases.pro == ProAccess.OPEN,
+                            unlocked = state.purchases.pro == ProAccess.OPEN,
                             granted = { viewModel.focusModeGranted },
                             onChange = { on ->
                                 if (on && state.purchases.pro != ProAccess.OPEN) {
@@ -372,9 +373,15 @@ private fun openPrivacyPolicy(context: Context) {
 /**
  * No molestar mientras se trabaja (#43). Sin acceso a No molestar, primero se explica y después se
  * manda a los ajustes del sistema; si se quita más tarde, un aviso como el de las alarmas exactas.
+ * Sin Pro ([unlocked] a false) solo se ofrece Pro: no se pide un permiso para algo que no se puede usar.
  */
 @Composable
-private fun FocusModeRow(checked: Boolean, granted: () -> Boolean, onChange: (Boolean) -> Unit) {
+private fun FocusModeRow(
+    checked: Boolean,
+    unlocked: Boolean,
+    granted: () -> Boolean,
+    onChange: (Boolean) -> Unit
+) {
     val context = LocalContext.current
     var explain by rememberSaveable { mutableStateOf(false) }
     val openAccess = { context.startActivity(Intent(ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)) }
@@ -384,7 +391,7 @@ private fun FocusModeRow(checked: Boolean, granted: () -> Boolean, onChange: (Bo
         checked = checked,
         onCheckedChange = { on ->
             onChange(on)
-            if (on && !granted()) explain = true
+            if (on && unlocked && !granted()) explain = true
         }
     )
     if (checked) {

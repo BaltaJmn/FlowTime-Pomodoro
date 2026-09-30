@@ -27,9 +27,10 @@ Las respuestas van en inglés, que es lo que leen los revisores.
   again, so they would have to keep FlowTime on screen, which defeats the purpose of a focus timer.
 - **Impact if interrupted:** the ambient sound stops in the middle of a work session and the user has
   to go back to the app to start it again.
-- **Video:** `https://flowtime.baltajmn.dev/video/sonidos-segundo-plano.mp4`, grabado en el emulador
-  con `adb screenrecord` (abrir los sonidos, elegir uno, darle a reproducir, salir de la app y ver la
-  notificación de reproducción). Vive en el repo público `BaltaJmn/flowtime-privacy`.
+- **Video:** `https://flowtime.baltajmn.dev/video/sonidos-segundo-plano.mp4` (27 s, grabado el
+  01-10-2026 en el emulador con `adb screenrecord`): abrir la app, abrir los sonidos, reproducir Lluvia,
+  salir al inicio, bajar la persiana con la notificación "Ambient sounds, Rain" y pulsar Pause y Stop.
+  Vive en el repo público `BaltaJmn/flowtime-privacy`.
 
 ## Permiso de alarma exacta: USE_EXACT_ALARM
 
