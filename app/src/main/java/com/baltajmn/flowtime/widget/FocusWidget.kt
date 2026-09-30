@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -74,8 +75,11 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import com.baltajmn.flowtime.core.design.R as DesignR
 
+// Con SizeMode.Responsive, LocalSize es el mayor de estos que cabe: 2x1, 4x1 y 4x2.
 private val SMALL = DpSize(110.dp, 40.dp)
+private val WIDE = DpSize(250.dp, 40.dp)
 private val MEDIUM = DpSize(250.dp, 110.dp)
+private val NARROW_WIDTH = 180.dp
 
 /**
  * El widget de la pantalla de inicio (#41): empezar, pausar y parar sin abrir la app, con el tiempo,
@@ -84,7 +88,7 @@ private val MEDIUM = DpSize(250.dp, 110.dp)
  */
 class FocusWidget : GlanceAppWidget(), KoinComponent {
 
-    override val sizeMode = SizeMode.Responsive(setOf(SMALL, MEDIUM))
+    override val sizeMode = SizeMode.Responsive(setOf(SMALL, WIDE, MEDIUM))
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val engine = get<FocusEngine>()
@@ -144,6 +148,8 @@ private fun Content(
 ) {
     val state = snapshot.state
     val medium = LocalSize.current.height >= MEDIUM.height
+    // A 2 columnas "03:00" no cabía y se partía en dos líneas: menos margen, botón y letra.
+    val narrow = LocalSize.current.width < NARROW_WIDTH
     val colors = GlanceTheme.colors
     val primary = when {
         !state.isActive -> TimerAction.START
@@ -156,7 +162,7 @@ private fun Content(
             .appWidgetBackground()
             .background(colors.widgetBackground)
             .cornerRadius(20.dp)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = if (narrow) 10.dp else 16.dp, vertical = 8.dp)
             .clickable(actionStartActivity<MainActivity>()),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -201,15 +207,20 @@ private fun Content(
                 context,
                 snapshot,
                 idleMillis,
-                large = medium,
+                size = when {
+                    medium -> 36f
+                    narrow -> 20f
+                    else -> 26f
+                },
                 timeColors,
                 GlanceModifier.defaultWeight()
             )
+            val button = if (narrow) 36.dp else 44.dp
             if (medium && state.isActive) {
-                ActionButton(context, TimerAction.STOP, filled = false)
+                ActionButton(context, TimerAction.STOP, filled = false, button)
                 Spacer(modifier = GlanceModifier.width(8.dp))
             }
-            ActionButton(context, primary, filled = true)
+            ActionButton(context, primary, filled = true, button)
         }
         if (medium && today != null) {
             Text(
@@ -240,12 +251,11 @@ private fun Time(
     context: Context,
     snapshot: FocusSnapshot,
     idleMillis: Long,
-    large: Boolean,
+    size: Float,
     colors: Pair<Color, Color>,
     modifier: GlanceModifier
 ) {
     val state = snapshot.state
-    val size = if (large) 36f else 26f
     if (!state.running) {
         val seconds = if (state.isActive) snapshot.displaySeconds else idleMillis / 1000
         Text(
@@ -255,6 +265,7 @@ private fun Time(
                 fontSize = size.sp,
                 fontWeight = FontWeight.Bold
             ),
+            maxLines = 1,
             modifier = modifier
         )
         return
@@ -279,7 +290,7 @@ private fun Time(
 }
 
 @Composable
-private fun ActionButton(context: Context, action: TimerAction, filled: Boolean) {
+private fun ActionButton(context: Context, action: TimerAction, filled: Boolean, diameter: Dp) {
     val colors = GlanceTheme.colors
     val icon = when (action) {
         TimerAction.PAUSE -> DesignR.drawable.ic_pause
@@ -288,8 +299,8 @@ private fun ActionButton(context: Context, action: TimerAction, filled: Boolean)
     }
     Box(
         modifier = GlanceModifier
-            .size(44.dp)
-            .cornerRadius(22.dp)
+            .size(diameter)
+            .cornerRadius(diameter / 2)
             .background(if (filled) colors.primary else colors.secondaryContainer)
             .clickable(
                 actionSendBroadcast(
@@ -304,7 +315,7 @@ private fun ActionButton(context: Context, action: TimerAction, filled: Boolean)
             colorFilter = ColorFilter.tint(
                 if (filled) colors.onPrimary else colors.onSecondaryContainer
             ),
-            modifier = GlanceModifier.size(22.dp)
+            modifier = GlanceModifier.size(diameter / 2)
         )
     }
 }
