@@ -123,7 +123,7 @@ class TagRepositoryTest {
 
     @Test
     fun `mientras Pro no exista no hay limite`() = runTest {
-        val tags = DefaultTagRepository(dao, prefs, ProGate(MutableStateFlow(false)), scope = backgroundScope)
+        val tags = repository(MutableStateFlow(false), enabled = false)
         tags.ensureDefaults(defaults)
 
         assertTrue(tags.create("Correr") is TagResult.Done)
