@@ -63,7 +63,7 @@ class OnBoardViewModelTest {
 
         viewModel.start()
 
-        assertEquals(NavigateToMainGraph(timer = TimerMode.PERCENTAGE), viewModel.event.first())
+        assertEquals(NavigateToMainGraph, viewModel.event.first())
         assertEquals(TimerMode.PERCENTAGE, engine.state.value.mode)
         assertEquals(DailyGoal.DEFAULT_MINUTES + 10, goals.currentGoal)
         assertFalse(prefs.getCheckValue(SHOW_ON_BOARD))
@@ -77,7 +77,7 @@ class OnBoardViewModelTest {
 
         viewModel.skip()
 
-        assertEquals(NavigateToMainGraph(timer = null), viewModel.event.first())
+        assertEquals(NavigateToMainGraph, viewModel.event.first())
         assertEquals(TimerMode.FLOW_TIME, engine.state.value.mode)
         assertEquals(DailyGoal.DEFAULT_MINUTES, goals.currentGoal)
         assertFalse(prefs.getCheckValue(SHOW_ON_BOARD))

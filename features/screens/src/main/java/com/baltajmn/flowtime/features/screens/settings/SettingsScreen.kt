@@ -97,7 +97,6 @@ fun SettingsScreen(
     listState: LazyListState,
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
-    navigateToHistory: () -> Unit,
     navigateToIntro: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -108,7 +107,6 @@ fun SettingsScreen(
         viewModel = viewModel,
         showSound = showSound,
         onSoundChange = onSoundChange,
-        navigateToHistory = navigateToHistory,
         navigateToIntro = navigateToIntro
     )
 }
@@ -120,7 +118,6 @@ fun AnimatedSettingsContent(
     viewModel: SettingsViewModel,
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
-    navigateToHistory: () -> Unit,
     navigateToIntro: () -> Unit
 ) {
     AnimatedContent(
@@ -136,7 +133,6 @@ fun AnimatedSettingsContent(
                 viewModel = viewModel,
                 showSound = showSound,
                 onSoundChange = onSoundChange,
-                navigateToHistory = navigateToHistory,
                 navigateToIntro = navigateToIntro
             )
         }
@@ -150,7 +146,6 @@ fun SettingsContent(
     viewModel: SettingsViewModel,
     showSound: Boolean,
     onSoundChange: (Boolean) -> Unit,
-    navigateToHistory: () -> Unit,
     navigateToIntro: () -> Unit
 ) {
     var showSupport by rememberSaveable { mutableStateOf(false) }
@@ -220,12 +215,6 @@ fun SettingsContent(
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
-
-                    ButtonRow(
-                        text = R.string.study_history,
-                        button = R.string.go_to_history,
-                        onClick = navigateToHistory
-                    )
 
                     ButtonRow(
                         text = R.string.settings_intro,
@@ -455,7 +444,12 @@ fun SupportCard(
                 AssistChip(
                     onClick = onTip,
                     label = { Text(text = stringResource(R.string.supporter_badge)) },
-                    leadingIcon = { Icon(imageVector = Icons.Filled.Favorite, contentDescription = null) }
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            contentDescription = null
+                        )
+                    }
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -618,7 +612,9 @@ fun AppearanceCard(
                 contentPadding = PaddingValues(vertical = 4.dp)
             ) {
                 // El tema Supporter es el regalo de las propinas (#58): solo lo ve quien lo tiene.
-                items(AppTheme.entries.filter { it != AppTheme.Supporter || isSupporter || it == appearance.theme }) { theme ->
+                items(
+                    AppTheme.entries.filter { it != AppTheme.Supporter || isSupporter || it == appearance.theme }
+                ) { theme ->
                     ThemeSwatch(
                         theme = theme,
                         selected = theme == appearance.theme,

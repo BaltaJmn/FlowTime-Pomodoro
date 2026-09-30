@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.features.screens.di
 
 import com.baltajmn.flowtime.features.screens.edit.EditViewModel
+import com.baltajmn.flowtime.features.screens.focus.FocusViewModel
 import com.baltajmn.flowtime.features.screens.history.HistoryViewModel
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTimeUseCase
@@ -14,7 +15,6 @@ import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.splash.SplashViewModel
 import com.baltajmn.flowtime.features.screens.support.SupportViewModel
-import com.baltajmn.flowtime.features.screens.timer.TimerViewModel
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -44,8 +44,8 @@ private val ScreensDomainModule: Module
 
 private val ScreensPresentationModule: Module
     get() = module {
-        viewModel { params -> TimerViewModel(params.get(), get(), get(), get(), get(), get()) }
-        viewModelOf(::EditViewModel)
+        viewModelOf(::FocusViewModel)
+        viewModel { params -> EditViewModel(params.get(), get()) }
         viewModelOf(::SettingsViewModel)
         // A mano: el constructor tiene un parámetro opcional para los tests que Koin no sabría resolver.
         viewModel { TodoListViewModel(get()) }

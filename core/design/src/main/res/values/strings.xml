@@ -85,9 +85,7 @@
 
     <string name="mode_pomodoro" translatable="false">Pomodoro</string>
     <string name="mode_flow_time" translatable="false">FlowTime</string>
-    <string name="nav_edit">Edit</string>
     <string name="nav_back">Back</string>
-    <string name="nav_home">Home</string>
     <string name="nav_todo_list">Tasks</string>
     <string name="nav_settings">Settings</string>
     <string name="mode_percentage">Percentage</string>
@@ -115,7 +113,6 @@
     <string name="theme_orange">Orange</string>
     <string name="theme_black">Black</string>
     <string name="cd_delete_range">Delete range</string>
-    <string name="cd_sound_panel">Sound control panel</string>
     <string name="cd_sound_mixer">Sound mixer</string>
     <string name="cd_sounds_playing">Sounds: playing</string>
     <string name="cd_sounds_stopped">Sounds: stopped</string>
@@ -268,4 +265,9 @@
     <string name="restore_done">Purchases restored</string>
     <string name="restore_nothing">No purchases found. Check your connection and that you are using the same Google account.</string>
     <string name="theme_supporter">Supporter</string>
+    <string name="nav_focus">Focus</string>
+    <string name="nav_stats">Stats</string>
+    <string name="cd_mode_settings">Settings for this mode</string>
+    <string name="focus_mode_locked">Stop the session to change mode</string>
+    <string name="sounds_title">Sounds</string>
 </resources>

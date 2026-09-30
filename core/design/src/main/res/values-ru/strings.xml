@@ -82,10 +82,7 @@
     <string name="import_conflict_message">Дней, для которых уже сохранены минуты: %1$d. Что с ними сделать?</string>
     <string name="import_replace">Заменить</string>
     <string name="import_sum">Сложить</string>
-
-    <string name="nav_edit">Изменить</string>
     <string name="nav_back">Назад</string>
-    <string name="nav_home">Главная</string>
     <string name="nav_todo_list">Задачи</string>
     <string name="nav_settings">Настройки</string>
     <string name="mode_percentage">Процент</string>
@@ -113,7 +110,6 @@
     <string name="theme_orange">Оранжевый</string>
     <string name="theme_black">Чёрный</string>
     <string name="cd_delete_range">Удалить диапазон</string>
-    <string name="cd_sound_panel">Панель звуков</string>
     <string name="cd_sound_mixer">Микшер звуков</string>
     <string name="cd_sounds_playing">Звуки: воспроизводятся</string>
     <string name="cd_sounds_stopped">Звуки: на паузе</string>
@@ -276,4 +272,9 @@
     <string name="restore_done">Покупки восстановлены</string>
     <string name="restore_nothing">Покупки не найдены. Проверьте подключение и то, что вы используете тот же аккаунт Google.</string>
     <string name="theme_supporter">Supporter</string>
+    <string name="nav_focus">Фокус</string>
+    <string name="nav_stats">Статистика</string>
+    <string name="cd_mode_settings">Настройки режима</string>
+    <string name="focus_mode_locked">Остановите сессию, чтобы сменить режим</string>
+    <string name="sounds_title">Звуки</string>
 </resources>

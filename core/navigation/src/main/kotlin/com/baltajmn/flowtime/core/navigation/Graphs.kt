@@ -11,13 +11,10 @@ enum class PreMainGraph(val route: String) {
     Onboard("onboard")
 }
 
+/** Los destinos de la barra de navegación (#51), en su orden. */
 enum class MainGraph(val route: String) {
-    Home("home"),
-    FlowTime("flowTime"),
-    Pomodoro("pomodoro"),
-    Percentage("percentage"),
-    Edit("edit/{type}"),
+    Focus("focus"),
     TodoList("todoList"),
+    Stats("stats"),
     Settings("settings"),
-    History("history"),
 }

@@ -82,10 +82,7 @@
     <string name="import_conflict_message">Giorni con minuti già salvati: %1$d. Cosa vuoi fare?</string>
     <string name="import_replace">Sostituisci</string>
     <string name="import_sum">Somma</string>
-
-    <string name="nav_edit">Modifica</string>
     <string name="nav_back">Indietro</string>
-    <string name="nav_home">Home</string>
     <string name="nav_todo_list">Attività</string>
     <string name="nav_settings">Impostazioni</string>
     <string name="mode_percentage">Percentuale</string>
@@ -113,7 +110,6 @@
     <string name="theme_orange">Arancione</string>
     <string name="theme_black">Nero</string>
     <string name="cd_delete_range">Elimina intervallo</string>
-    <string name="cd_sound_panel">Pannello dei suoni</string>
     <string name="cd_sound_mixer">Mixer dei suoni</string>
     <string name="cd_sounds_playing">Suoni: in riproduzione</string>
     <string name="cd_sounds_stopped">Suoni: in pausa</string>
@@ -269,4 +265,9 @@
     <string name="restore_done">Acquisti ripristinati</string>
     <string name="restore_nothing">Nessun acquisto trovato. Controlla la connessione e di usare lo stesso account Google.</string>
     <string name="theme_supporter">Supporter</string>
+    <string name="nav_focus">Focus</string>
+    <string name="nav_stats">Statistiche</string>
+    <string name="cd_mode_settings">Impostazioni della modalità</string>
+    <string name="focus_mode_locked">Ferma la sessione per cambiare modalità</string>
+    <string name="sounds_title">Suoni</string>
 </resources>

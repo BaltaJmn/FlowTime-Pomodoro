@@ -56,27 +56,23 @@ class OnBoardViewModel(
         it.copy(goalMinutes = minutes.coerceIn(DailyGoal.MIN_MINUTES, DailyGoal.MAX_MINUTES))
     }
 
-    /** "Empezar": con lo elegido y, la primera vez, directo al temporizador de ese modo. */
-    fun start() = finish(_uiState.value, openTimer = true)
+    /** "Empezar": con lo elegido. La app abre la pantalla de concentración, ya con ese modo. */
+    fun start() = finish(_uiState.value)
 
     /** "Saltar" termina de verdad y deja lo de antes: la primera vez, FlowTime y el objetivo por defecto. */
-    fun skip() = finish(initial, openTimer = false)
+    fun skip() = finish(initial)
 
-    private fun finish(choice: OnBoardUiState, openTimer: Boolean) {
+    private fun finish(choice: OnBoardUiState) {
         engine.select(choice.mode)
         if (choice.goalMinutes != goals.currentGoal) goals.setGoal(choice.goalMinutes)
         dataProvider.setCheckValue(SHOW_ON_BOARD, false)
-        val event = when {
-            !firstRun -> Event.Back
-            openTimer -> Event.NavigateToMainGraph(timer = choice.mode)
-            else -> Event.NavigateToMainGraph(timer = null)
-        }
+        val event = if (firstRun) Event.NavigateToMainGraph else Event.Back
         viewModelScope.launch { _event.send(event) }
     }
 
     sealed interface Event {
-        /** La primera vez: a la app y, si se ha pulsado "Empezar", al temporizador de [timer]. */
-        data class NavigateToMainGraph(val timer: TimerMode?) : Event
+        /** La primera vez: a la app, que empieza en la pantalla de concentración. */
+        data object NavigateToMainGraph : Event
 
         /** Abierta desde Ajustes: vuelve allí. */
         data object Back : Event

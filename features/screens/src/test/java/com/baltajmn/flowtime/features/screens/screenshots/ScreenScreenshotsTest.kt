@@ -1,23 +1,27 @@
 package com.baltajmn.flowtime.features.screens.screenshots
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.baltajmn.flowtime.core.design.components.CurrentlyPlaying
+import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.design.components.ExpandedContent
-import com.baltajmn.flowtime.core.design.components.TopBarSurface
 import com.baltajmn.flowtime.core.design.sound.PlayerState
 import com.baltajmn.flowtime.core.design.sound.PlayerType
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.data.backup.DocumentFiles
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.stats.StatsSummary
+import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerMode
-import com.baltajmn.flowtime.features.screens.common.composable.screen.TimerLandscapeContent
 import com.baltajmn.flowtime.features.screens.fakes.FakeBackups
+import com.baltajmn.flowtime.features.screens.focus.FocusContent
+import com.baltajmn.flowtime.features.screens.focus.FocusUiState
 import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
 import com.baltajmn.flowtime.features.screens.fakes.FakePurchases
 import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
@@ -30,12 +34,10 @@ import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTime
 import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToClipboard
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboard
-import com.baltajmn.flowtime.features.screens.home.HomeContent
 import com.baltajmn.flowtime.features.screens.settings.SettingsContent
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.support.SupportContent
 import com.baltajmn.flowtime.features.screens.support.SupportState
-import com.baltajmn.flowtime.features.screens.timer.TimerUiState
 import com.baltajmn.flowtime.features.screens.todoList.TodoListContent
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
@@ -75,14 +77,37 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
     }
 
     @Test
-    fun home() = compose.capture("home_$mode", dark = dark) {
-        HomeContent(navigateToScreen = {})
+    fun focus() = compose.capture("focus_$mode", dark = dark) {
+        FocusContent(
+            state = FocusUiState(
+                mode = TimerMode.FLOW_TIME,
+                time = "00:00",
+                minutesToday = "45 min",
+                goalToday = "1 h",
+                streak = 3,
+                tags = listOf("Estudio", "Trabajo", "Lectura", "Casa").mapIndexed { i, name ->
+                    Tag(
+                        i + 1L,
+                        name,
+                        i
+                    )
+                },
+                tagId = 1
+            ),
+            showSound = true,
+            soundPlaying = false,
+            onSelectMode = {},
+            onAction = {},
+            onOpenSounds = {},
+            onOpenModeSettings = {}
+        )
     }
 
     @Test
-    fun timerLandscape() = compose.capture("timer_landscape_$mode", dark = dark) {
-        TimerLandscapeContent(
-            state = TimerUiState(
+    @Config(qualifiers = "+land")
+    fun focusLandscape() = compose.capture("focus_landscape_$mode", dark = dark) {
+        FocusContent(
+            state = FocusUiState(
                 mode = TimerMode.POMODORO,
                 phase = Phase.BREAK,
                 time = "04:12",
@@ -90,9 +115,12 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
                 goalToday = "1 h",
                 progress = 0.28f
             ),
-            title = "Resting",
+            showSound = true,
+            soundPlaying = true,
+            onSelectMode = {},
             onAction = {},
-            onSwitchChanged = {}
+            onOpenSounds = {},
+            onOpenModeSettings = {}
         )
     }
 
@@ -118,7 +146,6 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
                 viewModel = viewModel,
                 showSound = true,
                 onSoundChange = {},
-                navigateToHistory = {},
                 navigateToIntro = {}
             )
         }
@@ -186,13 +213,18 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
 
     @Test
     fun supportThanks() = compose.capture("support_thanks_$mode", dark = dark) {
-        SupportContent(state = SupportState(thanked = true), onTip = {}, onRetry = {}, onUseTheme = {}, onClose = {})
+        SupportContent(
+            state = SupportState(thanked = true),
+            onTip = {},
+            onRetry = {},
+            onUseTheme = {},
+            onClose = {}
+        )
     }
 
     @Test
     fun soundPanel() = compose.capture("sound_panel_$mode", dark = dark) {
-        TopBarSurface(expanded = true) {
-            CurrentlyPlaying(onExpandedClick = {}, rotationState = 180f, hasActivePlayers = true)
+        Column(modifier = Modifier.padding(24.dp)) {
             ExpandedContent(
                 items = PlayerType.entries.associateWith {
                     PlayerState(

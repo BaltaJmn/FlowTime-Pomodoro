@@ -21,7 +21,7 @@ import com.baltajmn.flowtime.core.design.components.CircularButton
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.data.timer.TimerAction
-import com.baltajmn.flowtime.features.screens.timer.TimerUiState
+import com.baltajmn.flowtime.features.screens.focus.FocusUiState
 
 @DrawableRes
 private fun TimerAction.icon() = when (this) {
@@ -33,7 +33,7 @@ private fun TimerAction.icon() = when (this) {
 
 @Composable
 fun ButtonsContent(
-    state: TimerUiState,
+    state: FocusUiState,
     onAction: (TimerAction) -> Unit,
     vertical: Boolean = false
 ) {
@@ -74,7 +74,7 @@ fun ButtonsContent(
 @Composable
 fun ButtonsContentRunningPreview() {
     ButtonsContent(
-        state = TimerUiState(mode = TimerMode.FLOW_TIME, phase = Phase.WORK),
+        state = FocusUiState(mode = TimerMode.FLOW_TIME, phase = Phase.WORK),
         onAction = {}
     )
 }

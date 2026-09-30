@@ -82,10 +82,7 @@
     <string name="import_conflict_message">जिन दिनों में पहले से मिनट सहेजे गए हैं: %1$d। आप उनके साथ क्या करना चाहते हैं?</string>
     <string name="import_replace">बदलें</string>
     <string name="import_sum">जोड़ें</string>
-
-    <string name="nav_edit">संपादित करें</string>
     <string name="nav_back">वापस</string>
-    <string name="nav_home">होम</string>
     <string name="nav_todo_list">कार्य</string>
     <string name="nav_settings">सेटिंग्स</string>
     <string name="mode_percentage">प्रतिशत</string>
@@ -113,7 +110,6 @@
     <string name="theme_orange">नारंगी</string>
     <string name="theme_black">काला</string>
     <string name="cd_delete_range">रेंज हटाएँ</string>
-    <string name="cd_sound_panel">ध्वनि नियंत्रण पैनल</string>
     <string name="cd_sound_mixer">ध्वनि मिक्सर</string>
     <string name="cd_sounds_playing">ध्वनियाँ: चल रही हैं</string>
     <string name="cd_sounds_stopped">ध्वनियाँ: रुकी हुई हैं</string>
@@ -266,4 +262,9 @@
     <string name="restore_done">खरीदारी बहाल हो गई</string>
     <string name="restore_nothing">कोई खरीदारी नहीं मिली। अपना कनेक्शन जांचें और देखें कि आप वही Google खाता इस्तेमाल कर रहे हैं।</string>
     <string name="theme_supporter">Supporter</string>
+    <string name="nav_focus">फ़ोकस</string>
+    <string name="nav_stats">आँकड़े</string>
+    <string name="cd_mode_settings">इस मोड की सेटिंग</string>
+    <string name="focus_mode_locked">मोड बदलने के लिए सत्र रोकें</string>
+    <string name="sounds_title">ध्वनियाँ</string>
 </resources>

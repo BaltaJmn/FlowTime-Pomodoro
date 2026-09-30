@@ -1,4 +1,4 @@
-package com.baltajmn.flowtime.features.screens.timer
+package com.baltajmn.flowtime.features.screens.focus
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,15 +33,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
-data class TimerUiState(
-    val mode: TimerMode,
+data class FocusUiState(
+    val mode: TimerMode = TimerMode.FLOW_TIME,
     val phase: Phase = Phase.IDLE,
     val paused: Boolean = false,
     val time: String = "00:00",
     val minutesToday: String = "",
     /** El objetivo de hoy, ya formateado. Vacío hasta que se lee. */
     val goalToday: String = "",
-    val continueAfterBreak: Boolean = true,
+    /** Días seguidos cumpliendo el objetivo (#36). */
+    val streak: Int = 0,
     val keepScreenOn: Boolean = true,
     /** Las etiquetas activas, para elegir con cuál se guarda el trabajo. */
     val tags: List<Tag> = emptyList(),
@@ -61,9 +62,11 @@ data class TimerUiState(
     val actions get() = actionsFor(mode, phase, paused)
 }
 
-/** Una pantalla por modo, todas sobre el mismo motor: solo una sesión puede estar en marcha. */
-class TimerViewModel(
-    private val mode: TimerMode,
+/**
+ * La pantalla de concentración (#51): el modo es el del motor, que es también el de la sesión en
+ * marcha si la hay. Solo se cambia con la sesión parada.
+ */
+class FocusViewModel(
     private val engine: FocusEngine,
     private val dataProvider: DataProvider,
     goals: GoalRepository,
@@ -71,8 +74,6 @@ class TimerViewModel(
     private val tasks: TaskRepository
 ) : ViewModel() {
 
-    private val continueAfterBreak =
-        MutableStateFlow(dataProvider.getCheckValue(mode.continueAfterBreakKey))
     private val keepScreenOn = dataProvider.getBoolean(KEEP_SCREEN_ON, true)
 
     // Las pendientes de hoy, y el descanso (por la hora de su trabajo) en el que ya se contestó.
@@ -83,11 +84,11 @@ class TimerViewModel(
 
     // El día sale del repositorio del objetivo: con la pantalla abierta pasada la medianoche, antes
     // seguía sumando los minutos de ayer.
-    val uiState: StateFlow<TimerUiState> =
+    val uiState: StateFlow<FocusUiState> =
         combine(
             engine.snapshots(),
-            continueAfterBreak,
             goals.today.onStart<DayProgress?> { emit(null) },
+            goals.streak.map { it.current }.onStart { emit(0) },
             tags.active.onStart { emit(emptyList()) },
             ::toUiState
         ).combine(pendingTasks.onStart { emit(emptyList()) }) { state, pending ->
@@ -98,7 +99,7 @@ class TimerViewModel(
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
-            toUiState(engine.snapshot(), continueAfterBreak.value, today = null, tags = emptyList())
+            toUiState(engine.snapshot(), today = null, streak = 0, tags = emptyList())
         )
 
     init {
@@ -111,7 +112,10 @@ class TimerViewModel(
         }
     }
 
-    fun onAction(action: TimerAction) = engine.perform(action, mode)
+    fun onAction(action: TimerAction) = engine.perform(action)
+
+    /** Con una sesión en marcha, el motor no lo cambia. */
+    fun select(mode: TimerMode) = engine.select(mode)
 
     fun selectTag(id: Long?) = engine.setTag(id)
 
@@ -137,33 +141,35 @@ class TimerViewModel(
         return true
     }
 
-    fun changeSwitch(value: Boolean) {
-        dataProvider.setCheckValue(mode.continueAfterBreakKey, value)
-        continueAfterBreak.value = value
-    }
-
     private fun toUiState(
         snapshot: FocusSnapshot,
-        continueAfter: Boolean,
         today: DayProgress?,
+        streak: Int,
         tags: List<Tag>
-    ): TimerUiState {
+    ): FocusUiState {
         val session = snapshot.state
-        // Si la sesión en marcha es de otro modo, esta pantalla se ve parada.
-        val mine = session.isActive && session.mode == mode
+        val mode = session.mode
+        // Parada, el anillo sale vacío aunque el motor guarde algo de la sesión anterior.
         val ring = timerProgress(
-            snapshot = if (mine) snapshot else FocusSnapshot(FocusState(mode), elapsedMillis = 0),
-            flowTimeRanges = if (mine && mode == TimerMode.FLOW_TIME) engine.flowTimeRanges() else emptyList(),
+            snapshot = if (session.isActive) {
+                snapshot
+            } else {
+                FocusSnapshot(
+                    FocusState(mode),
+                    elapsedMillis = 0
+                )
+            },
+            flowTimeRanges = if (session.isActive && mode == TimerMode.FLOW_TIME) engine.flowTimeRanges() else emptyList(),
             percentage = engine.percentage()
         )
-        return TimerUiState(
+        return FocusUiState(
             mode = mode,
-            phase = if (mine) session.phase else Phase.IDLE,
-            paused = mine && session.isPaused,
-            time = (if (mine) snapshot.displaySeconds else engine.workMillis(mode) / 1000).formatSecondsToTime(),
+            phase = session.phase,
+            paused = session.isPaused,
+            time = (if (session.isActive) snapshot.displaySeconds else engine.workMillis(mode) / 1000).formatSecondsToTime(),
             minutesToday = ((today?.seconds ?: 0) / 60).formatMinutesStudying(),
             goalToday = today?.goalMinutes?.toLong()?.formatMinutesStudying().orEmpty(),
-            continueAfterBreak = continueAfter,
+            streak = streak,
             keepScreenOn = keepScreenOn,
             tags = tags,
             tagId = session.tagId,
@@ -171,7 +177,7 @@ class TimerViewModel(
             hint = ring.hint,
             taskId = session.taskId,
             taskTitle = session.taskTitle,
-            askTaskDone = mine && session.phase == Phase.BREAK && session.taskId != null
+            askTaskDone = session.phase == Phase.BREAK && session.taskId != null
         )
     }
 }

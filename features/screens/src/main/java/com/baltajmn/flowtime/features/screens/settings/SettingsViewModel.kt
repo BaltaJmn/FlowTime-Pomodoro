@@ -70,7 +70,10 @@ class SettingsViewModel(
         viewModelScope.launch {
             val found = purchases.restore()
             updatePurchases {
-                it.copy(restoring = false, message = if (found) RestoreMessage.RESTORED else RestoreMessage.NOTHING)
+                it.copy(
+                    restoring = false,
+                    message = if (found) RestoreMessage.RESTORED else RestoreMessage.NOTHING
+                )
             }
         }
     }

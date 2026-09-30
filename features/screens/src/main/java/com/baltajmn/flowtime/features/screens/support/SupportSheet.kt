@@ -87,7 +87,10 @@ fun SupportContent(
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(48.dp)
             )
-            Text(text = stringResource(R.string.support_thanks_title), style = MaterialTheme.typography.headlineSmall)
+            Text(
+                text = stringResource(R.string.support_thanks_title),
+                style = MaterialTheme.typography.headlineSmall
+            )
             Text(text = stringResource(R.string.support_thanks_text), textAlign = TextAlign.Center)
             Button(onClick = onUseTheme, modifier = Modifier.fillMaxWidth()) {
                 Text(text = stringResource(R.string.support_use_theme))
@@ -96,7 +99,10 @@ fun SupportContent(
             return@Column
         }
 
-        Text(text = stringResource(R.string.support_sheet_title), style = MaterialTheme.typography.headlineSmall)
+        Text(
+            text = stringResource(R.string.support_sheet_title),
+            style = MaterialTheme.typography.headlineSmall
+        )
         Text(text = stringResource(R.string.support_sheet_text), textAlign = TextAlign.Center)
         Spacer(modifier = Modifier.height(4.dp))
         when {
@@ -108,7 +114,10 @@ fun SupportContent(
                     enabled = !state.buying,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
                         Text(text = stringResource(tipLabel(item.id)))
                         Text(text = item.price)
                     }
@@ -129,7 +138,10 @@ fun SupportContent(
 /** La tienda no responde: sin conexión, o un móvil sin Google Play. */
 @Composable
 fun StoreUnavailable(onRetry: () -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         Text(
             text = stringResource(R.string.alert_google_play),
             color = MaterialTheme.colorScheme.error,

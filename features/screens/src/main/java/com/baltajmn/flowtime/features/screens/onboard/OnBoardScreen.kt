@@ -46,6 +46,8 @@ import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.data.timer.TimerMode
+import com.baltajmn.flowtime.features.screens.common.composable.components.advantages
+import com.baltajmn.flowtime.features.screens.common.composable.components.label
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel.Event.Back
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel.Event.NavigateToMainGraph
 import com.baltajmn.flowtime.features.screens.settings.GoalStepper
@@ -56,13 +58,13 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun OnBoardScreen(
     viewModel: OnBoardViewModel = koinViewModel(),
-    navigateToMainGraph: (timer: TimerMode?) -> Unit,
+    navigateToMainGraph: () -> Unit,
     navigateBack: () -> Unit
 ) {
     collectEvents {
         viewModel.event.collectLatest {
             when (it) {
-                is NavigateToMainGraph -> navigateToMainGraph(it.timer)
+                NavigateToMainGraph -> navigateToMainGraph()
                 Back -> navigateBack()
             }
         }
@@ -281,17 +283,3 @@ private fun OnBoardItem(
         )
     }
 }
-
-private val TimerMode.label
-    get() = when (this) {
-        TimerMode.POMODORO -> R.string.mode_pomodoro
-        TimerMode.FLOW_TIME -> R.string.mode_flow_time
-        TimerMode.PERCENTAGE -> R.string.mode_percentage
-    }
-
-private val TimerMode.advantages
-    get() = when (this) {
-        TimerMode.POMODORO -> R.string.pomodoro_advantages
-        TimerMode.FLOW_TIME -> R.string.flow_time_advantages
-        TimerMode.PERCENTAGE -> R.string.percentage_advantages
-    }

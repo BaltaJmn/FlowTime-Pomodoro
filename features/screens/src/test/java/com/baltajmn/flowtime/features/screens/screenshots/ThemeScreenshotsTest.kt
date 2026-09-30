@@ -5,8 +5,8 @@ import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerHint
 import com.baltajmn.flowtime.data.timer.TimerMode
-import com.baltajmn.flowtime.features.screens.common.composable.screen.TimerPortraitContent
-import com.baltajmn.flowtime.features.screens.timer.TimerUiState
+import com.baltajmn.flowtime.features.screens.focus.FocusContent
+import com.baltajmn.flowtime.features.screens.focus.FocusUiState
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import org.junit.Rule
 import org.junit.Test
@@ -15,7 +15,7 @@ import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
-/** El temporizador con cada tema, en claro y en oscuro: 22 capturas para revisarlos de un vistazo. */
+/** La pantalla de concentración con cada tema, en claro y en oscuro, para revisarlos de un vistazo. */
 @RunWith(ParameterizedRobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [34], qualifiers = RobolectricDeviceQualifiers.Pixel7)
@@ -33,19 +33,23 @@ class ThemeScreenshotsTest(private val theme: AppTheme, private val dark: Boolea
         theme = theme,
         dark = dark
     ) {
-        TimerPortraitContent(
-            state = TimerUiState(
+        FocusContent(
+            state = FocusUiState(
                 mode = TimerMode.FLOW_TIME,
                 phase = Phase.WORK,
                 time = "24:59",
                 minutesToday = "1 h 25 min",
                 goalToday = "2 h",
                 progress = 0.66f,
-                hint = TimerHint.NextStep(atMinutes = 30, breakMinutes = 15)
+                hint = TimerHint.NextStep(atMinutes = 30, breakMinutes = 15),
+                streak = 4
             ),
-            title = "Working",
+            showSound = true,
+            soundPlaying = true,
+            onSelectMode = {},
             onAction = {},
-            onSwitchChanged = {}
+            onOpenSounds = {},
+            onOpenModeSettings = {}
         )
     }
 

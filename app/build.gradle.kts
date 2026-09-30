@@ -51,6 +51,7 @@ dependencies {
     implementation(projects.features.screens)
 
     implementation(libs.androidx.lifecycle.process)
+    implementation(libs.androidx.navigation.suite)
     implementation(libs.review.ktx)
     implementation(libs.androidx.foundation.layout.android)
 }
