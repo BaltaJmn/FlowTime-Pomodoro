@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -41,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.components.collectEvents
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
@@ -101,6 +104,7 @@ fun OnboardingContent(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(16.dp)
+            .readableWidth()
     ) {
         HorizontalPager(
             state = pagerState,
@@ -255,11 +259,13 @@ private fun OnBoardItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        // Hasta 350 dp, y menos si no cabe con los textos (un móvil en horizontal).
         Image(
             modifier = Modifier
-                .height(350.dp)
-                .width(350.dp)
-                .padding(bottom = 20.dp),
+                .weight(1f, fill = false)
+                .padding(bottom = 20.dp)
+                .sizeIn(maxWidth = 330.dp, maxHeight = 330.dp)
+                .aspectRatio(1f),
             painter = painterResource(id = imageRes),
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiary),
             contentDescription = null

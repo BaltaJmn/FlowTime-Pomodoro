@@ -61,6 +61,7 @@ import androidx.compose.runtime.remember
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import androidx.compose.foundation.selection.selectable
@@ -165,7 +166,9 @@ fun SettingsContent(
         state = listState,
         verticalArrangement = Arrangement.Top,
         contentPadding = PaddingValues(16.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .readableWidth()
     ) {
         item { Spacer(modifier = Modifier.height(80.dp)) }
         item { GoalCard(goal = state.goal, onChange = viewModel::changeGoal) }

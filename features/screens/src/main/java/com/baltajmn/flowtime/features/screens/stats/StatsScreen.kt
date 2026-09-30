@@ -10,6 +10,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -66,6 +68,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.TagPalette
@@ -146,13 +149,7 @@ fun StatsContent(
     onExportCsv: () -> Unit
 ) {
     val unlockStats = { onUnlock(ProFeature.STATS) }
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.statusBars),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+    val summary: LazyListScope.() -> Unit = summary@{
         item {
             Header(
                 pro = state.pro,
@@ -164,10 +161,10 @@ fun StatsContent(
         }
         item { LevelCard(state.level) }
         state.today?.let { today -> item { GoalProgressCard(today, state.streak) } }
-        if (state.loading) return@LazyColumn
+        if (state.loading) return@summary
         if (!state.hasSessions) {
             item { FirstSessionCard() }
-            return@LazyColumn
+            return@summary
         }
         item { PeriodCard(state, onPeriod, onPrevious, onNext, unlockStats) }
         if (state.showProCard) {
@@ -179,9 +176,11 @@ fun StatsContent(
                 )
             }
         }
-
-        val details = state.details
-        if (state.pro == ProAccess.HIDDEN || state.summary.totalSeconds == 0L) return@LazyColumn
+    }
+    val details = state.details
+    val hasDetails = !state.loading && state.hasSessions && state.pro != ProAccess.HIDDEN &&
+        state.summary.totalSeconds > 0L
+    val detailCards: LazyListScope.() -> Unit = {
         item {
             DetailCard(R.string.stats_by_hour) {
                 ProGate(state.pro, unlockStats) { HourBars(details.byHour) }
@@ -246,6 +245,34 @@ fun StatsContent(
             }
         }
     }
+
+    // Desde 840 dp (#46), el resumen a un lado y los gráficos al otro; si no, una columna centrada.
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        if (hasDetails && maxWidth >= 840.dp) {
+            Row {
+                StatsList(Modifier.weight(1f), summary)
+                StatsList(Modifier.weight(1f), detailCards)
+            }
+        } else {
+            StatsList(Modifier.readableWidth()) {
+                summary()
+                if (hasDetails) detailCards()
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatsList(modifier: Modifier, content: LazyListScope.() -> Unit) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .then(modifier)
+            .windowInsetsPadding(WindowInsets.statusBars),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        content = content
+    )
 }
 
 @Composable

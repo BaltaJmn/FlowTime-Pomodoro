@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
@@ -178,7 +179,9 @@ fun TodoListContent(
             state = listState,
             verticalArrangement = Arrangement.Top,
             contentPadding = PaddingValues(24.dp),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .readableWidth()
         ) {
             item { Spacer(modifier = Modifier.height(16.dp)) }
             item {

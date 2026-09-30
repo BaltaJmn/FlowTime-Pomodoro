@@ -3,11 +3,11 @@ package com.baltajmn.flowtime.features.screens.focus
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,7 +40,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
@@ -54,6 +53,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.components.ProgressRing
 import com.baltajmn.flowtime.core.design.components.SoundButton
 import com.baltajmn.flowtime.core.design.components.SoundSheet
@@ -202,32 +202,65 @@ fun FocusContent(
         }
     }
 
-    val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-    if (landscape) {
-        Row(
+    // Por el espacio que queda de verdad y no por la orientación del aparato (#46): en pantalla
+    // dividida o en un plegable, la orientación no dice cuánto sitio hay.
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        if (maxWidth > maxHeight) {
+            val ring = minOf(maxHeight * 0.6f, maxWidth / 2 - 40.dp, 320.dp)
+            TwoColumns(state, ring, onAction, onSelectMode, tools, today)
+        } else {
+            OneColumn(
+                state,
+                ring = minOf(maxWidth - 32.dp, 280.dp),
+                onAction,
+                onSelectMode,
+                tools,
+                today
+            )
+        }
+    }
+}
+
+@Composable
+private fun TwoColumns(
+    state: FocusUiState,
+    ring: Dp,
+    onAction: (TimerAction) -> Unit,
+    onSelectMode: (TimerMode) -> Unit,
+    tools: @Composable () -> Unit,
+    today: @Composable () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.statusBars)
+            .padding(horizontal = 24.dp)
+    ) {
+        Column(
             modifier = Modifier
-                .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.statusBars)
-                .padding(horizontal = 24.dp)
+                .fillMaxHeight()
+                .weight(0.5f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
+            PhaseTitle(state)
+            Ring(state, size = ring)
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(0.5f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            tools()
+            // Centrado si cabe, como el anillo; si no (un móvil en horizontal), desde arriba y con scroll.
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(0.5f),
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                PhaseTitle(state)
-                Ring(state, size = 200.dp)
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(0.5f)
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                tools()
                 ModeSelector(state, onSelectMode)
                 ModeLine(state)
                 Spacer(modifier = Modifier.height(16.dp))
@@ -237,27 +270,38 @@ fun FocusContent(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-    } else {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.statusBars)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            tools()
-            ModeSelector(state, onSelectMode)
-            ModeLine(state)
-            Spacer(modifier = Modifier.height(24.dp))
-            PhaseTitle(state)
-            Ring(state, size = 280.dp)
-            Spacer(modifier = Modifier.height(32.dp))
-            ButtonsContent(state = state, onAction = onAction)
-            Spacer(modifier = Modifier.height(32.dp))
-            today()
-            Spacer(modifier = Modifier.height(24.dp))
-        }
+    }
+}
+
+@Composable
+private fun OneColumn(
+    state: FocusUiState,
+    ring: Dp,
+    onAction: (TimerAction) -> Unit,
+    onSelectMode: (TimerMode) -> Unit,
+    tools: @Composable () -> Unit,
+    today: @Composable () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .readableWidth()
+            .windowInsetsPadding(WindowInsets.statusBars)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        tools()
+        ModeSelector(state, onSelectMode)
+        ModeLine(state)
+        Spacer(modifier = Modifier.height(24.dp))
+        PhaseTitle(state)
+        Ring(state, size = ring)
+        Spacer(modifier = Modifier.height(32.dp))
+        ButtonsContent(state = state, onAction = onAction)
+        Spacer(modifier = Modifier.height(32.dp))
+        today()
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
