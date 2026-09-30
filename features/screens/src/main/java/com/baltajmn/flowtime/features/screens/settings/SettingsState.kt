@@ -16,6 +16,8 @@ data class SettingsState(
     /** No molestar mientras se trabaja (#43), de Pro. */
     val focusMode: Boolean = false,
     val appearance: Appearance = Appearance(),
+    /** El icono de la app (#56), de Pro salvo el de siempre. */
+    val appIcon: AppIcon = AppIcon.DEFAULT,
     val backup: BackupUiState = BackupUiState(),
     val goal: GoalUiState = GoalUiState(),
     val reminder: Reminder = Reminder(),

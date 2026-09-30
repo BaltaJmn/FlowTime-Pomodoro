@@ -214,7 +214,9 @@ fun SettingsContent(
                 onDynamicColor = viewModel::setDynamicColor,
                 onTheme = viewModel::setTheme,
                 pro = state.purchases.pro,
-                onLockedTheme = { onOpenPro(ProFeature.THEMES) }
+                onLockedTheme = { onOpenPro(ProFeature.THEMES) },
+                icon = state.appIcon,
+                onIcon = viewModel::setAppIcon
             )
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
@@ -607,7 +609,7 @@ fun SupportCard(
     }
 }
 
-/** Claro u oscuro, los colores del fondo de pantalla (desde Android 12) y el tema. */
+/** Claro u oscuro, los colores del fondo de pantalla (desde Android 12), el tema y el icono de la app. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppearanceCard(
@@ -617,7 +619,9 @@ fun AppearanceCard(
     onDynamicColor: (Boolean) -> Unit,
     onTheme: (AppTheme) -> Unit,
     pro: ProAccess = ProAccess.HIDDEN,
-    onLockedTheme: () -> Unit = {}
+    onLockedTheme: () -> Unit = {},
+    icon: AppIcon = AppIcon.DEFAULT,
+    onIcon: (AppIcon) -> Unit = {}
 ) {
     val canUseWallpaper = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     // Con los colores del fondo de pantalla, el tema no se usa: se ve, pero apagado.
@@ -686,6 +690,12 @@ fun AppearanceCard(
                         onClick = { if (locked) onLockedTheme() else onTheme(theme) }
                     )
                 }
+            }
+
+            // Los iconos son de Pro: sin Pro a la venta, ni se ven.
+            if (pro != ProAccess.HIDDEN) {
+                Spacer(modifier = Modifier.height(12.dp))
+                AppIconRow(icon = icon, pro = pro, onIcon = onIcon, onLocked = onLockedTheme)
             }
 
             Spacer(modifier = Modifier.height(8.dp))

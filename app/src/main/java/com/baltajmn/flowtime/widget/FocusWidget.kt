@@ -55,7 +55,7 @@ import androidx.glance.material3.ColorProviders
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import com.baltajmn.flowtime.MainActivity
+import com.baltajmn.flowtime.FlowTimeActivity
 import com.baltajmn.flowtime.R
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
@@ -163,7 +163,7 @@ private fun Content(
             .background(colors.widgetBackground)
             .cornerRadius(20.dp)
             .padding(horizontal = if (narrow) 10.dp else 16.dp, vertical = 8.dp)
-            .clickable(actionStartActivity<MainActivity>()),
+            .clickable(actionStartActivity<FlowTimeActivity>()),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (medium) {

@@ -12,7 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.baltajmn.flowtime.MainActivity
+import com.baltajmn.flowtime.FlowTimeActivity
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
@@ -98,7 +98,7 @@ class GoalWatcher(
         val open = PendingIntent.getActivity(
             context,
             REQUEST_OPEN,
-            Intent(context, MainActivity::class.java)
+            Intent(context, FlowTimeActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )

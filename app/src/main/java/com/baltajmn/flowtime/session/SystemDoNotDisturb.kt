@@ -8,7 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.service.notification.Condition
 import androidx.annotation.RequiresApi
-import com.baltajmn.flowtime.MainActivity
+import com.baltajmn.flowtime.FlowTimeActivity
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.DND_RULE_ID
@@ -51,7 +51,7 @@ class SystemDoNotDisturb(
         val rule = AutomaticZenRule(
             context.getString(R.string.mode_flow_time),
             null,
-            ComponentName(context, MainActivity::class.java),
+            ComponentName(context, FlowTimeActivity::class.java),
             CONDITION,
             null,
             NotificationManager.INTERRUPTION_FILTER_PRIORITY,

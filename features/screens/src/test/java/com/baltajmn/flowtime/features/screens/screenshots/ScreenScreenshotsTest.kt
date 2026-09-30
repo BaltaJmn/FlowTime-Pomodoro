@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.design.components.ExpandedContent
 import com.baltajmn.flowtime.core.design.sound.PlayerState
 import com.baltajmn.flowtime.core.design.sound.PlayerType
+import com.baltajmn.flowtime.core.design.theme.AppTheme
+import com.baltajmn.flowtime.core.design.theme.Appearance
 import com.baltajmn.flowtime.data.goal.DayProgress
 import com.baltajmn.flowtime.data.goal.Streak
 import com.baltajmn.flowtime.data.timer.Phase
@@ -24,6 +26,8 @@ import com.baltajmn.flowtime.features.screens.pro.ProFeature
 import com.baltajmn.flowtime.features.screens.pro.ProUiState
 import com.baltajmn.flowtime.features.screens.stats.StatsContent
 import com.baltajmn.flowtime.features.screens.stats.StatsUiState
+import com.baltajmn.flowtime.features.screens.settings.AppIcon
+import com.baltajmn.flowtime.features.screens.settings.AppearanceCard
 import com.baltajmn.flowtime.features.screens.settings.SettingsContent
 import com.baltajmn.flowtime.features.screens.support.SupportContent
 import com.baltajmn.flowtime.features.screens.support.SupportState
@@ -191,6 +195,20 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
                 onSeePro = {}
             )
         }
+    }
+
+    /** Con Pro a la venta y sin comprar: los temas y los iconos de Pro, con candado salvo el puesto. */
+    @Test
+    fun appearancePro() = compose.capture("appearance_pro_$mode", dark = dark) {
+        AppearanceCard(
+            appearance = Appearance(theme = AppTheme.Mint),
+            isSupporter = false,
+            onDarkMode = {},
+            onDynamicColor = {},
+            onTheme = {},
+            pro = ProAccess.LOCKED,
+            icon = AppIcon.MINT
+        )
     }
 
     @Test

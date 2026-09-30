@@ -290,7 +290,7 @@
     <string name="pro_restore_nothing">Pro wurde in diesem Google-Konto nicht gefunden. Prüfe die Verbindung.</string>
     <string name="pro_thanks_text">Du hast FlowTime Pro: Alles aus Pro ist freigeschaltet. Danke, dass du FlowTime unterstützt.</string>
     <string name="pro_see">Pro ansehen</string>
-    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels, Aufgaben und Mixe, 6 neue Klänge, 6 neue Designs und automatisch \"Nicht stören\". Einmalzahlung, kein Abo.</string>
+    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels, Aufgaben und Mixe, 6 neue Klänge, 6 neue Designs und Symbole und automatisch \"Nicht stören\". Einmalzahlung, kein Abo.</string>
     <string name="pro_settings_owned">Du hast Pro. Danke, dass du FlowTime unterstützt.</string>
     <string name="pro_card_text">Mit Pro siehst du, zu welchen Zeiten und woran du dich am besten konzentrierst.</string>
     <string name="pro_card_dismiss">Jetzt nicht</string>
@@ -344,6 +344,12 @@
     <string name="theme_night">Nacht</string>
     <string name="theme_cherry">Kirsche</string>
     <string name="cd_pro_theme">Design %1$s, Pro</string>
-    <string name="pro_themes_title">6 neue Designs</string>
-    <string name="pro_themes_text">Lavendel, Minze, Koralle, Sand, Nacht und Kirsche, hell und dunkel.</string>
+    <string name="pro_themes_title">6 neue Designs und Symbole</string>
+    <string name="pro_themes_text">Lavendel, Minze, Koralle, Sand, Nacht und Kirsche, hell und dunkel, jeweils mit passendem App-Symbol.</string>
+    <string name="appearance_icon">App-Symbol</string>
+    <string name="cd_app_icon">Symbol %1$s</string>
+    <string name="cd_pro_app_icon">Symbol %1$s, Pro</string>
+    <string name="app_icon_change_title">Symbol ändern?</string>
+    <string name="app_icon_change_text">Auf manchen Handys verschwindet das Symbol beim Ändern vom Startbildschirm. Falls das passiert, füge es aus der App-Liste wieder hinzu.</string>
+    <string name="app_icon_change">Ändern</string>
 </resources>

@@ -10,7 +10,7 @@ import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.baltajmn.flowtime.MainActivity
+import com.baltajmn.flowtime.FlowTimeActivity
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.data.goal.GoalRepository
@@ -84,7 +84,7 @@ class DailyReminder(
         val open = PendingIntent.getActivity(
             context,
             REQUEST_OPEN,
-            Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            Intent(context, FlowTimeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             PendingIntent.FLAG_IMMUTABLE
         )
         val start = PendingIntent.getBroadcast(

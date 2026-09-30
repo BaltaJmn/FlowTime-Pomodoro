@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-class MainActivity : ComponentActivity() {
+class FlowTimeActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel = inject<MainViewModel>().value
     private val sessionNotification: SessionNotification by inject()
@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
                 calmMoments(
                     sessionRunning = engine.state.map { it.isActive },
                     celebrating = goalWatcher.celebration.map { it != null }
-                ).collect { reviewPrompter.askIfDue(this@MainActivity) }
+                ).collect { reviewPrompter.askIfDue(this@FlowTimeActivity) }
             }
         }
     }

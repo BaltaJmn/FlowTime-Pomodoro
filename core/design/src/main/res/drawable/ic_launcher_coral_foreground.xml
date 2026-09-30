@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- El icono de siempre con los colores del tema de Pro coral (#56). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:pathData="M54,29 A25,25 0 1,1 54,79 A25,25 0 1,1 54,29"
+        android:strokeWidth="7"
+        android:strokeColor="#823E2B" />
+    <path
+        android:pathData="M54,29 A25,25 0 1,1 32.35,41.5"
+        android:strokeWidth="7"
+        android:strokeColor="#FBEDEA"
+        android:strokeLineCap="round" />
+    <path
+        android:fillColor="#EA9F8A"
+        android:pathData="M36.76,57 C42,50 48,50 54,56 S66,63 71.24,57 A17.5,17.5 0 0,1 36.76,57 Z" />
+</vector>

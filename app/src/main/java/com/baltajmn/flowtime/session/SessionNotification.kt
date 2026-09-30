@@ -12,7 +12,7 @@ import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.baltajmn.flowtime.MainActivity
+import com.baltajmn.flowtime.FlowTimeActivity
 import com.baltajmn.flowtime.core.common.extensions.formatSecondsToTime
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.data.tag.TagRepository
@@ -151,7 +151,7 @@ class SessionNotification(
     private fun openTimer(mode: TimerMode) = PendingIntent.getActivity(
         context,
         0,
-        Intent(context, MainActivity::class.java)
+        Intent(context, FlowTimeActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             .putExtra(EXTRA_OPEN_TIMER, mode.name),
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT

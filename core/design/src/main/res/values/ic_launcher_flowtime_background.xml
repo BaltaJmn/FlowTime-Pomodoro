@@ -2,4 +2,11 @@
 <resources>
     <!-- Azul oscuro del tema: el anillo (#EAF6FB) queda a 8:1 y el agua (#8ECAE6) a 4,9:1. -->
     <color name="ic_launcher_flowtime_background">#15506A</color>
+    <!-- Los iconos de Pro (#56), con el mismo contraste. -->
+    <color name="ic_launcher_lavender_background">#2E1E61</color>
+    <color name="ic_launcher_mint_background">#206046</color>
+    <color name="ic_launcher_coral_background">#6A2815</color>
+    <color name="ic_launcher_sand_background">#674D19</color>
+    <color name="ic_launcher_night_background">#151D32</color>
+    <color name="ic_launcher_cherry_background">#681728</color>
 </resources>

@@ -290,7 +290,7 @@
     <string name="pro_restore_nothing">इस Google खाते में Pro नहीं मिला। कनेक्शन जाँचें।</string>
     <string name="pro_thanks_text">आपके पास FlowTime Pro है: Pro की हर चीज़ अनलॉक है। FlowTime का साथ देने के लिए धन्यवाद।</string>
     <string name="pro_see">Pro देखें</string>
-    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग, कार्य और मिक्स, 6 नई ध्वनियाँ, 6 नई थीम, और अपने-आप \'परेशान न करें\'। एक बार भुगतान, कोई सदस्यता नहीं।</string>
+    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग, कार्य और मिक्स, 6 नई ध्वनियाँ, 6 नई थीम और आइकन, और अपने-आप \'परेशान न करें\'। एक बार भुगतान, कोई सदस्यता नहीं।</string>
     <string name="pro_settings_owned">आपके पास Pro है। FlowTime का साथ देने के लिए धन्यवाद।</string>
     <string name="pro_card_text">Pro के साथ देखें कि आप किस समय और किस पर सबसे अच्छा ध्यान लगाते हैं।</string>
     <string name="pro_card_dismiss">अभी नहीं</string>
@@ -344,6 +344,12 @@
     <string name="theme_night">रात</string>
     <string name="theme_cherry">चेरी</string>
     <string name="cd_pro_theme">%1$s थीम, Pro</string>
-    <string name="pro_themes_title">6 नई थीम</string>
-    <string name="pro_themes_text">लैवेंडर, पुदीना, मूंगा, रेत, रात और चेरी, हल्के और गहरे रंग में।</string>
+    <string name="pro_themes_title">6 नई थीम और आइकन</string>
+    <string name="pro_themes_text">लैवेंडर, पुदीना, मूंगा, रेत, रात और चेरी, हल्के और गहरे रंग में, हर एक के साथ मेल खाता ऐप आइकन।</string>
+    <string name="appearance_icon">ऐप आइकन</string>
+    <string name="cd_app_icon">%1$s आइकन</string>
+    <string name="cd_pro_app_icon">%1$s आइकन, Pro</string>
+    <string name="app_icon_change_title">आइकन बदलें?</string>
+    <string name="app_icon_change_text">कुछ फ़ोन में आइकन बदलने पर वह होम स्क्रीन से हट जाता है। ऐसा हो तो उसे ऐप सूची से फिर से जोड़ें।</string>
+    <string name="app_icon_change">बदलें</string>
 </resources>

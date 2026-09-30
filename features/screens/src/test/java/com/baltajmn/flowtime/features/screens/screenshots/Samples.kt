@@ -26,6 +26,7 @@ import com.baltajmn.flowtime.features.screens.fakes.FakeTags
 import com.baltajmn.flowtime.features.screens.fakes.FakeTasks
 import com.baltajmn.flowtime.features.screens.focus.FocusUiState
 import com.baltajmn.flowtime.features.screens.pro.ProAccess
+import com.baltajmn.flowtime.features.screens.settings.AppIcons
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.stats.StatsDetails
 import com.baltajmn.flowtime.features.screens.stats.StatsUiState
@@ -112,7 +113,8 @@ internal fun sampleSettings(): SettingsViewModel {
         FakeTags("Estudio", "Trabajo", "Lectura", "Casa"),
         FakePurchases(supporter = true),
         ReminderRepository(prefs).apply { set(Reminder(enabled = true)) },
-        FocusMode(prefs, NoDoNotDisturb, MutableStateFlow(false))
+        FocusMode(prefs, NoDoNotDisturb, MutableStateFlow(false)),
+        AppIcons(RuntimeEnvironment.getApplication())
     )
 }
 

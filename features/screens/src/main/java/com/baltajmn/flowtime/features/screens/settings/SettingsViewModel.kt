@@ -38,9 +38,10 @@ class SettingsViewModel(
     private val tags: TagRepository,
     private val purchases: PurchasesRepository,
     private val reminders: ReminderRepository,
-    private val focusMode: FocusMode
+    private val focusMode: FocusMode,
+    private val appIcons: AppIcons
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(SettingsState())
+    private val _uiState = MutableStateFlow(SettingsState(appIcon = appIcons.current()))
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
 
     init {
@@ -141,6 +142,11 @@ class SettingsViewModel(
     }
 
     fun setTheme(theme: AppTheme) = appearanceRepository.setTheme(theme)
+
+    fun setAppIcon(icon: AppIcon) {
+        appIcons.set(icon)
+        _uiState.update { it.copy(appIcon = icon) }
+    }
 
     fun setDarkMode(mode: DarkMode) = appearanceRepository.setDarkMode(mode)
 

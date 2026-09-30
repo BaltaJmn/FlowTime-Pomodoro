@@ -10,7 +10,7 @@ import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * El diálogo de valoración de Play, sin preguntar antes: Play decide si lo enseña. Solo se pide en
- * los momentos tranquilos que busca MainActivity, y a quien le toca según [ReviewPolicy].
+ * los momentos tranquilos que busca FlowTimeActivity, y a quien le toca según [ReviewPolicy].
  */
 class ReviewPrompter(private val policy: ReviewPolicy) {
 

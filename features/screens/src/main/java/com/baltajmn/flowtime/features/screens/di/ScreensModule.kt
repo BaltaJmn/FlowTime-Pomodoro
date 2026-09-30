@@ -12,11 +12,13 @@ import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromC
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.features.screens.pro.ProViewModel
+import com.baltajmn.flowtime.features.screens.settings.AppIcons
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.splash.SplashViewModel
 import com.baltajmn.flowtime.features.screens.stats.StatsViewModel
 import com.baltajmn.flowtime.features.screens.support.SupportViewModel
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
@@ -58,4 +60,5 @@ private val ScreensPresentationModule: Module
         viewModelOf(::SupportViewModel)
         viewModelOf(::ProViewModel)
         single { ProLauncher() }
+        single { AppIcons(androidContext()) }
     }
