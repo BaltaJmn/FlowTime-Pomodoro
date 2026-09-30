@@ -4,10 +4,10 @@ import kotlinx.coroutines.flow.StateFlow
 
 object ProFeatures {
     /**
-     * Apagado hasta la versión que publique Pro (#55–#57): mientras, ningún límite se aplica. Lo de
-     * Pro nunca se publica gratis para bloquearlo después.
+     * Encendido desde la 2.1.0, la versión que pone Pro a la venta (#56). Apagado, ningún límite se
+     * aplica y no se ofrece Pro. Lo de Pro nunca se publica gratis para bloquearlo después.
      */
-    val enabled: Boolean = false
+    val enabled: Boolean = true
 }
 
 /** Lo que se puede tener a la vez sin Pro. Nunca se borra ni se bloquea nada que ya exista. */

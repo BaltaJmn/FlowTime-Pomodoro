@@ -20,6 +20,9 @@ servicio de publicar para Play. Cómo se hace cada paso: `~/keys/LEEME.md`.
   Billing (`legacyCompatible`).
 - **Nombre y descripción en los 6 idiomas.** La descripción de Pro cuenta lo mismo que la pantalla
   de Pro y la ficha: si cambia lo que incluye Pro, se cambian las tres a la vez.
+  Se cambian con `PATCH .../applications/com.baltajmn.flowtime/onetimeproducts/<id>?updateMask=listings&regionsVersion.version=2026%2F01`
+  y el recurso entero de `GET .../oneTimeProducts/<id>`: el PATCH va en minúsculas, con
+  `oneTimeProducts` da 404.
 - **RevenueCat:** proyecto `Flowtime`, app `FlowTime (Play)` con el JSON de la cuenta de solo
   lectura (`revenuecat@`). La primera vez puede tardar hasta 36 horas en validarse.
 - **Clave pública** (`goog_`): `REVENUECAT_API_KEY` en `core/data/.../pro/RevenueCatStore.kt`. A
@@ -34,7 +37,7 @@ servicio de publicar para Play. Cómo se hace cada paso: `~/keys/LEEME.md`.
 - El usuario de RevenueCat es anónimo. Sus preferencias (`com_revenuecat_purchases_preferences`)
   van en la copia automática de Android, para que tras reinstalar sea el mismo usuario y conserve las
   propinas. Pro se recupera siempre con "Restaurar compras".
-- `ProFeatures.enabled` sigue apagado: sin él, no hay límites y no se ofrece Pro.
+- `ProFeatures.enabled` está encendido desde la 2.1.0. Apagado, no hay límites y no se ofrece Pro.
 - El SDK trae el identificador de publicidad; el manifiesto quita el permiso `AD_ID`, que FlowTime
   no usa.
 
@@ -51,7 +54,7 @@ servicio de publicar para Play. Cómo se hace cada paso: `~/keys/LEEME.md`.
    Google de prueba. Compra con el diálogo real y sin cargo.
 2. Instalar **desde el canal de prueba interna**: una compra no funciona instalando con `adb`.
 3. Dejar una propina: sale el agradecimiento, la insignia en Ajustes y el tema Supporter.
-4. Con `ProFeatures.enabled` encendido: comprar Pro, reembolsarlo desde Play Console (Pro tiene que
+4. Comprar Pro, reembolsarlo desde Play Console (Pro tiene que
    desaparecer), reinstalar y usar "Restaurar compras".
 5. En RevenueCat, *Customer History*: el evento y el derecho activo.
 

@@ -12,7 +12,7 @@ publica **en producción**, no en `alpha` como las hermanas.
 
 1. Subir `versionCode` (y `versionName`) en `build-logic/plugins/src/main/java/Config.kt`. Tiene
    que ser mayor que el último de Play: `~/keys/play.sh estado com.baltajmn.flowtime`.
-2. Reescribir `store/whatsnew/whatsnew-es-ES` (tope 500). La ficha solo tiene `es-ES`.
+2. Reescribir las notas de `store/whatsnew/whatsnew-<idioma>`, una por idioma de la ficha (tope 500 cada una).
 3. Commit, y la etiqueta:
 
 ```bash
