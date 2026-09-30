@@ -24,6 +24,7 @@ import androidx.compose.ui.semantics.Role
 import com.baltajmn.flowtime.core.design.sound.SleepTimer
 import com.baltajmn.flowtime.core.design.sound.SoundMix
 import com.baltajmn.flowtime.core.design.sound.SoundMixes
+import com.baltajmn.flowtime.core.design.sound.SoundState
 import java.util.Date
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.border
@@ -121,69 +122,26 @@ fun SoundSheet(
     val locked = { type: PlayerType -> type.pro && proSoundsLocked }
 
     ModalBottomSheet(onDismissRequest = onDismiss) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .padding(horizontal = 24.dp, vertical = 8.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(R.string.sounds_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.weight(1f)
-                )
-                SleepButton(sleep = sleep, onSleep = ambience::setSleep)
-            }
-            sleep?.let { timer ->
-                Text(
-                    text = when (timer) {
-                        is SleepTimer.At -> stringResource(
-                            R.string.sleep_at,
-                            DateFormat.getTimeFormat(LocalContext.current).format(Date(timer.millis))
-                        )
-                        SleepTimer.SessionEnd -> stringResource(R.string.sleep_at_session_end)
-                    },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .horizontalScroll(rememberScrollState())
-                    .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                all.forEach { mix ->
-                    MixChip(
-                        text = if (mix.builtIn) stringResource(mix.label) else mix.name,
-                        onClick = { ambience.load(mix) },
-                        onLongClick = { dialog = MixDialog.Edit(mix) }
-                    )
-                }
-                if (sound.playing.isNotEmpty()) {
-                    MixChip(
-                        text = stringResource(R.string.mix_save),
-                        icon = true,
-                        onClick = {
-                            val full = mixLimit != null && mixes.saved >= mixLimit
-                            dialog = if (full) MixDialog.Limit else MixDialog.Save
-                        }
-                    )
-                }
-            }
-            ExpandedContent(
-                items = sound.soundMap,
-                onPlayClicked = { type, playing ->
-                    ambience.play(type = type, playing = playing)
-                    if (locked(type)) preview = type.takeIf { playing }
-                },
-                onVolumeChanged = { type, volume -> ambience.setVolume(type = type, volume = volume) },
-                showPro = showProSounds,
-                proLocked = proSoundsLocked,
-                onLocked = { onSeeProSounds() }
-            )
-        }
+        SoundSheetBody(
+            sound = sound,
+            sleep = sleep,
+            mixes = all,
+            onSleep = ambience::setSleep,
+            onMix = ambience::load,
+            onEditMix = { dialog = MixDialog.Edit(it) },
+            onSaveMix = {
+                val full = mixLimit != null && mixes.saved >= mixLimit
+                dialog = if (full) MixDialog.Limit else MixDialog.Save
+            },
+            onPlay = { type, playing ->
+                ambience.play(type = type, playing = playing)
+                if (locked(type)) preview = type.takeIf { playing }
+            },
+            onVolume = { type, volume -> ambience.setVolume(type = type, volume = volume) },
+            showProSounds = showProSounds,
+            proSoundsLocked = proSoundsLocked,
+            onLocked = onSeeProSounds
+        )
     }
 
     when (val open = dialog) {
@@ -223,6 +181,81 @@ fun SoundSheet(
             }
         )
         null -> Unit
+    }
+}
+
+/** Lo de dentro de la hoja de sonidos, sin la hoja: lo pinta también la captura de la ficha (#54). */
+@Composable
+fun SoundSheetBody(
+    sound: SoundState,
+    sleep: SleepTimer?,
+    mixes: List<SoundMix>,
+    onSleep: (SleepTimer?) -> Unit,
+    onMix: (SoundMix) -> Unit,
+    onEditMix: (SoundMix) -> Unit,
+    onSaveMix: () -> Unit,
+    onPlay: (PlayerType, Boolean) -> Unit,
+    onVolume: (PlayerType, Float) -> Unit,
+    showProSounds: Boolean = false,
+    proSoundsLocked: Boolean = false,
+    onLocked: () -> Unit = {}
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .navigationBarsPadding()
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = stringResource(R.string.sounds_title),
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.weight(1f)
+            )
+            SleepButton(sleep = sleep, onSleep = onSleep)
+        }
+        sleep?.let { timer ->
+            Text(
+                text = when (timer) {
+                    is SleepTimer.At -> stringResource(
+                        R.string.sleep_at,
+                        DateFormat.getTimeFormat(LocalContext.current).format(Date(timer.millis))
+                    )
+                    SleepTimer.SessionEnd -> stringResource(R.string.sleep_at_session_end)
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Row(
+            modifier = Modifier
+                .horizontalScroll(rememberScrollState())
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            mixes.forEach { mix ->
+                MixChip(
+                    text = if (mix.builtIn) stringResource(mix.label) else mix.name,
+                    onClick = { onMix(mix) },
+                    onLongClick = { onEditMix(mix) }
+                )
+            }
+            if (sound.playing.isNotEmpty()) {
+                MixChip(
+                    text = stringResource(R.string.mix_save),
+                    icon = true,
+                    onClick = onSaveMix
+                )
+            }
+        }
+        ExpandedContent(
+            items = sound.soundMap,
+            onPlayClicked = onPlay,
+            onVolumeChanged = onVolume,
+            showPro = showProSounds,
+            proLocked = proSoundsLocked,
+            onLocked = { onLocked() }
+        )
     }
 }
 

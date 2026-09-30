@@ -102,15 +102,22 @@ internal fun sampleStats(pro: ProAccess): StatsUiState {
     )
 }
 
-internal fun sampleSettings(): SettingsViewModel {
+internal fun sampleSettings(
+    tags: List<String> = listOf("Estudio", "Trabajo", "Lectura", "Casa"),
+    goalMinutes: Int? = null
+): SettingsViewModel {
     val prefs = FakeDataProvider()
     return SettingsViewModel(
         prefs,
         AppearanceRepository(prefs),
         FakeBackups(lastExportAt = System.currentTimeMillis()),
         DocumentFiles(RuntimeEnvironment.getApplication()),
-        GoalRepository(prefs, sampleSessions(), days = flowOf(LocalDate.now())),
-        FakeTags("Estudio", "Trabajo", "Lectura", "Casa"),
+        GoalRepository(prefs, sampleSessions(), days = flowOf(LocalDate.now())).apply {
+            goalMinutes?.let(
+                ::setGoal
+            )
+        },
+        FakeTags(*tags.toTypedArray()),
         FakePurchases(supporter = true),
         ReminderRepository(prefs).apply { set(Reminder(enabled = true)) },
         FocusMode(prefs, NoDoNotDisturb, MutableStateFlow(false)),

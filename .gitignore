@@ -30,4 +30,4 @@ keystore.properties
 google-services.json
 
 # Android Profiling
-*.hprof
+*.hprof__pycache__/
