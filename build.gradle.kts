@@ -1,9 +1,8 @@
-// Una sola copia del plugin de Kotlin para todos los modulos: con un modulo multiplataforma (#61) y
-// otros que piden el plugin de Compose con su version, cada uno cargaba la suya y Gradle no puede
-// compartir entre ellas el servicio de Kotlin/Native.
+// Una sola copia del plugin de Kotlin para todos los modulos: con un modulo multiplataforma (#61),
+// cada modulo que lo cargaba por su lado tenia la suya y Gradle no puede compartir entre ellas el
+// servicio de Kotlin/Native. Los plugins de Kotlin, Compose, KSP y Room llegan todos por build-logic.
 plugins {
     id("flowtime.kmp.library") apply false
-    alias(libs.plugins.flowtime.kotlin.plugin.compose) apply false
 }
 
 allprojects {

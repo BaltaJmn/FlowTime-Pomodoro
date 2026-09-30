@@ -1,6 +1,6 @@
 plugins {
     id("flowtime.android.library")
-    alias(libs.plugins.flowtime.kotlin.plugin.compose)
+    id("org.jetbrains.kotlin.plugin.compose")
     id("flowtime.compose.library")
     alias(libs.plugins.roborazzi)
 }

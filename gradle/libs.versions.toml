@@ -99,6 +99,7 @@ plugin-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref =
 plugin-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 plugin-kotlin-ksp = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 plugin-room = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
+plugin-compose-compiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -114,7 +115,6 @@ androidx-foundation-layout-android = { group = "androidx.compose.foundation", na
 
 [plugins]
 
-flowtime-kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 
 [bundles]

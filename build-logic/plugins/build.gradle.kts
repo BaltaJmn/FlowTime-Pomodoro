@@ -61,4 +61,5 @@ dependencies {
     implementation(libs.plugin.kotlin.serialization)
     implementation(libs.plugin.kotlin.ksp)
     implementation(libs.plugin.room)
+    implementation(libs.plugin.compose.compiler)
 }

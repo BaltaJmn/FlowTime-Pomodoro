@@ -2,7 +2,6 @@ import java.util.Properties
 
 plugins {
     id("flowtime.android.application")
-    alias(libs.plugins.flowtime.kotlin.plugin.compose) apply false
 }
 
 /**
