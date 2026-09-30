@@ -16,7 +16,7 @@ publica **en producción**, no en `alpha` como las hermanas.
 3. Commit, y la etiqueta:
 
 ```bash
-git tag v2.0.4 && git push origin v2.0.4
+git tag v2.1.0 && git push origin v2.1.0
 ```
 
 Disparo manual, para otro canal:
