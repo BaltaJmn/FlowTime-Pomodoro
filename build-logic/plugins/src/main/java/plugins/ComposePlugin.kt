@@ -1,7 +1,7 @@
 package plugins
 
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import extensions.androidTestImplementation
 import extensions.androidTestImplementationBom
 import extensions.debugImplementation
@@ -20,16 +20,8 @@ class ComposePlugin : Plugin<Project> {
     }
 }
 
-fun Project.configureCompose(commonExtension: CommonExtension<*, *, *, *, *, *>) {
-    commonExtension.apply {
-        buildFeatures {
-            compose = true
-        }
-
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-        }
-    }
+fun Project.configureCompose(commonExtension: CommonExtension) {
+    commonExtension.buildFeatures.compose = true
 
     dependencies {
         implementation(project(":core:navigation"))

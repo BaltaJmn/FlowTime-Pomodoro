@@ -1,6 +1,6 @@
 package plugins
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import extensions.implementation
 import extensions.ksp
 import extensions.libs

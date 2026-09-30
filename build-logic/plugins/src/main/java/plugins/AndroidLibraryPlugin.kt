@@ -1,6 +1,6 @@
 package plugins
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import extensions.configureKotlinAndroid
 import extensions.configureKtlint
 import extensions.implementation
@@ -16,7 +16,6 @@ class AndroidLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
         pluginManager.apply {
             apply("com.android.library")
-            apply("kotlin-android")
             apply("kotlinx-serialization")
         }
 
@@ -34,7 +33,6 @@ class AndroidLibraryPlugin : Plugin<Project> {
 
             buildTypes {
                 release {
-                    isTestCoverageEnabled = false
                     isShrinkResources = false
                     isMinifyEnabled = false
                     consumerProguardFiles("proguard-rules.pro")

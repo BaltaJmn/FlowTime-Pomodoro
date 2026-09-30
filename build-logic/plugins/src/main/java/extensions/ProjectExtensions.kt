@@ -16,13 +16,11 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 val Project.libs get() = the<LibrariesForLibs>()
 
 internal fun Project.configureKotlinAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
+    commonExtension: CommonExtension,
 ) {
-    commonExtension.apply {
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_17
-            targetCompatibility = JavaVersion.VERSION_17
-        }
+    commonExtension.compileOptions.apply {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     val warningsAsErrors: String? by project

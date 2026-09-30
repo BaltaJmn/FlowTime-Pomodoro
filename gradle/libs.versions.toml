@@ -3,10 +3,9 @@ compileSdk = "36"
 targetSdk = "36"
 minSdk = "26"
 kotlin = "2.4.10"
-gradle = "8.13.2"
+gradle = "9.0.1"
 ktlint = "11.5.1"
 room = "2.7.1"
-composeCompiler = "1.5.4"
 composeBom = "2025.06.00"
 junit = "4.13.2"
 testJunit = "1.2.1"
@@ -113,7 +112,6 @@ flowtime-android-library = { id = "flowtime.android.library", version = "unspeci
 flowtime-android-compose-library = { id = "flowtime.compose.library", version = "unspecified" }
 flowtime-android-room-library = { id = "flowtime.room.library", version = "unspecified" }
 flowtime-kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-flowtime-kotlin-plugin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 
 [bundles]

@@ -16,7 +16,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
         pluginManager.apply {
             apply("com.android.application")
-            apply("kotlin-android")
             apply("org.jetbrains.kotlin.plugin.compose")
         }
 
@@ -39,7 +38,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
             buildTypes {
 
                 release {
-                    isTestCoverageEnabled = false
                     isShrinkResources = false
                     isMinifyEnabled = false
                     proguardFiles(
