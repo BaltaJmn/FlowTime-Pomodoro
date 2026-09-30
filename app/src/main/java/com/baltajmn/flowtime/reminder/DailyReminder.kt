@@ -111,7 +111,8 @@ class DailyReminder(
     companion object {
         const val ACTION = "com.baltajmn.flowtime.REMINDER"
         private const val CHANNEL = "reminder"
-        private const val ID = 3
+        // Ver la lista de ids en GoalWatcher.
+        private const val ID = 5
         private val WINDOW_MILLIS = TimeUnit.MINUTES.toMillis(10)
 
         // Distintos de los de SessionNotification (el ordinal de cada acción y 100).

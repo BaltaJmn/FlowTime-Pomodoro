@@ -117,7 +117,10 @@ class GoalWatcher(
 
     private companion object {
         const val CHANNEL = "daily_goal"
-        const val ID = 3
+
+        // Los ids de notificación de la app: 1 la sesión, 2 el aviso de fin de fase, 3 los sonidos
+        // (AmbientService), 4 el objetivo y 5 el recordatorio. Con el mismo id, una pisa a la otra.
+        const val ID = 4
 
         // Otro que el de abrir el temporizador (0): con el mismo, FLAG_UPDATE_CURRENT le quitaría
         // al de la sesión el modo que tiene que abrir.
