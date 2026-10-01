@@ -37,9 +37,12 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
             buildTypes {
 
+                // R8 (#62): el mapping y los símbolos nativos viajan dentro del AAB, y Play los coge
+                // de ahí para que los fallos de vitals se lean.
                 release {
-                    isShrinkResources = false
-                    isMinifyEnabled = false
+                    isShrinkResources = true
+                    isMinifyEnabled = true
+                    ndk.debugSymbolLevel = "SYMBOL_TABLE"
                     proguardFiles(
                         getDefaultProguardFile("proguard-android-optimize.txt"),
                         "proguard-rules.pro"

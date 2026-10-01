@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Las notificaciones, el widget y el botón de ajustes rápidos buscan los textos de Compose
+     Resources por su nombre (AndroidStrings.kt, getIdentifier). La reducción de recursos de la
+     release no ve esas referencias: sin esto los borra y getString(0) cierra la app (#62). -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@string/*" />
