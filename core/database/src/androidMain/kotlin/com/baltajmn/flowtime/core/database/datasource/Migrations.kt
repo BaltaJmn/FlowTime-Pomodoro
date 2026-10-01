@@ -33,8 +33,7 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
 
 /**
  * Las tareas, de un JSON por día (tabla todoList) a una fila cada una. En Kotlin y no con json_each
- * de SQLite, que no está en todos los móviles con Android 8. La tabla todoList se queda una versión
- * más: si algo no se entendiera, no se pierde.
+ * de SQLite, que no está en todos los móviles con Android 8. La tabla todoList se queda hasta la 6.
  */
 val MIGRATION_3_4 = object : Migration(3, 4) {
     override fun migrate(db: SupportSQLiteDatabase) {

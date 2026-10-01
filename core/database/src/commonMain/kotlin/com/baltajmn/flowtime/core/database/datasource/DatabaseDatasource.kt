@@ -4,11 +4,13 @@ import androidx.room.AutoMigration
 import androidx.room.ConstructedBy
 import androidx.room.Dao
 import androidx.room.Database
+import androidx.room.DeleteTable
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.Transaction
+import androidx.room.migration.AutoMigrationSpec
 import com.baltajmn.flowtime.core.database.model.DaySeconds
 import com.baltajmn.flowtime.core.database.model.HourSeconds
 import com.baltajmn.flowtime.core.database.model.ModeSeconds
@@ -20,21 +22,24 @@ import com.baltajmn.flowtime.core.database.model.TagSeconds
 import com.baltajmn.flowtime.core.database.model.TaskSeconds
 import com.baltajmn.flowtime.core.database.model.TaskTotal
 import com.baltajmn.flowtime.core.database.model.TaskDb
-import com.baltajmn.flowtime.core.database.model.TodoListDB
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 
-// De la 1 a la 2 y de la 3 a la 4, a mano y solo en Android (Migrations.kt): el iPhone empieza en la 5.
+// De la 1 a la 2 y de la 3 a la 4, a mano y solo en Android (Migrations.kt): el iPhone empieza en la 6.
 // De la 2 a la 3, automática: una tabla nueva (tag) y una columna que admite nulos (session.tagId).
 // De la 3 a la 4, las tareas pasan de un JSON por día a una fila cada una.
 // De la 4 a la 5, automática: session.taskId (#40).
-// todoList se queda, sin usar, hasta la versión de la app siguiente a la que publique la 4: si la
-// migración de las tareas tuviera un fallo, de ahí se podrían volver a leer.
+// De la 5 a la 6, automática: fuera todoList, que se quedó la versión de la app que publicó la 4 por
+// si la migración de las tareas fallaba.
 @Database(
-    entities = [TodoListDB::class, SessionDb::class, TagDb::class, TaskDb::class],
-    version = 5,
-    autoMigrations = [AutoMigration(from = 2, to = 3), AutoMigration(from = 4, to = 5)]
+    entities = [SessionDb::class, TagDb::class, TaskDb::class],
+    version = 6,
+    autoMigrations = [
+        AutoMigration(from = 2, to = 3),
+        AutoMigration(from = 4, to = 5),
+        AutoMigration(from = 5, to = 6, spec = DropTodoList::class)
+    ]
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -43,6 +48,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun tagDao(): TagDao
     abstract fun taskDao(): TaskDao
 }
+
+@DeleteTable(tableName = "todoList")
+class DropTodoList : AutoMigrationSpec
 
 // Room escribe los `actual` de cada plataforma.
 @Suppress("KotlinNoActualForExpect")

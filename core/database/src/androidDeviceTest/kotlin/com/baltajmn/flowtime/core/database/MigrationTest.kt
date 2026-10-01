@@ -101,6 +101,28 @@ class MigrationTest {
         }
     }
 
+    @Test
+    fun de_la_5_a_la_6_se_va_la_tabla_antigua_y_las_tareas_se_quedan() {
+        helper.createDatabase(DB, 5).use { db ->
+            db.execSQL("INSERT INTO todoList (date, todoList) VALUES ('2026-09-28', '[]')")
+            db.execSQL(
+                "INSERT INTO task (title, description, plannedFor, createdAt, position) " +
+                    "VALUES ('Leer', '', '2026-09-28', 1, 0)"
+            )
+        }
+
+        helper.runMigrationsAndValidate(DB, 6, true).use { db ->
+            db.query("SELECT COUNT(*) FROM sqlite_master WHERE name = 'todoList'").use {
+                it.moveToFirst()
+                assertEquals(0, it.getInt(0))
+            }
+            db.query("SELECT title FROM task").use {
+                it.moveToFirst()
+                assertEquals("Leer", it.getString(0))
+            }
+        }
+    }
+
     private companion object {
         const val DB = "migration-test"
     }
