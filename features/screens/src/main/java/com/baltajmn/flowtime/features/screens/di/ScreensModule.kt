@@ -19,8 +19,8 @@ import com.baltajmn.flowtime.features.screens.stats.StatsViewModel
 import com.baltajmn.flowtime.features.screens.support.SupportViewModel
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind

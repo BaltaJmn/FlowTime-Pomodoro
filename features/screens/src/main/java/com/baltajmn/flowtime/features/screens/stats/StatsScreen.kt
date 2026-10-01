@@ -85,7 +85,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.format.TextStyle
 import java.util.Locale
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.compose.koinInject
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toJavaDayOfWeek

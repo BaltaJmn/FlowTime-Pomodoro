@@ -86,7 +86,7 @@ import com.baltajmn.flowtime.features.screens.pro.ProAccess
 import com.baltajmn.flowtime.features.screens.pro.ProFeature
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.features.screens.support.SupportSheet
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.compose.koinInject
 import com.baltajmn.flowtime.core.design.resources.*
 import org.jetbrains.compose.resources.StringResource

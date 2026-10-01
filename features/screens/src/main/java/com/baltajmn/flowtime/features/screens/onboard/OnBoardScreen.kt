@@ -51,7 +51,7 @@ import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel.Event.Nav
 import com.baltajmn.flowtime.features.screens.settings.GoalStepper
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.baltajmn.flowtime.core.design.resources.*
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource

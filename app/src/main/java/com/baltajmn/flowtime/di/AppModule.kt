@@ -15,7 +15,7 @@ import com.baltajmn.flowtime.session.PhaseAlarm
 import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.session.SystemDoNotDisturb
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

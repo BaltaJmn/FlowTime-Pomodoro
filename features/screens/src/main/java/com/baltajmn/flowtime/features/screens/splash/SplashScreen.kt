@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import com.baltajmn.flowtime.core.design.components.SplashView
 import com.baltajmn.flowtime.core.design.components.collectEvents
 import kotlinx.coroutines.flow.collectLatest
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SplashScreen(

@@ -43,7 +43,8 @@ fun Project.configureCompose(commonExtension: CommonExtension) {
         implementation(libs.androidx.lifecycle.viewmodel)
         implementation(libs.androidx.lifecycle.compose)
         implementation(libs.androidx.compose.ui.tooling.preview)
-        implementation(libs.koin.compose)
+        implementation(libs.koin.compose.asProvider())
+        implementation(libs.koin.compose.viewmodel)
         implementation(libs.compose.lottie)
 
         debugImplementation(libs.androidx.compose.ui.tooling.debug)

@@ -31,7 +31,7 @@ import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.components.PercentageRange
 import com.baltajmn.flowtime.features.screens.common.composable.components.PomodoroRange
 import com.baltajmn.flowtime.features.screens.common.composable.components.flowTimeRanges
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import com.baltajmn.flowtime.core.design.resources.*
 import org.jetbrains.compose.resources.stringResource
