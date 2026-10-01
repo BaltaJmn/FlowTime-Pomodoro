@@ -67,8 +67,11 @@ class RevenueCatStore(apiKey: String) : Store {
         }
     }
 
+    // Los ids de la App Store son únicos en toda la cuenta de Apple, así que llevan delante el de la
+    // app (com.baltajmn.flowtime.pro_lifetime): cuenta lo que va tras el último punto, como en Play.
     private suspend fun packages(): Map<String, Package> =
-        purchases.awaitOfferings().current?.availablePackages.orEmpty().associateBy { it.storeProduct.id }
+        purchases.awaitOfferings().current?.availablePackages.orEmpty()
+            .associateBy { it.storeProduct.id.substringAfterLast('.') }
 
     private fun CustomerInfo.active(): Set<String> = entitlements.active.keys
 }

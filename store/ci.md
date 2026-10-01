@@ -3,7 +3,9 @@
 Igual que las hermanas (Chroma, MoodTraker, Purl): la secuencia de Android vive en `BaltaJmn/ci`
 (`android-play-release.yml`) y `.github/workflows/release.yml` solo la llama con el paquete, el CN
 de la firma, la tarea de Gradle y la carpeta de notas. `tests.yml` corre `./gradlew build` en cada
-push a `main` y en cada pull request.
+push a `main` y en cada pull request, y en macOS los tests de iOS de `core/data` y la compilación de
+todo `iosMain`: lo único que demuestra que el iPhone sigue compilando y enlazando. El de macOS cuesta
+diez veces más por minuto, y por eso el disparador no incluye ramas sueltas.
 
 ## Cómo se dispara
 
@@ -62,3 +64,44 @@ gh secret set PLAY_SERVICE_ACCOUNT_JSON -R $R < ~/keys/play-service-account.json
 ```
 
 Al rotar la cuenta de publicar con `credenciales.sh play`, este secreto se actualiza solo.
+
+## iPhone: TestFlight
+
+`release-ios.yml`, copiado de MoodTraker, se dispara con la misma etiqueta `v*`: una etiqueta
+publica en las dos tiendas. Archiva, exporta y sube a TestFlight en un solo `xcodebuild`
+(`destination: upload` en el `ExportOptions.plist`, que evita pasar el ipa por `altool`).
+
+Corre en `macos-26` y no en `macos-15`: Compose enlaza clases de UIKit que solo existen desde el SDK
+de iOS 26, y la imagen vieja falla con símbolos indefinidos.
+
+Mientras no existan los secretos de Apple el trabajo se salta solo y deja un aviso, en vez de salir
+rojo en cada etiqueta.
+
+La versión que se ve en la App Store es `MARKETING_VERSION` en `iosApp/iosApp.xcodeproj` (a la par
+que `versionName` de Android); el número de build lo pone el workflow desde `github.run_number`.
+
+### Antes de la primera subida (usuario)
+
+1. Cuenta de Apple Developer y su Team ID.
+2. La app en App Store Connect con el identificador `com.baltajmn.flowtime`, que es para siempre.
+3. Los productos de compras integradas. En la App Store los ids son únicos en toda la cuenta (los
+   de MoodTraker cuentan), así que van con el de la app delante y lo de Play detrás:
+   `com.baltajmn.flowtime.pro_lifetime`, `.tip_small`, `.tip_medium` y `.tip_large`; la app se queda
+   con lo que va tras el último punto. Después, la app de iOS en el proyecto de RevenueCat con los
+   derechos `pro` y `supporter`, y su clave `appl_` en `REVENUECAT_IOS_API_KEY` (`core/data`,
+   `iosMain`). Sin ella el iPhone no tiene tienda, y no se publica: Pro saldría gratis
+   (`ProFeatures`).
+4. Los secretos de abajo, y la clave de compras integradas para RevenueCat (`~/keys/LEEME.md`).
+
+### Secretos de Apple
+
+| Secreto | Qué es |
+|---|---|
+| `APPSTORE_KEY_ID` | El Key ID de la clave de la App Store Connect API |
+| `APPSTORE_ISSUER_ID` | El Issuer ID, el mismo para todas las claves de la cuenta |
+| `APPSTORE_PRIVATE_KEY` | El contenido del `.p8`, entero, con sus líneas `BEGIN`/`END` |
+| `APPLE_TEAM_ID` | El Team ID de la cuenta de desarrollador |
+
+La clave `.p8` se descarga **una sola vez**. Necesita rol *App Manager* o superior para que
+`-allowProvisioningUpdates` pueda crear el certificado y el perfil por su cuenta: es lo que evita
+meter un `.p12` en un secreto.
