@@ -47,6 +47,7 @@ import platform.Foundation.NSNotificationCenter
 import kotlinx.coroutines.flow.combine
 import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.goal.GoalWatcher
 
 /** La app entera en el iPhone: iosApp la pone como pantalla principal. */
 @Suppress("ktlint:standard:function-naming", "FunctionName")
@@ -70,7 +71,11 @@ private val koin: Koin by lazy {
             DesignModule,
             DataModule,
             ScreensModule,
-            module { single { AppIcons() } }
+            module {
+                single { AppIcons() }
+                // En el iPhone la sesión solo avanza con la app abierta: la celebración, dentro de la app.
+                single { GoalWatcher(get(), get(), visible = { true }, notify = { false }) }
+            }
         )
     }.koin
     start(koin)
@@ -82,6 +87,7 @@ private fun start(koin: Koin) {
     val engine = koin.get<FocusEngine>()
     val scope = MainScope()
     engine.runIn(scope)
+    koin.get<GoalWatcher>().watch(scope)
     UNUserNotificationCenter.currentNotificationCenter().delegate = notificationDelegate
     val notifications = PhaseNotifications(engine, koin.get())
     scope.launch { engine.state.collect { notifications.schedule() } }
@@ -117,12 +123,16 @@ private fun IosApp() {
     val appearance by koinInject<AppearanceRepository>().appearance.collectAsStateWithLifecycle()
     val proLauncher = koinInject<ProLauncher>()
     val proRequest by proLauncher.request.collectAsStateWithLifecycle()
+    val goalWatcher = koinInject<GoalWatcher>()
+    val celebration by goalWatcher.celebration.collectAsStateWithLifecycle()
     val dataProvider = koinInject<DataProvider>()
     var showSound by remember { mutableStateOf(dataProvider.getBoolean(SHOW_SOUND)) }
     FlowTimeApp(
         appearance = appearance,
         showSound = showSound,
         onSoundChange = { showSound = it },
+        celebration = celebration,
+        onCelebrationShown = goalWatcher::onShown,
         proRequest = proRequest,
         onProClosed = proLauncher::close,
         openFocus = remember { openFocus.receiveAsFlow() }

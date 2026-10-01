@@ -21,6 +21,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.design)
             implementation(projects.core.navigation)
+            implementation(projects.core.persistence)
             implementation(projects.core.data)
             implementation(projects.features.screens)
             implementation(libs.cmp.material3.navigation.suite)
@@ -28,7 +29,6 @@ kotlin {
         iosMain.dependencies {
             implementation(projects.core.common)
             implementation(projects.core.database)
-            implementation(projects.core.persistence)
             implementation(libs.cmp.lifecycle.runtime.compose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.asProvider())

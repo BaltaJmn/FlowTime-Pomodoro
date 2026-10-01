@@ -6,6 +6,7 @@ import com.baltajmn.flowtime.core.design.module.DesignModule
 import com.baltajmn.flowtime.core.persistence.di.PersistenceModule
 import com.baltajmn.flowtime.data.di.DataModule
 import com.baltajmn.flowtime.features.screens.di.ScreensModule
+import com.baltajmn.flowtime.goal.GoalNotification
 import com.baltajmn.flowtime.goal.GoalWatcher
 import com.baltajmn.flowtime.reminder.DailyReminder
 import com.baltajmn.flowtime.review.ReviewPrompter
@@ -14,6 +15,8 @@ import com.baltajmn.flowtime.data.timer.FocusMode
 import com.baltajmn.flowtime.session.PhaseAlarm
 import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.session.SystemDoNotDisturb
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ProcessLifecycleOwner
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.module.Module
@@ -34,7 +37,15 @@ val CoreModules: Module
         viewModelOf(::MainViewModel)
         single { SessionNotification(androidContext(), get(), get()) }
         single { PhaseAlarm(androidContext(), get()) }
-        single { GoalWatcher(androidContext(), get(), get()) }
+        single {
+            val notification = GoalNotification(androidContext())
+            GoalWatcher(
+                goals = get(),
+                dataProvider = get(),
+                visible = { ProcessLifecycleOwner.get().lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) },
+                notify = notification::notify
+            )
+        }
         single { ReviewPrompter(get()) }
         single { AppIcons(androidContext()) }
         single { DailyReminder(androidContext(), get(), get(), get()) }
