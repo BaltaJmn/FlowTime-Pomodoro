@@ -1,19 +1,30 @@
 plugins {
-    id("flowtime.android.library")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("flowtime.compose.library")
+    id("flowtime.kmp.library")
+    id("kotlinx-serialization")
 }
 
-android {
-    namespace = Config.Core.Data
-}
+kotlin {
+    android {
+        namespace = Config.Core.Data
+    }
 
-dependencies {
-    implementation(projects.core.database)
-    implementation(projects.core.design)
-    implementation(projects.core.persistence)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.revenuecat)
-
-    testImplementation(libs.mock)
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.database)
+            implementation(projects.core.design)
+            implementation(projects.core.persistence)
+            implementation(libs.kotlinx.serialization.json)
+        }
+        androidMain.dependencies {
+            implementation(libs.koin.core)
+            implementation(libs.koin.android)
+            implementation(libs.revenuecat)
+        }
+        commonTest.dependencies {
+            implementation(libs.coroutines.test)
+        }
+        getByName("androidHostTest").dependencies {
+            implementation(libs.mock)
+        }
+    }
 }

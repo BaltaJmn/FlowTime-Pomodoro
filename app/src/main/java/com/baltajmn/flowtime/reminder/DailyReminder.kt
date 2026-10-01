@@ -20,9 +20,10 @@ import com.baltajmn.flowtime.data.reminder.nudge
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.session.SessionReceiver
-import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.first
+import kotlinx.datetime.TimeZone
+import kotlin.time.Clock
 
 /**
  * El recordatorio diario (#45), con una alarma no exacta: unos minutos de margen bastan y no pide
@@ -45,10 +46,11 @@ class DailyReminder(
             Intent(context, SessionReceiver::class.java).setAction(ACTION),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        val at = settings.reminder.value.next(ZonedDateTime.now()) ?: return alarms.cancel(intent)
+        val at = settings.reminder.value.next(Clock.System.now(), TimeZone.currentSystemDefault())
+            ?: return alarms.cancel(intent)
         alarms.setWindow(
             AlarmManager.RTC_WAKEUP,
-            at.toInstant().toEpochMilli(),
+            at.toEpochMilliseconds(),
             WINDOW_MILLIS,
             intent
         )

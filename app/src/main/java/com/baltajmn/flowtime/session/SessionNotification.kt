@@ -22,6 +22,7 @@ import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.PhaseChange
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.data.timer.TimerMode
+import com.baltajmn.flowtime.core.design.getString
 
 /**
  * Las notificaciones de la sesión: la que está mientras dura, y el aviso al terminar cada fase.

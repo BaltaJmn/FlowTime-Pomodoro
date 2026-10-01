@@ -1,13 +1,14 @@
 package com.baltajmn.flowtime.features.screens.todoList
 
 import com.baltajmn.flowtime.data.task.Task
-import java.time.LocalDate
+import com.baltajmn.flowtime.data.goal.today
+import kotlinx.datetime.LocalDate
 
 data class TodoListState(
     val isLoading: Boolean = false,
-    val selectedDate: LocalDate = LocalDate.now(),
-    val selectedDateToShow: String = LocalDate.now().toShowInList(),
-    val today: LocalDate = LocalDate.now(),
+    val selectedDate: LocalDate = today(),
+    val selectedDateToShow: String = today().toShowInList(),
+    val today: LocalDate = today(),
     val tasks: List<Task> = emptyList(),
     /** La última borrada, mientras se puede deshacer. */
     val deleted: Task? = null,

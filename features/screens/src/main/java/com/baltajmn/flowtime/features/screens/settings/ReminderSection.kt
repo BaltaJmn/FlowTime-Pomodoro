@@ -48,6 +48,8 @@ import java.time.format.FormatStyle
 import java.time.format.TextStyle
 import java.time.temporal.WeekFields
 import java.util.Locale
+import kotlinx.datetime.toKotlinDayOfWeek
+import kotlinx.datetime.toJavaLocalTime
 
 /** Ajustes › Recordatorio diario (#45): apagado de entrada; la hora y los días, solo encendido. */
 @OptIn(ExperimentalLayoutApi::class)
@@ -102,7 +104,7 @@ fun ReminderCard(reminder: Reminder, onChange: (Reminder) -> Unit) {
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedButton(onClick = { pickTime = true }) {
                     Text(
-                        text = reminder.time.format(
+                        text = reminder.time.toJavaLocalTime().format(
                             DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
                         )
                     )
@@ -115,8 +117,8 @@ fun ReminderCard(reminder: Reminder, onChange: (Reminder) -> Unit) {
                 ) {
                     (0L..6L).map(first::plus).forEach { day ->
                         FilterChip(
-                            selected = reminder.on(day),
-                            onClick = { onChange(reminder.toggle(day)) },
+                            selected = reminder.on(day.toKotlinDayOfWeek()),
+                            onClick = { onChange(reminder.toggle(day.toKotlinDayOfWeek())) },
                             label = { Text(text = day.getDisplayName(TextStyle.SHORT, locale)) }
                         )
                     }

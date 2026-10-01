@@ -9,13 +9,13 @@ import com.baltajmn.flowtime.data.timer.FocusMode
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.reminder.DailyReminder
 import com.baltajmn.flowtime.widget.FocusWidget
-import java.time.LocalDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import com.baltajmn.flowtime.data.goal.today
 
 /**
  * Todo lo que llega con la app posiblemente cerrada: los botones de la notificación, la alarma de
@@ -59,7 +59,7 @@ class SessionReceiver :
     private fun completeTask(intent: Intent) {
         val id = intent.getLongExtra(SessionNotification.EXTRA_TASK_ID, -1).takeIf { it > 0 } ?: return
         later {
-            get<TaskRepository>().setDone(id, done = true, today = LocalDate.now())
+            get<TaskRepository>().setDone(id, done = true, today = today())
             val engine = get<FocusEngine>()
             if (engine.state.value.taskId == id) engine.setTask(null)
             get<SessionNotification>().run {

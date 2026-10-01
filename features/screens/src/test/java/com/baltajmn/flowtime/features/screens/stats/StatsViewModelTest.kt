@@ -15,7 +15,6 @@ import com.baltajmn.flowtime.features.screens.history.usecases.GetStudyTimeToCli
 import com.baltajmn.flowtime.features.screens.history.usecases.ImportMode
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboard
 import com.baltajmn.flowtime.features.screens.pro.ProAccess
-import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
@@ -33,6 +32,9 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
 
 // Con Robolectric solo por el Context de DocumentFiles.
 @RunWith(RobolectricTestRunner::class)
@@ -41,8 +43,8 @@ class StatsViewModelTest {
 
     private val prefs = FakeDataProvider()
     private val sessions = FakeSessions()
-    private val sep29 = LocalDate.of(2026, 9, 29)
-    private val sep30 = LocalDate.of(2026, 9, 30)
+    private val sep29 = LocalDate(2026, 9, 29)
+    private val sep30 = LocalDate(2026, 9, 30)
     private val hour = StatsSummary(
         totalSeconds = 3600,
         sessions = 2,
@@ -83,9 +85,7 @@ class StatsViewModelTest {
     /** El objetivo cumplido los 7 días hasta el 30 de septiembre. */
     private fun sevenDayStreak() = repeat(PRO_CARD_STREAK) {
         sessions.days[
-            sep30.minusDays(
-                it.toLong()
-            )
+            sep30.minus(it, DateTimeUnit.DAY)
         ] = 3 * 3600L
     }
 
@@ -152,7 +152,7 @@ class StatsViewModelTest {
         assertFalse(viewModel(proEnabled = true).apply { load() }.uiState.value.showProCard)
 
         sessionActive = false
-        sessions.days.remove(sep30.minusDays(6))
+        sessions.days.remove(sep30.minus(6, DateTimeUnit.DAY))
         assertFalse(viewModel(proEnabled = true).apply { load() }.uiState.value.showProCard)
     }
 

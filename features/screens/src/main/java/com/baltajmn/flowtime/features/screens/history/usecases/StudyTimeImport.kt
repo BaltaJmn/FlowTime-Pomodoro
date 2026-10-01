@@ -1,7 +1,7 @@
 package com.baltajmn.flowtime.features.screens.history.usecases
 
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DayKeys
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 const val MAX_MINUTES_PER_DAY = 24 * 60L
 

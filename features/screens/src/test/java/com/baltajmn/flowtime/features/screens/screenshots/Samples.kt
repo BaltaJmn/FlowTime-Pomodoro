@@ -31,21 +31,24 @@ import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.stats.StatsDetails
 import com.baltajmn.flowtime.features.screens.stats.StatsUiState
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.temporal.TemporalAdjusters
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
+import com.baltajmn.flowtime.data.goal.weekStart
+import com.baltajmn.flowtime.data.goal.today
 
 /* Los datos de ejemplo de las capturas, los mismos en todos los tamaños. */
 
 /** Una semana con algo de todo, para que el historial y el nivel no salgan vacíos. */
 internal fun sampleSessions() = FakeSessions().apply {
-    val monday = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+    val monday = today().weekStart()
     listOf(95L, 40L, 130L, 0L, 75L, 20L, 0L).forEachIndexed { day, minutes ->
-        days[monday.plusDays(day.toLong())] = minutes * 60
+        days[monday.plus(day, DateTimeUnit.DAY)] = minutes * 60
     }
-    days[monday.minusWeeks(3)] = 40 * 60 * 60L
+    days[monday.minus(3, DateTimeUnit.WEEK)] = 40 * 60 * 60L
 }
 
 internal val sampleFocus = FocusUiState(
@@ -66,7 +69,7 @@ internal val sampleFocus = FocusUiState(
 
 /** Un mes con algo de todo; [pro] decide si lo de Pro se ve abierto o difuminado. */
 internal fun sampleStats(pro: ProAccess): StatsUiState {
-    val today = LocalDate.now()
+    val today = today()
     val period = StatsPeriod(PeriodKind.MONTH)
     val range = period.range(today)
     val minutes = listOf(95L, 40L, 130L, 0L, 75L, 20L, 0L, 60L, 45L, 110L)
@@ -83,9 +86,9 @@ internal fun sampleStats(pro: ProAccess): StatsUiState {
             sessions = 14,
             averageSessionSeconds = 43 * 60L,
             dailyAverageSeconds = 60 * 60L,
-            bestDay = range.start.plusDays(2),
+            bestDay = range.start.plus(2, DateTimeUnit.DAY),
             bestDaySeconds = 130 * 60L,
-            byDay = minutes.mapIndexed { day, it -> range.start.plusDays(day.toLong()) to it * 60 }.toMap()
+            byDay = minutes.mapIndexed { day, it -> range.start.plus(day, DateTimeUnit.DAY) to it * 60 }.toMap()
         ),
         pro = pro,
         details = StatsDetails(
@@ -112,7 +115,7 @@ internal fun sampleSettings(
         AppearanceRepository(prefs),
         FakeBackups(lastExportAt = System.currentTimeMillis()),
         DocumentFiles(RuntimeEnvironment.getApplication()),
-        GoalRepository(prefs, sampleSessions(), days = flowOf(LocalDate.now())).apply {
+        GoalRepository(prefs, sampleSessions(), days = flowOf(today())).apply {
             goalMinutes?.let(
                 ::setGoal
             )
@@ -126,7 +129,7 @@ internal fun sampleSettings(
 }
 
 internal fun sampleTodo(): TodoListViewModel {
-    val today = LocalDate.now()
+    val today = today()
     val tasks = FakeTasks(
         Task(1, "Repasar el tema 4", "Apuntes y ejercicios del final", plannedFor = today),
         Task(2, "Leer 20 páginas", plannedFor = today, doneOn = today, position = 1),
@@ -134,7 +137,7 @@ internal fun sampleTodo(): TodoListViewModel {
             id = 3,
             title = "Preparar la presentación",
             description = "Diapositivas 5 a 12",
-            plannedFor = today.minusDays(1)
+            plannedFor = today.minus(1, DateTimeUnit.DAY)
         )
     )
     return TodoListViewModel(tasks, today = { today })

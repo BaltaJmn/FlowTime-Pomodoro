@@ -2,14 +2,14 @@ package com.baltajmn.flowtime.features.screens.history
 
 import com.baltajmn.flowtime.features.screens.history.usecases.MAX_MINUTES_PER_DAY
 import com.baltajmn.flowtime.features.screens.history.usecases.parseStudyTimeImport
-import java.time.LocalDate
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import kotlinx.datetime.LocalDate
 
 class StudyTimeImportTest {
 
-    private val sep29 = LocalDate.of(2026, 9, 29)
-    private val sep30 = LocalDate.of(2026, 9, 30)
+    private val sep29 = LocalDate(2026, 9, 29)
+    private val sep30 = LocalDate(2026, 9, 30)
 
     @Test
     fun `lee el texto que exporta la app`() {
@@ -31,7 +31,7 @@ class StudyTimeImportTest {
     fun `las fechas imposibles y los valores enormes se descartan`() {
         val parsed = parseStudyTimeImport("32132026: 30\n29092026: 999999\n28092026: 1440")
 
-        assertEquals(mapOf(LocalDate.of(2026, 9, 28) to MAX_MINUTES_PER_DAY), parsed.minutesByDay)
+        assertEquals(mapOf(LocalDate(2026, 9, 28) to MAX_MINUTES_PER_DAY), parsed.minutesByDay)
         assertEquals(2, parsed.ignoredLines)
     }
 

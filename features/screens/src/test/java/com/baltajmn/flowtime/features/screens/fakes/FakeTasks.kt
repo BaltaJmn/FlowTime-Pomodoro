@@ -3,11 +3,11 @@ package com.baltajmn.flowtime.features.screens.fakes
 import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.data.task.TaskRepository
 import com.baltajmn.flowtime.data.task.TaskResult
-import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlinx.datetime.LocalDate
 
 /** Tareas en memoria, sin límite, con las mismas reglas de qué se ve cada día. */
 class FakeTasks(vararg tasks: Task) : TaskRepository {

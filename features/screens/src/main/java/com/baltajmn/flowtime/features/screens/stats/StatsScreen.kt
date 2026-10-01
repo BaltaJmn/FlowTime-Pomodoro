@@ -85,15 +85,20 @@ import com.baltajmn.flowtime.features.screens.pro.ProGate
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.features.screens.settings.streakText
 import java.text.NumberFormat
-import java.time.LocalDate
 import java.time.Month
-import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.format.TextStyle
 import java.util.Locale
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toJavaDayOfWeek
+import kotlinx.datetime.plus
+import kotlinx.datetime.number
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.DateTimeUnit
+import com.baltajmn.flowtime.data.goal.today
 
 @Composable
 fun StatsScreen(
@@ -132,7 +137,7 @@ fun StatsScreen(
         onDismissProCard = viewModel::dismissProCard,
         onCopyHistory = { viewModel.exportStudyTime { clipboard.setText(AnnotatedString(it)) } },
         onPasteHistory = { viewModel.importStudyTime(clipboard.getText()?.text.orEmpty()) },
-        onExportCsv = { csvFile.launch("flowtime-${LocalDate.now()}.csv") }
+        onExportCsv = { csvFile.launch("flowtime-${today()}.csv") }
     )
 }
 
@@ -610,21 +615,21 @@ private fun PeriodBody(state: StatsUiState, changeAccess: ProAccess, onUnlock: (
     when (kind) {
         PeriodKind.DAY -> Unit
         PeriodKind.WEEK -> PeriodBars(
-            values = (0L until 7L).map { summary.byDay[start.plusDays(it)] ?: 0L },
-            labels = (0L until 7L).map {
-                start.plusDays(it).dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.getDefault())
+            values = (0 until 7).map { summary.byDay[start.plus(it, DateTimeUnit.DAY)] ?: 0L },
+            labels = (0 until 7).map {
+                start.plus(it, DateTimeUnit.DAY).dayOfWeek.toJavaDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.getDefault())
             },
             description = description
         )
         PeriodKind.MONTH -> PeriodBars(
-            values = (1..start.lengthOfMonth()).map { summary.byDay[start.withDayOfMonth(it)] ?: 0L },
-            labels = (1..start.lengthOfMonth()).map { if (it == 1 || it % 5 == 0) "$it" else "" },
+            values = (1..state.range.endInclusive.day).map { summary.byDay[LocalDate(start.year, start.month, it)] ?: 0L },
+            labels = (1..state.range.endInclusive.day).map { if (it == 1 || it % 5 == 0) "$it" else "" },
             description = description
         )
         PeriodKind.YEAR -> {
             PeriodBars(
                 values = (1..12).map { month ->
-                    summary.byDay.filterKeys { YearMonth.from(it) == YearMonth.of(start.year, month) }.values.sum()
+                    summary.byDay.filterKeys { it.year == start.year && it.month.number == month }.values.sum()
                 },
                 labels = (1..12).map {
                     Month.of(it).getDisplayName(TextStyle.NARROW, Locale.getDefault())
@@ -734,16 +739,16 @@ private fun signedPercent(change: Float): String =
     (if (change > 0) "+" else "") + NumberFormat.getPercentInstance().format(change)
 
 private fun periodLabel(kind: PeriodKind, range: ClosedRange<LocalDate>): String = when (kind) {
-    PeriodKind.DAY -> MEDIUM.format(range.start)
-    PeriodKind.WEEK -> "${MEDIUM.format(range.start)} - ${MEDIUM.format(range.endInclusive)}"
-    PeriodKind.MONTH -> MONTH.format(range.start).replaceFirstChar { it.titlecase() }
+    PeriodKind.DAY -> MEDIUM.format(range.start.toJavaLocalDate())
+    PeriodKind.WEEK -> "${MEDIUM.format(range.start.toJavaLocalDate())} - ${MEDIUM.format(range.endInclusive.toJavaLocalDate())}"
+    PeriodKind.MONTH -> MONTH.format(range.start.toJavaLocalDate()).replaceFirstChar { it.titlecase() }
     PeriodKind.YEAR -> range.start.year.toString()
 }
 
 /** En una semana basta el día; en un mes o un año hace falta la fecha. */
 private fun bestDayLabel(kind: PeriodKind, day: LocalDate): String = when (kind) {
-    PeriodKind.DAY, PeriodKind.WEEK -> DAY.format(day)
-    PeriodKind.MONTH, PeriodKind.YEAR -> MEDIUM.format(day)
+    PeriodKind.DAY, PeriodKind.WEEK -> DAY.format(day.toJavaLocalDate())
+    PeriodKind.MONTH, PeriodKind.YEAR -> MEDIUM.format(day.toJavaLocalDate())
 }
 
 // Con el idioma de cada momento: se crean al pintar, no una vez al arrancar.

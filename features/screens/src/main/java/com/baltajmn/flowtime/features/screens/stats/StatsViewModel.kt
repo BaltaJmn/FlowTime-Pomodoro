@@ -27,7 +27,6 @@ import com.baltajmn.flowtime.features.screens.history.usecases.ImportMode
 import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromClipboardUseCase
 import com.baltajmn.flowtime.features.screens.history.usecases.StudyTimeImport
 import com.baltajmn.flowtime.features.screens.pro.ProAccess
-import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +35,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
+import com.baltajmn.flowtime.data.goal.today as systemToday
 
 /**
  * Las estadísticas (#38). Gratis: hoy, la semana y el mes, la racha, el objetivo y el nivel. De
@@ -54,7 +55,7 @@ class StatsViewModel(
     private val prefs: DataProvider,
     private val sessionActive: () -> Boolean,
     private val proEnabled: Boolean = ProFeatures.enabled,
-    private val today: () -> LocalDate = { LocalDate.now() },
+    private val today: () -> LocalDate = { systemToday() },
     private val clock: () -> Long = System::currentTimeMillis
 ) : ViewModel() {
 
@@ -231,7 +232,7 @@ data class StatsUiState(
     val today: DayProgress? = null,
     val streak: Streak = Streak(),
     val period: StatsPeriod = StatsPeriod(PeriodKind.WEEK),
-    val range: ClosedRange<LocalDate> = StatsPeriod(PeriodKind.WEEK).range(LocalDate.now()),
+    val range: ClosedRange<LocalDate> = StatsPeriod(PeriodKind.WEEK).range(systemToday()),
     val summary: StatsSummary = StatsSummary(),
     val pro: ProAccess = ProAccess.HIDDEN,
     /** Si la tarjeta de Pro puede salir: sin sesión en marcha y sin cerrarla hace poco. */

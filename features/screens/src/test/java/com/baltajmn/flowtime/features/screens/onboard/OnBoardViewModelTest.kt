@@ -10,7 +10,6 @@ import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
 import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel.Event.Back
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel.Event.NavigateToMainGraph
-import java.time.LocalDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -24,6 +23,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import kotlinx.datetime.LocalDate
 
 class OnBoardViewModelTest {
 
@@ -36,7 +36,7 @@ class OnBoardViewModelTest {
     private val prefs = FakeDataProvider()
     private val sessions = FakeSessions()
     private val engine = FocusEngine(prefs, StillTime, sessions)
-    private val goals = GoalRepository(prefs, sessions, days = flowOf(LocalDate.of(2026, 9, 29)))
+    private val goals = GoalRepository(prefs, sessions, days = flowOf(LocalDate(2026, 9, 29)))
 
     @Before
     fun setUp() = Dispatchers.setMain(UnconfinedTestDispatcher())

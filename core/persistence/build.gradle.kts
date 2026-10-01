@@ -12,6 +12,8 @@ kotlin {
         commonMain.dependencies {
             // getObject y setObject son inline: quien los llama compila contra kotlinx.serialization.
             api(libs.kotlinx.serialization.json)
+            // DayKeys: las claves de cada día.
+            api(libs.kotlinx.datetime)
         }
         androidMain.dependencies {
             implementation(libs.koin.core)

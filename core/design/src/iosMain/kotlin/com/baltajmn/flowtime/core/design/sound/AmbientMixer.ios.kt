@@ -85,7 +85,7 @@ actual class AmbientMixer actual constructor() {
             dispatch_async(dispatch_get_main_queue()) { if (this.player === player) stop() }
             return
         }
-        val buffer = AVAudioPCMBuffer(pCMFormat = format, frameCapacity = FRAMES.toUInt()) ?: return
+        val buffer = AVAudioPCMBuffer(pCMFormat = format, frameCapacity = FRAMES.toUInt())
         buffer.frameLength = FRAMES.toUInt()
         val channels = buffer.floatChannelData ?: return
         val left = channels[0] ?: return

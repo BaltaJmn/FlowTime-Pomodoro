@@ -74,6 +74,7 @@ import com.baltajmn.flowtime.session.title
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import com.baltajmn.flowtime.core.design.R as DesignR
+import com.baltajmn.flowtime.core.design.getString
 
 // Con SizeMode.Responsive, LocalSize es el mayor de estos que cabe: 2x1, 4x1 y 4x2.
 private val SMALL = DpSize(110.dp, 40.dp)

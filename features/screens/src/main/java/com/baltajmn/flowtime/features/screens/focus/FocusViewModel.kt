@@ -28,10 +28,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import java.time.LocalDate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import com.baltajmn.flowtime.data.goal.today
 
 data class FocusUiState(
     val mode: TimerMode = TimerMode.FLOW_TIME,
@@ -77,7 +77,7 @@ class FocusViewModel(
     private val keepScreenOn = dataProvider.getBoolean(KEEP_SCREEN_ON, true)
 
     // Las pendientes de hoy, y el descanso (por la hora de su trabajo) en el que ya se contestó.
-    private val pendingTasks = LocalDate.now().let { today ->
+    private val pendingTasks = today().let { today ->
         tasks.day(today, today).map { list -> list.filterNot(Task::done) }
     }
     private val answeredFor = MutableStateFlow<Long?>(null)
@@ -126,7 +126,7 @@ class FocusViewModel(
     fun completeTask() {
         val id = engine.state.value.taskId ?: return
         viewModelScope.launch {
-            tasks.setDone(id, done = true, today = LocalDate.now())
+            tasks.setDone(id, done = true, today = today())
             engine.setTask(null)
         }
     }

@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.data.task.TaskRepository
+import com.baltajmn.flowtime.data.goal.today as systemToday
 import com.baltajmn.flowtime.data.task.TaskResult
-import java.time.LocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,11 +13,15 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 
 /** Las tareas del día elegido. Salen de un flujo: cualquier cambio se ve solo. */
 class TodoListViewModel(
     private val tasks: TaskRepository,
-    private val today: () -> LocalDate = { LocalDate.now() }
+    private val today: () -> LocalDate = { systemToday() }
 ) : ViewModel() {
 
     private val selectedDate = MutableStateFlow(today())
@@ -49,9 +53,9 @@ class TodoListViewModel(
         }
     }
 
-    fun plusDay() = selectedDate.update { it.plusDays(1) }
+    fun plusDay() = selectedDate.update { it.plus(1, DateTimeUnit.DAY) }
 
-    fun minusDay() = selectedDate.update { it.minusDays(1) }
+    fun minusDay() = selectedDate.update { it.minus(1, DateTimeUnit.DAY) }
 
     fun onAddItem(title: String, description: String) =
         change { tasks.add(title, description, selectedDate.value) }

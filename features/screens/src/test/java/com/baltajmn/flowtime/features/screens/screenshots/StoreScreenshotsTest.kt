@@ -51,7 +51,6 @@ import com.baltajmn.flowtime.features.screens.settings.SettingsContent
 import com.baltajmn.flowtime.features.screens.stats.StatsContent
 import com.baltajmn.flowtime.features.screens.todoList.TodoListContent
 import com.baltajmn.flowtime.features.screens.todoList.TodoListViewModel
-import java.time.LocalDate
 import java.util.Calendar
 import org.junit.Rule
 import org.junit.Test
@@ -59,6 +58,10 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
+import com.baltajmn.flowtime.data.goal.today as systemToday
 
 /**
  * Las capturas de la ficha de Play (#54): las pantallas con su barra de navegación y datos de ejemplo
@@ -76,14 +79,14 @@ abstract class StoreScreenshots(private val language: String, private val tablet
     val compose = createComposeRule()
 
     private val sample = SAMPLES.getValue(language)
-    private val today = LocalDate.now()
+    private val today = systemToday()
     private val tags = sample.tags.mapIndexed { i, name -> Tag(i + 1L, name, i) }
     private val tasks = sample.tasks.mapIndexed { i, (title, description) ->
         Task(
             i + 1L,
             title,
             description.orEmpty(),
-            plannedFor = if (i == 2) today.minusDays(1) else today,
+            plannedFor = if (i == 2) today.minus(1, DateTimeUnit.DAY) else today,
             position = i
         )
     }

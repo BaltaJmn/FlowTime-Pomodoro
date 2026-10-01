@@ -35,6 +35,8 @@ class KmpLibraryPlugin : Plugin<Project> {
 
             // Room pide un expect object (AppDatabaseConstructor) y escribe sus actual.
             compilerOptions.freeCompilerArgs.add("-Xexpect-actual-classes")
+            // Los mismos que en los módulos solo de Android (configureKotlin).
+            compilerOptions.optIn.addAll("kotlinx.coroutines.ExperimentalCoroutinesApi", "kotlinx.coroutines.FlowPreview")
 
             sourceSets.commonTest.configure {
                 dependencies { implementation(kotlin("test")) }

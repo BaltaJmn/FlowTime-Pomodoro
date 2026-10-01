@@ -22,6 +22,7 @@ import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.focus.FocusUiState
+import org.jetbrains.compose.resources.stringResource
 
 @DrawableRes
 private fun TimerAction.icon() = when (this) {

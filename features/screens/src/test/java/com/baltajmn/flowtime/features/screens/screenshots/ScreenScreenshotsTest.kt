@@ -33,13 +33,14 @@ import com.baltajmn.flowtime.features.screens.support.SupportContent
 import com.baltajmn.flowtime.features.screens.support.SupportState
 import com.baltajmn.flowtime.features.screens.todoList.TodoListContent
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
-import java.time.LocalDate
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import kotlinx.datetime.LocalDate
+import com.baltajmn.flowtime.data.goal.today
 
 /** Las pantallas principales con el tema azul, en claro y en oscuro. */
 @RunWith(ParameterizedRobolectricTestRunner::class)
@@ -171,7 +172,7 @@ class ScreenScreenshotsTest(private val dark: Boolean) {
     @Test
     fun statsEmpty() = compose.capture("stats_empty_$mode", dark = dark) {
         StatsContent(
-            state = StatsUiState(loading = false, today = DayProgress(LocalDate.now(), 0, 60)),
+            state = StatsUiState(loading = false, today = DayProgress(today(), 0, 60)),
             onPeriod = {},
             onPrevious = {},
             onNext = {},

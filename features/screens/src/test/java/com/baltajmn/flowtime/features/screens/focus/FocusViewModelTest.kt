@@ -10,7 +10,6 @@ import com.baltajmn.flowtime.features.screens.fakes.FakeDataProvider
 import com.baltajmn.flowtime.features.screens.fakes.FakeSessions
 import com.baltajmn.flowtime.features.screens.fakes.FakeTags
 import com.baltajmn.flowtime.features.screens.fakes.FakeTasks
-import java.time.LocalDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -24,6 +23,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import kotlinx.datetime.LocalDate
 
 class FocusViewModelTest {
 
@@ -36,7 +36,7 @@ class FocusViewModelTest {
     private val prefs = FakeDataProvider()
     private val sessions = FakeSessions()
     private val engine = FocusEngine(prefs, StillTime, sessions)
-    private val goals = GoalRepository(prefs, sessions, days = flowOf(LocalDate.of(2026, 9, 30)))
+    private val goals = GoalRepository(prefs, sessions, days = flowOf(LocalDate(2026, 9, 30)))
 
     @Before
     fun setUp() = Dispatchers.setMain(UnconfinedTestDispatcher())

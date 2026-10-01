@@ -3,7 +3,7 @@ package com.baltajmn.flowtime.features.screens.history.usecases
 import com.baltajmn.flowtime.core.common.extensions.mapToString
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DayKeys
 import com.baltajmn.flowtime.data.repository.SessionRepository
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 interface GetStudyTimeToClipboardUseCase {
     suspend operator fun invoke(): String
@@ -16,9 +16,9 @@ class GetStudyTimeToClipboard(
 
     override suspend fun invoke(): String = mapToString(
         // Las fechas se comparan como texto yyyy-MM-dd: los límites tienen que tener cuatro cifras de año.
-        sessions.secondsByDay(LocalDate.of(1970, 1, 1), LocalDate.of(9999, 12, 31))
-            .toSortedMap()
-            .map { (day, seconds) -> DayKeys.of(day) to seconds / 60 }
-            .toMap()
+        sessions.secondsByDay(LocalDate(1970, 1, 1), LocalDate(9999, 12, 31))
+            .entries
+            .sortedBy { it.key }
+            .associate { (day, seconds) -> DayKeys.of(day) to seconds / 60 }
     )
 }

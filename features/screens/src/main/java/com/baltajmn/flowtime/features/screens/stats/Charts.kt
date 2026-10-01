@@ -28,11 +28,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import java.text.NumberFormat
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalAdjusters
+import com.baltajmn.flowtime.data.goal.weekStart
 import kotlin.math.ceil
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.daysUntil
+import kotlinx.datetime.plus
 
 /**
  * Una barra por valor; la más alta llena el alto. Debajo, [labels] (las vacías no se pintan). Para
@@ -87,10 +88,10 @@ fun Bars(values: List<Long>, labels: List<String>, description: String, height: 
 fun YearHeatmap(year: Int, byDay: Map<LocalDate, Long>, description: String) {
     val color = MaterialTheme.colorScheme.primary
     val empty = MaterialTheme.colorScheme.outlineVariant
-    val first = LocalDate.of(year, 1, 1)
-    val start = first.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+    val first = LocalDate(year, 1, 1)
+    val start = first.weekStart()
     // 53 semanas, o 54 si un año bisiesto empieza en domingo.
-    val weeks = ChronoUnit.DAYS.between(start, first.plusYears(1).minusDays(1)).toInt() / 7 + 1
+    val weeks = start.daysUntil(LocalDate(year, 12, 31)) / 7 + 1
     val max = byDay.values.maxOrNull() ?: 0L
     Canvas(
         modifier = Modifier
@@ -102,7 +103,7 @@ fun YearHeatmap(year: Int, byDay: Map<LocalDate, Long>, description: String) {
         val gap = cell * 0.18f
         var day = first
         while (day.year == year) {
-            val index = ChronoUnit.DAYS.between(start, day).toInt()
+            val index = start.daysUntil(day)
             val seconds = byDay[day] ?: 0L
             drawRoundRect(
                 color = if (seconds > 0 && max > 0) {
@@ -116,7 +117,7 @@ fun YearHeatmap(year: Int, byDay: Map<LocalDate, Long>, description: String) {
                 size = Size(cell - gap, cell - gap),
                 cornerRadius = CornerRadius(gap)
             )
-            day = day.plusDays(1)
+            day = day.plus(1, DateTimeUnit.DAY)
         }
     }
 }

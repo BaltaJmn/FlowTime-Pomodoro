@@ -1,11 +1,12 @@
 package com.baltajmn.flowtime.features.screens.fakes
 
 import com.baltajmn.flowtime.data.repository.SessionRepository
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneOffset
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
 /** Sesiones en memoria, con los totales por día en segundos. Los días van en UTC. */
 class FakeSessions : SessionRepository {
@@ -31,20 +32,20 @@ class FakeSessions : SessionRepository {
         taskId: Long?
     ) {
         recorded += Recorded(mode, startedAt, endedAt, focusSeconds, tagId, taskId)
-        val day = Instant.ofEpochMilli(startedAt).atZone(ZoneOffset.UTC).toLocalDate()
+        val day = Instant.fromEpochMilliseconds(startedAt).toLocalDateTime(TimeZone.UTC).date
         days[day] = (days[day] ?: 0L) + focusSeconds
     }
 
     override fun secondsOn(day: LocalDate): Flow<Long> = flowOf(days[day] ?: 0L)
 
     override suspend fun secondsByDay(from: LocalDate, to: LocalDate) =
-        days.filterKeys { !it.isBefore(from) && !it.isAfter(to) }
+        days.filterKeys { it in from..to }
 
     override suspend fun totalSeconds() = days.values.sum()
 
     override suspend fun countSessions(from: LocalDate, to: LocalDate) = recorded.count {
-        val day = Instant.ofEpochMilli(it.startedAt).atZone(ZoneOffset.UTC).toLocalDate()
-        !day.isBefore(from) && !day.isAfter(to)
+        val day = Instant.fromEpochMilliseconds(it.startedAt).toLocalDateTime(TimeZone.UTC).date
+        day in from..to
     }
 
     override suspend fun addToDays(secondsByDay: Map<LocalDate, Long>, replace: Boolean) {

@@ -4,7 +4,7 @@ import com.baltajmn.flowtime.data.stats.StatsPeriod
 import com.baltajmn.flowtime.data.stats.StatsRepository
 import com.baltajmn.flowtime.data.stats.StatsSummary
 import com.baltajmn.flowtime.data.stats.TaskTime
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 /** Siempre los mismos números, sea cual sea el periodo. Cuenta las consultas de Pro. */
 class FakeStats(
