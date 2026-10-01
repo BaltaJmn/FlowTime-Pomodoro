@@ -28,7 +28,9 @@ class KmpLibraryPlugin : Plugin<Project> {
                 compileSdk = libs.versions.compileSdk.get().toInt()
                 minSdk = libs.versions.minSdk.get().toInt()
                 compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
-                withHostTest { }
+                // Solo se puede crear una vez: con los recursos de Android para todos, que las capturas de
+                // features/screens (Robolectric) los necesitan para pintar las pantallas.
+                withHostTest { isIncludeAndroidResources = true }
             }
             iosArm64()
             iosSimulatorArm64()

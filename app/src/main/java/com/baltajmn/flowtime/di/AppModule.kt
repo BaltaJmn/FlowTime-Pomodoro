@@ -18,6 +18,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import com.baltajmn.flowtime.features.screens.settings.AppIcons
 
 val FeaturesModule: Module
     get() = module {
@@ -35,6 +36,7 @@ val CoreModules: Module
         single { PhaseAlarm(androidContext(), get()) }
         single { GoalWatcher(androidContext(), get(), get()) }
         single { ReviewPrompter(get()) }
+        single { AppIcons(androidContext()) }
         single { DailyReminder(androidContext(), get(), get(), get()) }
         single {
             FocusMode(

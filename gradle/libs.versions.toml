@@ -100,6 +100,7 @@ cmp-components-resources = { module = "org.jetbrains.compose.components:componen
 cmp-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "jbMaterial3" }
 cmp-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "jbMaterialIcons" }
 cmp-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jbLifecycle" }
+cmp-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jbLifecycle" }
 cmp-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jbNavigation" }
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 
