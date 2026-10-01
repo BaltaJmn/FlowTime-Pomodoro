@@ -17,6 +17,8 @@ jbMaterial3 = "1.11.0-alpha07"
 jbMaterialIcons = "1.7.3"
 # La 2.11 ya pide compileSdk 37 y AGP 9.1.
 jbLifecycle = "2.10.0"
+# En Android trae androidx.navigation 2.9.7.
+jbNavigation = "2.9.2"
 # La 2.3 ya pide Compose Multiplatform 1.12.
 compottie = "2.2.4"
 composeBom = "2026.06.01"
@@ -51,7 +53,6 @@ glance = "1.1.1"
 [libraries]
 
 androidx-compose-activity = "androidx.activity:activity-compose:1.10.1"
-androidx-compose-navigation = "androidx.navigation:navigation-compose:2.9.0"
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
@@ -98,6 +99,7 @@ cmp-components-resources = { module = "org.jetbrains.compose.components:componen
 cmp-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "jbMaterial3" }
 cmp-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "jbMaterialIcons" }
 cmp-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jbLifecycle" }
+cmp-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jbNavigation" }
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 
 junit = { module = "junit:junit", version.ref = "junit" }

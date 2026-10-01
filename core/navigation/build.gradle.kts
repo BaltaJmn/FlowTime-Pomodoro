@@ -1,13 +1,15 @@
 plugins {
-    id("flowtime.android.library")
+    id("flowtime.kmp.library")
 }
 
-android {
-    namespace = Config.Core.Navigation
-}
+kotlin {
+    android {
+        namespace = Config.Core.Navigation
+    }
 
-dependencies {
-    implementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.navigation)
+    sourceSets {
+        commonMain.dependencies {
+            api(libs.cmp.navigation.compose)
+        }
+    }
 }
