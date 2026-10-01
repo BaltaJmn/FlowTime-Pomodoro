@@ -33,6 +33,13 @@ Si se cambia un SVG, hay que copiar sus `d` al vector de Android que le correspo
 rsvg-convert -w 512 -h 512 design/icon.svg -o core/design/src/main/ic_launcher_flowtime-playstore.png
 ```
 
+El del iPhone, a 1024 px y sin canal alfa (la App Store no lo acepta con él); iOS pone las esquinas:
+
+```sh
+rsvg-convert -w 1024 -h 1024 design/icon.svg | python3 -c "import sys, io; from PIL import Image; \
+  Image.open(io.BytesIO(sys.stdin.buffer.read())).convert('RGB').save('iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/AppIcon.png')"
+```
+
 Sin `rsvg-convert`, con Chrome:
 
 ```sh
