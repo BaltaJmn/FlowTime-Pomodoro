@@ -72,6 +72,8 @@ private val AppIcon.mipmap: Int
         AppIcon.CHERRY -> R.mipmap.ic_launcher_cherry
     }
 
+internal actual val asksBeforeIconChange = true
+
 @Composable
 internal actual fun rememberAppIconImage(icon: AppIcon, px: Int): ImageBitmap {
     val context = LocalContext.current

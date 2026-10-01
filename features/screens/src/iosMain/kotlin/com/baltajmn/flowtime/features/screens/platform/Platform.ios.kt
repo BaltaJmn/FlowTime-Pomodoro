@@ -100,8 +100,6 @@ private class IosSystemSettings(private val notificationsAllowed: () -> Boolean)
 
     override fun openExactAlarmSettings() = Unit
 
-    override val hasFocusMode = false
-
     override fun openFocusModeAccess() = Unit
 
     /** La valoración del propio sistema: no necesita el id de la app en la App Store. */
@@ -126,9 +124,7 @@ actual val canBlur: Boolean = true
 
 actual val hasWallpaperColors: Boolean = false
 
-actual val hasAppIcons: Boolean = false
-
-actual val hasFiles: Boolean = true
+actual val hasFocusMode: Boolean = false
 
 actual val automaticBackupText: StringResource = Res.string.backup_automatic_ios
 

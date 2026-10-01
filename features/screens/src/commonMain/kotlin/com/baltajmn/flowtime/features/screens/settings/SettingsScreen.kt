@@ -83,8 +83,7 @@ import org.jetbrains.compose.resources.getString
 import com.baltajmn.flowtime.features.screens.platform.rememberSystemSettings
 import com.baltajmn.flowtime.features.screens.platform.rememberShowMessage
 import com.baltajmn.flowtime.features.screens.platform.hasWallpaperColors
-import com.baltajmn.flowtime.features.screens.platform.hasFiles
-import com.baltajmn.flowtime.features.screens.platform.hasAppIcons
+import com.baltajmn.flowtime.features.screens.platform.hasFocusMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.runtime.derivedStateOf
 import com.baltajmn.flowtime.data.pro.ProFeatures
@@ -293,7 +292,7 @@ fun SettingsContent(
                         onCheckedChange = viewModel::saveKeepScreenOn
                     )
 
-                    if (system.hasFocusMode && state.purchases.pro != ProAccess.HIDDEN) {
+                    if (hasFocusMode && state.purchases.pro != ProAccess.HIDDEN) {
                         FocusModeRow(
                             checked = state.focusMode && state.purchases.pro == ProAccess.OPEN,
                             unlocked = state.purchases.pro == ProAccess.OPEN,
@@ -324,19 +323,17 @@ fun SettingsContent(
             }
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
-        if (hasFiles) {
-            item {
-                BackupCard(
-                    state = state.backup,
-                    onExport = viewModel::exportTo,
-                    onImport = viewModel::importFrom,
-                    onConfirmImport = viewModel::confirmImport,
-                    onCancelImport = viewModel::cancelImport,
-                    onMessageShown = viewModel::onBackupMessageShown
-                )
-            }
-            item { Spacer(modifier = Modifier.height(24.dp)) }
+        item {
+            BackupCard(
+                state = state.backup,
+                onExport = viewModel::exportTo,
+                onImport = viewModel::importFrom,
+                onConfirmImport = viewModel::confirmImport,
+                onCancelImport = viewModel::cancelImport,
+                onMessageShown = viewModel::onBackupMessageShown
+            )
         }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
         item { PositiveText() }
         item { Spacer(modifier = Modifier.height(192.dp)) }
     }
@@ -687,7 +684,7 @@ fun AppearanceCard(
             }
 
             // Los iconos son de Pro: sin Pro a la venta, ni se ven.
-            if (hasAppIcons && pro != ProAccess.HIDDEN) {
+            if (pro != ProAccess.HIDDEN) {
                 Spacer(modifier = Modifier.height(12.dp))
                 AppIconRow(icon = icon, pro = pro, onIcon = onIcon, onLocked = onLockedTheme)
             }

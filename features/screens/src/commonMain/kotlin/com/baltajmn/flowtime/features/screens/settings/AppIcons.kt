@@ -52,7 +52,7 @@ enum class AppIcon(val theme: AppTheme) {
     CHERRY(AppTheme.Cherry)
 }
 
-/** El icono del lanzador. De momento solo se cambia en Android: [com.baltajmn.flowtime.features.screens.platform.hasAppIcons]. */
+/** El icono del lanzador, o de la pantalla de inicio en el iPhone. */
 expect class AppIcons {
     fun current(): AppIcon
 
@@ -63,9 +63,12 @@ expect class AppIcons {
 @Composable
 internal expect fun rememberAppIconImage(icon: AppIcon, px: Int): ImageBitmap
 
+/** Si se pregunta antes de cambiar: el iPhone ya avisa él, con su propia alerta, al cambiarlo. */
+internal expect val asksBeforeIconChange: Boolean
+
 /**
- * Los iconos en Apariencia, con Pro a la venta. Cambiar se confirma antes: algunos lanzadores quitan el
- * icono de la pantalla de inicio cuando cambia.
+ * Los iconos en Apariencia, con Pro a la venta. En Android cambiar se confirma antes: algunos
+ * lanzadores quitan el icono de la pantalla de inicio cuando cambia.
  */
 @Composable
 fun AppIconRow(icon: AppIcon, pro: ProAccess, onIcon: (AppIcon) -> Unit, onLocked: () -> Unit) {
@@ -84,7 +87,9 @@ fun AppIconRow(icon: AppIcon, pro: ProAccess, onIcon: (AppIcon) -> Unit, onLocke
             AppIconChoice(option, selected = option == icon, locked = locked) {
                 when {
                     locked -> onLocked()
-                    option != icon -> asking = option
+                    option == icon -> Unit
+                    asksBeforeIconChange -> asking = option
+                    else -> onIcon(option)
                 }
             }
         }

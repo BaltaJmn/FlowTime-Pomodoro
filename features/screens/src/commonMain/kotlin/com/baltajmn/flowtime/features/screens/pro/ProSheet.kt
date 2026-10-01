@@ -55,6 +55,7 @@ import com.baltajmn.flowtime.core.design.resources.*
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import com.baltajmn.flowtime.features.screens.platform.hasFocusMode
 import com.baltajmn.flowtime.features.screens.platform.rememberPurchaseHost
 
 /**
@@ -137,8 +138,10 @@ private fun ColumnScope.Offer(
         style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.primary
     )
-    // Desde una función bloqueada, esa la primera.
-    ProFeature.entries.sortedByDescending { it == from }.forEach { FeatureRow(it) }
+    // Desde una función bloqueada, esa la primera. No molestar, solo donde existe.
+    ProFeature.entries.filter { it != ProFeature.DND || hasFocusMode }
+        .sortedByDescending { it == from }
+        .forEach { FeatureRow(it) }
     Text(
         text = stringResource(Res.string.pro_future),
         style = MaterialTheme.typography.bodyMedium,

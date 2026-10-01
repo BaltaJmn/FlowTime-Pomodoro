@@ -67,8 +67,6 @@ private class AndroidSystemSettings(private val context: Context) : SystemSettin
         Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:${context.packageName}"))
     )
 
-    override val hasFocusMode = true
-
     override fun openFocusModeAccess() =
         context.startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
 
@@ -100,9 +98,7 @@ actual val canBlur: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
 actual val hasWallpaperColors: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
-actual val hasAppIcons: Boolean = true
-
-actual val hasFiles: Boolean = true
+actual val hasFocusMode: Boolean = true
 
 actual val automaticBackupText: StringResource = Res.string.backup_automatic
 

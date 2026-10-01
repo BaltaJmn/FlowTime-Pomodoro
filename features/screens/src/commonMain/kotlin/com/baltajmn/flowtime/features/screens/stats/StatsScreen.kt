@@ -89,7 +89,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.getString
 import com.baltajmn.flowtime.features.screens.platform.rememberShowMessage
 import com.baltajmn.flowtime.features.screens.platform.rememberCreateFile
-import com.baltajmn.flowtime.features.screens.platform.hasFiles
 import com.baltajmn.flowtime.features.screens.platform.Formats
 import kotlinx.datetime.Month
 
@@ -297,7 +296,7 @@ private fun Header(
                 )
             }
             DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
-                if (hasFiles && pro != ProAccess.HIDDEN) {
+                if (pro != ProAccess.HIDDEN) {
                     DropdownMenuItem(
                         text = { Text(text = stringResource(Res.string.stats_export_csv)) },
                         trailingIcon = if (pro == ProAccess.LOCKED) {

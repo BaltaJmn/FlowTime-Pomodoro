@@ -24,9 +24,6 @@ interface SystemSettings {
 
     fun openExactAlarmSettings()
 
-    /** No molestar mientras se trabaja (#43): solo Android deja que una app lo encienda. */
-    val hasFocusMode: Boolean
-
     fun openFocusModeAccess()
 
     /** La ficha de la tienda, para valorar la app. */
@@ -50,11 +47,8 @@ expect val canBlur: Boolean
 /** Los colores del fondo de pantalla: desde Android 12. */
 expect val hasWallpaperColors: Boolean
 
-/** Cambiar el icono de la app (#56): de momento, solo en Android. */
-expect val hasAppIcons: Boolean
-
-/** Guardar y abrir ficheros con el selector del sistema (copia de seguridad, CSV): de momento, solo en Android. */
-expect val hasFiles: Boolean
+/** No molestar mientras se trabaja (#43): solo Android deja que una app lo encienda. */
+expect val hasFocusMode: Boolean
 
 /** Lo que dice Ajustes de la copia automática del sistema: la de Google en Android, la de iCloud en el iPhone. */
 expect val automaticBackupText: StringResource
