@@ -3,7 +3,7 @@ package com.baltajmn.flowtime.features.screens.screenshots
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.focus.FocusContent
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardUiState

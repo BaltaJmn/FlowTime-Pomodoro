@@ -16,7 +16,7 @@ el pago único. Si cambia una, cambia la otra en el mismo commit.
 ## Regenerar
 
 ```bash
-./gradlew :features:screens:recordRoborazziDebug --tests '*Store*'
+./gradlew :features:screens:recordRoborazziAndroidHostTest --tests '*Store*'
 python3 tools/store/capturas.py
 python3 tools/store/cabecera.py
 ```

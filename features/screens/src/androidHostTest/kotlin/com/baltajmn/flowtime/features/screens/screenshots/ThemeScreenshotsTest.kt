@@ -1,6 +1,6 @@
 package com.baltajmn.flowtime.features.screens.screenshots
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import com.baltajmn.flowtime.core.design.theme.AppTheme
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerHint

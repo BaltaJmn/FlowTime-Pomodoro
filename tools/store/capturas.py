@@ -2,7 +2,7 @@
 """Enmarca las capturas de la ficha: el fondo del icono, un titular y la pantalla con las esquinas
 redondeadas (#54).
 
-    ./gradlew :features:screens:recordRoborazziDebug --tests '*Store*'
+    ./gradlew :features:screens:recordRoborazziAndroidHostTest --tests '*Store*'
     python3 tools/store/capturas.py
 
 Las pantallas de la app salen de Roborazzi (StoreScreenshotsTest): sin emulador y siempre iguales. El
