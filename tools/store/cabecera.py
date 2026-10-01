@@ -8,7 +8,7 @@ que traducir: el nombre, "Pomodoro" y el anillo del icono, con sus colores (desi
 """
 import pathlib
 
-from capturas import AGUA, FONDO, RAIZ, TINTA, render
+from capturas import AGUA, FONDO, LETRA, RAIZ, TINTA, render
 
 ICONO = RAIZ / "design" / "icon.svg"
 
@@ -22,11 +22,11 @@ def main():
     svg = """<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
   <rect width="1024" height="500" fill="{fondo}"/>
   <g transform="translate(476 -74) scale(6)">{dibujo}</g>
-  <text x="72" y="262" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="104"
+  <text x="72" y="262" font-family="{letra}" font-size="104"
         font-weight="700" fill="{tinta}">FlowTime</text>
-  <text x="76" y="330" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="44"
+  <text x="76" y="330" font-family="{letra}" font-size="44"
         fill="{agua}">Pomodoro</text>
-</svg>""".format(fondo=FONDO, tinta=TINTA, agua=AGUA, dibujo=dibujo)
+</svg>""".format(fondo=FONDO, tinta=TINTA, agua=AGUA, dibujo=dibujo, letra=LETRA)
     render(svg, play / "feature-1024x500.png", 1024, 500)
     # Play pone la mascara del icono: va cuadrado y a sangre, como el SVG.
     render(icono, play / "icon-512.png", 512, 512)

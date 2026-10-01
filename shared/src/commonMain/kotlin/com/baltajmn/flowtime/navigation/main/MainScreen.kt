@@ -1,10 +1,13 @@
 package com.baltajmn.flowtime.navigation.main
 
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.sp
 import com.baltajmn.flowtime.core.design.resources.*
 import com.baltajmn.flowtime.core.navigation.MainGraph
 import com.baltajmn.flowtime.ui.FlowTimeAppState
@@ -53,7 +56,14 @@ fun MainScreen(
                             contentDescription = null
                         )
                     },
-                    label = { Text(text = stringResource(destination.label)) }
+                    // Una línea siempre: con la letra al 200 %, "Settings" se partía en dos.
+                    label = {
+                        Text(
+                            text = stringResource(destination.label),
+                            maxLines = 1,
+                            autoSize = TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = LocalTextStyle.current.fontSize)
+                        )
+                    }
                 )
             }
         }

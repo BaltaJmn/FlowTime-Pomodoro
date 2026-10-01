@@ -51,7 +51,8 @@ import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.components.ButtonsContent
 import com.baltajmn.flowtime.features.screens.common.composable.components.MinutesStudying
-import com.baltajmn.flowtime.features.screens.common.composable.components.ScreenTitle
+import com.baltajmn.flowtime.core.design.components.quietSegmentedColors
+import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.features.screens.common.composable.components.TagChips
 import com.baltajmn.flowtime.features.screens.common.composable.components.TaskChip
 import com.baltajmn.flowtime.features.screens.common.composable.components.TaskDoneQuestion
@@ -171,7 +172,7 @@ fun FocusContent(
                 Icon(
                     painter = painterResource(Res.drawable.ic_tune),
                     contentDescription = stringResource(Res.string.cd_mode_settings),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -311,6 +312,7 @@ private fun ModeSelector(state: FocusUiState, onSelect: (TimerMode) -> Unit) {
                     index = index,
                     count = TimerMode.entries.size
                 ),
+                colors = quietSegmentedColors(),
                 // Sin la marca de elegido: con ella, "Porcentaje" no cabe en un móvil estrecho.
                 icon = {}
             ) {
@@ -336,7 +338,10 @@ private fun ModeLine(state: FocusUiState) {
     )
 }
 
-/** Trabajando, descansando o en pausa. Parado no hace falta: ya se ve el modo. */
+/**
+ * Trabajando, descansando o en pausa, como etiqueta: lo grande es el reloj. Parado no hace falta: ya
+ * se ve el modo.
+ */
 @Composable
 private fun PhaseTitle(state: FocusUiState) {
     val title = when {
@@ -346,7 +351,10 @@ private fun PhaseTitle(state: FocusUiState) {
         else -> null
     }
     if (title != null) {
-        ScreenTitle(text = stringResource(title))
+        Text(
+            text = stringResource(title),
+            style = SmallTitle.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+        )
         Spacer(modifier = Modifier.height(12.dp))
     }
 }

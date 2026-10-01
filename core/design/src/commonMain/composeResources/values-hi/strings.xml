@@ -5,7 +5,6 @@
     <string name="flow_time_settings_title">FlowTime सेटिंग्स</string>
     <string name="flow_time_settings_in_the_first">पहले %1$s मिनट में</string>
     <string name="flow_time_settings_rest">मैं आराम करूंगा</string>
-    <string name="flow_time_settings_range">#%1$d सीमा अवधि</string>
     <string name="flow_time_settings_between">%1$d - %2$s के बीच</string>
     <string name="flow_time_setting_after">और %1$d मिनटों के बाद, मैं आराम करूंगा</string>
     <string name="flow_time_add_range">रेंज जोड़ें</string>
@@ -67,9 +66,9 @@
     <string name="alert_google_play">Google Play से कनेक्ट करने में त्रुटि</string>
     <string name="alert_google_play_desc">आवश्यक डेटा प्राप्त करने के लिए सुनिश्चित करें कि आपके पास सक्रिय इंटरनेट कनेक्शन है।</string>
     <string name="advantage_title">लाभ</string>
-    <string name="pomodoro_advantages">एकाग्रता बढ़ाता है, मानसिक थकान को कम करता है और उत्पादकता बनाए रखने के लिए नियमित ब्रेक को प्रोत्साहित करता है।</string>
-    <string name="flow_time_advantages">लचीले कार्य सत्रों की अनुमति देता है, आपकी गति के अनुसार अनुकूलित होता है और गहरी एकाग्रता प्राप्त करने में मदद करता है।</string>
-    <string name="percentage_advantages">काम के समय के अनुसार ब्रेक समायोजित करता है, प्रयास और आराम में संतुलन बनाता है, और आपके सत्रों को आपके अनुसार ढालता है।</string>
+    <string name="pomodoro_advantages">काम और आराम तय ब्लॉकों में, जिन्हें आप खुद तय करते हैं।</string>
+    <string name="flow_time_advantages">जब तक ध्यान बना रहे, काम करें। जितना लंबा काम, उतना लंबा ब्रेक।</string>
+    <string name="percentage_advantages">ब्रेक आपके काम के समय का एक तय प्रतिशत होता है।</string>
 
     <string name="import_summary">आयात किए गए दिन: %1$d · छोड़ी गई पंक्तियाँ: %2$d</string>
     <string name="import_nothing">आयात करने के लिए कोई मान्य दिन नहीं मिला</string>

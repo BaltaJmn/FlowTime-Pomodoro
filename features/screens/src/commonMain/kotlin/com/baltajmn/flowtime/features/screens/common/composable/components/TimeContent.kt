@@ -17,13 +17,13 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.theme.LargeTitle
+import com.baltajmn.flowtime.core.design.theme.Timer
 import com.baltajmn.flowtime.core.design.resources.*
 import org.jetbrains.compose.resources.pluralStringResource
 
 /**
- * El tiempo, con cada cifra en una caja del ancho de la más ancha: Poppins no tiene cifras
- * tabulares, y sin esto el texto se movía cada segundo.
+ * El tiempo, con cada cifra en una caja del ancho de la más ancha: así no se mueve cada segundo
+ * aunque la letra no tenga cifras tabulares. Los dos puntos van atenuados: separan, no se leen.
  */
 @Composable
 fun TimeContent(
@@ -31,7 +31,7 @@ fun TimeContent(
     fontSize: TextUnit = 100.sp,
     color: Color = MaterialTheme.colorScheme.primary
 ) {
-    val style = LargeTitle.copy(fontSize = fontSize, color = color)
+    val style = Timer.copy(fontSize = fontSize, color = color)
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
     val digitWidth = remember(style, density) {
@@ -50,7 +50,7 @@ fun TimeContent(
                     Text(text = char.toString(), style = style)
                 }
             } else {
-                Text(text = char.toString(), style = style)
+                Text(text = char.toString(), style = style.copy(color = color.copy(alpha = 0.45f)))
             }
         }
     }

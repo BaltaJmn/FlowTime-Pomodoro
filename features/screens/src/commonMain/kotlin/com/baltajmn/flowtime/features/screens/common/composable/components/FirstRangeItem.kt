@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -33,14 +32,8 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
         TextField(
             value = time,
             colors = TextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.primary
+                unfocusedContainerColor = Color.Transparent
             ),
             onValueChange = {
                 if (it.isBlank() || it.toIntOrNull()?.let { v -> v > 0 } == true) {
@@ -87,14 +80,8 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
         TextField(
             value = rest,
             colors = TextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.primary
+                unfocusedContainerColor = Color.Transparent
             ),
             onValueChange = {
                 if (it.isBlank() || it.toIntOrNull()?.let { v -> v > 0 } == true) {

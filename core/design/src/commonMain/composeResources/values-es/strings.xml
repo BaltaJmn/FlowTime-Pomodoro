@@ -5,7 +5,6 @@
     <string name="flow_time_settings_title">Ajustes de FlowTime</string>
     <string name="flow_time_settings_in_the_first">En los primeros %1$s minutos</string>
     <string name="flow_time_settings_rest">Descanso</string>
-    <string name="flow_time_settings_range">Duración del #%1$d rango</string>
     <string name="flow_time_settings_between">Entre %1$d - %2$s</string>
     <string name="flow_time_setting_after">y después de %1$d minutos, voy a descansar…</string>
     <string name="flow_time_add_range">Añadir rango</string>
@@ -67,9 +66,9 @@
     <string name="alert_google_play">Error al conectar con Google Play</string>
     <string name="alert_google_play_desc">Asegúrate de que tienes conexión a internet para obtener los datos necesarios.</string>
     <string name="advantage_title">Ventajas</string>
-    <string name="pomodoro_advantages">Mejora la concentración, reduce la fatiga mental y fomenta descansos regulares para mantener la productividad.</string>
-    <string name="flow_time_advantages">Permite sesiones de trabajo flexibles, se adapta a tu ritmo y ayuda a alcanzar estados de máxima concentración.</string>
-    <string name="percentage_advantages">Ajusta los descansos según el tiempo trabajado, equilibra esfuerzo y recuperación, y adapta tus sesiones a ti.</string>
+    <string name="pomodoro_advantages">Trabajo y descanso en bloques fijos, a tu medida.</string>
+    <string name="flow_time_advantages">Trabaja mientras dure la concentración. Cuanto más trabajes, más largo el descanso.</string>
+    <string name="percentage_advantages">El descanso es un porcentaje fijo del tiempo trabajado.</string>
 
     <string name="import_summary">Días importados: %1$d · Líneas ignoradas: %2$d</string>
     <string name="import_nothing">No se ha encontrado ningún día válido para importar</string>

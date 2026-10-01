@@ -5,7 +5,6 @@
     <string name="flow_time_settings_title">FlowTime-Einstellungen</string>
     <string name="flow_time_settings_in_the_first">In den ersten %1$s Minuten</string>
     <string name="flow_time_settings_rest">Ich werde ruhen</string>
-    <string name="flow_time_settings_range">Dauer von Bereich #%1$d</string>
     <string name="flow_time_settings_between">Zwischen %1$d - %2$s</string>
     <string name="flow_time_setting_after">und nach %1$d Minuten mache ich Pause</string>
     <string name="flow_time_add_range">Bereich hinzufügen</string>
@@ -67,9 +66,9 @@
     <string name="alert_google_play">Fehler beim Verbinden mit Google Play</string>
     <string name="alert_google_play_desc">Stelle sicher, dass du mit dem Internet verbunden bist, um die nötigen Daten abzurufen.</string>
     <string name="advantage_title">Vorteile</string>
-    <string name="pomodoro_advantages">Verbessert die Konzentration, reduziert mentale Ermüdung und fördert regelmäßige Pausen für anhaltende Produktivität.</string>
-    <string name="flow_time_advantages">Ermöglicht flexible Arbeitssitzungen, passt sich deinem Tempo an und hilft, tiefe Konzentrationsphasen zu erreichen.</string>
-    <string name="percentage_advantages">Passt Pausen an die Arbeitszeit an, balanciert Anstrengung und Erholung und passt deine Sitzungen an dich an.</string>
+    <string name="pomodoro_advantages">Arbeit und Pause in festen Blöcken, ganz nach deinen Vorgaben.</string>
+    <string name="flow_time_advantages">Arbeite, solange du konzentriert bist. Je länger du arbeitest, desto länger die Pause.</string>
+    <string name="percentage_advantages">Die Pause ist ein fester Anteil deiner Arbeitszeit.</string>
 
     <string name="import_summary">Importierte Tage: %1$d · Ignorierte Zeilen: %2$d</string>
     <string name="import_nothing">Keine gültigen Tage zum Importieren gefunden</string>

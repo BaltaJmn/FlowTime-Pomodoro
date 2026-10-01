@@ -22,8 +22,17 @@ import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
+import com.baltajmn.flowtime.core.design.components.FlowCard
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
+import com.baltajmn.flowtime.features.screens.common.composable.components.ScreenTitle
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Switch
+import androidx.compose.ui.semantics.heading
+import com.baltajmn.flowtime.core.design.components.quietSegmentedColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,10 +74,8 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.semantics.Role
 import com.baltajmn.flowtime.core.design.theme.Appearance
 import com.baltajmn.flowtime.core.design.theme.DarkMode
-import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
-import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.features.screens.settings.enum.MotivationalPhrases
 import com.baltajmn.flowtime.features.screens.pro.ProAccess
 import com.baltajmn.flowtime.features.screens.pro.ProFeature
@@ -166,8 +173,10 @@ fun SettingsContent(
         modifier = Modifier
             .fillMaxSize()
             .readableWidth()
+            .windowInsetsPadding(WindowInsets.statusBars)
     ) {
-        item { Spacer(modifier = Modifier.height(80.dp)) }
+        item { ScreenTitle(text = stringResource(Res.string.nav_settings)) }
+        item { Spacer(modifier = Modifier.height(16.dp)) }
         item { GoalCard(goal = state.goal, onChange = viewModel::changeGoal) }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item { ReminderCard(reminder = state.reminder, onChange = viewModel::setReminder) }
@@ -220,106 +229,85 @@ fun SettingsContent(
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
-            Card {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = stringResource(Res.string.others),
-                        style = LargeTitle.copy(
-                            fontSize = 30.sp,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    )
+            SettingsCard(Res.string.others) {
+                Spacer(modifier = Modifier.height(4.dp))
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                ButtonRow(
+                    text = Res.string.settings_intro,
+                    button = Res.string.settings_intro_button,
+                    onClick = navigateToIntro
+                )
 
+                val system = rememberSystemSettings()
+                ButtonRow(
+                    text = Res.string.settings_rate,
+                    button = Res.string.settings_rate_button,
+                    onClick = system::openStoreListing
+                )
+
+                val uriHandler = LocalUriHandler.current
+                ButtonRow(
+                    text = Res.string.settings_privacy,
+                    button = Res.string.settings_intro_button,
+                    onClick = { runCatching { uriHandler.openUri(PRIVACY_URL) } }
+                )
+
+                onAddQuickTile?.let {
                     ButtonRow(
-                        text = Res.string.settings_intro,
-                        button = Res.string.settings_intro_button,
-                        onClick = navigateToIntro
-                    )
-
-                    val system = rememberSystemSettings()
-                    ButtonRow(
-                        text = Res.string.settings_rate,
-                        button = Res.string.settings_rate_button,
-                        onClick = system::openStoreListing
-                    )
-
-                    val uriHandler = LocalUriHandler.current
-                    ButtonRow(
-                        text = Res.string.settings_privacy,
-                        button = Res.string.settings_intro_button,
-                        onClick = { runCatching { uriHandler.openUri(PRIVACY_URL) } }
-                    )
-
-                    onAddQuickTile?.let {
-                        ButtonRow(
-                            text = Res.string.settings_quick_tile,
-                            button = Res.string.settings_quick_tile_button,
-                            onClick = it
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    CheckRow(
-                        text = Res.string.show_sound,
-                        checked = showSound,
-                        onCheckedChange = {
-                            onSoundChange.invoke(it)
-                            viewModel.saveSound(it)
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    CheckRow(
-                        text = Res.string.show_alert,
-                        checked = state.showAlert,
-                        onCheckedChange = viewModel::saveAlert
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    CheckRow(
-                        text = Res.string.keep_screen_on,
-                        checked = state.keepScreenOn,
-                        onCheckedChange = viewModel::saveKeepScreenOn
-                    )
-
-                    if (hasFocusMode && state.purchases.pro != ProAccess.HIDDEN) {
-                        FocusModeRow(
-                            checked = state.focusMode && state.purchases.pro == ProAccess.OPEN,
-                            unlocked = state.purchases.pro == ProAccess.OPEN,
-                            granted = { viewModel.focusModeGranted },
-                            openAccess = system::openFocusModeAccess,
-                            onChange = { on ->
-                                if (on && state.purchases.pro != ProAccess.OPEN) {
-                                    onOpenPro(ProFeature.DND)
-                                } else {
-                                    viewModel.setFocusMode(on)
-                                }
-                            }
-                        )
-                    }
-
-                    PermissionNotice(
-                        text = Res.string.notifications_off,
-                        granted = system::notificationsAllowed,
-                        open = system::openNotificationSettings
-                    )
-
-                    PermissionNotice(
-                        text = Res.string.exact_alarms_off,
-                        granted = system::exactAlarmsAllowed,
-                        open = system::openExactAlarmSettings
+                        text = Res.string.settings_quick_tile,
+                        button = Res.string.settings_quick_tile_button,
+                        onClick = it
                     )
                 }
+
+                SwitchRow(
+                    text = Res.string.show_sound,
+                    checked = showSound,
+                    onCheckedChange = {
+                        onSoundChange.invoke(it)
+                        viewModel.saveSound(it)
+                    }
+                )
+
+                SwitchRow(
+                    text = Res.string.show_alert,
+                    checked = state.showAlert,
+                    onCheckedChange = viewModel::saveAlert
+                )
+
+                SwitchRow(
+                    text = Res.string.keep_screen_on,
+                    checked = state.keepScreenOn,
+                    onCheckedChange = viewModel::saveKeepScreenOn
+                )
+
+                if (hasFocusMode && state.purchases.pro != ProAccess.HIDDEN) {
+                    FocusModeRow(
+                        checked = state.focusMode && state.purchases.pro == ProAccess.OPEN,
+                        unlocked = state.purchases.pro == ProAccess.OPEN,
+                        granted = { viewModel.focusModeGranted },
+                        openAccess = system::openFocusModeAccess,
+                        onChange = { on ->
+                            if (on && state.purchases.pro != ProAccess.OPEN) {
+                                onOpenPro(ProFeature.DND)
+                            } else {
+                                viewModel.setFocusMode(on)
+                            }
+                        }
+                    )
+                }
+
+                PermissionNotice(
+                    text = Res.string.notifications_off,
+                    granted = system::notificationsAllowed,
+                    open = system::openNotificationSettings
+                )
+
+                PermissionNotice(
+                    text = Res.string.exact_alarms_off,
+                    granted = system::exactAlarmsAllowed,
+                    open = system::openExactAlarmSettings
+                )
             }
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
@@ -359,8 +347,7 @@ private fun FocusModeRow(
     onChange: (Boolean) -> Unit
 ) {
     var explain by rememberSaveable { mutableStateOf(false) }
-    Spacer(modifier = Modifier.height(8.dp))
-    CheckRow(
+    SwitchRow(
         text = Res.string.focus_mode,
         checked = checked,
         onCheckedChange = { on ->
@@ -402,8 +389,29 @@ fun PermissionNotice(text: StringResource, granted: () -> Boolean, open: () -> U
     val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
     val allowed by remember(lifecycle) { derivedStateOf(granted) }
     if (allowed) return
-    Spacer(modifier = Modifier.height(8.dp))
     ButtonRow(text = text, button = Res.string.turn_on, onClick = open)
+}
+
+/**
+ * Una sección de Ajustes: el título a la izquierda, en el color del texto, y debajo lo suyo. El de
+ * acento se queda para lo que se toca y lo que se mide.
+ */
+@Composable
+fun SettingsCard(title: StringResource, content: @Composable ColumnScope.() -> Unit) {
+    FlowCard {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 12.dp)
+        ) {
+            Text(
+                text = stringResource(title),
+                modifier = Modifier.semantics { heading() },
+                style = SmallTitle.copy(color = MaterialTheme.colorScheme.onSurface)
+            )
+            content()
+        }
+    }
 }
 
 @Composable
@@ -411,29 +419,21 @@ fun ButtonRow(text: StringResource, button: StringResource, onClick: () -> Unit)
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 12.dp, end = 16.dp),
-        horizontalArrangement = Arrangement.Center,
+            .padding(top = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             modifier = Modifier.weight(1f),
             text = stringResource(text),
-            style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
+            style = SubBody.copy(color = MaterialTheme.colorScheme.onSurface)
         )
-        Button(
-            modifier = Modifier.weight(1f),
-            onClick = onClick
-        ) {
-            Text(
-                text = stringResource(button),
-                style = SubBody.copy(color = MaterialTheme.colorScheme.onPrimary)
-            )
-        }
+        TextButton(onClick = onClick) { Text(text = stringResource(button)) }
     }
 }
 
+/** Toda la fila cambia el interruptor, y TalkBack la lee como uno solo. */
 @Composable
-fun CheckRow(
+fun SwitchRow(
     text: StringResource,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
@@ -441,88 +441,62 @@ fun CheckRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 12.dp, end = 16.dp),
-        horizontalArrangement = Arrangement.Center,
+            .toggleable(value = checked, role = Role.Switch, onValueChange = onCheckedChange)
+            .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 12.dp),
             text = stringResource(text),
-            style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
+            style = SubBody.copy(color = MaterialTheme.colorScheme.onSurface)
         )
-        Checkbox(
-            modifier = Modifier.weight(1f),
-            checked = checked,
-            onCheckedChange = onCheckedChange
-        )
+        Switch(checked = checked, onCheckedChange = null)
     }
 }
 
+/** El cierre de Ajustes: una frase, sin tarjeta. */
 @Composable
 fun PositiveText() {
-    Card {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(Res.string.remember),
-                textAlign = TextAlign.Center,
-                style = Title,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Text(
-                text = stringResource(
-                    MotivationalPhrases.entries[
-                        (MotivationalPhrases.entries.toTypedArray().indices).random()
-                    ].resourceId
-                ),
-                textAlign = TextAlign.Center,
-                style = SmallTitle,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(Res.string.remember),
+            textAlign = TextAlign.Center,
+            style = SubBody.copy(fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = stringResource(
+                MotivationalPhrases.entries[
+                    (MotivationalPhrases.entries.toTypedArray().indices).random()
+                ].resourceId
+            ),
+            textAlign = TextAlign.Center,
+            style = SubBody.copy(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurface)
+        )
     }
 }
 
 /** Ajustes › FlowTime Pro: lo que incluye, o las gracias a quien ya lo tiene. */
 @Composable
 fun ProCard(owned: Boolean, onOpen: () -> Unit) {
-    Card {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(Res.string.pro_title),
-                textAlign = TextAlign.Center,
-                style = LargeTitle.copy(fontSize = 25.sp, color = MaterialTheme.colorScheme.primary)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(
-                    if (owned) Res.string.pro_settings_owned else Res.string.pro_settings_text
-                ),
-                style = SubBody.copy(
-                    fontSize = 15.sp,
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center
-                )
-            )
-            if (!owned) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(modifier = Modifier.fillMaxWidth(), onClick = onOpen) {
-                    Text(
-                        text = stringResource(Res.string.pro_see),
-                        style = SubBody.copy(color = MaterialTheme.colorScheme.onPrimary)
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
+    SettingsCard(Res.string.pro_title) {
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = stringResource(
+                if (owned) Res.string.pro_settings_owned else Res.string.pro_settings_text
+            ),
+            style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+        )
+        if (!owned) {
+            Spacer(modifier = Modifier.height(12.dp))
+            Button(onClick = onOpen) { Text(text = stringResource(Res.string.pro_see)) }
         }
     }
 }
@@ -545,58 +519,31 @@ fun SupportCard(
         showMessage(getString(text))
         onMessageShown()
     }
-    Card {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(Res.string.support_developer_title),
-                textAlign = TextAlign.Center,
-                style = LargeTitle.copy(
-                    fontSize = 25.sp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            )
-            if (state.isSupporter) {
-                Spacer(modifier = Modifier.height(8.dp))
-                AssistChip(
-                    onClick = onTip,
-                    label = { Text(text = stringResource(Res.string.supporter_badge)) },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.Favorite,
-                            contentDescription = null
-                        )
-                    }
-                )
-            }
+    SettingsCard(Res.string.support_developer_title) {
+        if (state.isSupporter) {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(
-                    if (state.isSupporter) Res.string.supporter_thanks else Res.string.support_developer_description
-                ),
-                style = SubBody.copy(
-                    fontSize = 15.sp,
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center
-                )
+            AssistChip(
+                onClick = onTip,
+                label = { Text(text = stringResource(Res.string.supporter_badge)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = null
+                    )
+                }
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = onTip
-            ) {
-                Text(
-                    text = stringResource(Res.string.support_developer),
-                    style = SubBody.copy(color = MaterialTheme.colorScheme.onPrimary)
-                )
-            }
-            TextButton(onClick = onRestore, enabled = !state.restoring) {
-                Text(text = stringResource(Res.string.restore_purchases))
-            }
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = stringResource(
+                if (state.isSupporter) Res.string.supporter_thanks else Res.string.support_developer_description
+            ),
+            style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        FilledTonalButton(onClick = onTip) { Text(text = stringResource(Res.string.support_developer)) }
+        TextButton(onClick = onRestore, enabled = !state.restoring) {
+            Text(text = stringResource(Res.string.restore_purchases))
         }
     }
 }
@@ -618,78 +565,63 @@ fun AppearanceCard(
     // Con los colores del fondo de pantalla, el tema no se usa: se ve, pero apagado.
     val themesEnabled = !(hasWallpaperColors && appearance.dynamicColor)
 
-    Card {
-        Column(
+    SettingsCard(Res.string.appearance_title) {
+        Spacer(modifier = Modifier.height(12.dp))
+
+        SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+            DarkMode.entries.forEachIndexed { index, mode ->
+                SegmentedButton(
+                    selected = appearance.darkMode == mode,
+                    onClick = { onDarkMode(mode) },
+                    shape = SegmentedButtonDefaults.itemShape(index, DarkMode.entries.size),
+                    colors = quietSegmentedColors()
+                ) {
+                    Text(text = stringResource(mode.label))
+                }
+            }
+        }
+
+        if (hasWallpaperColors) {
+            Spacer(modifier = Modifier.height(4.dp))
+            SwitchRow(
+                text = Res.string.appearance_dynamic,
+                checked = appearance.dynamicColor,
+                onCheckedChange = onDynamicColor
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .alpha(if (themesEnabled) 1f else 0.38f),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(vertical = 4.dp)
         ) {
-            Text(
-                text = stringResource(Res.string.appearance_title),
-                style = LargeTitle.copy(
-                    fontSize = 30.sp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-                DarkMode.entries.forEachIndexed { index, mode ->
-                    SegmentedButton(
-                        selected = appearance.darkMode == mode,
-                        onClick = { onDarkMode(mode) },
-                        shape = SegmentedButtonDefaults.itemShape(index, DarkMode.entries.size)
-                    ) {
-                        Text(text = stringResource(mode.label), style = SubBody)
-                    }
+            // El tema Supporter es el regalo de las propinas (#58): solo lo ve quien lo tiene. Los de
+            // Pro, solo con Pro a la venta. El que ya está puesto se ve siempre.
+            items(
+                AppTheme.entries.filter { theme ->
+                    theme == appearance.theme ||
+                        ((theme != AppTheme.Supporter || isSupporter) && (!theme.pro || pro != ProAccess.HIDDEN))
                 }
-            }
-
-            if (hasWallpaperColors) {
-                CheckRow(
-                    text = Res.string.appearance_dynamic,
-                    checked = appearance.dynamicColor,
-                    onCheckedChange = onDynamicColor
+            ) { theme ->
+                val locked = theme.pro && pro == ProAccess.LOCKED && theme != appearance.theme
+                ThemeSwatch(
+                    theme = theme,
+                    selected = theme == appearance.theme,
+                    enabled = themesEnabled,
+                    locked = locked,
+                    onClick = { if (locked) onLockedTheme() else onTheme(theme) }
                 )
             }
+        }
 
+        // Los iconos son de Pro: sin Pro a la venta, ni se ven.
+        if (pro != ProAccess.HIDDEN) {
             Spacer(modifier = Modifier.height(12.dp))
-
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .alpha(if (themesEnabled) 1f else 0.38f),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(vertical = 4.dp)
-            ) {
-                // El tema Supporter es el regalo de las propinas (#58): solo lo ve quien lo tiene. Los de
-                // Pro, solo con Pro a la venta. El que ya está puesto se ve siempre.
-                items(
-                    AppTheme.entries.filter { theme ->
-                        theme == appearance.theme ||
-                            ((theme != AppTheme.Supporter || isSupporter) && (!theme.pro || pro != ProAccess.HIDDEN))
-                    }
-                ) { theme ->
-                    val locked = theme.pro && pro == ProAccess.LOCKED && theme != appearance.theme
-                    ThemeSwatch(
-                        theme = theme,
-                        selected = theme == appearance.theme,
-                        enabled = themesEnabled,
-                        locked = locked,
-                        onClick = { if (locked) onLockedTheme() else onTheme(theme) }
-                    )
-                }
-            }
-
-            // Los iconos son de Pro: sin Pro a la venta, ni se ven.
-            if (pro != ProAccess.HIDDEN) {
-                Spacer(modifier = Modifier.height(12.dp))
-                AppIconRow(icon = icon, pro = pro, onIcon = onIcon, onLocked = onLockedTheme)
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
+            AppIconRow(icon = icon, pro = pro, onIcon = onIcon, onLocked = onLockedTheme)
         }
     }
 }

@@ -3,7 +3,6 @@ package com.baltajmn.flowtime.features.screens.common.composable.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,12 +24,7 @@ fun PercentageRange(percentage: Long, onPercentageChange: (Long) -> Unit) {
             onValueChangeFinished = { onPercentageChange(sliderPosition.toLong()) },
             // De 5 en 5 y sin el 0: un descanso del 0 % no es un descanso.
             valueRange = TimerDefaults.MIN_PERCENTAGE.toFloat()..TimerDefaults.MAX_PERCENTAGE.toFloat(),
-            steps = 18,
-            colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.primary,
-                activeTrackColor = MaterialTheme.colorScheme.primary,
-                inactiveTrackColor = MaterialTheme.colorScheme.tertiary
-            )
+            steps = 18
         )
         Text(
             text = sliderPosition.toInt().toString() + "%",

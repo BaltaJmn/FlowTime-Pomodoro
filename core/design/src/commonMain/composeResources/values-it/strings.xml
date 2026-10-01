@@ -5,7 +5,6 @@
     <string name="flow_time_settings_title">Impostazioni di FlowTime</string>
     <string name="flow_time_settings_in_the_first">Nei primi %1$s minuti</string>
     <string name="flow_time_settings_rest">Riposo</string>
-    <string name="flow_time_settings_range">Durata dell'intervallo #%1$d</string>
     <string name="flow_time_settings_between">Tra %1$d - %2$s</string>
     <string name="flow_time_setting_after">e dopo %1$d minuti, mi riposerò</string>
     <string name="flow_time_add_range">Aggiungi intervallo</string>
@@ -67,9 +66,9 @@
     <string name="alert_google_play">Errore di connessione a Google Play</string>
     <string name="alert_google_play_desc">Assicurati di avere una connessione internet attiva per recuperare i dati necessari.</string>
     <string name="advantage_title">Vantaggi</string>
-    <string name="pomodoro_advantages">Migliora la concentrazione, riduce la fatica mentale e favorisce pause regolari per mantenere la produttività.</string>
-    <string name="flow_time_advantages">Consente sessioni di lavoro flessibili, si adatta al tuo ritmo e aiuta a raggiungere stati di massima concentrazione.</string>
-    <string name="percentage_advantages">Adatta le pause in base al tempo di lavoro, bilancia sforzo e recupero e adatta le sessioni a te.</string>
+    <string name="pomodoro_advantages">Lavoro e pausa in blocchi fissi, decisi da te.</string>
+    <string name="flow_time_advantages">Lavora finché resti concentrato. Più lavori, più lunga è la pausa.</string>
+    <string name="percentage_advantages">La pausa è una percentuale fissa del tempo lavorato.</string>
 
     <string name="import_summary">Giorni importati: %1$d · Righe ignorate: %2$d</string>
     <string name="import_nothing">Nessun giorno valido da importare</string>

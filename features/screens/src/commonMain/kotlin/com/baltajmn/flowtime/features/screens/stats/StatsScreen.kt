@@ -24,7 +24,10 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
+import com.baltajmn.flowtime.core.design.components.FlowCard
+import com.baltajmn.flowtime.core.design.components.quietSegmentedColors
+import com.baltajmn.flowtime.core.design.theme.SmallTitle
+import com.baltajmn.flowtime.features.screens.common.composable.components.ScreenTitle
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -59,7 +62,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.design.extensions.readableWidth
-import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.TagPalette
 import com.baltajmn.flowtime.core.design.theme.Title
@@ -280,19 +282,13 @@ private fun Header(
 ) {
     var menu by remember { mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            text = stringResource(Res.string.nav_stats),
-            modifier = Modifier
-                .weight(1f)
-                .semantics { heading() },
-            style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary)
-        )
+        ScreenTitle(text = stringResource(Res.string.nav_stats), modifier = Modifier.weight(1f))
         Box {
             IconButton(onClick = { menu = true }) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
                     contentDescription = stringResource(Res.string.more_options),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
@@ -350,7 +346,7 @@ private fun LevelCard(level: Level) {
         ),
         label = "level"
     )
-    Card {
+    FlowCard {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -359,12 +355,12 @@ private fun LevelCard(level: Level) {
         ) {
             Text(
                 text = stringResource(Res.string.user_progression_level),
-                style = Title.copy(fontSize = 18.sp, color = MaterialTheme.colorScheme.primary)
+                style = SmallTitle.copy(color = MaterialTheme.colorScheme.onSurface)
             )
             Text(
                 text = stringResource(Res.string.user_level_short, level.level),
                 style = SubBody.copy(
-                    fontWeight = FontWeight.W700,
+                    fontWeight = FontWeight.W600,
                     color = MaterialTheme.colorScheme.primary
                 )
             )
@@ -372,7 +368,8 @@ private fun LevelCard(level: Level) {
                 progress = { progress },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(12.dp)
+                    .height(8.dp),
+                drawStopIndicator = {}
             )
         }
     }
@@ -380,7 +377,7 @@ private fun LevelCard(level: Level) {
 
 @Composable
 private fun GoalProgressCard(today: DayProgress, streak: Streak) {
-    Card {
+    FlowCard {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -389,7 +386,7 @@ private fun GoalProgressCard(today: DayProgress, streak: Streak) {
         ) {
             Text(
                 text = stringResource(Res.string.goal_title),
-                style = Title.copy(fontSize = 18.sp, color = MaterialTheme.colorScheme.primary)
+                style = SmallTitle.copy(color = MaterialTheme.colorScheme.onSurface)
             )
             Text(
                 text = stringResource(
@@ -398,7 +395,7 @@ private fun GoalProgressCard(today: DayProgress, streak: Streak) {
                     today.goalMinutes.toLong().formatMinutesStudying()
                 ),
                 style = SubBody.copy(
-                    fontWeight = FontWeight.W700,
+                    fontWeight = FontWeight.W600,
                     color = MaterialTheme.colorScheme.primary
                 )
             )
@@ -406,7 +403,8 @@ private fun GoalProgressCard(today: DayProgress, streak: Streak) {
                 progress = { today.fraction },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(12.dp)
+                    .height(8.dp),
+                drawStopIndicator = {}
             )
             Text(
                 text = streakText(streak),
@@ -418,7 +416,7 @@ private fun GoalProgressCard(today: DayProgress, streak: Streak) {
 
 @Composable
 private fun FirstSessionCard() {
-    Card {
+    FlowCard {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -444,7 +442,7 @@ private fun FirstSessionCard() {
 /** Sin Pro y con una racha de 7 días: se puede cerrar, y entonces no vuelve en 30 días. */
 @Composable
 private fun ProStreakCard(days: Int, onOpen: () -> Unit, onDismiss: () -> Unit) {
-    Card {
+    FlowCard {
         Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 8.dp, bottom = 4.dp)) {
             Row(
                 modifier = Modifier.padding(end = 8.dp),
@@ -501,7 +499,7 @@ private fun PeriodCard(
     )
     // Sin Pro, el año entero se ve difuminado; y la comparación, dentro, ya no lleva su candado.
     val yearLocked = period.kind == PeriodKind.YEAR && state.pro == ProAccess.LOCKED
-    Card {
+    FlowCard {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -514,6 +512,7 @@ private fun PeriodCard(
                         selected = period.kind == kind,
                         onClick = { onPeriod(kind) },
                         shape = SegmentedButtonDefaults.itemShape(index = index, count = kinds.size),
+                        colors = quietSegmentedColors(),
                         icon = {}
                     ) {
                         Text(
@@ -529,20 +528,20 @@ private fun PeriodCard(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                         contentDescription = stringResource(Res.string.stats_previous),
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Text(
                     text = periodLabel(period.kind, state.range),
                     modifier = Modifier.weight(1f),
-                    style = Title.copy(fontSize = 16.sp, color = MaterialTheme.colorScheme.primary),
+                    style = Title.copy(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurface),
                     textAlign = TextAlign.Center
                 )
                 IconButton(onClick = onNext, enabled = period.offset > 0) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = stringResource(Res.string.stats_next),
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -671,7 +670,7 @@ private fun SummaryRow(label: StringResource, value: String) {
 
 @Composable
 private fun DetailCard(title: StringResource, content: @Composable () -> Unit) {
-    Card {
+    FlowCard {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -681,7 +680,7 @@ private fun DetailCard(title: StringResource, content: @Composable () -> Unit) {
             Text(
                 text = stringResource(title),
                 modifier = Modifier.semantics { heading() },
-                style = Title.copy(fontSize = 18.sp, color = MaterialTheme.colorScheme.primary)
+                style = SmallTitle.copy(color = MaterialTheme.colorScheme.onSurface)
             )
             content()
         }

@@ -25,10 +25,12 @@ import com.baltajmn.flowtime.core.design.sound.SoundMixes
 import com.baltajmn.flowtime.core.design.sound.SoundState
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -55,6 +57,7 @@ import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.core.design.resources.*
 import com.baltajmn.flowtime.core.design.sound.Ambience
@@ -305,7 +308,7 @@ private const val PREVIEW_MILLIS = 10_000L
 private fun MixChip(text: String, onClick: () -> Unit, onLongClick: (() -> Unit)? = null, icon: Boolean = false) {
     Surface(
         shape = MaterialTheme.shapes.small,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         modifier = Modifier
             .clip(MaterialTheme.shapes.small)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick, role = Role.Button)
@@ -437,6 +440,8 @@ fun SliderItem(
     }
 
     val soundName = stringResource(type.label)
+    // Lo que suena va en el acento; lo parado se queda en gris.
+    val tone = if (isPlaying) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
 
     Row(
         modifier = Modifier
@@ -454,9 +459,12 @@ fun SliderItem(
             },
             painter = painterResource(type.icon),
             contentDescription = soundName,
-            tint = iconTint ?: MaterialTheme.colorScheme.secondary
+            tint = iconTint ?: tone
         )
 
+        // Pista fina y tirador corto: once barras gruesas una encima de otra pesaban demasiado.
+        val colors = SliderDefaults.colors(thumbColor = tone, activeTrackColor = tone)
+        val interaction = remember { MutableInteractionSource() }
         Slider(
             modifier = Modifier
                 .padding(horizontal = 10.dp)
@@ -465,11 +473,20 @@ fun SliderItem(
             onValueChange = { newVolume ->
                 onVolumeChanged(type, newVolume)
             },
-            colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.secondary,
-                activeTrackColor = MaterialTheme.colorScheme.secondary,
-                inactiveTrackColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
-            ),
+            colors = colors,
+            interactionSource = interaction,
+            thumb = {
+                SliderDefaults.Thumb(interactionSource = interaction, colors = colors, thumbSize = DpSize(4.dp, 24.dp))
+            },
+            track = {
+                SliderDefaults.Track(
+                    sliderState = it,
+                    modifier = Modifier.height(6.dp),
+                    colors = colors,
+                    drawStopIndicator = null,
+                    thumbTrackGapSize = 4.dp
+                )
+            },
             valueRange = 0f..1f
         )
 
@@ -482,7 +499,7 @@ fun SliderItem(
                 painter = painterResource(
                     if (isPlaying) Res.drawable.ic_pause else Res.drawable.ic_play
                 ),
-                tint = MaterialTheme.colorScheme.secondary,
+                tint = tone,
                 contentDescription = stringResource(
                     if (isPlaying) Res.string.cd_pause_sound else Res.string.cd_play_sound,
                     soundName

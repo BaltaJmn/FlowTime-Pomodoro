@@ -1,12 +1,10 @@
 package com.baltajmn.flowtime.features.screens.settings
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
@@ -19,7 +17,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
-import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.data.goal.DailyGoal
 import com.baltajmn.flowtime.data.goal.Streak
@@ -30,41 +27,24 @@ import org.jetbrains.compose.resources.stringResource
 /** Ajustes › Objetivo diario: los minutos de cada día, de 5 en 5, y la racha. Siempre gratis. */
 @Composable
 fun GoalCard(goal: GoalUiState, onChange: (delta: Int) -> Unit) {
-    Card {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(Res.string.goal_title),
-                style = LargeTitle.copy(
-                    fontSize = 30.sp,
-                    color = MaterialTheme.colorScheme.primary
-                ),
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            GoalStepper(minutes = goal.minutes, onChange = onChange)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = streakText(goal.streak),
-                style = SubBody.copy(
-                    fontSize = 15.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                ),
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
+    SettingsCard(Res.string.goal_title) {
+        Spacer(modifier = Modifier.height(12.dp))
+        GoalStepper(minutes = goal.minutes, onChange = onChange)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = streakText(goal.streak),
+            style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+        )
     }
 }
 
-/** Los minutos de cada día, de 5 en 5. También en la introducción. */
+/**
+ * Los minutos de cada día, de 5 en 5. También en la introducción. Los botones van fijos en los
+ * extremos: el texto cambia de ancho al sumar minutos ("55 min", "1 h", "1 h 5 min") y los movía.
+ */
 @Composable
 fun GoalStepper(minutes: Int, onChange: (delta: Int) -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         StepButton(
             text = "−",
             description = stringResource(Res.string.goal_decrease),
@@ -72,8 +52,14 @@ fun GoalStepper(minutes: Int, onChange: (delta: Int) -> Unit) {
         ) { onChange(-DailyGoal.STEP_MINUTES) }
         Text(
             text = stringResource(Res.string.goal_per_day, minutes.toLong().formatMinutesStudying()),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = SubBody.copy(fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp),
+            style = SubBody.copy(
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary
+            )
         )
         StepButton(
             text = "+",

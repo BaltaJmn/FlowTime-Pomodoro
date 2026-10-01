@@ -2,7 +2,7 @@ package com.baltajmn.flowtime.features.screens.splash
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.baltajmn.flowtime.core.design.components.SplashView
+import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.components.collectEvents
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
@@ -26,5 +26,5 @@ fun SplashScreen(
         viewModel.checkHasToShowOnBoard()
     }
 
-    SplashView()
+    LoadingView()
 }

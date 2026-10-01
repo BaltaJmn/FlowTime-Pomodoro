@@ -2,7 +2,6 @@ package com.baltajmn.flowtime.features.screens.todoList
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,7 +23,9 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
+import com.baltajmn.flowtime.core.design.components.FlowCard
+import com.baltajmn.flowtime.core.design.theme.SmallTitle
+import com.baltajmn.flowtime.features.screens.common.composable.components.ScreenTitle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,7 +45,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -53,9 +53,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.components.LoadingView
-import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
-import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.data.pro.Limits
 import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.features.screens.pro.ProFeature
@@ -243,9 +241,9 @@ fun TodoItem(
     onMoveToToday: (Task) -> Unit = {}
 ) {
     val textStyle = if (item.done) {
-        Title.copy(textDecoration = TextDecoration.LineThrough)
+        SmallTitle.copy(textDecoration = TextDecoration.LineThrough)
     } else {
-        Title
+        SmallTitle
     }
 
     val textStyleDescription = if (item.done) {
@@ -257,15 +255,15 @@ fun TodoItem(
     val textColor = if (item.done) {
         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
     } else {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onSurface
     }
 
-    Card {
+    FlowCard {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { onItemClick.invoke(item) }
-                .padding(8.dp),
+                .padding(start = 16.dp, top = 12.dp, end = 4.dp, bottom = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
@@ -320,7 +318,7 @@ fun TodoItem(
                 Icon(
                     imageVector = Icons.Filled.Edit,
                     contentDescription = stringResource(Res.string.cd_edit_task),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             IconButton(
@@ -330,7 +328,7 @@ fun TodoItem(
                 Icon(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = stringResource(Res.string.cd_delete_task),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -345,44 +343,34 @@ fun TodoListDay(
     plusWeek: () -> Unit,
     minusWeek: () -> Unit
 ) {
-    Card {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                IconButton(onClick = { minusWeek.invoke() }) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = { minusWeek.invoke() }) {
+            Icon(
+                Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
 
-                Text(
-                    text = selectedDate,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    style = LargeTitle.copy(
-                        fontSize = 18.sp,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Center
-                    )
-                )
+        Text(
+            text = selectedDate,
+            modifier = Modifier.weight(1f),
+            style = SmallTitle.copy(
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center
+            )
+        )
 
-                IconButton(onClick = { plusWeek.invoke() }) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
+        IconButton(onClick = { plusWeek.invoke() }) {
+            Icon(
+                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
@@ -391,29 +379,16 @@ fun TodoListDay(
 fun ScreenTitleWithIcon(text: String, onIconClick: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(modifier = Modifier.weight(0.1f))
-        Text(
-            modifier = Modifier.weight(0.8f),
-            text = text,
-            style = LargeTitle.copy(fontSize = 30.sp, color = MaterialTheme.colorScheme.primary),
-            color = MaterialTheme.colorScheme.primary,
-            textAlign = TextAlign.Center
-        )
-        Icon(
-            modifier = Modifier
-                .weight(0.1f)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    role = Role.Button
-                ) { onIconClick.invoke() },
-            imageVector = Icons.Filled.Add,
-            tint = MaterialTheme.colorScheme.primary,
-            contentDescription = stringResource(Res.string.todo_add_item)
-        )
+        ScreenTitle(text = text, modifier = Modifier.weight(1f))
+        IconButton(onClick = onIconClick) {
+            Icon(
+                imageVector = Icons.Filled.Add,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = stringResource(Res.string.todo_add_item)
+            )
+        }
     }
 }
 

@@ -6,13 +6,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.core.design.resources.*
 import org.jetbrains.compose.resources.stringResource
@@ -62,11 +61,9 @@ fun ButtonAddRange(onAddRangeClicked: () -> Unit) {
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Button(onClick = { onAddRangeClicked.invoke() }) {
-            Text(
-                text = stringResource(Res.string.flow_time_add_range),
-                style = SubBody
-            )
+        // Secundario: el botón lleno de la hoja es "Guardar".
+        TextButton(onClick = onAddRangeClicked) {
+            Text(text = stringResource(Res.string.flow_time_add_range))
         }
     }
 }

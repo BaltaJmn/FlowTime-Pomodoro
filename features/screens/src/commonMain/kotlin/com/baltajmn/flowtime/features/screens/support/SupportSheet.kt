@@ -15,7 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -108,7 +108,7 @@ fun SupportContent(
             state.loading -> CircularProgressIndicator()
             state.tips.isEmpty() -> StoreUnavailable(onRetry)
             else -> state.tips.forEach { item ->
-                OutlinedButton(
+                FilledTonalButton(
                     onClick = { onTip(item) },
                     enabled = !state.buying,
                     modifier = Modifier.fillMaxWidth()

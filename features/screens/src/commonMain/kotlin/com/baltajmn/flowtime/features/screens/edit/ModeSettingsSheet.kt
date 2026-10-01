@@ -118,7 +118,7 @@ fun ModeSettingsContent(state: EditState, viewModel: EditViewModel, onSave: () -
 private fun LazyListScope.title(text: StringResource) = item {
     Text(
         text = stringResource(text),
-        style = LargeTitle.copy(fontSize = 26.sp, color = MaterialTheme.colorScheme.primary)
+        style = LargeTitle.copy(fontSize = 26.sp, color = MaterialTheme.colorScheme.onSurface)
     )
 }
 

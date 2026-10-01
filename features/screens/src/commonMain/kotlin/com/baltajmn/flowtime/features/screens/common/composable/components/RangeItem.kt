@@ -41,29 +41,17 @@ fun RangeItem(
     var time by remember(range.endRange) { mutableStateOf(range.endRange.toString()) }
     var rest by remember(range.rest) { mutableStateOf(range.rest.toString()) }
 
+    // Sin el "#1 range duration" que iba a la izquierda: la etiqueta del campo ya dice entre qué
+    // minutos va, y así los campos quedan alineados con los del primer tramo.
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Text(
-            modifier = Modifier
-                .weight(0.15f)
-                .padding(top = 12.dp),
-            text = stringResource(Res.string.flow_time_settings_range, index),
-            style = Title.copy(fontSize = 10.sp, color = MaterialTheme.colorScheme.primary)
-        )
-
         TextField(
             value = time,
             colors = TextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.primary
+                unfocusedContainerColor = Color.Transparent
             ),
             onValueChange = {
                 if (it.isBlank() || it.toIntOrNull()?.let { v -> v > 0 } == true) {
@@ -102,7 +90,7 @@ fun RangeItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
-                .weight(0.45f)
+                .weight(0.6f)
                 .onFocusChanged { focus ->
                     if (!focus.hasFocus && time.isBlank()) {
                         time = 1.toString()
@@ -113,14 +101,8 @@ fun RangeItem(
         TextField(
             value = rest,
             colors = TextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.primary
+                unfocusedContainerColor = Color.Transparent
             ),
             onValueChange = {
                 if (it.isBlank() || it.toIntOrNull()?.let { v -> v > 0 } == true) {
@@ -162,7 +144,7 @@ fun RangeItem(
         Icon(
             imageVector = Icons.Filled.Close,
             contentDescription = stringResource(Res.string.cd_delete_range),
-            tint = MaterialTheme.colorScheme.tertiary,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
                 .weight(0.1f)
                 .clickable { onDeleteClicked.invoke(index) }

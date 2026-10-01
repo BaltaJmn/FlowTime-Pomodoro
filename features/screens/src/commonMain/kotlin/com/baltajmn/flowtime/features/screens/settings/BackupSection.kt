@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,10 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.data.backup.Backup
 import com.baltajmn.flowtime.core.design.resources.*
@@ -56,45 +53,28 @@ fun BackupCard(
     // Algunos gestores de archivos no marcan bien el tipo de un .json.
     val importFile = rememberOpenFile(listOf(JSON, "text/plain", "application/octet-stream"), onImport)
 
-    Card {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(Res.string.backup_title),
-                style = LargeTitle.copy(
-                    fontSize = 30.sp,
-                    color = MaterialTheme.colorScheme.primary
-                ),
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(automaticBackupText),
-                style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary),
-                textAlign = TextAlign.Center
-            )
-            ButtonRow(text = Res.string.backup_export_label, button = Res.string.backup_export) {
-                exportFile("flowtime-${today()}.json")
-            }
-            ButtonRow(text = Res.string.backup_import_label, button = Res.string.backup_import) {
-                importFile()
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = state.lastExportAt?.let { stringResource(Res.string.backup_last, it.asDate()) }
-                    ?: stringResource(Res.string.backup_never),
-                style = SubBody.copy(
-                    fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                ),
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+    SettingsCard(Res.string.backup_title) {
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = stringResource(automaticBackupText),
+            style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        ButtonRow(text = Res.string.backup_export_label, button = Res.string.backup_export) {
+            exportFile("flowtime-${today()}.json")
         }
+        ButtonRow(text = Res.string.backup_import_label, button = Res.string.backup_import) {
+            importFile()
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = state.lastExportAt?.let { stringResource(Res.string.backup_last, it.asDate()) }
+                ?: stringResource(Res.string.backup_never),
+            style = SubBody.copy(
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        )
     }
 
     state.pending?.let { ImportDialog(it, onConfirm = onConfirmImport, onCancel = onCancelImport) }

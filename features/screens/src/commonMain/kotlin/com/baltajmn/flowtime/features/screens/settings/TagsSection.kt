@@ -3,7 +3,6 @@ package com.baltajmn.flowtime.features.screens.settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -28,10 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.TagPalette
 import com.baltajmn.flowtime.data.pro.Limits
@@ -58,85 +54,69 @@ fun TagsCard(
     var editing by rememberSaveable { mutableStateOf<Long?>(null) }
     val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
-    Card {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    SettingsCard(Res.string.tags_title) {
+        Spacer(modifier = Modifier.height(4.dp))
+        state.active.forEach { tag ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val description = stringResource(Res.string.tag_color)
+                IconButton(
+                    onClick = { onRecolor(tag) },
+                    modifier = Modifier.semantics { contentDescription = description }
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .background(TagPalette.color(tag.color, dark), CircleShape)
+                    )
+                }
+                Text(
+                    text = tag.name,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { editing = tag.id }
+                        .padding(vertical = 12.dp),
+                    style = SubBody.copy(
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                )
+                TextButton(onClick = { onArchive(tag.id) }) {
+                    Text(text = stringResource(Res.string.tag_archive))
+                }
+            }
+        }
+        TextButton(onClick = { editing = NEW }) { Text(text = stringResource(Res.string.tag_add)) }
+        if (state.archived.isNotEmpty()) {
             Text(
-                text = stringResource(Res.string.tags_title),
-                style = LargeTitle.copy(
-                    fontSize = 30.sp,
-                    color = MaterialTheme.colorScheme.primary
-                ),
-                textAlign = TextAlign.Center
+                text = stringResource(Res.string.tags_archived),
+                style = SubBody.copy(
+                    fontSize = 15.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            state.active.forEach { tag ->
+            state.archived.forEach { tag ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val description = stringResource(Res.string.tag_color)
-                    IconButton(
-                        onClick = { onRecolor(tag) },
-                        modifier = Modifier.semantics { contentDescription = description }
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(20.dp)
-                                .background(TagPalette.color(tag.color, dark), CircleShape)
-                        )
-                    }
                     Text(
                         text = tag.name,
                         modifier = Modifier
                             .weight(1f)
-                            .clickable { editing = tag.id }
-                            .padding(vertical = 12.dp),
+                            .padding(start = 12.dp),
                         style = SubBody.copy(
-                            fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.primary
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     )
-                    TextButton(onClick = { onArchive(tag.id) }) {
-                        Text(text = stringResource(Res.string.tag_archive))
+                    TextButton(onClick = { onUnarchive(tag.id) }) {
+                        Text(text = stringResource(Res.string.tag_unarchive))
                     }
                 }
             }
-            TextButton(onClick = { editing = NEW }) { Text(text = stringResource(Res.string.tag_add)) }
-            if (state.archived.isNotEmpty()) {
-                Text(
-                    text = stringResource(Res.string.tags_archived),
-                    style = SubBody.copy(
-                        fontSize = 15.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                )
-                state.archived.forEach { tag ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = tag.name,
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(start = 12.dp),
-                            style = SubBody.copy(
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        )
-                        TextButton(onClick = { onUnarchive(tag.id) }) {
-                            Text(text = stringResource(Res.string.tag_unarchive))
-                        }
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 

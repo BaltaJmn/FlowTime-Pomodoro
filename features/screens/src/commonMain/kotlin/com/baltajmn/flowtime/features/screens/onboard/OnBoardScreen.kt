@@ -1,9 +1,9 @@
 package com.baltajmn.flowtime.features.screens.onboard
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,35 +14,41 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.components.collectEvents
+import com.baltajmn.flowtime.core.design.components.quietSegmentedColors
+import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
+import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
-import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.components.advantages
 import com.baltajmn.flowtime.features.screens.common.composable.components.label
@@ -85,7 +91,7 @@ fun OnBoardScreen(
 
 private const val PAGES = 3
 
-/** Qué es FlowTime, el modo y el objetivo, y empezar. "Saltar" termina desde cualquier página. */
+/** Qué es FlowTime, el modo y el objetivo, y empezar. "Saltar" termina con los valores de partida. */
 @Composable
 fun OnboardingContent(
     state: OnBoardUiState,
@@ -102,7 +108,8 @@ fun OnboardingContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primaryContainer)
+            .background(MaterialTheme.colorScheme.background)
+            .safeDrawingPadding()
             .padding(16.dp)
             .readableWidth()
     ) {
@@ -127,49 +134,21 @@ fun OnboardingContent(
             }
         }
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            Text(
-                modifier = Modifier.clickable(onClick = onSkip),
-                text = stringResource(Res.string.on_board_skip),
-                style = Title.copy(fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
-            )
-
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.weight(1f)
-            ) {
-                repeat(PAGES) { index ->
-                    val isSelected = pagerState.currentPage == index
-                    Box(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .width(if (isSelected) 18.dp else 8.dp)
-                            .height(8.dp)
-                            .border(
-                                width = 1.dp,
-                                color = MaterialTheme.colorScheme.tertiary,
-                                shape = RoundedCornerShape(10.dp)
-                            )
-                            .background(
-                                color = if (isSelected) {
-                                    MaterialTheme.colorScheme.tertiary
-                                } else {
-                                    MaterialTheme.colorScheme.secondary
-                                },
-                                shape = CircleShape
-                            )
-                    )
+        // Los puntos van en el centro de verdad, midan lo que midan los botones en cada idioma.
+        Box(modifier = Modifier.fillMaxWidth()) {
+            // En la última sobra: "Saltar" olvidaría el modo y el objetivo recién elegidos.
+            if (!last) {
+                TextButton(
+                    onClick = onSkip,
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant)
+                ) {
+                    Text(text = stringResource(Res.string.on_board_skip))
                 }
             }
-
-            Text(
-                modifier = Modifier.clickable {
+            PageDots(current = pagerState.currentPage, modifier = Modifier.align(Alignment.Center))
+            Button(
+                onClick = {
                     if (last) {
                         onStart()
                     } else {
@@ -177,8 +156,28 @@ fun OnboardingContent(
                         coroutineScope.launch { pagerState.animateScrollToPage(next) }
                     }
                 },
-                text = stringResource(if (last) Res.string.on_board_start else Res.string.on_board_next),
-                style = Title.copy(fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
+                Text(text = stringResource(if (last) Res.string.on_board_start else Res.string.on_board_next))
+            }
+        }
+    }
+}
+
+/** Un punto por página; el de la actual, alargado y en el acento. */
+@Composable
+private fun PageDots(current: Int, modifier: Modifier = Modifier) {
+    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        repeat(PAGES) { index ->
+            val selected = index == current
+            val width by animateDpAsState(if (selected) 20.dp else 6.dp)
+            val color by animateColorAsState(
+                if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
+            )
+            Box(
+                modifier = Modifier
+                    .size(width = width, height = 6.dp)
+                    .background(color, CircleShape)
             )
         }
     }
@@ -198,15 +197,8 @@ private fun SetupPage(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = stringResource(Res.string.on_board_setup_title),
-            style = LargeTitle.copy(
-                fontSize = 24.sp,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.tertiary
-            )
-        )
-        Spacer(modifier = Modifier.height(24.dp))
+        Text(text = stringResource(Res.string.on_board_setup_title), style = pageTitle())
+        Spacer(modifier = Modifier.height(28.dp))
         SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
             val modes = TimerMode.entries
             modes.forEachIndexed { index, mode ->
@@ -214,33 +206,36 @@ private fun SetupPage(
                     selected = state.mode == mode,
                     onClick = { onMode(mode) },
                     shape = SegmentedButtonDefaults.itemShape(index = index, count = modes.size),
+                    colors = quietSegmentedColors(),
                     enabled = !state.modeLocked,
-                    label = { Text(text = stringResource(mode.label), maxLines = 1) }
+                    // Como en la pantalla de concentración: sin la marca, "Porcentaje" cabe.
+                    icon = {},
+                    label = {
+                        Text(text = stringResource(mode.label), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    }
                 )
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+        // Tres líneas siempre: al cambiar de modo, el resto de la página no da un salto.
         Text(
             text = stringResource(state.mode.advantages),
             modifier = Modifier.padding(horizontal = 8.dp),
-            style = SubBody.copy(
-                fontSize = 15.sp,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary
-            )
+            minLines = 3,
+            style = SubBody.copy(textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurfaceVariant)
         )
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(28.dp))
         Text(
             text = stringResource(Res.string.goal_title),
-            style = LargeTitle.copy(fontSize = 20.sp, color = MaterialTheme.colorScheme.tertiary)
+            style = SmallTitle.copy(color = MaterialTheme.colorScheme.onSurface)
         )
         Spacer(modifier = Modifier.height(8.dp))
         GoalStepper(minutes = state.goalMinutes, onChange = onGoal)
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = stringResource(Res.string.on_board_setup_later),
             style = SubBody.copy(
-                fontSize = 14.sp,
+                fontSize = 13.sp,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -259,33 +254,31 @@ private fun OnBoardItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Hasta 350 dp, y menos si no cabe con los textos (un móvil en horizontal).
+        // Pequeño: lo que se lee es el texto. Y menos aún si no cabe (un móvil en horizontal).
         Image(
             modifier = Modifier
                 .weight(1f, fill = false)
-                .padding(bottom = 20.dp)
-                .sizeIn(maxWidth = 330.dp, maxHeight = 330.dp)
+                .padding(bottom = 32.dp)
+                .sizeIn(maxWidth = 96.dp, maxHeight = 96.dp)
                 .aspectRatio(1f),
             painter = painterResource(imageRes),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiary),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
             contentDescription = null
         )
-        Text(
-            text = stringResource(title),
-            style = LargeTitle.copy(
-                fontSize = 24.sp,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.tertiary
-            )
-        )
+        Text(text = stringResource(title), style = pageTitle())
         Text(
             text = stringResource(description),
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-            style = Title.copy(
-                fontSize = 20.sp,
+            modifier = Modifier.padding(start = 16.dp, top = 12.dp, end = 16.dp),
+            style = SubBody.copy(
+                fontSize = 17.sp,
+                lineHeight = 24.sp,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         )
     }
 }
+
+@Composable
+private fun pageTitle(): TextStyle =
+    LargeTitle.copy(fontSize = 30.sp, textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurface)

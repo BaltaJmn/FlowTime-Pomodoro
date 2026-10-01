@@ -11,6 +11,7 @@ store/screenshots/raw/<idioma>/. El movil va en 1200x2100 porque Play rechaza un
 largo pase del doble del corto; la tablet, en el 16:9 que pide Play para ensenarla en tablets.
 """
 import base64
+import os
 import pathlib
 import subprocess
 import tempfile
@@ -24,6 +25,18 @@ EMULADOR = {"06_widget", "07_notification"}
 
 # Los colores del icono (design/icon.svg): el fondo, el anillo y el agua.
 FONDO, TINTA, AGUA = "#15506A", "#EAF6FB", "#8ECAE6"
+
+# La letra de la app. render() hace que rsvg la busque con fontconfig (en macOS Pango iria a CoreText,
+# que no la tiene) y le suma la carpeta de fuentes del repo, sin instalar nada. El hindi sale de una
+# del sistema.
+LETRA = "Mulish, sans-serif"
+FONTS_CONF = """<?xml version="1.0"?>
+<fontconfig>
+  <include ignore_missing="yes">/opt/homebrew/etc/fonts/fonts.conf</include>
+  <include ignore_missing="yes">/etc/fonts/fonts.conf</include>
+  <dir>%s</dir>
+</fontconfig>
+""" % (RAIZ / "core" / "design" / "src" / "commonMain" / "composeResources" / "font")
 
 FORMATOS = {
     "play": {"origen": "phone", "lienzo": (1200, 2100), "letra": 62, "lineas": (170, 252), "arriba": 360, "abajo": 90,
@@ -106,9 +119,9 @@ def marco(png, lineas, formato, salida):
     ancho_p = round(alto_p * crudo_w / crudo_h)
     x = (ancho - ancho_p) // 2
     texto = "".join(
-        '<text x="%d" y="%d" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" '
+        '<text x="%d" y="%d" text-anchor="middle" font-family="%s" '
         'font-size="%d" font-weight="600" fill="%s">%s</text>'
-        % (ancho // 2, y, letra, color, linea.replace("&", "&amp;").replace("<", "&lt;"))
+        % (ancho // 2, y, LETRA, letra, color, linea.replace("&", "&amp;").replace("<", "&lt;"))
         for y, color, linea in zip(formato["lineas"], (TINTA, AGUA), lineas)
     )
     # rsvg no abre ficheros fuera del directorio del SVG, asi que la captura viaja dentro.
@@ -128,11 +141,12 @@ def marco(png, lineas, formato, salida):
 
 def render(svg, salida, ancho, alto):
     """rsvg pinta; PIL quita el canal alfa, que Play no acepta en capturas ni en el grafico."""
-    with tempfile.NamedTemporaryFile("w", suffix=".svg", encoding="utf-8") as f:
-        f.write(svg)
-        f.flush()
-        subprocess.run(["rsvg-convert", "-w", str(ancho), "-h", str(alto), f.name, "-o", str(salida)],
-                       check=True)
+    with tempfile.TemporaryDirectory() as tmp:
+        conf, dibujo = pathlib.Path(tmp, "fonts.conf"), pathlib.Path(tmp, "dibujo.svg")
+        conf.write_text(FONTS_CONF, encoding="utf-8")
+        dibujo.write_text(svg, encoding="utf-8")
+        subprocess.run(["rsvg-convert", "-w", str(ancho), "-h", str(alto), str(dibujo), "-o", str(salida)],
+                       check=True, env={**os.environ, "FONTCONFIG_FILE": str(conf), "PANGOCAIRO_BACKEND": "fc"})
     Image.open(salida).convert("RGB").save(salida, optimize=True)
     print(salida.relative_to(RAIZ))
 

@@ -5,7 +5,6 @@
     <string name="flow_time_settings_title">FlowTime Settings</string>
     <string name="flow_time_settings_in_the_first">In the first %1$s minutes</string>
     <string name="flow_time_settings_rest">I will rest</string>
-    <string name="flow_time_settings_range">#%1$d range duration</string>
     <string name="flow_time_settings_between">Between %1$d - %2$s</string>
     <string name="flow_time_setting_after">and after %1$d minutes, I will rest</string>
     <string name="flow_time_add_range">Add Range</string>
@@ -67,9 +66,9 @@
     <string name="alert_google_play">Error connecting to Google Play</string>
     <string name="alert_google_play_desc">Make sure you have an active internet connection to retrieve the necessary data.</string>
     <string name="advantage_title">Advantages</string>
-    <string name="pomodoro_advantages">Improves focus, reduces mental fatigue, and encourages regular breaks to maintain productivity.</string>
-    <string name="flow_time_advantages">Allows flexible work sessions, adapts to your pace, and helps achieve deep focus states.</string>
-    <string name="percentage_advantages">Adjusts breaks based on work time, balances effort and recovery, and adapts your sessions to you.</string>
+    <string name="pomodoro_advantages">Work and rest in fixed blocks that you set.</string>
+    <string name="flow_time_advantages">Work for as long as you stay focused. The longer you work, the longer the break.</string>
+    <string name="percentage_advantages">Your break is a set percentage of the time you worked.</string>
 
     <string name="import_summary">Days imported: %1$d · Lines ignored: %2$d</string>
     <string name="import_nothing">No valid days found to import</string>

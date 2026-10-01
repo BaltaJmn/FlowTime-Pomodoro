@@ -5,7 +5,6 @@
     <string name="flow_time_settings_title">Настройки FlowTime</string>
     <string name="flow_time_settings_in_the_first">В первые %1$s минут</string>
     <string name="flow_time_settings_rest">Я буду отдыхать</string>
-    <string name="flow_time_settings_range">Длительность диапазона #%1$d</string>
     <string name="flow_time_settings_between">Между %1$d - %2$s</string>
     <string name="flow_time_setting_after">а после %1$d минут я отдохну</string>
     <string name="flow_time_add_range">Добавить диапазон</string>
@@ -67,9 +66,9 @@
     <string name="alert_google_play">Ошибка подключения к Google Play</string>
     <string name="alert_google_play_desc">Убедитесь, что у вас есть активное интернет-соединение для получения необходимых данных.</string>
     <string name="advantage_title">Преимущества</string>
-    <string name="pomodoro_advantages">Улучшает концентрацию, снижает умственную усталость и способствует регулярным перерывам для поддержания продуктивности.</string>
-    <string name="flow_time_advantages">Позволяет гибко планировать рабочие сессии, подстраивается под ваш ритм и помогает достичь состояния глубокого фокуса.</string>
-    <string name="percentage_advantages">Регулирует перерывы в зависимости от времени работы, балансирует усилия и отдых и подстраивает сессии под вас.</string>
+    <string name="pomodoro_advantages">Работа и отдых фиксированными блоками, которые вы задаёте сами.</string>
+    <string name="flow_time_advantages">Работайте, пока сохраняется концентрация. Чем дольше работа, тем длиннее перерыв.</string>
+    <string name="percentage_advantages">Перерыв равен заданному проценту от времени работы.</string>
 
     <string name="import_summary">Импортировано дней: %1$d · Пропущено строк: %2$d</string>
     <string name="import_nothing">Не найдено ни одного подходящего дня для импорта</string>

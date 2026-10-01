@@ -1,3 +1,16 @@
+# Recursos de terceros
+
+## Letra
+
+| Fichero | Origen | Licencia |
+|---|---|---|
+| `src/commonMain/composeResources/font/mulish.ttf` | Mulish 3.603, el fichero variable `Mulish[wght].ttf` de `github.com/google/fonts` (`ofl/mulish`). Copyright 2016 The Mulish Project Authors | SIL Open Font License 1.1 |
+
+La OFL deja meter la letra en una app, gratis o de pago, si cada copia lleva el aviso de copyright y
+la licencia. Los dos van dentro del propio fichero (tabla `name`, campos 0, 13 y 14), que es una de
+las formas que la licencia admite. Lo que no deja es vender la letra suelta. Sustituye a Poppins,
+que se uso hasta la 2.1.0.
+
 # Sonidos de la app
 
 ## Sonidos ambientales

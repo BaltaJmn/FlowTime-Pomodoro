@@ -1,21 +1,15 @@
 package com.baltajmn.flowtime.features.screens.settings
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
@@ -25,13 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.theme.LargeTitle
-import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.data.reminder.Reminder
 import com.baltajmn.flowtime.core.design.resources.*
 import org.jetbrains.compose.resources.stringResource
@@ -47,57 +36,30 @@ fun ReminderCard(reminder: Reminder, onChange: (Reminder) -> Unit) {
     val notifications = rememberNotificationPermission()
     var pickTime by rememberSaveable { mutableStateOf(false) }
 
-    Card {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(Res.string.reminder_title),
-                textAlign = TextAlign.Center,
-                style = LargeTitle.copy(fontSize = 25.sp, color = MaterialTheme.colorScheme.primary)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(Res.string.reminder_text),
-                    modifier = Modifier.weight(1f),
-                    style = SubBody.copy(
-                        fontSize = 15.sp,
-                        color = MaterialTheme.colorScheme.primary
+    SettingsCard(Res.string.reminder_title) {
+        SwitchRow(text = Res.string.reminder_text, checked = reminder.enabled) { on ->
+            onChange(reminder.copy(enabled = on))
+            // Encenderlo es cuando se entiende para qué es el permiso.
+            if (on && !notifications.granted()) notifications.ask()
+        }
+        if (reminder.enabled) {
+            Spacer(modifier = Modifier.height(4.dp))
+            FilledTonalButton(onClick = { pickTime = true }) {
+                Text(text = Formats.shortTime(reminder.time))
+            }
+            val first = Formats.firstDayOfWeek()
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                (0..6).map { DayOfWeek.entries[(first.ordinal + it) % 7] }.forEach { day ->
+                    FilterChip(
+                        selected = reminder.on(day),
+                        onClick = { onChange(reminder.toggle(day)) },
+                        label = { Text(text = Formats.shortWeekday(day)) }
                     )
-                )
-                Switch(
-                    checked = reminder.enabled,
-                    onCheckedChange = { on ->
-                        onChange(reminder.copy(enabled = on))
-                        // Encenderlo es cuando se entiende para qué es el permiso.
-                        if (on && !notifications.granted()) notifications.ask()
-                    }
-                )
-            }
-            if (reminder.enabled) {
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedButton(onClick = { pickTime = true }) {
-                    Text(text = Formats.shortTime(reminder.time))
-                }
-                val first = Formats.firstDayOfWeek()
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    (0..6).map { DayOfWeek.entries[(first.ordinal + it) % 7] }.forEach { day ->
-                        FilterChip(
-                            selected = reminder.on(day),
-                            onClick = { onChange(reminder.toggle(day)) },
-                            label = { Text(text = Formats.shortWeekday(day)) }
-                        )
-                    }
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 
