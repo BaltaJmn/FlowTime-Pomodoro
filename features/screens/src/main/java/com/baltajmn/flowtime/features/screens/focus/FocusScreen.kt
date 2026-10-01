@@ -129,7 +129,9 @@ fun FocusScreen(
             onSeeProMixes = { proLauncher.open(ProFeature.MIXES) },
             showProSounds = ProFeatures.enabled,
             proSoundsLocked = gate.locked,
-            onSeeProSounds = { proLauncher.open(ProFeature.SOUNDS) }
+            onSeeProSounds = { proLauncher.open(ProFeature.SOUNDS) },
+            ambience = koinInject(),
+            mixes = koinInject()
         )
         FocusSheet.MODE -> ModeSettingsSheet(mode = state.mode, onDismiss = { sheet = null })
         null -> Unit

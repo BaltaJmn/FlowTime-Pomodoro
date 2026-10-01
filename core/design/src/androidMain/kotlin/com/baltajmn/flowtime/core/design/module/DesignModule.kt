@@ -1,0 +1,53 @@
+package com.baltajmn.flowtime.core.design.module
+
+import android.content.Intent
+import android.media.MediaPlayer
+import androidx.core.content.ContextCompat
+import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.service.SoundService
+import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
+import com.baltajmn.flowtime.core.design.sound.AmbientMixer
+import com.baltajmn.flowtime.core.design.sound.Ambience
+import com.baltajmn.flowtime.core.design.sound.AmbientService
+import com.baltajmn.flowtime.core.design.sound.SoundMixes
+import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.Module
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
+
+val DesignModule: Module
+    get() = module {
+        single(named("startPlayer")) {
+            MediaPlayer.create(
+                androidContext(),
+                R.raw.start
+            )
+        }
+
+        single(named("confirmationPlayer")) {
+            MediaPlayer.create(
+                androidContext(),
+                R.raw.confirmation
+            )
+        }
+
+        single {
+            SoundService(
+                get() as DataProvider,
+                get(named("startPlayer")),
+                get(named("confirmationPlayer"))
+            )
+        }
+
+        single { AmbientMixer() }
+        single { SoundMixes(get()) }
+        single { AppearanceRepository(get()) }
+        single {
+            val context = androidContext()
+            // Solo desde la app a la vista: arrancar el servicio desde segundo plano no está permitido.
+            Ambience(get(), get()) {
+                ContextCompat.startForegroundService(context, Intent(context, AmbientService::class.java))
+            }
+        }
+    }

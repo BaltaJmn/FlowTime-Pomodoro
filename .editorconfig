@@ -11,6 +11,8 @@ ktlint_function_naming_ignore_when_annotated_with = Composable
 ktlint_standard_final-newline = disabled
 ktlint_standard_max-line-length = disabled
 ktlint_standard_import-ordering = disabled
+# Los recursos de Compose Multiplatform son una propiedad por recurso: se importan con asterisco.
+ij_kotlin_packages_to_use_import_on_demand = java.util.*,kotlinx.android.synthetic.**,com.baltajmn.flowtime.core.design.resources.*
 
 # Nuevas en ktlint 1.x: el codigo parte las firmas y los when a su manera y usa cuerpos de bloque con return.
 ktlint_standard_function-signature = disabled

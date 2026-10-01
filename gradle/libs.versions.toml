@@ -10,11 +10,20 @@ room = "2.8.5"
 # La de Room 2.8.5. En el iPhone, Room va con su propio SQLite (sqlite-bundled).
 sqlite = "2.6.2"
 kotlinxDatetime = "0.8.0"
+# Compose Multiplatform (#61), como HabitTracker. La 1.12 pide compileSdk 37, que AGP 9.0 aun no
+# recomienda. Su Material3 va aparte y en Android trae androidx.compose.material3 1.5.0-alpha17.
+composeMultiplatform = "1.11.1"
+jbMaterial3 = "1.11.0-alpha07"
+jbMaterialIcons = "1.7.3"
+# La 2.11 ya pide compileSdk 37 y AGP 9.1.
+jbLifecycle = "2.10.0"
+# La 2.3 ya pide Compose Multiplatform 1.12.
+compottie = "2.2.4"
 composeBom = "2026.06.01"
 junit = "4.13.2"
 testJunit = "1.2.1"
 testJunitJupiter = "5.8.2"
-mock = "1.12.3"
+mock = "1.14.11"
 testEspresso = "3.6.1"
 lifecycle = "2.9.1"
 koinCore = "3.5.6"
@@ -81,6 +90,15 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+cmp-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeMultiplatform" }
+cmp-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
+cmp-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
+cmp-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
+cmp-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
+cmp-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "jbMaterial3" }
+cmp-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "jbMaterialIcons" }
+cmp-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jbLifecycle" }
+compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 junit-junit = { module = "androidx.test.ext:junit", version.ref = "testJunit" }
@@ -99,6 +117,7 @@ plugin-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref =
 plugin-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 plugin-kotlin-ksp = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 plugin-room = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
+plugin-compose-multiplatform = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
 plugin-compose-compiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
