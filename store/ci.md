@@ -78,12 +78,16 @@ Mientras no existan los secretos de Apple el trabajo se salta solo y deja un avi
 rojo en cada etiqueta.
 
 La versión que se ve en la App Store es `MARKETING_VERSION` en `iosApp/iosApp.xcodeproj` (a la par
-que `versionName` de Android); el número de build lo pone el workflow desde `github.run_number`.
+que `versionName` de Android); el número de build lo pone el workflow desde `github.run_number`. Las
+dos van en el proyecto y no en cada target: la app y su extensión (`FlowTimeWidgets`, la Live
+Activity) tienen que llevar las mismas, y App Store Connect lo comprueba al subir.
 
 ### Antes de la primera subida (usuario)
 
 1. Cuenta de Apple Developer y su Team ID.
 2. La app en App Store Connect con el identificador `com.baltajmn.flowtime`, que es para siempre.
+   El de la extensión, `com.baltajmn.flowtime.widgets`, lo registra Xcode al firmar
+   (`-allowProvisioningUpdates`).
 3. Los productos de compras integradas. En la App Store los ids son únicos en toda la cuenta (los
    de MoodTraker cuentan), así que van con el de la app delante y lo de Play detrás:
    `com.baltajmn.flowtime.pro_lifetime`, `.tip_small`, `.tip_medium` y `.tip_large`; la app se queda

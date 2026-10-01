@@ -6,8 +6,37 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F1000000000000000000004B /* FlowTimeWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F10000000000000000000040 /* FlowTimeWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F1000000000000000000004D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F10000000000000000000014 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F10000000000000000000044;
+			remoteInfo = FlowTimeWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F1000000000000000000004C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				F1000000000000000000004B /* FlowTimeWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		F10000000000000000000001 /* FlowTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlowTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F10000000000000000000040 /* FlowTimeWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FlowTimeWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -17,6 +46,13 @@
 				Info.plist,
 			);
 			target = F10000000000000000000010 /* iosApp */;
+		};
+		F10000000000000000000043 /* Exceptions for "FlowTimeWidgets" folder in "FlowTimeWidgets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F10000000000000000000044 /* FlowTimeWidgets */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -29,10 +65,30 @@
 			path = iosApp;
 			sourceTree = "<group>";
 		};
+		F10000000000000000000041 /* FlowTimeWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F10000000000000000000043 /* Exceptions for "FlowTimeWidgets" folder in "FlowTimeWidgets" target */,
+			);
+			path = FlowTimeWidgets;
+			sourceTree = "<group>";
+		};
+		F10000000000000000000042 /* Activity */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Activity;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		F10000000000000000000004 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F10000000000000000000046 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				F10000000000000000000003 /* iosApp */,
+				F10000000000000000000042 /* Activity */,
+				F10000000000000000000041 /* FlowTimeWidgets */,
 				F10000000000000000000006 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				F10000000000000000000001 /* FlowTime.app */,
+				F10000000000000000000040 /* FlowTimeWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -69,13 +128,16 @@
 				F10000000000000000000012 /* Sources */,
 				F10000000000000000000004 /* Frameworks */,
 				F10000000000000000000013 /* Resources */,
+				F1000000000000000000004C /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				F1000000000000000000004E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				F10000000000000000000003 /* iosApp */,
+				F10000000000000000000042 /* Activity */,
 			);
 			name = iosApp;
 			packageProductDependencies = (
@@ -83,6 +145,29 @@
 			productName = iosApp;
 			productReference = F10000000000000000000001 /* FlowTime.app */;
 			productType = "com.apple.product-type.application";
+		};
+		F10000000000000000000044 /* FlowTimeWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F10000000000000000000048 /* Build configuration list for PBXNativeTarget "FlowTimeWidgets" */;
+			buildPhases = (
+				F10000000000000000000045 /* Sources */,
+				F10000000000000000000046 /* Frameworks */,
+				F10000000000000000000047 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F10000000000000000000041 /* FlowTimeWidgets */,
+				F10000000000000000000042 /* Activity */,
+			);
+			name = FlowTimeWidgets;
+			packageProductDependencies = (
+			);
+			productName = FlowTimeWidgets;
+			productReference = F10000000000000000000040 /* FlowTimeWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -95,6 +180,9 @@
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					F10000000000000000000010 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					F10000000000000000000044 = {
 						CreatedOnToolsVersion = 16.2;
 					};
 				};
@@ -114,12 +202,20 @@
 			projectRoot = "";
 			targets = (
 				F10000000000000000000010 /* iosApp */,
+				F10000000000000000000044 /* FlowTimeWidgets */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F10000000000000000000013 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F10000000000000000000047 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -158,7 +254,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F10000000000000000000045 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F1000000000000000000004E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F10000000000000000000044 /* FlowTimeWidgets */;
+			targetProxy = F1000000000000000000004D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F10000000000000000000030 /* Debug */ = {
@@ -170,8 +281,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "$(TEAM_ID)";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -184,9 +298,11 @@
 					"$(inherited)",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 2.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TEAM_ID = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -201,16 +317,21 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
+				DEVELOPMENT_TEAM = "$(TEAM_ID)";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 2.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				TEAM_ID = "";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -221,9 +342,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "$(TEAM_ID)";
 				ENABLE_PREVIEWS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -242,7 +360,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -250,7 +367,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.baltajmn.flowtime;
 				PRODUCT_NAME = FlowTime;
-				TEAM_ID = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -262,9 +378,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "$(TEAM_ID)";
 				ENABLE_PREVIEWS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -283,7 +396,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -291,7 +403,46 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.baltajmn.flowtime;
 				PRODUCT_NAME = FlowTime;
-				TEAM_ID = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F10000000000000000000049 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FlowTimeWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FlowTime;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.baltajmn.flowtime.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F1000000000000000000004A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FlowTimeWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FlowTime;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.baltajmn.flowtime.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -315,6 +466,15 @@
 			buildConfigurations = (
 				F10000000000000000000030 /* Debug */,
 				F10000000000000000000031 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F10000000000000000000048 /* Build configuration list for PBXNativeTarget "FlowTimeWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F10000000000000000000049 /* Debug */,
+				F1000000000000000000004A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

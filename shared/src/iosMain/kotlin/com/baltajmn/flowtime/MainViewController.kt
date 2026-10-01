@@ -45,17 +45,22 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.channels.Channel
 import platform.UIKit.UIApplicationDidBecomeActiveNotification
 import platform.Foundation.NSNotificationCenter
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.goal.GoalWatcher
 
-/** La app entera en el iPhone: iosApp la pone como pantalla principal. */
+/** La app entera en el iPhone: iosApp la pone como pantalla principal, con su Live Activity. */
 @Suppress("ktlint:standard:function-naming", "FunctionName")
-fun MainViewController(): UIViewController {
+fun MainViewController(liveActivity: LiveActivity): UIViewController {
+    sessionActivity = liveActivity
     koin
     return ComposeUIViewController { IosApp() }
 }
+
+// Antes que Koin, que la necesita al arrancar.
+private lateinit var sessionActivity: LiveActivity
 
 // La notificación pide abrir Concentración; se guarda hasta que la pantalla principal lo recoge.
 private val openFocus = Channel<Unit>(Channel.CONFLATED)
@@ -95,6 +100,8 @@ private fun start(koin: Koin) {
     UNUserNotificationCenter.currentNotificationCenter().delegate = notificationDelegate
     val notifications = PhaseNotifications(engine, koin.get())
     scope.launch { engine.state.collect { notifications.schedule() } }
+    val activity = SessionActivity(engine, koin.get(), sessionActivity)
+    scope.launch { engine.state.collectLatest { activity.update(it) } }
     val reminders = ReminderNotifications(koin.get(), koin.get(), engine)
     val goals = koin.get<GoalRepository>()
     scope.launch {

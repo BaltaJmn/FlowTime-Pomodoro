@@ -13,7 +13,7 @@ struct iOSApp: App {
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        MainViewControllerKt.MainViewController()
+        MainViewControllerKt.MainViewController(liveActivity: FocusActivities())
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
