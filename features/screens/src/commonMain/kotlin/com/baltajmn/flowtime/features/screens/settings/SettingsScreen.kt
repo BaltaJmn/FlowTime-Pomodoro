@@ -86,6 +86,7 @@ import com.baltajmn.flowtime.features.screens.platform.hasWallpaperColors
 import com.baltajmn.flowtime.features.screens.platform.hasFiles
 import com.baltajmn.flowtime.features.screens.platform.hasAppIcons
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.runtime.derivedStateOf
 
 @Composable
 fun SettingsScreen(
@@ -392,11 +393,15 @@ private fun FocusModeRow(
     }
 }
 
-/** Solo se ve si falta un permiso. Se vuelve a mirar al volver de los ajustes del sistema. */
+/**
+ * Solo se ve si falta un permiso. Se vuelve a mirar al volver de los ajustes del sistema, y cuando
+ * cambia un estado que lea [granted]: en el iPhone, el permiso llega un momento después.
+ */
 @Composable
 fun PermissionNotice(text: StringResource, granted: () -> Boolean, open: () -> Unit) {
     val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
-    if (remember(lifecycle) { granted() }) return
+    val allowed by remember(lifecycle) { derivedStateOf(granted) }
+    if (allowed) return
     Spacer(modifier = Modifier.height(8.dp))
     ButtonRow(text = text, button = Res.string.turn_on, onClick = open)
 }

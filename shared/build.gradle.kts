@@ -26,6 +26,7 @@ kotlin {
             implementation(libs.cmp.material3.navigation.suite)
         }
         iosMain.dependencies {
+            implementation(projects.core.common)
             implementation(projects.core.database)
             implementation(projects.core.persistence)
             implementation(libs.cmp.lifecycle.runtime.compose)

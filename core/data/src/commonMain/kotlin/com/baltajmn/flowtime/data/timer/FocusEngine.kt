@@ -233,6 +233,31 @@ class FocusEngine(
         }
     }
 
+    /**
+     * Los próximos cambios de fase si nadie toca la sesión, como los haría [sync]: cuánto falta para
+     * cada uno y a qué fase pasa. Para avisar de antemano donde la app no se despierta sola (el
+     * iPhone). Como mucho [count].
+     */
+    fun upcomingChanges(count: Int, state: FocusState = _state.value): List<Pair<Long, PhaseChange>> {
+        val changes = mutableListOf<Pair<Long, PhaseChange>>()
+        var s = state
+        var inMillis = snapshot(state).remainingMillis
+        while (changes.size < count && s.running && s.countsDown) {
+            // Lo mismo que finishWork y afterBreak, sin guardar nada.
+            val breakMillis = if (s.phase == Phase.WORK) breakMillis(s.mode, s.durationMillis) else 0
+            val next = when {
+                breakMillis > 0 -> s.copy(phase = Phase.BREAK, durationMillis = breakMillis)
+                dataProvider.getCheckValue(s.mode.continueAfterBreakKey) ->
+                    s.copy(phase = Phase.WORK, durationMillis = workMillis(s.mode))
+                else -> s.stopped()
+            }
+            changes += inMillis to PhaseChange(s.mode, s.phase, next.phase, lateMillis = 0)
+            inMillis += next.durationMillis
+            s = next
+        }
+        return changes
+    }
+
     /** Lo que dura el trabajo de un Pomodoro; 0 en los modos que cuentan hacia arriba. */
     fun workMillis(mode: TimerMode): Long =
         if (mode == TimerMode.POMODORO) pomodoroRange().endRange.coerceAtLeast(1) * MINUTE else 0

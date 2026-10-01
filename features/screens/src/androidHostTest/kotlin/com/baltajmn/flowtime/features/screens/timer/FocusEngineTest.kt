@@ -71,6 +71,31 @@ class FocusEngineTest {
     }
 
     @Test
+    fun `los cambios de antemano son los mismos que hace sync`() {
+        engine.start(TimerMode.POMODORO)
+        val upcoming = engine.upcomingChanges(count = 4)
+        assertEquals(listOf(minutes(45), minutes(60), minutes(105), minutes(120)), upcoming.map { it.first })
+
+        val seen = mutableListOf<PhaseChange>()
+        engine.onPhaseChange = { seen += it }
+        var now = 0L
+        upcoming.forEach { (at, _) ->
+            time.advance(at - now)
+            now = at
+            engine.sync()
+        }
+        assertEquals(upcoming.map { it.second }, seen)
+    }
+
+    @Test
+    fun `sin seguir tras el descanso, el ultimo cambio de antemano es el final de la sesion`() {
+        prefs.setCheckValue(TimerMode.POMODORO.continueAfterBreakKey, false)
+        engine.start(TimerMode.POMODORO)
+
+        assertEquals(listOf(Phase.BREAK, Phase.IDLE), engine.upcomingChanges(count = 8).map { it.second.to })
+    }
+
+    @Test
     fun `al volver pasa por todas las fases que terminaron mientras tanto`() {
         engine.start(TimerMode.POMODORO)
 

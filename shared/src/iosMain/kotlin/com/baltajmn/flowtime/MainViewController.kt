@@ -39,6 +39,14 @@ import org.koin.core.Koin
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import platform.UIKit.UIViewController
+import platform.UserNotifications.UNUserNotificationCenter
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.channels.Channel
+import platform.UIKit.UIApplicationDidBecomeActiveNotification
+import platform.Foundation.NSNotificationCenter
+import kotlinx.coroutines.flow.combine
+import com.baltajmn.flowtime.data.reminder.ReminderRepository
+import com.baltajmn.flowtime.data.goal.GoalRepository
 
 /** La app entera en el iPhone: iosApp la pone como pantalla principal. */
 @Suppress("ktlint:standard:function-naming", "FunctionName")
@@ -46,6 +54,12 @@ fun MainViewController(): UIViewController {
     koin
     return ComposeUIViewController { IosApp() }
 }
+
+// La notificación pide abrir Concentración; se guarda hasta que la pantalla principal lo recoge.
+private val openFocus = Channel<Unit>(Channel.CONFLATED)
+
+// El centro de notificaciones no retiene a su delegado.
+private val notificationDelegate = NotificationDelegate(onOpen = { openFocus.trySend(Unit) })
 
 // Una sola vez, aunque iOS vuelva a crear la pantalla.
 private val koin: Koin by lazy {
@@ -68,6 +82,22 @@ private fun start(koin: Koin) {
     val engine = koin.get<FocusEngine>()
     val scope = MainScope()
     engine.runIn(scope)
+    UNUserNotificationCenter.currentNotificationCenter().delegate = notificationDelegate
+    val notifications = PhaseNotifications(engine, koin.get())
+    scope.launch { engine.state.collect { notifications.schedule() } }
+    val reminders = ReminderNotifications(koin.get(), koin.get(), engine)
+    val goals = koin.get<GoalRepository>()
+    scope.launch {
+        combine(koin.get<ReminderRepository>().reminder, goals.today, engine.state.map { it.isActive }.distinctUntilChanged()) { _, _, _ -> }
+            .collect { reminders.schedule() }
+    }
+    // Al volver a la app: el permiso puede haber llegado después, o haberse dado en Ajustes.
+    NSNotificationCenter.defaultCenter.addObserverForName(UIApplicationDidBecomeActiveNotification, null, null) {
+        scope.launch {
+            notifications.schedule()
+            reminders.schedule()
+        }
+    }
     // "Al terminar la sesión" del temporizador de apagado de los sonidos (#44).
     val ambience = koin.get<Ambience>()
     scope.launch {
@@ -94,6 +124,7 @@ private fun IosApp() {
         showSound = showSound,
         onSoundChange = { showSound = it },
         proRequest = proRequest,
-        onProClosed = proLauncher::close
+        onProClosed = proLauncher::close,
+        openFocus = remember { openFocus.receiveAsFlow() }
     )
 }

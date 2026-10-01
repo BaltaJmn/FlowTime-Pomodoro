@@ -26,21 +26,36 @@ import platform.UserNotifications.UNAuthorizationStatusDenied
 import platform.UserNotifications.UNAuthorizationStatusNotDetermined
 import platform.UserNotifications.UNAuthorizationStatusProvisional
 import platform.UserNotifications.UNUserNotificationCenter
+import platform.UserNotifications.UNAuthorizationStatus
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.MutableState
+
+/** El permiso de notificaciones. Se vuelve a leer cada vez que se vuelve a la app: se cambia en Ajustes. */
+@Composable
+private fun rememberNotificationStatus(): MutableState<UNAuthorizationStatus> {
+    val status = remember { mutableStateOf(UNAuthorizationStatusNotDetermined) }
+    val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
+    LaunchedEffect(lifecycle) {
+        if (lifecycle != Lifecycle.State.RESUMED) return@LaunchedEffect
+        UNUserNotificationCenter.currentNotificationCenter().getNotificationSettingsWithCompletionHandler { settings ->
+            settings?.let { status.value = it.authorizationStatus }
+        }
+    }
+    return status
+}
 
 @Composable
 actual fun rememberNotificationPermission(): NotificationPermission {
-    val center = remember { UNUserNotificationCenter.currentNotificationCenter() }
-    var status by remember { mutableStateOf(UNAuthorizationStatusNotDetermined) }
-    LaunchedEffect(Unit) {
-        center.getNotificationSettingsWithCompletionHandler { settings -> settings?.let { status = it.authorizationStatus } }
-    }
+    val status = rememberNotificationStatus()
     return remember {
         NotificationPermission(
-            granted = { status == UNAuthorizationStatusAuthorized || status == UNAuthorizationStatusProvisional },
+            granted = { status.value == UNAuthorizationStatusAuthorized || status.value == UNAuthorizationStatusProvisional },
             ask = {
                 val options = UNAuthorizationOptionAlert or UNAuthorizationOptionSound or UNAuthorizationOptionBadge
-                center.requestAuthorizationWithOptions(options) { granted, _ ->
-                    status = if (granted) UNAuthorizationStatusAuthorized else UNAuthorizationStatusDenied
+                UNUserNotificationCenter.currentNotificationCenter().requestAuthorizationWithOptions(options) { granted, _ ->
+                    status.value = if (granted) UNAuthorizationStatusAuthorized else UNAuthorizationStatusDenied
                 }
             }
         )
@@ -48,13 +63,16 @@ actual fun rememberNotificationPermission(): NotificationPermission {
 }
 
 @Composable
-actual fun rememberSystemSettings(): SystemSettings = remember { IosSystemSettings }
+actual fun rememberSystemSettings(): SystemSettings {
+    val status = rememberNotificationStatus()
+    // Sin preguntar todavía no hay aviso: lo pide Concentración al empezar la primera sesión, y hasta
+    // entonces Ajustes del iPhone no tiene el interruptor.
+    return remember { IosSystemSettings(notificationsAllowed = { status.value != UNAuthorizationStatusDenied }) }
+}
 
 /** En el iPhone no hay alarmas exactas que permitir ni No molestar que encender desde una app. */
-private object IosSystemSettings : SystemSettings {
-    // ponytail: no avisa si se han quitado los avisos en Ajustes; leerlo es asíncrono. Cuando el
-    // iPhone avise de las fases, mirar el estado como rememberNotificationPermission.
-    override fun notificationsAllowed() = true
+private class IosSystemSettings(private val notificationsAllowed: () -> Boolean) : SystemSettings {
+    override fun notificationsAllowed() = notificationsAllowed.invoke()
 
     override fun openNotificationSettings() {
         NSURL.URLWithString(UIApplicationOpenSettingsURLString)?.let {

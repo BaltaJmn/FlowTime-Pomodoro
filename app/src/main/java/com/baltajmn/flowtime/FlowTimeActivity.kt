@@ -48,6 +48,7 @@ class FlowTimeActivity : ComponentActivity() {
     // Se guarda hasta que la pantalla principal lo recoge: al abrir la app desde la notificación, antes
     // de que exista.
     private val openFocus = Channel<Unit>(Channel.CONFLATED)
+    private val openFocusRequests = openFocus.receiveAsFlow()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +80,7 @@ class FlowTimeActivity : ComponentActivity() {
                 onCelebrationShown = goalWatcher::onShown,
                 proRequest = proRequest,
                 onProClosed = proLauncher::close,
-                openFocus = openFocus.receiveAsFlow(),
+                openFocus = openFocusRequests,
                 onAddQuickTile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     { FocusTileService.requestAdd(this) }
                 } else {
