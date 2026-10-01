@@ -15,5 +15,8 @@ struct FocusAttributes: ActivityAttributes {
         var date: Date?
         /// El tiempo parado, en pausa.
         var time: String
+        /// Los botones: el nombre de cada TimerAction (FocusActionIntent) y lo que dice.
+        var actions: [String]
+        var labels: [String]
     }
 }

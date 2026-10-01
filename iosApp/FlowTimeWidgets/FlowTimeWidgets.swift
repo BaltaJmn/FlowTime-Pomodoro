@@ -27,7 +27,10 @@ struct FocusLiveActivity: Widget {
                         .foregroundStyle(Color.iconWater)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Labels(state: context.state)
+                    HStack {
+                        Labels(state: context.state)
+                        Buttons(state: context.state)
+                    }
                 }
             } compactLeading: {
                 Ring().frame(width: 20, height: 20)
@@ -51,10 +54,13 @@ private struct LockScreen: View {
             Ring().frame(width: 44, height: 44)
             Labels(state: state)
             Spacer(minLength: 0)
-            Clock(state: state)
-                .font(.system(size: 36, weight: .semibold).monospacedDigit())
-                .foregroundStyle(Color.iconWater)
-                .frame(maxWidth: 140, alignment: .trailing)
+            VStack(alignment: .trailing, spacing: 8) {
+                Clock(state: state)
+                    .font(.system(size: 36, weight: .semibold).monospacedDigit())
+                    .foregroundStyle(Color.iconWater)
+                    .frame(maxWidth: 140, alignment: .trailing)
+                Buttons(state: state)
+            }
         }
         .padding()
     }
@@ -73,6 +79,38 @@ private struct Labels: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+/// Lo que se puede hacer con la sesión, como en la notificación de Android. Cada botón lo hace la app
+/// (FocusActionIntent), sin abrirla.
+private struct Buttons: View {
+    let state: FocusAttributes.ContentState
+
+    var body: some View {
+        HStack(spacing: 8) {
+            ForEach(Array(zip(state.actions, state.labels)), id: \.0) { action, label in
+                Button(intent: FocusActionIntent(action: action)) {
+                    Image(systemName: symbol(action))
+                        .font(.system(size: 14, weight: .bold))
+                        .frame(width: 32, height: 32)
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(Color.iconBackground)
+                .background(Color.iconWater, in: Circle())
+                .accessibilityLabel(label)
+            }
+        }
+    }
+
+    private func symbol(_ action: String) -> String {
+        switch action {
+        case "PAUSE": "pause.fill"
+        case "STOP": "stop.fill"
+        case "BREAK": "cup.and.saucer.fill"
+        case "SKIP_BREAK": "forward.end.fill"
+        default: "play.fill"
+        }
     }
 }
 

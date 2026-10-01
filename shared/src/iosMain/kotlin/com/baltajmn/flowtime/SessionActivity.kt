@@ -20,9 +20,19 @@ import org.jetbrains.compose.resources.getString
 interface LiveActivity {
     /**
      * [date], en segundos desde 1970: en marcha, cuándo acaba la fase si cuenta hacia atrás o cuándo
-     * empezó si cuenta hacia delante; en pausa, null, y se enseña [time].
+     * empezó si cuenta hacia delante; en pausa, null, y se enseña [time]. [actions] son los nombres de
+     * TimerAction de sus botones, y [labels], lo que dicen.
      */
-    fun show(title: String, subtitle: String, task: String?, countsDown: Boolean, date: Double?, time: String)
+    fun show(
+        title: String,
+        subtitle: String,
+        task: String?,
+        countsDown: Boolean,
+        date: Double?,
+        time: String,
+        actions: List<String>,
+        labels: List<String>
+    )
 
     fun end()
 }
@@ -41,6 +51,7 @@ internal class SessionActivity(
         if (!state.isActive) return activity.end()
         val title = getString(state.title)
         val mode = getString(state.mode.label)
+        val labels = state.actions.map { getString(it.label) }
         // ponytail: con la app suspendida nadie la actualiza, así que al acabar la fase se queda en
         // 0:00 hasta abrir la app (el aviso de fin de fase sí llega). Seguir sola pediría un servidor
         // de notificaciones push.
@@ -58,7 +69,9 @@ internal class SessionActivity(
             task = state.taskTitle,
             countsDown = state.countsDown,
             date = date?.let { it / 1000.0 },
-            time = snapshot.displaySeconds.formatSecondsToTime()
+            time = snapshot.displaySeconds.formatSecondsToTime(),
+            actions = state.actions.map { it.name },
+            labels = labels
         )
     }
 }

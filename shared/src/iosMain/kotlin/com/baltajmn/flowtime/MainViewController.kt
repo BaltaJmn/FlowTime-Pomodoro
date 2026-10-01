@@ -24,6 +24,7 @@ import com.baltajmn.flowtime.data.di.DataModule
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
+import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.di.ScreensModule
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.features.screens.settings.AppIcons
@@ -51,12 +52,28 @@ import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.goal.GoalWatcher
 
-/** La app entera en el iPhone: iosApp la pone como pantalla principal, con su Live Activity. */
-@Suppress("ktlint:standard:function-naming", "FunctionName")
-fun MainViewController(liveActivity: LiveActivity): UIViewController {
+/**
+ * Arranca la app, también sin pantalla: iOS la abre en segundo plano cuando se pulsa un botón de la
+ * Live Activity. iosApp lo llama al empezar, antes que nada.
+ */
+fun setUp(liveActivity: LiveActivity) {
     sessionActivity = liveActivity
     koin
-    return ComposeUIViewController { IosApp() }
+}
+
+/** La app entera en el iPhone: iosApp la pone como pantalla principal. */
+@Suppress("ktlint:standard:function-naming", "FunctionName")
+fun MainViewController(): UIViewController = ComposeUIViewController { IosApp() }
+
+/**
+ * Un botón de la Live Activity, con el nombre de su TimerAction. Vuelve cuando los avisos y la propia
+ * Live Activity ya están al día: con la app en segundo plano, iOS la suspende en cuanto acaba el botón.
+ */
+suspend fun perform(action: String) {
+    val engine = koin.get<FocusEngine>()
+    TimerAction.entries.firstOrNull { it.name == action }?.let(engine::perform)
+    koin.get<PhaseNotifications>().schedule()
+    koin.get<SessionActivity>().update(engine.state.value)
 }
 
 // Antes que Koin, que la necesita al arrancar.
@@ -81,6 +98,8 @@ private val koin: Koin by lazy {
                 single { AppIcons() }
                 // En el iPhone la sesión solo avanza con la app abierta: la celebración, dentro de la app.
                 single { GoalWatcher(get(), get(), visible = { true }, notify = { false }) }
+                single { PhaseNotifications(get(), get()) }
+                single { SessionActivity(get(), get(), sessionActivity) }
             }
         )
     }.koin
@@ -98,9 +117,9 @@ private fun start(koin: Koin) {
     val purchases = koin.get<PurchasesRepository>()
     scope.launch { purchases.refresh() }
     UNUserNotificationCenter.currentNotificationCenter().delegate = notificationDelegate
-    val notifications = PhaseNotifications(engine, koin.get())
+    val notifications = koin.get<PhaseNotifications>()
     scope.launch { engine.state.collect { notifications.schedule() } }
-    val activity = SessionActivity(engine, koin.get(), sessionActivity)
+    val activity = koin.get<SessionActivity>()
     scope.launch { engine.state.collectLatest { activity.update(it) } }
     val reminders = ReminderNotifications(koin.get(), koin.get(), engine)
     val goals = koin.get<GoalRepository>()
