@@ -26,6 +26,9 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.baltajmn.flowtime.data.backup.PickedFile
 import com.baltajmn.flowtime.data.pro.PurchaseHost
+import com.baltajmn.flowtime.core.design.resources.backup_automatic
+import com.baltajmn.flowtime.core.design.resources.Res
+import org.jetbrains.compose.resources.StringResource
 
 @Composable
 actual fun rememberNotificationPermission(): NotificationPermission {
@@ -100,6 +103,8 @@ actual val hasWallpaperColors: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_
 actual val hasAppIcons: Boolean = true
 
 actual val hasFiles: Boolean = true
+
+actual val automaticBackupText: StringResource = Res.string.backup_automatic
 
 @Composable
 actual fun rememberShowMessage(): (String) -> Unit {

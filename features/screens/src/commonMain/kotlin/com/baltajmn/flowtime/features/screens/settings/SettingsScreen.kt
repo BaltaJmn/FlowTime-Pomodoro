@@ -87,6 +87,7 @@ import com.baltajmn.flowtime.features.screens.platform.hasFiles
 import com.baltajmn.flowtime.features.screens.platform.hasAppIcons
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.runtime.derivedStateOf
+import com.baltajmn.flowtime.data.pro.ProFeatures
 
 @Composable
 fun SettingsScreen(
@@ -194,15 +195,17 @@ fun SettingsContent(
             }
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }
-        item {
-            SupportCard(
-                state = state.purchases,
-                onTip = { showSupport = true },
-                onRestore = viewModel::restorePurchases,
-                onMessageShown = viewModel::onRestoreMessageShown
-            )
+        if (ProFeatures.hasStore) {
+            item {
+                SupportCard(
+                    state = state.purchases,
+                    onTip = { showSupport = true },
+                    onRestore = viewModel::restorePurchases,
+                    onMessageShown = viewModel::onRestoreMessageShown
+                )
+            }
+            item { Spacer(modifier = Modifier.height(24.dp)) }
         }
-        item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
             AppearanceCard(
                 appearance = state.appearance,

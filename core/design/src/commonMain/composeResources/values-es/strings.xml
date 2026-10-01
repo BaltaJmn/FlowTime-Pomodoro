@@ -163,6 +163,7 @@
     <string name="channel_sounds">Sonidos ambientales</string>
     <string name="backup_title">Copia de seguridad</string>
     <string name="backup_automatic">Si tienes activada la copia de seguridad de Google, Android guarda tu historial y tus ajustes en tu cuenta: al instalar FlowTime en un móvil nuevo, vuelven.</string>
+    <string name="backup_automatic_ios">Si tienes activada la copia de seguridad de iCloud, el iPhone guarda tu historial y tus ajustes: al restaurarla en un iPhone nuevo, vuelven.</string>
     <string name="backup_export_label">Guardar todo en un fichero</string>
     <string name="backup_export">Exportar</string>
     <string name="backup_import_label">Recuperar desde un fichero</string>

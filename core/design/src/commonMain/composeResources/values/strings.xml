@@ -164,6 +164,7 @@
     <string name="channel_sounds">Ambient sounds</string>
     <string name="backup_title">Backup</string>
     <string name="backup_automatic">If Google backup is on, Android saves your history and settings to your account: install FlowTime on a new phone and they come back.</string>
+    <string name="backup_automatic_ios">If iCloud Backup is on, your iPhone saves your history and settings: restore the backup on a new iPhone and they come back.</string>
     <string name="backup_export_label">Save everything to a file</string>
     <string name="backup_export">Export</string>
     <string name="backup_import_label">Restore from a file</string>

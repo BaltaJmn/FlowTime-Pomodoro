@@ -37,6 +37,7 @@ import com.baltajmn.flowtime.features.screens.platform.rememberCreateFile
 import com.baltajmn.flowtime.features.screens.platform.Formats
 import com.baltajmn.flowtime.data.goal.today
 import com.baltajmn.flowtime.data.backup.PickedFile
+import com.baltajmn.flowtime.features.screens.platform.automaticBackupText
 
 /**
  * Ajustes › Copia de seguridad: la copia automática de Android y la copia a un fichero, con el
@@ -72,7 +73,7 @@ fun BackupCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(Res.string.backup_automatic),
+                text = stringResource(automaticBackupText),
                 style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary),
                 textAlign = TextAlign.Center
             )

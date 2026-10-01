@@ -160,6 +160,7 @@
     <string name="channel_sounds">Umgebungsgeräusche</string>
     <string name="backup_title">Datensicherung</string>
     <string name="backup_automatic">Wenn die Google-Sicherung aktiviert ist, speichert Android deinen Verlauf und deine Einstellungen in deinem Konto: Installierst du FlowTime auf einem neuen Handy, sind sie wieder da.</string>
+    <string name="backup_automatic_ios">Wenn die iCloud-Sicherung aktiviert ist, speichert das iPhone deinen Verlauf und deine Einstellungen: Stellst du sie auf einem neuen iPhone wieder her, sind sie wieder da.</string>
     <string name="backup_export_label">Alles in einer Datei speichern</string>
     <string name="backup_export">Exportieren</string>
     <string name="backup_import_label">Aus einer Datei wiederherstellen</string>

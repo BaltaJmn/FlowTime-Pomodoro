@@ -31,6 +31,22 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.MutableState
+import platform.darwin.dispatch_time
+import platform.darwin.dispatch_get_main_queue
+import platform.darwin.dispatch_after
+import platform.darwin.NSObject
+import platform.darwin.DISPATCH_TIME_NOW
+import platform.UniformTypeIdentifiers.UTType
+import platform.UIKit.UIDocumentPickerViewController
+import platform.UIKit.UIDocumentPickerDelegateProtocol
+import platform.UIKit.UIAlertControllerStyleAlert
+import platform.UIKit.UIAlertController
+import platform.Foundation.NSTemporaryDirectory
+import platform.Foundation.NSFileManager
+import com.baltajmn.flowtime.core.design.resources.backup_automatic_ios
+import com.baltajmn.flowtime.core.design.resources.Res
+import org.jetbrains.compose.resources.StringResource
+import androidx.compose.runtime.rememberUpdatedState
 
 /** El permiso de notificaciones. Se vuelve a leer cada vez que se vuelve a la app: se cambia en Ajustes. */
 @Composable
@@ -112,19 +128,75 @@ actual val hasWallpaperColors: Boolean = false
 
 actual val hasAppIcons: Boolean = false
 
-actual val hasFiles: Boolean = false
+actual val hasFiles: Boolean = true
 
-// ponytail: sin aviso en el iPhone. Los mensajes de ahora son de los ficheros (que aún no hay) y de
-// restaurar compras; cuando haga falta, un snackbar.
+actual val automaticBackupText: StringResource = Res.string.backup_automatic_ios
+
+/** Como un Toast: un aviso que se va solo a los dos segundos. */
 @Composable
-actual fun rememberShowMessage(): (String) -> Unit = remember { { _ -> } }
+actual fun rememberShowMessage(): (String) -> Unit {
+    val controller = LocalUIViewController.current
+    return remember(controller) {
+        { text ->
+            val alert = UIAlertController.alertControllerWithTitle(null, text, UIAlertControllerStyleAlert)
+            controller.presentViewController(alert, animated = true) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, MESSAGE_NANOS), dispatch_get_main_queue()) {
+                    alert.dismissViewControllerAnimated(true, null)
+                }
+            }
+        }
+    }
+}
+
+private const val MESSAGE_NANOS = 2_000_000_000L
+
+/**
+ * El selector del iPhone guarda un fichero que ya existe: se le da uno vacío con ese nombre, lo mueve
+ * a donde se elija, y después se llena.
+ */
+@Composable
+actual fun rememberCreateFile(mime: String, onPicked: (PickedFile) -> Unit): (suggestedName: String) -> Unit {
+    val controller = LocalUIViewController.current
+    val picker = rememberPickerDelegate(onPicked)
+    return remember(controller, picker) {
+        { name ->
+            val url = NSURL.fileURLWithPath(NSTemporaryDirectory() + name)
+            NSFileManager.defaultManager.createFileAtPath(url.path.orEmpty(), null, null)
+            val document = UIDocumentPickerViewController(forExportingURLs = listOf(url), asCopy = false)
+            document.delegate = picker
+            controller.presentViewController(document, animated = true, completion = null)
+        }
+    }
+}
 
 @Composable
-actual fun rememberCreateFile(mime: String, onPicked: (PickedFile) -> Unit): (suggestedName: String) -> Unit =
-    remember { { _ -> } }
+actual fun rememberOpenFile(mimeTypes: List<String>, onPicked: (PickedFile) -> Unit): () -> Unit {
+    val controller = LocalUIViewController.current
+    val picker = rememberPickerDelegate(onPicked)
+    return remember(controller, picker, mimeTypes) {
+        {
+            val types = mimeTypes.mapNotNull { UTType.typeWithMIMEType(it) }
+            val document = UIDocumentPickerViewController(forOpeningContentTypes = types, asCopy = true)
+            document.delegate = picker
+            controller.presentViewController(document, animated = true, completion = null)
+        }
+    }
+}
 
+// El selector no retiene a su delegado: lo guarda la pantalla.
 @Composable
-actual fun rememberOpenFile(mimeTypes: List<String>, onPicked: (PickedFile) -> Unit): () -> Unit = remember { {} }
+private fun rememberPickerDelegate(onPicked: (PickedFile) -> Unit): PickerDelegate {
+    val picked by rememberUpdatedState(onPicked)
+    return remember { PickerDelegate { picked(PickedFile(it)) } }
+}
+
+private class PickerDelegate(private val onPicked: (NSURL) -> Unit) :
+    NSObject(),
+    UIDocumentPickerDelegateProtocol {
+    override fun documentPicker(controller: UIDocumentPickerViewController, didPickDocumentsAtURLs: List<*>) {
+        (didPickDocumentsAtURLs.firstOrNull() as? NSURL)?.let(onPicked)
+    }
+}
 
 /** Si el formato de hora del idioma lleva AM/PM, va en 12 horas. */
 @Composable

@@ -166,6 +166,7 @@
     <string name="channel_sounds">Фоновые звуки</string>
     <string name="backup_title">Резервная копия</string>
     <string name="backup_automatic">Если резервное копирование Google включено, Android сохраняет вашу историю и настройки в аккаунте: при установке FlowTime на новый телефон они вернутся.</string>
+    <string name="backup_automatic_ios">Если резервное копирование iCloud включено, iPhone сохраняет вашу историю и настройки: при восстановлении копии на новом iPhone они вернутся.</string>
     <string name="backup_export_label">Сохранить всё в файл</string>
     <string name="backup_export">Экспорт</string>
     <string name="backup_import_label">Восстановить из файла</string>

@@ -3,6 +3,7 @@ package com.baltajmn.flowtime.features.screens.platform
 import androidx.compose.runtime.Composable
 import com.baltajmn.flowtime.data.backup.PickedFile
 import com.baltajmn.flowtime.data.pro.PurchaseHost
+import org.jetbrains.compose.resources.StringResource
 
 /** El permiso para avisar. [granted] se vuelve a mirar en cada llamada: el usuario lo cambia fuera. */
 class NotificationPermission(val granted: () -> Boolean, val ask: () -> Unit)
@@ -54,6 +55,9 @@ expect val hasAppIcons: Boolean
 
 /** Guardar y abrir ficheros con el selector del sistema (copia de seguridad, CSV): de momento, solo en Android. */
 expect val hasFiles: Boolean
+
+/** Lo que dice Ajustes de la copia automática del sistema: la de Google en Android, la de iCloud en el iPhone. */
+expect val automaticBackupText: StringResource
 
 /** Un aviso corto que se va solo: un Toast en Android. */
 @Composable

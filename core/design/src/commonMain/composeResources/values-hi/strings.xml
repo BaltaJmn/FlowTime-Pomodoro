@@ -160,6 +160,7 @@
     <string name="channel_sounds">परिवेशी ध्वनियां</string>
     <string name="backup_title">बैकअप</string>
     <string name="backup_automatic">अगर Google बैकअप चालू है, तो Android आपका इतिहास और सेटिंग्स आपके खाते में सहेजता है: नए फ़ोन पर FlowTime इंस्टॉल करने पर वे वापस आ जाते हैं।</string>
+    <string name="backup_automatic_ios">अगर iCloud बैकअप चालू है, तो iPhone आपका इतिहास और सेटिंग्स सहेजता है: नए iPhone पर बैकअप रीस्टोर करने पर वे वापस आ जाते हैं।</string>
     <string name="backup_export_label">सब कुछ एक फ़ाइल में सहेजें</string>
     <string name="backup_export">निर्यात करें</string>
     <string name="backup_import_label">फ़ाइल से वापस लाएँ</string>

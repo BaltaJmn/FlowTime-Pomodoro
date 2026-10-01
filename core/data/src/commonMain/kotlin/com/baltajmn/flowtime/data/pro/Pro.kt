@@ -3,12 +3,18 @@ package com.baltajmn.flowtime.data.pro
 import kotlinx.coroutines.flow.StateFlow
 
 object ProFeatures {
+    /** Si esta plataforma ya tiene tienda para Pro y las propinas. En el iPhone, todavía no. */
+    val hasStore: Boolean = platformHasStore
+
     /**
-     * Encendido desde la 2.1.0, la versión que pone Pro a la venta (#56). Apagado, ningún límite se
-     * aplica y no se ofrece Pro. Lo de Pro nunca se publica gratis para bloquearlo después.
+     * Encendido desde la 2.1.0, la versión que pone Pro a la venta (#56), donde hay tienda. Apagado,
+     * ningún límite se aplica y no se ofrece Pro. Lo de Pro nunca se publica gratis para bloquearlo
+     * después: el iPhone no se publica sin tienda.
      */
-    val enabled: Boolean = true
+    val enabled: Boolean = hasStore
 }
+
+internal expect val platformHasStore: Boolean
 
 /** Lo que se puede tener a la vez sin Pro. Nunca se borra ni se bloquea nada que ya exista. */
 object Limits {

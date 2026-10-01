@@ -163,6 +163,7 @@
     <string name="channel_sounds">Suoni ambientali</string>
     <string name="backup_title">Backup</string>
     <string name="backup_automatic">Se il backup di Google è attivo, Android salva la cronologia e le impostazioni nel tuo account: installando FlowTime su un nuovo telefono, tornano.</string>
+    <string name="backup_automatic_ios">Se il backup di iCloud è attivo, l'iPhone salva la cronologia e le impostazioni: ripristinandolo su un nuovo iPhone, tornano.</string>
     <string name="backup_export_label">Salva tutto in un file</string>
     <string name="backup_export">Esporta</string>
     <string name="backup_import_label">Ripristina da un file</string>
