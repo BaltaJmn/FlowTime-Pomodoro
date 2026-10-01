@@ -87,7 +87,9 @@ Activity) tienen que llevar las mismas, y App Store Connect lo comprueba al subi
 1. Cuenta de Apple Developer y su Team ID.
 2. La app en App Store Connect con el identificador `com.baltajmn.flowtime`, que es para siempre.
    El de la extensión, `com.baltajmn.flowtime.widgets`, lo registra Xcode al firmar
-   (`-allowProvisioningUpdates`).
+   (`-allowProvisioningUpdates`), y también el App Group `group.com.baltajmn.flowtime` que comparten
+   la app y el widget. Si la primera subida fallara por alguno de los dos, se crean a mano en
+   *Certificates, Identifiers & Profiles* y se vuelve a lanzar.
 3. Los productos de compras integradas. En la App Store los ids son únicos en toda la cuenta (los
    de MoodTraker cuentan), así que van con el de la app delante y lo de Play detrás:
    `com.baltajmn.flowtime.pro_lifetime`, `.tip_small`, `.tip_medium` y `.tip_large`; la app se queda

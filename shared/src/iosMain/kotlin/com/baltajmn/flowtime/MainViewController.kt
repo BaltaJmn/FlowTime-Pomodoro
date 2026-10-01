@@ -33,6 +33,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -54,10 +55,11 @@ import com.baltajmn.flowtime.goal.GoalWatcher
 
 /**
  * Arranca la app, también sin pantalla: iOS la abre en segundo plano cuando se pulsa un botón de la
- * Live Activity. iosApp lo llama al empezar, antes que nada.
+ * Live Activity o del widget. iosApp lo llama al empezar, antes que nada.
  */
-fun setUp(liveActivity: LiveActivity) {
+fun setUp(liveActivity: LiveActivity, homeWidget: HomeWidget) {
     sessionActivity = liveActivity
+    widget = homeWidget
     koin
 }
 
@@ -66,18 +68,23 @@ fun setUp(liveActivity: LiveActivity) {
 fun MainViewController(): UIViewController = ComposeUIViewController { IosApp() }
 
 /**
- * Un botón de la Live Activity, con el nombre de su TimerAction. Vuelve cuando los avisos y la propia
- * Live Activity ya están al día: con la app en segundo plano, iOS la suspende en cuanto acaba el botón.
+ * Un botón de la Live Activity o del widget, con el nombre de su TimerAction. Vuelve cuando los avisos,
+ * la Live Activity y el widget ya están al día: con la app en segundo plano, iOS la suspende en cuanto
+ * acaba el botón.
  */
 suspend fun perform(action: String) {
     val engine = koin.get<FocusEngine>()
     TimerAction.entries.firstOrNull { it.name == action }?.let(engine::perform)
+    val state = engine.state.value
     koin.get<PhaseNotifications>().schedule()
-    koin.get<SessionActivity>().update(engine.state.value)
+    koin.get<SessionActivity>().update(state)
+    val goals = koin.get<GoalRepository>()
+    koin.get<HomeWidgetUpdater>().update(state, goals.today.first(), goals.streak.first())
 }
 
-// Antes que Koin, que la necesita al arrancar.
+// Antes que Koin, que las necesita al arrancar.
 private lateinit var sessionActivity: LiveActivity
+private lateinit var widget: HomeWidget
 
 // La notificación pide abrir Concentración; se guarda hasta que la pantalla principal lo recoge.
 private val openFocus = Channel<Unit>(Channel.CONFLATED)
@@ -100,6 +107,7 @@ private val koin: Koin by lazy {
                 single { GoalWatcher(get(), get(), visible = { true }, notify = { false }) }
                 single { PhaseNotifications(get(), get()) }
                 single { SessionActivity(get(), get(), sessionActivity) }
+                single { HomeWidgetUpdater(get(), widget) }
             }
         )
     }.koin
@@ -121,8 +129,14 @@ private fun start(koin: Koin) {
     scope.launch { engine.state.collect { notifications.schedule() } }
     val activity = koin.get<SessionActivity>()
     scope.launch { engine.state.collectLatest { activity.update(it) } }
-    val reminders = ReminderNotifications(koin.get(), koin.get(), engine)
+    val homeWidget = koin.get<HomeWidgetUpdater>()
     val goals = koin.get<GoalRepository>()
+    scope.launch {
+        combine(engine.state, goals.today, goals.streak, ::Triple).collectLatest { (state, today, streak) ->
+            homeWidget.update(state, today, streak)
+        }
+    }
+    val reminders = ReminderNotifications(koin.get(), koin.get(), engine)
     scope.launch {
         combine(koin.get<ReminderRepository>().reminder, goals.today, engine.state.map { it.isActive }.distinctUntilChanged()) { _, _, _ -> }
             .collect { reminders.schedule() }

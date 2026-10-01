@@ -6,6 +6,7 @@ import WidgetKit
 struct FlowTimeWidgets: WidgetBundle {
     var body: some Widget {
         FocusLiveActivity()
+        FocusWidget()
     }
 }
 
@@ -22,7 +23,8 @@ struct FocusLiveActivity: Widget {
                     Ring().frame(width: 36, height: 36)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Clock(state: context.state)
+                    Clock(context.state)
+                        .multilineTextAlignment(.trailing)
                         .font(.title.monospacedDigit().weight(.semibold))
                         .foregroundStyle(Color.iconWater)
                 }
@@ -35,7 +37,8 @@ struct FocusLiveActivity: Widget {
             } compactLeading: {
                 Ring().frame(width: 20, height: 20)
             } compactTrailing: {
-                Clock(state: context.state)
+                Clock(context.state)
+                    .multilineTextAlignment(.trailing)
                     .monospacedDigit()
                     .foregroundStyle(Color.iconWater)
                     .frame(maxWidth: 56)
@@ -55,7 +58,8 @@ private struct LockScreen: View {
             Labels(state: state)
             Spacer(minLength: 0)
             VStack(alignment: .trailing, spacing: 8) {
-                Clock(state: state)
+                Clock(state)
+                    .multilineTextAlignment(.trailing)
                     .font(.system(size: 36, weight: .semibold).monospacedDigit())
                     .foregroundStyle(Color.iconWater)
                     .frame(maxWidth: 140, alignment: .trailing)
@@ -90,20 +94,32 @@ private struct Buttons: View {
     var body: some View {
         HStack(spacing: 8) {
             ForEach(Array(zip(state.actions, state.labels)), id: \.0) { action, label in
-                Button(intent: FocusActionIntent(action: action)) {
-                    Image(systemName: symbol(action))
-                        .font(.system(size: 14, weight: .bold))
-                        .frame(width: 32, height: 32)
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(Color.iconBackground)
-                .background(Color.iconWater, in: Circle())
-                .accessibilityLabel(label)
+                ActionButton(action: action, label: label)
             }
         }
     }
+}
 
-    private func symbol(_ action: String) -> String {
+/// Un botón redondo con una acción de la sesión. Lo hace la app (FocusActionIntent), sin abrirla.
+struct ActionButton: View {
+    let action: String
+    let label: String
+    var size: CGFloat = 32
+    var filled = true
+
+    var body: some View {
+        Button(intent: FocusActionIntent(action: action)) {
+            Image(systemName: symbol)
+                .font(.system(size: size * 0.44, weight: .bold))
+                .frame(width: size, height: size)
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(filled ? Color.iconBackground : Color.iconWater)
+        .background(filled ? Color.iconWater : Color.iconTrack, in: Circle())
+        .accessibilityLabel(label)
+    }
+
+    private var symbol: String {
         switch action {
         case "PAUSE": "pause.fill"
         case "STOP": "stop.fill"
@@ -116,25 +132,32 @@ private struct Buttons: View {
 
 /// Hacia atrás hasta el final de la fase (se para en 0:00), hacia delante desde que empezó, o el tiempo
 /// parado en pausa. Lo mueve el sistema: la app no tiene que actualizarlo cada segundo.
-private struct Clock: View {
-    let state: FocusAttributes.ContentState
+struct Clock: View {
+    let countsDown: Bool
+    let date: Date?
+    let time: String
 
     var body: some View {
-        if let date = state.date {
-            if state.countsDown {
+        if let date {
+            if countsDown {
                 Text(timerInterval: min(date, .now)...date, countsDown: true)
-                    .multilineTextAlignment(.trailing)
             } else {
-                Text(date, style: .timer).multilineTextAlignment(.trailing)
+                Text(date, style: .timer)
             }
         } else {
-            Text(state.time)
+            Text(time)
         }
     }
 }
 
+extension Clock {
+    init(_ state: FocusAttributes.ContentState) {
+        self.init(countsDown: state.countsDown, date: state.date, time: state.time)
+    }
+}
+
 /// El anillo del icono, sin la ola.
-private struct Ring: View {
+struct Ring: View {
     var body: some View {
         ZStack {
             Circle().stroke(Color.iconTrack, lineWidth: 4)
@@ -148,7 +171,7 @@ private struct Ring: View {
 }
 
 // Los de design/icon.svg.
-private extension Color {
+extension Color {
     static let iconBackground = Color(red: 0x15 / 255, green: 0x50 / 255, blue: 0x6A / 255)
     static let iconTrack = Color(red: 0x2B / 255, green: 0x67 / 255, blue: 0x82 / 255)
     static let iconRing = Color(red: 0xEA / 255, green: 0xF6 / 255, blue: 0xFB / 255)

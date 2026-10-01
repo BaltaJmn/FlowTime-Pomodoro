@@ -4,8 +4,9 @@ import SwiftUI
 @main
 struct iOSApp: App {
     init() {
-        // Antes que la pantalla: iOS también abre la app sin ella, para un botón de la Live Activity.
-        MainViewControllerKt.setUp(liveActivity: FocusActivities())
+        // Antes que la pantalla: iOS también abre la app sin ella, para un botón de la Live Activity o
+        // del widget.
+        MainViewControllerKt.setUp(liveActivity: FocusActivities(), homeWidget: FocusWidgetBridge())
         FocusActionIntent.handler = { action in
             try? await MainViewControllerKt.perform(action: action)
         }

@@ -77,7 +77,7 @@ internal class SessionActivity(
 }
 
 /** Trabajando, descansando o en pausa, como en la notificación de Android. */
-private val FocusState.title
+internal val FocusState.title
     get() = when {
         isPaused -> Res.string.time_title_paused
         phase == Phase.BREAK -> Res.string.time_title_resting
