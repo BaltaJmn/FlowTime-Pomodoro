@@ -15,6 +15,14 @@ La 2.0.3 solo pedía `INTERNET` y `BILLING`. La 2.1.0 añade permisos que Play h
 
 Las respuestas van en inglés, que es lo que leen los revisores.
 
+**Enviado el 01-10-2026**, con la 2.1.0 en producción. Ninguno de los dos formularios sale con solo
+subir el AAB a interna: el de alarma exacta aparece como error al revisar la versión de producción,
+y el de servicios en primer plano en *Contenido de la aplicación* después de guardarla. Enviarlo con
+la versión ya en revisión reinicia la revisión. Lo que pidió cada uno, en la práctica, es menos que
+lo de abajo: alarma exacta, solo elegir *Despertador* o *Calendar*; servicios en primer plano, la
+casilla *Reproducción de contenido multimedia* y el enlace del vídeo. Los textos de abajo quedan por
+si un revisor los pide.
+
 ## Servicios en primer plano: Media playback
 
 - **Caso de uso:** *Continue audio or video playback from the background*.

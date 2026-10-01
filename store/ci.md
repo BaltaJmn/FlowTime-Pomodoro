@@ -28,10 +28,11 @@ gh workflow run release.yml --ref main -f track=internal
 ```
 
 Una versión que ya está en un canal de prueba no llega a producción con la etiqueta: la volvería a
-subir con el mismo `versionCode`, y Play lo rechaza. Se promueve esa misma en la consola (*Prueba
-interna > Promocionar versión > Producción*). Además, los formularios de un permiso nuevo (servicios
-en primer plano, alarma exacta) solo aparecen en *Contenido de la aplicación* cuando ya hay un AAB
-subido que lo usa: por eso una versión con permisos nuevos pasa antes por interna.
+subir con el mismo `versionCode`, y Play lo rechaza. Se lleva esa misma desde la consola: *Producción > Crear nueva versión > Añadir de la biblioteca*,
+las notas de `store/whatsnew/` y *Resumen de publicación > Enviar a revisión*. Los formularios de un
+permiso nuevo (servicios en primer plano, alarma exacta) no salen al subir a interna, sino al
+preparar esa versión de producción (`store/formularios.md`). Interna sirve para comprobar, sin tocar
+producción, que Play acepta el AAB y la firma.
 
 ## La firma
 
