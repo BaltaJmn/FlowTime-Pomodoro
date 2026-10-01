@@ -7,12 +7,19 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.get
 import kotlinx.cinterop.set
 import platform.AVFAudio.AVAudioEngine
+import platform.AVFAudio.AVAudioEngineConfigurationChangeNotification
 import platform.AVFAudio.AVAudioFormat
 import platform.AVFAudio.AVAudioPCMBuffer
 import platform.AVFAudio.AVAudioPlayerNode
 import platform.AVFAudio.AVAudioSession
 import platform.AVFAudio.AVAudioSessionCategoryPlayback
+import platform.AVFAudio.AVAudioSessionInterruptionNotification
+import platform.AVFAudio.AVAudioSessionInterruptionTypeEnded
+import platform.AVFAudio.AVAudioSessionInterruptionTypeKey
 import platform.AVFAudio.setActive
+import platform.Foundation.NSNotificationCenter
+import platform.Foundation.NSNumber
+import platform.Foundation.NSOperationQueue
 import platform.darwin.dispatch_async
 import platform.darwin.dispatch_get_main_queue
 import platform.darwin.dispatch_queue_create
@@ -36,6 +43,19 @@ actual class AmbientMixer actual constructor() {
     // El que suena ahora: los bloques de uno ya parado no piden más.
     @Volatile
     private var player: AVAudioPlayerNode? = null
+
+    init {
+        val center = NSNotificationCenter.defaultCenter
+        // Una llamada o la alarma de otra app paran el audio; al terminar, vuelve a sonar.
+        center.addObserverForName(AVAudioSessionInterruptionNotification, null, NSOperationQueue.mainQueue) { note ->
+            val type = (note?.userInfo?.get(AVAudioSessionInterruptionTypeKey) as? NSNumber)?.unsignedIntegerValue
+            if (type == AVAudioSessionInterruptionTypeEnded) restart()
+        }
+        // Cambiar de salida (quitar los auriculares, conectar unos por Bluetooth) para el motor.
+        center.addObserverForName(AVAudioEngineConfigurationChangeNotification, null, NSOperationQueue.mainQueue) {
+            restart()
+        }
+    }
 
     actual var master: Float
         get() = mix.master
@@ -75,6 +95,11 @@ actual class AmbientMixer actual constructor() {
         engine = null
         // Si mientras tanto ha vuelto a sonar algo, sigue.
         if (!mix.silent) start()
+    }
+
+    /** Vuelve a empezar si estaba sonando: [stop] arranca otra vez si queda algo que suene. */
+    private fun restart() {
+        if (player != null) stop()
     }
 
     /** En la cola de cálculo: un bloque más, y al terminar de sonar, el siguiente. */
