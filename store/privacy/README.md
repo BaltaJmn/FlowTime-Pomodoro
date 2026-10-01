@@ -38,8 +38,9 @@ Lo único que sale del móvil es lo de RevenueCat (#55). Respuestas de Play Cons
 |---|---|
 | ¿Recoge o comparte alguno de los tipos de datos obligatorios? | Sí |
 | ¿Se cifran en tránsito todos los datos recogidos? | Sí, HTTPS del SDK de RevenueCat |
-| ¿Se puede pedir que se borren los datos? | Sí, por correo, como explica la política |
 | ¿Permite crear una cuenta? | No |
+| ¿Se puede iniciar sesión con cuentas de fuera? | No |
+| ¿Ofreces una forma de pedir que se borren los datos? (opcional) | Sin responder: el "Sí" pide una URL que destaque los pasos, y la política lo explica (por correo, con el número de pedido) en mitad del texto. Con una página de borrado propia, "Sí" y su URL |
 
 | Tipo | Recogido | Compartido | Efímero | Obligatorio | Finalidad |
 |---|---|---|---|---|---|
