@@ -13,9 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 fun LazyListScope.flowTimeRanges(
     ranges: MutableList<RangeModel>,
@@ -64,7 +65,7 @@ fun ButtonAddRange(onAddRangeClicked: () -> Unit) {
     ) {
         Button(onClick = { onAddRangeClicked.invoke() }) {
             Text(
-                text = LocalContext.current.getString(R.string.flow_time_add_range),
+                text = stringResource(Res.string.flow_time_add_range),
                 style = SubBody
             )
         }

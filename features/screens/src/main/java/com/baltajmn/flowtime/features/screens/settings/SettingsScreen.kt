@@ -10,7 +10,6 @@ import android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
 import android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS
 import android.provider.Settings.EXTRA_APP_PACKAGE
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -48,8 +47,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 // Los nombres de los temas y del modo oscuro vienen de core/design: StringResource.
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -62,7 +59,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.AppTheme
@@ -92,6 +88,10 @@ import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.features.screens.support.SupportSheet
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.getString
 
 @Composable
 fun SettingsScreen(
@@ -231,7 +231,7 @@ fun SettingsContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = LocalContext.current.getString(R.string.others),
+                        text = stringResource(Res.string.others),
                         style = LargeTitle.copy(
                             fontSize = 30.sp,
                             color = MaterialTheme.colorScheme.primary
@@ -241,28 +241,28 @@ fun SettingsContent(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     ButtonRow(
-                        text = R.string.settings_intro,
-                        button = R.string.settings_intro_button,
+                        text = Res.string.settings_intro,
+                        button = Res.string.settings_intro_button,
                         onClick = navigateToIntro
                     )
 
                     val context = LocalContext.current
                     ButtonRow(
-                        text = R.string.settings_rate,
-                        button = R.string.settings_rate_button,
+                        text = Res.string.settings_rate,
+                        button = Res.string.settings_rate_button,
                         onClick = { openStoreListing(context) }
                     )
 
                     ButtonRow(
-                        text = R.string.settings_privacy,
-                        button = R.string.settings_intro_button,
+                        text = Res.string.settings_privacy,
+                        button = Res.string.settings_intro_button,
                         onClick = { openPrivacyPolicy(context) }
                     )
 
                     onAddQuickTile?.let {
                         ButtonRow(
-                            text = R.string.settings_quick_tile,
-                            button = R.string.settings_quick_tile_button,
+                            text = Res.string.settings_quick_tile,
+                            button = Res.string.settings_quick_tile_button,
                             onClick = it
                         )
                     }
@@ -270,7 +270,7 @@ fun SettingsContent(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     CheckRow(
-                        text = R.string.show_sound,
+                        text = Res.string.show_sound,
                         checked = showSound,
                         onCheckedChange = {
                             onSoundChange.invoke(it)
@@ -281,7 +281,7 @@ fun SettingsContent(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     CheckRow(
-                        text = R.string.show_alert,
+                        text = Res.string.show_alert,
                         checked = state.showAlert,
                         onCheckedChange = viewModel::saveAlert
                     )
@@ -289,7 +289,7 @@ fun SettingsContent(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     CheckRow(
-                        text = R.string.keep_screen_on,
+                        text = Res.string.keep_screen_on,
                         checked = state.keepScreenOn,
                         onCheckedChange = viewModel::saveKeepScreenOn
                     )
@@ -310,7 +310,7 @@ fun SettingsContent(
                     }
 
                     PermissionNotice(
-                        text = R.string.notifications_off,
+                        text = Res.string.notifications_off,
                         granted = { NotificationManagerCompat.from(it).areNotificationsEnabled() },
                         settings = {
                             Intent(ACTION_APP_NOTIFICATION_SETTINGS).putExtra(
@@ -321,7 +321,7 @@ fun SettingsContent(
                     )
 
                     PermissionNotice(
-                        text = R.string.exact_alarms_off,
+                        text = Res.string.exact_alarms_off,
                         granted = {
                             Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
                                 it.getSystemService(AlarmManager::class.java).canScheduleExactAlarms()
@@ -389,7 +389,7 @@ private fun FocusModeRow(
     val openAccess = { context.startActivity(Intent(ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)) }
     Spacer(modifier = Modifier.height(8.dp))
     CheckRow(
-        text = R.string.focus_mode,
+        text = Res.string.focus_mode,
         checked = checked,
         onCheckedChange = { on ->
             onChange(on)
@@ -397,26 +397,26 @@ private fun FocusModeRow(
         }
     )
     if (checked) {
-        PermissionNotice(text = R.string.focus_mode_access_off, granted = { granted() }, settings = {
+        PermissionNotice(text = Res.string.focus_mode_access_off, granted = { granted() }, settings = {
             Intent(ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
         })
     }
     if (explain) {
         AlertDialog(
             onDismissRequest = { explain = false },
-            title = { Text(text = stringResource(R.string.focus_mode)) },
-            text = { Text(text = stringResource(R.string.focus_mode_access_text)) },
+            title = { Text(text = stringResource(Res.string.focus_mode)) },
+            text = { Text(text = stringResource(Res.string.focus_mode_access_text)) },
             confirmButton = {
                 TextButton(
                     onClick = {
                         explain = false
                         openAccess()
                     }
-                ) { Text(text = stringResource(R.string.turn_on)) }
+                ) { Text(text = stringResource(Res.string.turn_on)) }
             },
             dismissButton = {
                 TextButton(onClick = { explain = false }) {
-                    Text(text = stringResource(R.string.notifications_later))
+                    Text(text = stringResource(Res.string.notifications_later))
                 }
             }
         )
@@ -426,7 +426,7 @@ private fun FocusModeRow(
 /** Solo se ve si falta un permiso. Se vuelve a mirar al volver de los ajustes del sistema. */
 @Composable
 fun PermissionNotice(
-    @StringRes text: Int,
+    text: StringResource,
     granted: (Context) -> Boolean,
     settings: (Context) -> Intent
 ) {
@@ -434,11 +434,11 @@ fun PermissionNotice(
     val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
     if (remember(lifecycle) { granted(context) }) return
     Spacer(modifier = Modifier.height(8.dp))
-    ButtonRow(text = text, button = R.string.turn_on) { context.startActivity(settings(context)) }
+    ButtonRow(text = text, button = Res.string.turn_on) { context.startActivity(settings(context)) }
 }
 
 @Composable
-fun ButtonRow(@StringRes text: Int, @StringRes button: Int, onClick: () -> Unit) {
+fun ButtonRow(text: StringResource, button: StringResource, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -465,7 +465,7 @@ fun ButtonRow(@StringRes text: Int, @StringRes button: Int, onClick: () -> Unit)
 
 @Composable
 fun CheckRow(
-    @StringRes text: Int,
+    text: StringResource,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
@@ -499,13 +499,13 @@ fun PositiveText() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = LocalContext.current.getString(R.string.remember),
+                text = stringResource(Res.string.remember),
                 textAlign = TextAlign.Center,
                 style = Title,
                 color = MaterialTheme.colorScheme.primary
             )
             Text(
-                text = LocalContext.current.getString(
+                text = stringResource(
                     MotivationalPhrases.entries[
                         (MotivationalPhrases.entries.toTypedArray().indices).random()
                     ].resourceId
@@ -529,14 +529,14 @@ fun ProCard(owned: Boolean, onOpen: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.pro_title),
+                text = stringResource(Res.string.pro_title),
                 textAlign = TextAlign.Center,
                 style = LargeTitle.copy(fontSize = 25.sp, color = MaterialTheme.colorScheme.primary)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(
-                    if (owned) R.string.pro_settings_owned else R.string.pro_settings_text
+                    if (owned) Res.string.pro_settings_owned else Res.string.pro_settings_text
                 ),
                 style = SubBody.copy(
                     fontSize = 15.sp,
@@ -548,7 +548,7 @@ fun ProCard(owned: Boolean, onOpen: () -> Unit) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(modifier = Modifier.fillMaxWidth(), onClick = onOpen) {
                     Text(
-                        text = stringResource(R.string.pro_see),
+                        text = stringResource(Res.string.pro_see),
                         style = SubBody.copy(color = MaterialTheme.colorScheme.onPrimary)
                     )
                 }
@@ -570,10 +570,10 @@ fun SupportCard(
     LaunchedEffect(state.message) {
         val message = state.message ?: return@LaunchedEffect
         val text = when (message) {
-            RestoreMessage.RESTORED -> R.string.restore_done
-            RestoreMessage.NOTHING -> R.string.restore_nothing
+            RestoreMessage.RESTORED -> Res.string.restore_done
+            RestoreMessage.NOTHING -> Res.string.restore_nothing
         }
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, getString(text), Toast.LENGTH_LONG).show()
         onMessageShown()
     }
     Card {
@@ -584,7 +584,7 @@ fun SupportCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.support_developer_title),
+                text = stringResource(Res.string.support_developer_title),
                 textAlign = TextAlign.Center,
                 style = LargeTitle.copy(
                     fontSize = 25.sp,
@@ -595,7 +595,7 @@ fun SupportCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 AssistChip(
                     onClick = onTip,
-                    label = { Text(text = stringResource(R.string.supporter_badge)) },
+                    label = { Text(text = stringResource(Res.string.supporter_badge)) },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Filled.Favorite,
@@ -607,7 +607,7 @@ fun SupportCard(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(
-                    if (state.isSupporter) R.string.supporter_thanks else R.string.support_developer_description
+                    if (state.isSupporter) Res.string.supporter_thanks else Res.string.support_developer_description
                 ),
                 style = SubBody.copy(
                     fontSize = 15.sp,
@@ -621,12 +621,12 @@ fun SupportCard(
                 onClick = onTip
             ) {
                 Text(
-                    text = stringResource(R.string.support_developer),
+                    text = stringResource(Res.string.support_developer),
                     style = SubBody.copy(color = MaterialTheme.colorScheme.onPrimary)
                 )
             }
             TextButton(onClick = onRestore, enabled = !state.restoring) {
-                Text(text = stringResource(R.string.restore_purchases))
+                Text(text = stringResource(Res.string.restore_purchases))
             }
         }
     }
@@ -658,7 +658,7 @@ fun AppearanceCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.appearance_title),
+                text = stringResource(Res.string.appearance_title),
                 style = LargeTitle.copy(
                     fontSize = 30.sp,
                     color = MaterialTheme.colorScheme.primary
@@ -681,7 +681,7 @@ fun AppearanceCard(
 
             if (canUseWallpaper) {
                 CheckRow(
-                    text = R.string.appearance_dynamic,
+                    text = Res.string.appearance_dynamic,
                     checked = appearance.dynamicColor,
                     onCheckedChange = onDynamicColor
                 )
@@ -736,9 +736,9 @@ private fun ThemeSwatch(
 ) {
     val name = stringResource(theme.label)
     val description = if (locked) {
-        stringResource(R.string.cd_pro_theme, name)
+        stringResource(Res.string.cd_pro_theme, name)
     } else {
-        stringResource(R.string.cd_theme_color, name)
+        stringResource(Res.string.cd_theme_color, name)
     }
     Box(
         modifier = Modifier
@@ -765,7 +765,7 @@ private fun ThemeSwatch(
             Icon(imageVector = Icons.Filled.Check, contentDescription = null, tint = ink)
         } else if (locked) {
             Icon(
-                painter = painterResource(R.drawable.ic_lock_on),
+                painter = painterResource(Res.drawable.ic_lock_on),
                 contentDescription = null,
                 tint = ink,
                 modifier = Modifier.size(18.dp)

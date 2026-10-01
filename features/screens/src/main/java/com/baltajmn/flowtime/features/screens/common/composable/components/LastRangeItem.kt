@@ -20,9 +20,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LastRangeItem(
@@ -64,8 +65,8 @@ fun LastRangeItem(
             },
             label = {
                 Text(
-                    text = LocalContext.current.getString(
-                        R.string.flow_time_setting_after,
+                    text = stringResource(
+                        Res.string.flow_time_setting_after,
                         previousRange.totalRange
                     ),
                     style = Title.copy(fontSize = 10.sp),

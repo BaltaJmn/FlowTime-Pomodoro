@@ -17,13 +17,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.data.task.Task
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * La tarea de la sesión (#40): un chip opcional junto a las etiquetas. Empezar sin tarea sigue
@@ -37,9 +37,9 @@ fun TaskChip(title: String?, pending: List<Task>, onSelect: (Task?) -> Unit) {
         label = {
             Text(
                 text = if (title != null) {
-                    stringResource(R.string.task_chip, title)
+                    stringResource(Res.string.task_chip, title)
                 } else {
-                    stringResource(R.string.task_none)
+                    stringResource(Res.string.task_none)
                 },
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -49,10 +49,10 @@ fun TaskChip(title: String?, pending: List<Task>, onSelect: (Task?) -> Unit) {
     if (picking) {
         AlertDialog(
             onDismissRequest = { picking = false },
-            title = { Text(text = stringResource(R.string.task_pick_title)) },
+            title = { Text(text = stringResource(Res.string.task_pick_title)) },
             text = {
                 Column {
-                    if (pending.isEmpty()) Text(text = stringResource(R.string.task_no_pending))
+                    if (pending.isEmpty()) Text(text = stringResource(Res.string.task_no_pending))
                     pending.forEach { task ->
                         TextButton(
                             onClick = {
@@ -70,7 +70,7 @@ fun TaskChip(title: String?, pending: List<Task>, onSelect: (Task?) -> Unit) {
                         onSelect(null)
                         picking = false
                     }
-                ) { Text(text = stringResource(R.string.task_none)) }
+                ) { Text(text = stringResource(Res.string.task_none)) }
             }
         )
     }
@@ -84,13 +84,13 @@ fun TaskDoneQuestion(title: String, onYes: () -> Unit, onNotYet: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(R.string.task_done_question, title),
+            text = stringResource(Res.string.task_done_question, title),
             style = SubBody.copy(color = MaterialTheme.colorScheme.onSurface),
             textAlign = TextAlign.Center
         )
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onNotYet) { Text(text = stringResource(R.string.task_done_not_yet)) }
-            TextButton(onClick = onYes) { Text(text = stringResource(R.string.task_done_yes)) }
+            TextButton(onClick = onNotYet) { Text(text = stringResource(Res.string.task_done_not_yet)) }
+            TextButton(onClick = onYes) { Text(text = stringResource(Res.string.task_done_yes)) }
         }
     }
 }

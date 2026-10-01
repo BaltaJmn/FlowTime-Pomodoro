@@ -42,9 +42,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -52,7 +49,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.components.ProgressRing
 import com.baltajmn.flowtime.core.design.components.SoundButton
@@ -81,6 +77,10 @@ import com.baltajmn.flowtime.features.screens.pro.ProFeature
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringResource
 
 private enum class FocusSheet { SOUNDS, MODE }
 
@@ -140,19 +140,19 @@ fun FocusScreen(
     if (explainNotifications) {
         AlertDialog(
             onDismissRequest = { explainNotifications = false },
-            title = { Text(stringResource(R.string.notifications_title)) },
-            text = { Text(stringResource(R.string.notifications_text)) },
+            title = { Text(stringResource(Res.string.notifications_title)) },
+            text = { Text(stringResource(Res.string.notifications_text)) },
             confirmButton = {
                 TextButton(
                     onClick = {
                         explainNotifications = false
                         askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
                     }
-                ) { Text(stringResource(R.string.turn_on)) }
+                ) { Text(stringResource(Res.string.turn_on)) }
             },
             dismissButton = {
                 TextButton(onClick = { explainNotifications = false }) {
-                    Text(stringResource(R.string.notifications_later))
+                    Text(stringResource(Res.string.notifications_later))
                 }
             }
         )
@@ -178,8 +178,8 @@ fun FocusContent(
             if (showSound) SoundButton(playing = soundPlaying, onClick = onOpenSounds)
             IconButton(onClick = onOpenModeSettings) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_tune),
-                    contentDescription = stringResource(R.string.cd_mode_settings),
+                    painter = painterResource(Res.drawable.ic_tune),
+                    contentDescription = stringResource(Res.string.cd_mode_settings),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -189,7 +189,7 @@ fun FocusContent(
         MinutesStudying(minutesStudying = state.minutesToday, goal = state.goalToday)
         if (state.streak > 0) {
             Text(
-                text = pluralStringResource(R.plurals.streak_days, state.streak, state.streak),
+                text = pluralStringResource(Res.plurals.streak_days, state.streak, state.streak),
                 style = SubBody.copy(
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -337,7 +337,7 @@ private fun ModeSelector(state: FocusUiState, onSelect: (TimerMode) -> Unit) {
 private fun ModeLine(state: FocusUiState) {
     Text(
         text = stringResource(
-            if (state.isActive) R.string.focus_mode_locked else state.mode.advantages
+            if (state.isActive) Res.string.focus_mode_locked else state.mode.advantages
         ),
         modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
         textAlign = TextAlign.Center,
@@ -349,9 +349,9 @@ private fun ModeLine(state: FocusUiState) {
 @Composable
 private fun PhaseTitle(state: FocusUiState) {
     val title = when {
-        state.paused -> R.string.time_title_paused
-        state.phase == Phase.WORK -> R.string.time_title_working
-        state.phase == Phase.BREAK -> R.string.time_title_resting
+        state.paused -> Res.string.time_title_paused
+        state.phase == Phase.WORK -> Res.string.time_title_working
+        state.phase == Phase.BREAK -> Res.string.time_title_resting
         else -> null
     }
     if (title != null) {

@@ -13,19 +13,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.data.goal.DailyGoal
 import com.baltajmn.flowtime.data.goal.Streak
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringResource
 
 /** Ajustes › Objetivo diario: los minutos de cada día, de 5 en 5, y la racha. Siempre gratis. */
 @Composable
@@ -38,7 +38,7 @@ fun GoalCard(goal: GoalUiState, onChange: (delta: Int) -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.goal_title),
+                text = stringResource(Res.string.goal_title),
                 style = LargeTitle.copy(
                     fontSize = 30.sp,
                     color = MaterialTheme.colorScheme.primary
@@ -67,17 +67,17 @@ fun GoalStepper(minutes: Int, onChange: (delta: Int) -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         StepButton(
             text = "−",
-            description = stringResource(R.string.goal_decrease),
+            description = stringResource(Res.string.goal_decrease),
             enabled = minutes > DailyGoal.MIN_MINUTES
         ) { onChange(-DailyGoal.STEP_MINUTES) }
         Text(
-            text = stringResource(R.string.goal_per_day, minutes.toLong().formatMinutesStudying()),
+            text = stringResource(Res.string.goal_per_day, minutes.toLong().formatMinutesStudying()),
             modifier = Modifier.padding(horizontal = 16.dp),
             style = SubBody.copy(fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
         )
         StepButton(
             text = "+",
-            description = stringResource(R.string.goal_increase),
+            description = stringResource(Res.string.goal_increase),
             enabled = minutes < DailyGoal.MAX_MINUTES
         ) { onChange(DailyGoal.STEP_MINUTES) }
     }
@@ -96,15 +96,15 @@ private fun StepButton(text: String, description: String, enabled: Boolean, onCl
 
 @Composable
 internal fun streakText(streak: Streak): String {
-    val best = stringResource(R.string.streak_best, streak.best)
+    val best = stringResource(Res.string.streak_best, streak.best)
     if (streak.current == 0) {
-        val none = stringResource(R.string.streak_none)
+        val none = stringResource(Res.string.streak_none)
         return if (streak.best > 0) "$none · $best" else none
     }
-    val days = pluralStringResource(R.plurals.streak_days, streak.current, streak.current)
+    val days = pluralStringResource(Res.plurals.streak_days, streak.current, streak.current)
     val text = if (streak.best > streak.current) "$days · $best" else days
     return if (streak.freeDayUsedThisWeek) {
-        text + "\n" + stringResource(R.string.streak_free_day_used)
+        text + "\n" + stringResource(Res.string.streak_free_day_used)
     } else {
         text
     }

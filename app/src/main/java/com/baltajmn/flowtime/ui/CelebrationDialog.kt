@@ -8,12 +8,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.features.screens.settings.enum.MotivationalPhrases
 import com.baltajmn.flowtime.goal.Celebration
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 /** El objetivo de hoy, cumplido con la app abierta: una frase motivadora y la racha. */
 @Composable
@@ -24,12 +24,12 @@ fun CelebrationDialog(celebration: Celebration, onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         icon = {
             Icon(
-                painter = painterResource(R.drawable.ic_confetti),
+                painter = painterResource(Res.drawable.ic_confetti),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary
             )
         },
-        title = { Text(text = stringResource(R.string.goal_reached), textAlign = TextAlign.Center) },
+        title = { Text(text = stringResource(Res.string.goal_reached), textAlign = TextAlign.Center) },
         text = {
             Text(
                 text = stringResource(phrase.resourceId) + "\n\n" + text,
@@ -37,7 +37,7 @@ fun CelebrationDialog(celebration: Celebration, onDismiss: () -> Unit) {
             )
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) { Text(text = stringResource(R.string.dialog_confirm)) }
+            TextButton(onClick = onDismiss) { Text(text = stringResource(Res.string.dialog_confirm)) }
         }
     )
 }

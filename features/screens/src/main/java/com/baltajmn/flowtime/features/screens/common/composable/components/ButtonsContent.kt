@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.features.screens.common.composable.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,24 +11,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.components.CircularButton
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.focus.FocusUiState
 import org.jetbrains.compose.resources.stringResource
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.painterResource
 
-@DrawableRes
 private fun TimerAction.icon() = when (this) {
-    TimerAction.START, TimerAction.RESUME -> R.drawable.ic_play
-    TimerAction.STOP -> R.drawable.ic_stop
-    TimerAction.PAUSE -> R.drawable.ic_pause
-    TimerAction.BREAK, TimerAction.SKIP_BREAK -> R.drawable.ic_next
+    TimerAction.START, TimerAction.RESUME -> Res.drawable.ic_play
+    TimerAction.STOP -> Res.drawable.ic_stop
+    TimerAction.PAUSE -> Res.drawable.ic_pause
+    TimerAction.BREAK, TimerAction.SKIP_BREAK -> Res.drawable.ic_next
 }
 
 @Composable
@@ -49,7 +46,7 @@ fun ButtonsContent(
                 }
             ) {
                 Icon(
-                    painter = painterResource(id = action.icon()),
+                    painter = painterResource(action.icon()),
                     contentDescription = stringResource(action.label),
                     tint = MaterialTheme.colorScheme.surface
                 )

@@ -24,12 +24,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.data.backup.Backup
@@ -38,6 +36,8 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Ajustes › Copia de seguridad: la copia automática de Android y la copia a un fichero, con el
@@ -65,7 +65,7 @@ fun BackupCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.backup_title),
+                text = stringResource(Res.string.backup_title),
                 style = LargeTitle.copy(
                     fontSize = 30.sp,
                     color = MaterialTheme.colorScheme.primary
@@ -74,21 +74,21 @@ fun BackupCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(R.string.backup_automatic),
+                text = stringResource(Res.string.backup_automatic),
                 style = SubBody.copy(fontSize = 15.sp, color = MaterialTheme.colorScheme.primary),
                 textAlign = TextAlign.Center
             )
-            ButtonRow(text = R.string.backup_export_label, button = R.string.backup_export) {
+            ButtonRow(text = Res.string.backup_export_label, button = Res.string.backup_export) {
                 exportFile.launch("flowtime-${LocalDate.now()}.json")
             }
-            ButtonRow(text = R.string.backup_import_label, button = R.string.backup_import) {
+            ButtonRow(text = Res.string.backup_import_label, button = Res.string.backup_import) {
                 // Algunos gestores de archivos no marcan bien el tipo de un .json.
                 importFile.launch(arrayOf(JSON, "text/plain", "application/octet-stream"))
             }
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = state.lastExportAt?.let { stringResource(R.string.backup_last, it.asDate()) }
-                    ?: stringResource(R.string.backup_never),
+                text = state.lastExportAt?.let { stringResource(Res.string.backup_last, it.asDate()) }
+                    ?: stringResource(Res.string.backup_never),
                 style = SubBody.copy(
                     fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -108,12 +108,12 @@ private fun ImportDialog(backup: Backup, onConfirm: (Boolean) -> Unit, onCancel:
     var withSettings by rememberSaveable { mutableStateOf(false) }
     AlertDialog(
         onDismissRequest = onCancel,
-        title = { Text(text = stringResource(R.string.backup_import_title)) },
+        title = { Text(text = stringResource(Res.string.backup_import_title)) },
         text = {
             Column {
                 Text(
                     text = stringResource(
-                        R.string.backup_import_message,
+                        Res.string.backup_import_message,
                         backup.sessions.size,
                         backup.tasks.size
                     )
@@ -133,7 +133,7 @@ private fun ImportDialog(backup: Backup, onConfirm: (Boolean) -> Unit, onCancel:
                     ) {
                         Checkbox(checked = withSettings, onCheckedChange = null)
                         Text(
-                            text = stringResource(R.string.backup_import_settings),
+                            text = stringResource(Res.string.backup_import_settings),
                             modifier = Modifier.padding(start = 8.dp)
                         )
                     }
@@ -142,11 +142,11 @@ private fun ImportDialog(backup: Backup, onConfirm: (Boolean) -> Unit, onCancel:
         },
         confirmButton = {
             TextButton(onClick = { onConfirm(withSettings) }) {
-                Text(text = stringResource(R.string.backup_import))
+                Text(text = stringResource(Res.string.backup_import))
             }
         },
         dismissButton = {
-            TextButton(onClick = onCancel) { Text(text = stringResource(R.string.dialog_cancel)) }
+            TextButton(onClick = onCancel) { Text(text = stringResource(Res.string.dialog_cancel)) }
         }
     )
 }
@@ -154,24 +154,24 @@ private fun ImportDialog(backup: Backup, onConfirm: (Boolean) -> Unit, onCancel:
 @Composable
 private fun MessageDialog(message: BackupMessage, onDismiss: () -> Unit) {
     val text = when (message) {
-        BackupMessage.Exported -> stringResource(R.string.backup_exported)
+        BackupMessage.Exported -> stringResource(Res.string.backup_exported)
         is BackupMessage.Restored -> stringResource(
-            R.string.backup_restored,
+            Res.string.backup_restored,
             message.result.sessionsAdded,
             message.result.sessionsExisting,
             message.result.tasksAdded,
             message.result.tagsAdded
         )
-        BackupMessage.NotABackup -> stringResource(R.string.backup_not_a_backup)
-        BackupMessage.TooNew -> stringResource(R.string.backup_too_new)
-        BackupMessage.ExportFailed -> stringResource(R.string.backup_failed)
-        BackupMessage.ImportFailed -> stringResource(R.string.backup_import_failed)
+        BackupMessage.NotABackup -> stringResource(Res.string.backup_not_a_backup)
+        BackupMessage.TooNew -> stringResource(Res.string.backup_too_new)
+        BackupMessage.ExportFailed -> stringResource(Res.string.backup_failed)
+        BackupMessage.ImportFailed -> stringResource(Res.string.backup_import_failed)
     }
     AlertDialog(
         onDismissRequest = onDismiss,
         text = { Text(text = text) },
         confirmButton = {
-            TextButton(onClick = onDismiss) { Text(text = stringResource(R.string.dialog_confirm)) }
+            TextButton(onClick = onDismiss) { Text(text = stringResource(Res.string.dialog_confirm)) }
         }
     )
 }

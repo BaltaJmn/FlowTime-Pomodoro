@@ -44,8 +44,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -53,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.components.LoadingView
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
@@ -65,6 +62,9 @@ import com.baltajmn.flowtime.features.screens.pro.ProFeature
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun TodoListScreen(
@@ -117,8 +117,8 @@ fun TodoListContent(
     // La que se está editando, o null para una nueva.
     var editing by remember { mutableStateOf<Task?>(null) }
     val snackbar = remember { SnackbarHostState() }
-    val deletedText = stringResource(R.string.task_deleted)
-    val undoText = stringResource(R.string.task_undo)
+    val deletedText = stringResource(Res.string.task_deleted)
+    val undoText = stringResource(Res.string.task_undo)
 
     if (showDialog) {
         ItemDialog(
@@ -146,9 +146,9 @@ fun TodoListContent(
             text = {
                 Text(
                     text = when (message) {
-                        TaskMessage.EMPTY -> stringResource(R.string.task_empty)
+                        TaskMessage.EMPTY -> stringResource(Res.string.task_empty)
                         TaskMessage.LIMIT -> stringResource(
-                            R.string.task_limit,
+                            Res.string.task_limit,
                             Limits.FREE_PENDING_TASKS
                         )
                     }
@@ -156,7 +156,7 @@ fun TodoListContent(
             },
             confirmButton = {
                 TextButton(onClick = viewModel::onMessageShown) {
-                    Text(text = stringResource(R.string.dialog_confirm))
+                    Text(text = stringResource(Res.string.dialog_confirm))
                 }
             },
             dismissButton = {
@@ -167,7 +167,7 @@ fun TodoListContent(
                             onSeePro()
                         }
                     ) {
-                        Text(text = stringResource(R.string.pro_see))
+                        Text(text = stringResource(Res.string.pro_see))
                     }
                 }
             }
@@ -186,7 +186,7 @@ fun TodoListContent(
             item { Spacer(modifier = Modifier.height(16.dp)) }
             item {
                 ScreenTitleWithIcon(
-                    text = stringResource(R.string.todo_list_title),
+                    text = stringResource(Res.string.todo_list_title),
                     onIconClick = remember {
                         {
                             editing = null
@@ -295,10 +295,10 @@ fun TodoItem(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = if (daysLate == 1L) {
-                                stringResource(R.string.task_late_yesterday)
+                                stringResource(Res.string.task_late_yesterday)
                             } else {
                                 pluralStringResource(
-                                    R.plurals.task_late_days,
+                                    Res.plurals.task_late_days,
                                     daysLate.toInt(),
                                     daysLate.toInt()
                                 )
@@ -307,7 +307,7 @@ fun TodoItem(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         TextButton(onClick = { onMoveToToday(item) }) {
-                            Text(text = stringResource(R.string.task_move_today))
+                            Text(text = stringResource(Res.string.task_move_today))
                         }
                     }
                 }
@@ -319,7 +319,7 @@ fun TodoItem(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Edit,
-                    contentDescription = stringResource(R.string.cd_edit_task),
+                    contentDescription = stringResource(Res.string.cd_edit_task),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -329,7 +329,7 @@ fun TodoItem(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = stringResource(R.string.cd_delete_task),
+                    contentDescription = stringResource(Res.string.cd_delete_task),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -412,7 +412,7 @@ fun ScreenTitleWithIcon(text: String, onIconClick: () -> Unit) {
                 ) { onIconClick.invoke() },
             imageVector = Icons.Filled.Add,
             tint = MaterialTheme.colorScheme.primary,
-            contentDescription = stringResource(R.string.todo_add_item)
+            contentDescription = stringResource(Res.string.todo_add_item)
         )
     }
 }
@@ -429,29 +429,29 @@ fun ItemDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(R.string.todo_add_item)) },
+        title = { Text(text = stringResource(Res.string.todo_add_item)) },
         text = {
             Column {
                 TextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text(stringResource(R.string.todo_item_title)) }
+                    label = { Text(stringResource(Res.string.todo_item_title)) }
                 )
                 TextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text(stringResource(R.string.todo_item_description)) }
+                    label = { Text(stringResource(Res.string.todo_item_description)) }
                 )
             }
         },
         confirmButton = {
             Button(onClick = { onSave(title, description) }) {
-                Text(stringResource(R.string.save))
+                Text(stringResource(Res.string.save))
             }
         },
         dismissButton = {
             Button(onClick = onDismiss) {
-                Text(stringResource(R.string.dialog_cancel))
+                Text(stringResource(Res.string.dialog_cancel))
             }
         }
     )

@@ -18,16 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.data.pro.ProFeatures
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Lo que incluye Pro, en el orden de la pantalla de Pro, que pone la primera la función desde la que
@@ -78,7 +78,7 @@ fun ProGate(access: ProAccess, onUnlock: () -> Unit, content: @Composable () -> 
         ProAccess.HIDDEN -> Unit
         ProAccess.OPEN -> content()
         ProAccess.LOCKED -> {
-            val label = stringResource(R.string.pro_unlock)
+            val label = stringResource(Res.string.pro_unlock)
             val veil = MaterialTheme.colorScheme.surface
             val canBlur = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
             Box(
@@ -118,7 +118,7 @@ fun ProGate(access: ProAccess, onUnlock: () -> Unit, content: @Composable () -> 
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_lock_on),
+                            painter = painterResource(Res.drawable.ic_lock_on),
                             contentDescription = null,
                             modifier = Modifier.size(16.dp)
                         )

@@ -26,18 +26,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.TagPalette
 import com.baltajmn.flowtime.data.pro.Limits
 import com.baltajmn.flowtime.data.tag.Tag
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Ajustes › Etiquetas: añadir, cambiar el nombre o el color, archivar y recuperar. Lo justo para
@@ -66,7 +66,7 @@ fun TagsCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.tags_title),
+                text = stringResource(Res.string.tags_title),
                 style = LargeTitle.copy(
                     fontSize = 30.sp,
                     color = MaterialTheme.colorScheme.primary
@@ -79,7 +79,7 @@ fun TagsCard(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val description = stringResource(R.string.tag_color)
+                    val description = stringResource(Res.string.tag_color)
                     IconButton(
                         onClick = { onRecolor(tag) },
                         modifier = Modifier.semantics { contentDescription = description }
@@ -102,14 +102,14 @@ fun TagsCard(
                         )
                     )
                     TextButton(onClick = { onArchive(tag.id) }) {
-                        Text(text = stringResource(R.string.tag_archive))
+                        Text(text = stringResource(Res.string.tag_archive))
                     }
                 }
             }
-            TextButton(onClick = { editing = NEW }) { Text(text = stringResource(R.string.tag_add)) }
+            TextButton(onClick = { editing = NEW }) { Text(text = stringResource(Res.string.tag_add)) }
             if (state.archived.isNotEmpty()) {
                 Text(
-                    text = stringResource(R.string.tags_archived),
+                    text = stringResource(Res.string.tags_archived),
                     style = SubBody.copy(
                         fontSize = 15.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -131,7 +131,7 @@ fun TagsCard(
                             )
                         )
                         TextButton(onClick = { onUnarchive(tag.id) }) {
-                            Text(text = stringResource(R.string.tag_unarchive))
+                            Text(text = stringResource(Res.string.tag_unarchive))
                         }
                     }
                 }
@@ -156,15 +156,15 @@ fun TagsCard(
             text = {
                 Text(
                     text = when (message) {
-                        TagMessage.EMPTY -> stringResource(R.string.tag_empty)
-                        TagMessage.DUPLICATE -> stringResource(R.string.tag_duplicate)
-                        TagMessage.LIMIT -> stringResource(R.string.tag_limit, Limits.FREE_TAGS)
+                        TagMessage.EMPTY -> stringResource(Res.string.tag_empty)
+                        TagMessage.DUPLICATE -> stringResource(Res.string.tag_duplicate)
+                        TagMessage.LIMIT -> stringResource(Res.string.tag_limit, Limits.FREE_TAGS)
                     }
                 )
             },
             confirmButton = {
                 TextButton(onClick = onMessageShown) {
-                    Text(text = stringResource(R.string.dialog_confirm))
+                    Text(text = stringResource(Res.string.dialog_confirm))
                 }
             },
             dismissButton = {
@@ -175,7 +175,7 @@ fun TagsCard(
                             onSeePro()
                         }
                     ) {
-                        Text(text = stringResource(R.string.pro_see))
+                        Text(text = stringResource(Res.string.pro_see))
                     }
                 }
             }
@@ -189,24 +189,24 @@ private fun NameDialog(initial: String, onConfirm: (String) -> Unit, onDismiss: 
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            val title = if (initial.isEmpty()) R.string.tag_add else R.string.tag_rename
+            val title = if (initial.isEmpty()) Res.string.tag_add else Res.string.tag_rename
             Text(text = stringResource(title))
         },
         text = {
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text(text = stringResource(R.string.tag_name)) },
+                label = { Text(text = stringResource(Res.string.tag_name)) },
                 singleLine = true
             )
         },
         confirmButton = {
             TextButton(onClick = { onConfirm(name) }) {
-                Text(text = stringResource(R.string.dialog_confirm))
+                Text(text = stringResource(Res.string.dialog_confirm))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(text = stringResource(R.string.dialog_cancel)) }
+            TextButton(onClick = onDismiss) { Text(text = stringResource(Res.string.dialog_cancel)) }
         }
     )
 }

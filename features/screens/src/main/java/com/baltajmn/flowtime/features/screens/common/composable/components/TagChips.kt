@@ -16,11 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.TagPalette
 import com.baltajmn.flowtime.data.tag.Tag
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 /** Con qué etiqueta se guarda el trabajo: las activas y "Sin etiqueta". Se desplaza si no caben. */
 @Composable
@@ -36,7 +36,7 @@ fun TagChips(tags: List<Tag>, selected: Long?, onSelect: (Long?) -> Unit) {
             FilterChip(
                 selected = tags.none { it.id == selected },
                 onClick = { onSelect(null) },
-                label = { Text(text = stringResource(R.string.tag_none)) }
+                label = { Text(text = stringResource(Res.string.tag_none)) }
             )
         }
         items(tags, key = { it.id }) { tag ->

@@ -1,7 +1,6 @@
 package com.baltajmn.flowtime.features.screens.support
 
 import androidx.activity.compose.LocalActivity
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,14 +25,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.data.pro.CatalogItem
 import org.koin.androidx.compose.koinViewModel
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,28 +81,28 @@ fun SupportContent(
     ) {
         if (state.thanked) {
             Icon(
-                painter = painterResource(R.drawable.ic_confetti),
+                painter = painterResource(Res.drawable.ic_confetti),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(48.dp)
             )
             Text(
-                text = stringResource(R.string.support_thanks_title),
+                text = stringResource(Res.string.support_thanks_title),
                 style = MaterialTheme.typography.headlineSmall
             )
-            Text(text = stringResource(R.string.support_thanks_text), textAlign = TextAlign.Center)
+            Text(text = stringResource(Res.string.support_thanks_text), textAlign = TextAlign.Center)
             Button(onClick = onUseTheme, modifier = Modifier.fillMaxWidth()) {
-                Text(text = stringResource(R.string.support_use_theme))
+                Text(text = stringResource(Res.string.support_use_theme))
             }
-            TextButton(onClick = onClose) { Text(text = stringResource(R.string.close)) }
+            TextButton(onClick = onClose) { Text(text = stringResource(Res.string.close)) }
             return@Column
         }
 
         Text(
-            text = stringResource(R.string.support_sheet_title),
+            text = stringResource(Res.string.support_sheet_title),
             style = MaterialTheme.typography.headlineSmall
         )
-        Text(text = stringResource(R.string.support_sheet_text), textAlign = TextAlign.Center)
+        Text(text = stringResource(Res.string.support_sheet_text), textAlign = TextAlign.Center)
         Spacer(modifier = Modifier.height(4.dp))
         when {
             state.loading -> CircularProgressIndicator()
@@ -126,7 +125,7 @@ fun SupportContent(
         }
         if (state.failed) {
             Text(
-                text = stringResource(R.string.purchase_failed),
+                text = stringResource(Res.string.purchase_failed),
                 color = MaterialTheme.colorScheme.error,
                 textAlign = TextAlign.Center
             )
@@ -143,18 +142,17 @@ fun StoreUnavailable(onRetry: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = stringResource(R.string.alert_google_play),
+            text = stringResource(Res.string.alert_google_play),
             color = MaterialTheme.colorScheme.error,
             textAlign = TextAlign.Center
         )
-        Text(text = stringResource(R.string.alert_google_play_desc), textAlign = TextAlign.Center)
-        TextButton(onClick = onRetry) { Text(text = stringResource(R.string.retry)) }
+        Text(text = stringResource(Res.string.alert_google_play_desc), textAlign = TextAlign.Center)
+        TextButton(onClick = onRetry) { Text(text = stringResource(Res.string.retry)) }
     }
 }
 
-@StringRes
 private fun tipLabel(id: String) = when (id) {
-    "tip_small" -> R.string.tip_small
-    "tip_medium" -> R.string.tip_medium
-    else -> R.string.tip_large
+    "tip_small" -> Res.string.tip_small
+    "tip_medium" -> Res.string.tip_medium
+    else -> Res.string.tip_large
 }

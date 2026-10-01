@@ -34,12 +34,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.data.reminder.Reminder
@@ -50,6 +48,8 @@ import java.time.temporal.WeekFields
 import java.util.Locale
 import kotlinx.datetime.toKotlinDayOfWeek
 import kotlinx.datetime.toJavaLocalTime
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 /** Ajustes › Recordatorio diario (#45): apagado de entrada; la hora y los días, solo encendido. */
 @OptIn(ExperimentalLayoutApi::class)
@@ -67,14 +67,14 @@ fun ReminderCard(reminder: Reminder, onChange: (Reminder) -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.reminder_title),
+                text = stringResource(Res.string.reminder_title),
                 textAlign = TextAlign.Center,
                 style = LargeTitle.copy(fontSize = 25.sp, color = MaterialTheme.colorScheme.primary)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = stringResource(R.string.reminder_text),
+                    text = stringResource(Res.string.reminder_text),
                     modifier = Modifier.weight(1f),
                     style = SubBody.copy(
                         fontSize = 15.sp,
@@ -155,11 +155,11 @@ private fun TimeDialog(
         text = { TimePicker(state = state) },
         confirmButton = {
             TextButton(onClick = { onPick(state.hour * 60 + state.minute) }) {
-                Text(text = stringResource(R.string.dialog_confirm))
+                Text(text = stringResource(Res.string.dialog_confirm))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(text = stringResource(R.string.dialog_cancel)) }
+            TextButton(onClick = onDismiss) { Text(text = stringResource(Res.string.dialog_cancel)) }
         }
     )
 }

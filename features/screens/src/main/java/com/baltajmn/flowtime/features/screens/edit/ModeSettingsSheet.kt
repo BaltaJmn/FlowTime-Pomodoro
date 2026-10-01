@@ -21,11 +21,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
@@ -35,6 +33,9 @@ import com.baltajmn.flowtime.features.screens.common.composable.components.Pomod
 import com.baltajmn.flowtime.features.screens.common.composable.components.flowTimeRanges
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.StringResource
 
 /** La configuración del modo elegido y "Continuar después del descanso", en una hoja. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,7 +91,7 @@ fun ModeSettingsContent(state: EditState, viewModel: EditViewModel, onSave: () -
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(R.string.pomodoro_continue_after_break),
+                    text = stringResource(Res.string.pomodoro_continue_after_break),
                     style = SubBody.copy(
                         fontSize = 15.sp,
                         color = MaterialTheme.colorScheme.onSurface
@@ -106,7 +107,7 @@ fun ModeSettingsContent(state: EditState, viewModel: EditViewModel, onSave: () -
 
         item {
             Button(onClick = onSave, modifier = Modifier.fillMaxWidth()) {
-                Text(text = stringResource(R.string.settings_save), style = SubBody)
+                Text(text = stringResource(Res.string.settings_save), style = SubBody)
             }
         }
 
@@ -114,7 +115,7 @@ fun ModeSettingsContent(state: EditState, viewModel: EditViewModel, onSave: () -
     }
 }
 
-private fun LazyListScope.title(text: Int) = item {
+private fun LazyListScope.title(text: StringResource) = item {
     Text(
         text = stringResource(text),
         style = LargeTitle.copy(fontSize = 26.sp, color = MaterialTheme.colorScheme.primary)
@@ -122,7 +123,7 @@ private fun LazyListScope.title(text: Int) = item {
 }
 
 fun LazyListScope.pomodoroSettings(state: EditState, viewModel: EditViewModel) {
-    title(R.string.pomodoro_settings_title)
+    title(Res.string.pomodoro_settings_title)
     item {
         PomodoroRange(
             range = state.pomodoroRange,
@@ -132,7 +133,7 @@ fun LazyListScope.pomodoroSettings(state: EditState, viewModel: EditViewModel) {
 }
 
 fun LazyListScope.flowTimeSettings(state: EditState, viewModel: EditViewModel) {
-    title(R.string.flow_time_settings_title)
+    title(Res.string.flow_time_settings_title)
     flowTimeRanges(
         ranges = state.flowTimeRanges,
         onValueChanged = { index: Int, range: RangeModel ->
@@ -147,7 +148,7 @@ fun LazyListScope.flowTimeSettings(state: EditState, viewModel: EditViewModel) {
 }
 
 fun LazyListScope.percentageSettings(state: EditState, viewModel: EditViewModel) {
-    title(R.string.percentage_settings_title)
+    title(Res.string.percentage_settings_title)
     item {
         PercentageRange(
             percentage = state.percentage,

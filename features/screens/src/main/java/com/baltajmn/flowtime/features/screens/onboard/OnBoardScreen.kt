@@ -1,7 +1,5 @@
 package com.baltajmn.flowtime.features.screens.onboard
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,13 +34,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.components.collectEvents
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
@@ -57,6 +52,11 @@ import com.baltajmn.flowtime.features.screens.settings.GoalStepper
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun OnBoardScreen(
@@ -114,15 +114,15 @@ fun OnboardingContent(
         ) { page ->
             when (page) {
                 0 -> OnBoardItem(
-                    imageRes = R.drawable.ic_flowtime,
-                    title = R.string.on_board_intro_title,
-                    description = R.string.on_board_intro_text
+                    imageRes = Res.drawable.ic_flowtime,
+                    title = Res.string.on_board_intro_title,
+                    description = Res.string.on_board_intro_text
                 )
                 1 -> SetupPage(state = state, onMode = onMode, onGoal = onGoal)
                 else -> OnBoardItem(
-                    imageRes = R.drawable.ic_play,
-                    title = R.string.on_board_ready_title,
-                    description = R.string.on_board_ready_text
+                    imageRes = Res.drawable.ic_play,
+                    title = Res.string.on_board_ready_title,
+                    description = Res.string.on_board_ready_text
                 )
             }
         }
@@ -136,7 +136,7 @@ fun OnboardingContent(
         ) {
             Text(
                 modifier = Modifier.clickable(onClick = onSkip),
-                text = stringResource(R.string.on_board_skip),
+                text = stringResource(Res.string.on_board_skip),
                 style = Title.copy(fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
             )
 
@@ -177,7 +177,7 @@ fun OnboardingContent(
                         coroutineScope.launch { pagerState.animateScrollToPage(next) }
                     }
                 },
-                text = stringResource(if (last) R.string.on_board_start else R.string.on_board_next),
+                text = stringResource(if (last) Res.string.on_board_start else Res.string.on_board_next),
                 style = Title.copy(fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
             )
         }
@@ -199,7 +199,7 @@ private fun SetupPage(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = stringResource(R.string.on_board_setup_title),
+            text = stringResource(Res.string.on_board_setup_title),
             style = LargeTitle.copy(
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,
@@ -231,14 +231,14 @@ private fun SetupPage(
         )
         Spacer(modifier = Modifier.height(32.dp))
         Text(
-            text = stringResource(R.string.goal_title),
+            text = stringResource(Res.string.goal_title),
             style = LargeTitle.copy(fontSize = 20.sp, color = MaterialTheme.colorScheme.tertiary)
         )
         Spacer(modifier = Modifier.height(8.dp))
         GoalStepper(minutes = state.goalMinutes, onChange = onGoal)
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = stringResource(R.string.on_board_setup_later),
+            text = stringResource(Res.string.on_board_setup_later),
             style = SubBody.copy(
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
@@ -250,9 +250,9 @@ private fun SetupPage(
 
 @Composable
 private fun OnBoardItem(
-    @DrawableRes imageRes: Int,
-    @StringRes title: Int,
-    @StringRes description: Int
+    imageRes: DrawableResource,
+    title: StringResource,
+    description: StringResource
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -266,7 +266,7 @@ private fun OnBoardItem(
                 .padding(bottom = 20.dp)
                 .sizeIn(maxWidth = 330.dp, maxHeight = 330.dp)
                 .aspectRatio(1f),
-            painter = painterResource(id = imageRes),
+            painter = painterResource(imageRes),
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiary),
             contentDescription = null
         )

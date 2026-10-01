@@ -20,9 +20,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
@@ -59,7 +60,7 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
             },
             label = {
                 Text(
-                    text = LocalContext.current.getString(R.string.pomodoro_settings_working),
+                    text = stringResource(Res.string.pomodoro_settings_working),
                     style = Title.copy(fontSize = 10.sp),
                     maxLines = 1
                 )
@@ -107,7 +108,7 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
             },
             label = {
                 Text(
-                    text = LocalContext.current.getString(R.string.pomodoro_settings_resting),
+                    text = stringResource(Res.string.pomodoro_settings_resting),
                     style = Title.copy(fontSize = 10.sp),
                     maxLines = 1
                 )

@@ -23,13 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RangeItem(
@@ -50,7 +50,7 @@ fun RangeItem(
             modifier = Modifier
                 .weight(0.15f)
                 .padding(top = 12.dp),
-            text = LocalContext.current.getString(R.string.flow_time_settings_range, index),
+            text = stringResource(Res.string.flow_time_settings_range, index),
             style = Title.copy(fontSize = 10.sp, color = MaterialTheme.colorScheme.primary)
         )
 
@@ -84,8 +84,8 @@ fun RangeItem(
             },
             label = {
                 Text(
-                    text = LocalContext.current.getString(
-                        R.string.flow_time_settings_between,
+                    text = stringResource(
+                        Res.string.flow_time_settings_between,
                         previousRange.totalRange,
                         if (time.isBlank()) {
                             ""
@@ -141,7 +141,7 @@ fun RangeItem(
             },
             label = {
                 Text(
-                    text = LocalContext.current.getString(R.string.flow_time_settings_rest),
+                    text = stringResource(Res.string.flow_time_settings_rest),
                     style = Title.copy(fontSize = 10.sp),
                     maxLines = 1
                 )
@@ -162,7 +162,7 @@ fun RangeItem(
 
         Icon(
             imageVector = Icons.Filled.Close,
-            contentDescription = stringResource(R.string.cd_delete_range),
+            contentDescription = stringResource(Res.string.cd_delete_range),
             tint = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier
                 .weight(0.1f)

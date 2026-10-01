@@ -4,7 +4,6 @@ import android.content.Context
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
-import androidx.annotation.StringRes
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -53,9 +52,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -67,7 +63,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.design.extensions.readableWidth
 import com.baltajmn.flowtime.core.design.theme.LargeTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
@@ -99,6 +94,12 @@ import kotlinx.datetime.number
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.DateTimeUnit
 import com.baltajmn.flowtime.data.goal.today
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.getString
 
 @Composable
 fun StatsScreen(
@@ -117,7 +118,7 @@ fun StatsScreen(
 
     state.message?.let { message ->
         LaunchedEffect(message) {
-            Toast.makeText(context, message.text(context), Toast.LENGTH_LONG).show()
+            Toast.makeText(context, message.text(), Toast.LENGTH_LONG).show()
             viewModel.onMessageShown()
         }
     }
@@ -187,12 +188,12 @@ fun StatsContent(
         state.summary.totalSeconds > 0L
     val detailCards: LazyListScope.() -> Unit = {
         item {
-            DetailCard(R.string.stats_by_hour) {
+            DetailCard(Res.string.stats_by_hour) {
                 ProGate(state.pro, unlockStats) { HourBars(details.byHour) }
             }
         }
         item {
-            DetailCard(R.string.stats_by_mode) {
+            DetailCard(Res.string.stats_by_mode) {
                 val colors = MaterialTheme.colorScheme
                 val palette = listOf(colors.primary, colors.tertiary, colors.secondary)
                 val shares = details.byMode.map { (mode, seconds) ->
@@ -204,9 +205,9 @@ fun StatsContent(
         // Solo con alguna etiqueta: "Sin etiqueta, 100 %" no cuenta nada.
         if (details.byTag.any { it.first != null }) {
             item {
-                DetailCard(R.string.stats_by_tag) {
+                DetailCard(Res.string.stats_by_tag) {
                     val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-                    val none = stringResource(R.string.tag_none)
+                    val none = stringResource(Res.string.tag_none)
                     val outline = MaterialTheme.colorScheme.outline
                     val shares = details.byTag.map { (id, seconds) ->
                         val tag = state.tags.firstOrNull { it.id == id }
@@ -222,7 +223,7 @@ fun StatsContent(
         }
         if (details.topTasks.isNotEmpty()) {
             item {
-                DetailCard(R.string.stats_top_tasks) {
+                DetailCard(Res.string.stats_top_tasks) {
                     ProGate(state.pro, unlockStats) {
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             details.topTasks.forEach { task ->
@@ -291,7 +292,7 @@ private fun Header(
     var menu by remember { mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
-            text = stringResource(R.string.nav_stats),
+            text = stringResource(Res.string.nav_stats),
             modifier = Modifier
                 .weight(1f)
                 .semantics { heading() },
@@ -301,19 +302,19 @@ private fun Header(
             IconButton(onClick = { menu = true }) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
-                    contentDescription = stringResource(R.string.more_options),
+                    contentDescription = stringResource(Res.string.more_options),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
             DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
                 if (pro != ProAccess.HIDDEN) {
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(R.string.stats_export_csv)) },
+                        text = { Text(text = stringResource(Res.string.stats_export_csv)) },
                         trailingIcon = if (pro == ProAccess.LOCKED) {
                             {
                                 Icon(
-                                    painter = painterResource(R.drawable.ic_lock_on),
-                                    contentDescription = stringResource(R.string.pro_unlock),
+                                    painter = painterResource(Res.drawable.ic_lock_on),
+                                    contentDescription = stringResource(Res.string.pro_unlock),
                                     modifier = Modifier.size(18.dp)
                                 )
                             }
@@ -327,14 +328,14 @@ private fun Header(
                     )
                 }
                 DropdownMenuItem(
-                    text = { Text(text = stringResource(R.string.stats_copy_history)) },
+                    text = { Text(text = stringResource(Res.string.stats_copy_history)) },
                     onClick = {
                         menu = false
                         onCopyHistory()
                     }
                 )
                 DropdownMenuItem(
-                    text = { Text(text = stringResource(R.string.stats_paste_history)) },
+                    text = { Text(text = stringResource(Res.string.stats_paste_history)) },
                     onClick = {
                         menu = false
                         onPasteHistory()
@@ -368,11 +369,11 @@ private fun LevelCard(level: Level) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = stringResource(R.string.user_progression_level),
+                text = stringResource(Res.string.user_progression_level),
                 style = Title.copy(fontSize = 18.sp, color = MaterialTheme.colorScheme.primary)
             )
             Text(
-                text = stringResource(R.string.user_level_short, level.level),
+                text = stringResource(Res.string.user_level_short, level.level),
                 style = SubBody.copy(
                     fontWeight = FontWeight.W700,
                     color = MaterialTheme.colorScheme.primary
@@ -398,12 +399,12 @@ private fun GoalProgressCard(today: DayProgress, streak: Streak) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = stringResource(R.string.goal_title),
+                text = stringResource(Res.string.goal_title),
                 style = Title.copy(fontSize = 18.sp, color = MaterialTheme.colorScheme.primary)
             )
             Text(
                 text = stringResource(
-                    R.string.goal_today,
+                    Res.string.goal_today,
                     (today.seconds / 60).formatMinutesStudying(),
                     today.goalMinutes.toLong().formatMinutesStudying()
                 ),
@@ -437,13 +438,13 @@ private fun FirstSessionCard() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_stats),
+                painter = painterResource(Res.drawable.ic_stats),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(48.dp)
             )
             Text(
-                text = stringResource(R.string.stats_first_session),
+                text = stringResource(Res.string.stats_first_session),
                 style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
                 textAlign = TextAlign.Center
             )
@@ -461,18 +462,18 @@ private fun ProStreakCard(days: Int, onOpen: () -> Unit, onDismiss: () -> Unit) 
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_fire),
+                    painter = painterResource(Res.drawable.ic_fire),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(28.dp)
                 )
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = pluralStringResource(R.plurals.streak_days, days, days),
+                        text = pluralStringResource(Res.plurals.streak_days, days, days),
                         style = MaterialTheme.typography.titleSmall
                     )
                     Text(
-                        text = stringResource(R.string.pro_card_text),
+                        text = stringResource(Res.string.pro_card_text),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -481,10 +482,10 @@ private fun ProStreakCard(days: Int, onOpen: () -> Unit, onDismiss: () -> Unit) 
             Row(modifier = Modifier.align(Alignment.End)) {
                 TextButton(onClick = onDismiss) {
                     Text(
-                        text = stringResource(R.string.pro_card_dismiss)
+                        text = stringResource(Res.string.pro_card_dismiss)
                     )
                 }
-                TextButton(onClick = onOpen) { Text(text = stringResource(R.string.pro_see)) }
+                TextButton(onClick = onOpen) { Text(text = stringResource(Res.string.pro_see)) }
             }
         }
     }
@@ -504,10 +505,10 @@ private fun PeriodCard(
 ) {
     val period = state.period
     val kinds = listOfNotNull(
-        PeriodKind.DAY to R.string.stats_today,
-        PeriodKind.WEEK to R.string.stats_week,
-        PeriodKind.MONTH to R.string.stats_month,
-        (PeriodKind.YEAR to R.string.stats_year).takeIf { state.pro != ProAccess.HIDDEN }
+        PeriodKind.DAY to Res.string.stats_today,
+        PeriodKind.WEEK to Res.string.stats_week,
+        PeriodKind.MONTH to Res.string.stats_month,
+        (PeriodKind.YEAR to Res.string.stats_year).takeIf { state.pro != ProAccess.HIDDEN }
     )
     // Sin Pro, el año entero se ve difuminado; y la comparación, dentro, ya no lleva su candado.
     val yearLocked = period.kind == PeriodKind.YEAR && state.pro == ProAccess.LOCKED
@@ -538,7 +539,7 @@ private fun PeriodCard(
                 IconButton(onClick = onPrevious) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                        contentDescription = stringResource(R.string.stats_previous),
+                        contentDescription = stringResource(Res.string.stats_previous),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -551,7 +552,7 @@ private fun PeriodCard(
                 IconButton(onClick = onNext, enabled = period.offset > 0) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = stringResource(R.string.stats_next),
+                        contentDescription = stringResource(Res.string.stats_next),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -573,7 +574,7 @@ private fun PeriodBody(state: StatsUiState, changeAccess: ProAccess, onUnlock: (
     val kind = state.period.kind
     if (summary.totalSeconds == 0L) {
         Text(
-            text = stringResource(R.string.stats_empty),
+            text = stringResource(Res.string.stats_empty),
             modifier = Modifier.padding(vertical = 16.dp),
             style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
         )
@@ -584,21 +585,21 @@ private fun PeriodBody(state: StatsUiState, changeAccess: ProAccess, onUnlock: (
         "${bestDayLabel(kind, day)} · ${(summary.bestDaySeconds / 60).formatMinutesStudying()}"
     }
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        SummaryRow(R.string.stats_total, total)
-        SummaryRow(R.string.stats_sessions, summary.sessions.toString())
+        SummaryRow(Res.string.stats_total, total)
+        SummaryRow(Res.string.stats_sessions, summary.sessions.toString())
         SummaryRow(
-            R.string.stats_average_session,
+            Res.string.stats_average_session,
             (summary.averageSessionSeconds / 60).formatMinutesStudying()
         )
         SummaryRow(
-            R.string.stats_daily_average,
+            Res.string.stats_daily_average,
             (summary.dailyAverageSeconds / 60).formatMinutesStudying()
         )
-        best?.let { SummaryRow(R.string.stats_best_day, it) }
+        best?.let { SummaryRow(Res.string.stats_best_day, it) }
         state.details.change?.let { change ->
             ProGate(changeAccess, onUnlock) {
                 SummaryRow(
-                    R.string.stats_change,
+                    Res.string.stats_change,
                     signedPercent(change)
                 )
             }
@@ -608,8 +609,8 @@ private fun PeriodBody(state: StatsUiState, changeAccess: ProAccess, onUnlock: (
     // Para TalkBack, cada gráfico es un resumen en texto.
     val description = listOfNotNull(
         periodLabel(kind, state.range),
-        "${stringResource(R.string.stats_total)}: $total",
-        best?.let { "${stringResource(R.string.stats_best_day)}: $it" }
+        "${stringResource(Res.string.stats_total)}: $total",
+        best?.let { "${stringResource(Res.string.stats_best_day)}: $it" }
     ).joinToString(". ")
     val start = state.range.start
     when (kind) {
@@ -657,14 +658,14 @@ private fun HourBars(byHour: List<Long>) {
         values = byHour,
         labels = byHour.indices.map { if (it % 6 == 0) "$it" else "" },
         description = stringResource(
-            R.string.stats_best_hour,
+            Res.string.stats_best_hour,
             String.format(Locale.ROOT, "%02d:00", best)
         )
     )
 }
 
 @Composable
-private fun SummaryRow(@StringRes label: Int, value: String) {
+private fun SummaryRow(label: StringResource, value: String) {
     val name = stringResource(label)
     Row(
         modifier = Modifier
@@ -682,7 +683,7 @@ private fun SummaryRow(@StringRes label: Int, value: String) {
 }
 
 @Composable
-private fun DetailCard(@StringRes title: Int, content: @Composable () -> Unit) {
+private fun DetailCard(title: StringResource, content: @Composable () -> Unit) {
     Card {
         Column(
             modifier = Modifier
@@ -704,34 +705,34 @@ private fun DetailCard(@StringRes title: Int, content: @Composable () -> Unit) {
 private fun ImportConflictDialog(daysWithData: Int, onResolve: (ImportMode?) -> Unit) {
     AlertDialog(
         onDismissRequest = { onResolve(null) },
-        title = { Text(text = stringResource(R.string.import_conflict_title)) },
-        text = { Text(text = stringResource(R.string.import_conflict_message, daysWithData)) },
+        title = { Text(text = stringResource(Res.string.import_conflict_title)) },
+        text = { Text(text = stringResource(Res.string.import_conflict_message, daysWithData)) },
         confirmButton = {
             Row {
                 TextButton(onClick = { onResolve(ImportMode.REPLACE) }) {
-                    Text(text = stringResource(R.string.import_replace))
+                    Text(text = stringResource(Res.string.import_replace))
                 }
                 TextButton(onClick = { onResolve(ImportMode.SUM) }) {
-                    Text(text = stringResource(R.string.import_sum))
+                    Text(text = stringResource(Res.string.import_sum))
                 }
             }
         },
         dismissButton = {
             TextButton(onClick = { onResolve(null) }) {
-                Text(text = stringResource(R.string.dialog_cancel))
+                Text(text = stringResource(Res.string.dialog_cancel))
             }
         }
     )
 }
 
-private fun StatsMessage.text(context: Context): String = when (this) {
+private suspend fun StatsMessage.text(): String = when (this) {
     is StatsMessage.Imported -> if (days == 0) {
-        context.getString(R.string.import_nothing)
+        getString(Res.string.import_nothing)
     } else {
-        context.getString(R.string.import_summary, days, ignoredLines)
+        getString(Res.string.import_summary, days, ignoredLines)
     }
-    StatsMessage.CsvSaved -> context.getString(R.string.stats_csv_saved)
-    StatsMessage.CsvFailed -> context.getString(R.string.stats_csv_failed)
+    StatsMessage.CsvSaved -> getString(Res.string.stats_csv_saved)
+    StatsMessage.CsvFailed -> getString(Res.string.stats_csv_failed)
 }
 
 /** "+12 %", "-5 %": con el formato de porcentaje del idioma. */

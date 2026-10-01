@@ -1,7 +1,6 @@
 package com.baltajmn.flowtime.features.screens.pro
 
 import androidx.activity.compose.LocalActivity
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,17 +44,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.data.pro.Limits
 import com.baltajmn.flowtime.features.screens.support.StoreUnavailable
 import org.koin.androidx.compose.koinViewModel
+import com.baltajmn.flowtime.core.design.resources.*
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * La pantalla de Pro, solo cuando se pide: al tocar algo de Pro o desde Ajustes. Se cierra siempre
@@ -102,7 +102,7 @@ fun ProContent(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = stringResource(R.string.pro_title),
+                text = stringResource(Res.string.pro_title),
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier
                     .weight(1f)
@@ -111,7 +111,7 @@ fun ProContent(
             IconButton(onClick = onClose) {
                 Icon(
                     imageVector = Icons.Filled.Close,
-                    contentDescription = stringResource(R.string.close)
+                    contentDescription = stringResource(Res.string.close)
                 )
             }
         }
@@ -133,32 +133,32 @@ private fun ColumnScope.Offer(
     onRetry: () -> Unit
 ) {
     Text(
-        text = stringResource(R.string.pro_headline),
+        text = stringResource(Res.string.pro_headline),
         style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.primary
     )
     // Desde una función bloqueada, esa la primera.
     ProFeature.entries.sortedByDescending { it == from }.forEach { FeatureRow(it) }
     Text(
-        text = stringResource(R.string.pro_future),
+        text = stringResource(Res.string.pro_future),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
     HorizontalDivider()
     // Lo que sigue gratis, más suave: es la razón para fiarse de lo de arriba.
     Text(
-        text = stringResource(R.string.pro_free_title),
+        text = stringResource(Res.string.pro_free_title),
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
     Text(
-        text = stringResource(R.string.pro_free_text),
+        text = stringResource(Res.string.pro_free_text),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
     Spacer(modifier = Modifier.height(4.dp))
     Text(
-        text = listOfNotNull(state.product?.price, stringResource(R.string.pro_one_time)).joinToString(
+        text = listOfNotNull(state.product?.price, stringResource(Res.string.pro_one_time)).joinToString(
             " · "
         ),
         style = MaterialTheme.typography.titleMedium,
@@ -181,11 +181,11 @@ private fun ColumnScope.Offer(
         enabled = state.product != null && !state.busy,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(text = stringResource(R.string.pro_buy))
+        Text(text = stringResource(Res.string.pro_buy))
     }
     val problem = when {
-        state.failed -> R.string.purchase_failed
-        state.nothingToRestore -> R.string.pro_restore_nothing
+        state.failed -> Res.string.purchase_failed
+        state.nothingToRestore -> Res.string.pro_restore_nothing
         else -> null
     }
     problem?.let {
@@ -201,14 +201,14 @@ private fun ColumnScope.Offer(
         enabled = !state.busy,
         modifier = Modifier.align(Alignment.CenterHorizontally)
     ) {
-        Text(text = stringResource(R.string.restore_purchases))
+        Text(text = stringResource(Res.string.restore_purchases))
     }
 }
 
 @Composable
 private fun ColumnScope.Thanks(onClose: () -> Unit) {
     Icon(
-        painter = painterResource(R.drawable.ic_confetti),
+        painter = painterResource(Res.drawable.ic_confetti),
         contentDescription = null,
         tint = MaterialTheme.colorScheme.primary,
         modifier = Modifier
@@ -216,18 +216,18 @@ private fun ColumnScope.Thanks(onClose: () -> Unit) {
             .align(Alignment.CenterHorizontally)
     )
     Text(
-        text = stringResource(R.string.support_thanks_title),
+        text = stringResource(Res.string.support_thanks_title),
         style = MaterialTheme.typography.headlineSmall,
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth()
     )
     Text(
-        text = stringResource(R.string.pro_thanks_text),
+        text = stringResource(Res.string.pro_thanks_text),
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth()
     )
     Button(onClick = onClose, modifier = Modifier.fillMaxWidth()) {
-        Text(text = stringResource(R.string.close))
+        Text(text = stringResource(Res.string.close))
     }
 }
 
@@ -236,39 +236,39 @@ private fun FeatureRow(feature: ProFeature) {
     val (icon, title, text) = when (feature) {
         ProFeature.STATS -> Triple(
             Icons.Filled.DateRange,
-            R.string.pro_stats_title,
-            R.string.pro_stats_text
+            Res.string.pro_stats_title,
+            Res.string.pro_stats_text
         )
-        ProFeature.CSV -> Triple(Icons.Filled.Share, R.string.pro_csv_title, R.string.pro_csv_text)
+        ProFeature.CSV -> Triple(Icons.Filled.Share, Res.string.pro_csv_title, Res.string.pro_csv_text)
         ProFeature.TAGS -> Triple(
             Icons.Filled.Star,
-            R.string.pro_tags_title,
-            R.string.pro_tags_text
+            Res.string.pro_tags_title,
+            Res.string.pro_tags_text
         )
         ProFeature.TASKS -> Triple(
             Icons.Filled.CheckCircle,
-            R.string.pro_tasks_title,
-            R.string.pro_tasks_text
+            Res.string.pro_tasks_title,
+            Res.string.pro_tasks_text
         )
         ProFeature.MIXES -> Triple(
             Icons.Filled.Favorite,
-            R.string.pro_mixes_title,
-            R.string.pro_mixes_text
+            Res.string.pro_mixes_title,
+            Res.string.pro_mixes_text
         )
         ProFeature.SOUNDS -> Triple(
             Icons.Filled.PlayArrow,
-            R.string.pro_sounds_title,
-            R.string.pro_sounds_text
+            Res.string.pro_sounds_title,
+            Res.string.pro_sounds_text
         )
         ProFeature.THEMES -> Triple(
             Icons.Filled.Face,
-            R.string.pro_themes_title,
-            R.string.pro_themes_text
+            Res.string.pro_themes_title,
+            Res.string.pro_themes_text
         )
         ProFeature.DND -> Triple(
             Icons.Filled.Notifications,
-            R.string.pro_dnd_title,
-            R.string.pro_dnd_text
+            Res.string.pro_dnd_title,
+            Res.string.pro_dnd_text
         )
     }
     val limit = when (feature) {
@@ -285,7 +285,7 @@ private fun FeatureRow(feature: ProFeature) {
 }
 
 @Composable
-private fun FeatureRow(icon: ImageVector, @StringRes title: Int, text: String) {
+private fun FeatureRow(icon: ImageVector, title: StringResource, text: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
