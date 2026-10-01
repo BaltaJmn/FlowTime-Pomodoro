@@ -21,6 +21,7 @@ import com.baltajmn.flowtime.core.persistence.di.PersistenceModule
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
 import com.baltajmn.flowtime.data.di.DataModule
+import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.features.screens.di.ScreensModule
@@ -88,6 +89,9 @@ private fun start(koin: Koin) {
     val scope = MainScope()
     engine.runIn(scope)
     koin.get<GoalWatcher>().watch(scope)
+    // Configura RevenueCat, si hay clave. Después, sus propios avisos lo tienen al día.
+    val purchases = koin.get<PurchasesRepository>()
+    scope.launch { purchases.refresh() }
     UNUserNotificationCenter.currentNotificationCenter().delegate = notificationDelegate
     val notifications = PhaseNotifications(engine, koin.get())
     scope.launch { engine.state.collect { notifications.schedule() } }

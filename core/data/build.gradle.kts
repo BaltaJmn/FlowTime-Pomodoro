@@ -21,6 +21,9 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.revenuecat)
         }
+        iosMain.dependencies {
+            implementation(libs.purchases.kmp.core)
+        }
         commonTest.dependencies {
             implementation(libs.coroutines.test)
         }

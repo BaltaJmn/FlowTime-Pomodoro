@@ -9,6 +9,8 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
 /**
  * Un módulo multiplataforma (#61): Android con el plugin de AGP 9 para bibliotecas KMP, y los dos
@@ -42,6 +44,19 @@ class KmpLibraryPlugin : Plugin<Project> {
 
             sourceSets.commonTest.configure {
                 dependencies { implementation(kotlin("test")) }
+            }
+
+            // purchases-kmp 3.2.1 (la tienda del iPhone, en core/data) trae en su cinterop la ruta de
+            // las bibliotecas de Swift del Xcode de RevenueCat, que aquí no existe: los tests de iOS
+            // no enlazan. Se les da la del Xcode de este Mac. La app no lo necesita: el framework es
+            // estático y se enlaza dentro de Xcode. Solo en un Mac: en Linux no hay xcode-select.
+            if (System.getProperty("os.name").startsWith("Mac")) {
+                val swiftLibs = providers.exec { commandLine("xcode-select", "-p") }
+                    .standardOutput.asText.map { "${it.trim()}/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift" }
+                targets.withType<KotlinNativeTarget>().configureEach {
+                    val sdk = if (konanTarget.name.contains("simulator")) "iphonesimulator" else "iphoneos"
+                    binaries.withType<TestExecutable>().configureEach { linkerOpts("-L${swiftLibs.get()}/$sdk") }
+                }
             }
         }
 
