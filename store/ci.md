@@ -27,6 +27,12 @@ Disparo manual, para otro canal:
 gh workflow run release.yml --ref main -f track=internal
 ```
 
+Una versión que ya está en un canal de prueba no llega a producción con la etiqueta: la volvería a
+subir con el mismo `versionCode`, y Play lo rechaza. Se promueve esa misma en la consola (*Prueba
+interna > Promocionar versión > Producción*). Además, los formularios de un permiso nuevo (servicios
+en primer plano, alarma exacta) solo aparecen en *Contenido de la aplicación* cuando ya hay un AAB
+subido que lo usa: por eso una versión con permisos nuevos pasa antes por interna.
+
 ## La firma
 
 Clave de subida en `~/keys/flowtime-upload.jks`, alias `upload`, `CN=BaltaJmn, O=BaltaJmn, C=ES`,
