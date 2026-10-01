@@ -18,8 +18,5 @@ val DatabaseModule = module {
             .build()
     }
 
-    single { get<AppDatabase>().sessionDao() }
-    single { get<AppDatabase>().backupDao() }
-    single { get<AppDatabase>().tagDao() }
-    single { get<AppDatabase>().taskDao() }
+    includes(DaoModule)
 }

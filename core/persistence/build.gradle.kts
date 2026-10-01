@@ -14,9 +14,9 @@ kotlin {
             api(libs.kotlinx.serialization.json)
             // DayKeys: las claves de cada día.
             api(libs.kotlinx.datetime)
+            implementation(libs.koin.core)
         }
         androidMain.dependencies {
-            implementation(libs.koin.core)
             implementation(libs.koin.android)
         }
         getByName("androidHostTest").dependencies {

@@ -13,12 +13,15 @@ import com.baltajmn.flowtime.core.navigation.PreMainGraph
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardScreen
 import com.baltajmn.flowtime.features.screens.splash.SplashScreen
 import com.baltajmn.flowtime.navigation.main.MainScreen
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun FlowTimeNavHost(
     flowTimeAppState: FlowTimeAppState,
     showSound: Boolean,
-    onSoundChange: (Boolean) -> Unit
+    onSoundChange: (Boolean) -> Unit,
+    openFocus: Flow<Unit>,
+    onAddQuickTile: (() -> Unit)?
 ) {
     NavHost(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
@@ -32,7 +35,9 @@ fun FlowTimeNavHost(
             MainScreen(
                 appState = flowTimeAppState,
                 showSound = showSound,
-                onSoundChange = onSoundChange
+                onSoundChange = onSoundChange,
+                openFocus = openFocus,
+                onAddQuickTile = onAddQuickTile
             )
         }
     }

@@ -1,6 +1,8 @@
 package com.baltajmn.flowtime
 
+import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -22,9 +24,12 @@ import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.features.screens.settings.AppIcons
 import com.baltajmn.flowtime.goal.GoalWatcher
 import com.baltajmn.flowtime.review.ReviewPrompter
+import com.baltajmn.flowtime.session.FocusTileService
 import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.ui.FlowTimeApp
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -40,12 +45,17 @@ class FlowTimeActivity : ComponentActivity() {
     private val appIcons: AppIcons by inject()
     private val showSound: MutableState<Boolean> = mutableStateOf(true)
 
+    // Se guarda hasta que la pantalla principal lo recoge: al abrir la app desde la notificación, antes
+    // de que exista.
+    private val openFocus = Channel<Unit>(Channel.CONFLATED)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         this.enableEdgeToEdge()
 
         showSound.value = viewModel.getShowSound()
+        openFocusIfAsked(intent)
 
         setContent {
             val appearance by appearanceRepository.appearance.collectAsStateWithLifecycle()
@@ -68,7 +78,13 @@ class FlowTimeActivity : ComponentActivity() {
                 celebration = celebration,
                 onCelebrationShown = goalWatcher::onShown,
                 proRequest = proRequest,
-                onProClosed = proLauncher::close
+                onProClosed = proLauncher::close,
+                openFocus = openFocus.receiveAsFlow(),
+                onAddQuickTile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    { FocusTileService.requestAdd(this) }
+                } else {
+                    null
+                }
             )
         }
 
@@ -82,6 +98,16 @@ class FlowTimeActivity : ComponentActivity() {
                 ).collect { reviewPrompter.askIfDue(this@FlowTimeActivity) }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        openFocusIfAsked(intent)
+    }
+
+    // La notificación abre la pantalla de concentración, que ya enseña el modo de la sesión en marcha.
+    private fun openFocusIfAsked(intent: Intent?) {
+        if (intent != null && SessionNotification.timerToOpen(intent) != null) openFocus.trySend(Unit)
     }
 
     // Desde Android 14 se puede descartar; vuelve al abrir la app, y también justo después de dar

@@ -48,9 +48,9 @@ dependencies {
     implementation(projects.core.design)
 
     implementation(projects.features.screens)
+    implementation(projects.shared)
 
     implementation(libs.androidx.lifecycle.process)
-    implementation(libs.androidx.navigation.suite)
     implementation(libs.review.ktx)
     implementation(libs.glance.appwidget)
     implementation(libs.glance.material3)

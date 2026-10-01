@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -13,10 +12,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.baltajmn.flowtime.FlowTimeActivity
-import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.core.design.R
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.GOAL_CELEBRATED_ON
+import com.baltajmn.flowtime.data.goal.Celebration
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,28 +24,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-
-/** Haber cumplido el objetivo de hoy, con la racha que deja. */
-data class Celebration(val goalMinutes: Int, val streak: Int) {
-    /** 7, 30 o 100 días seguidos. */
-    val milestone get() = streak in MILESTONES
-
-    fun text(resources: Resources): String {
-        val days = resources.getQuantityString(R.plurals.streak_days, streak, streak)
-        return when {
-            milestone -> resources.getString(R.string.streak_milestone, days)
-            streak > 1 -> days
-            else -> resources.getString(
-                R.string.goal_reached_text,
-                goalMinutes.toLong().formatMinutesStudying()
-            )
-        }
-    }
-
-    private companion object {
-        val MILESTONES = setOf(7, 30, 100)
-    }
-}
 
 /**
  * Celebra el objetivo diario una sola vez al día, al cumplirlo: con la app a la vista, dentro de la
@@ -84,7 +61,7 @@ class GoalWatcher(
         _celebration.value = null
     }
 
-    private fun notify(celebration: Celebration): Boolean {
+    private suspend fun notify(celebration: Celebration): Boolean {
         val permission = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.POST_NOTIFICATIONS
@@ -107,7 +84,7 @@ class GoalWatcher(
             NotificationCompat.Builder(context, CHANNEL)
                 .setSmallIcon(R.drawable.ic_confetti)
                 .setContentTitle(context.getString(R.string.goal_reached))
-                .setContentText(celebration.text(context.resources))
+                .setContentText(celebration.text())
                 .setContentIntent(open)
                 .setAutoCancel(true)
                 .build()

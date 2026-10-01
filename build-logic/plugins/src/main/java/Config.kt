@@ -3,6 +3,8 @@ object Config {
     const val versionCode = 56
     const val versionName = "2.1.0"
 
+    const val Shared = "$baseApplicationId.shared"
+
     object Feature {
         const val Screens = "$baseApplicationId.features.screens"
     }

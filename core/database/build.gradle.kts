@@ -19,9 +19,9 @@ kotlin {
             implementation(libs.room.runtime)
             // SessionDao y SessionDb.legacy trabajan con días y zonas horarias.
             api(libs.kotlinx.datetime)
+            implementation(libs.koin.core)
         }
         androidMain.dependencies {
-            implementation(libs.koin.core)
             implementation(libs.koin.android)
             // Para leer las tareas antiguas en la migración de la 3 a la 4.
             implementation(libs.kotlinx.serialization.json)

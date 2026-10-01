@@ -23,10 +23,10 @@ kotlin {
             implementation(libs.cmp.material.icons.core)
             implementation(libs.cmp.lifecycle.runtime.compose)
             implementation(libs.material.kolor)
+            implementation(libs.koin.core)
         }
         androidMain.dependencies {
             implementation(libs.core.ktx)
-            implementation(libs.koin.core)
             implementation(libs.koin.android)
             implementation(libs.compose.lottie)
         }

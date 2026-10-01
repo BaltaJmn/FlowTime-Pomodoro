@@ -1,27 +1,28 @@
 package com.baltajmn.flowtime.navigation.main
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import com.baltajmn.flowtime.core.design.R
+import com.baltajmn.flowtime.core.design.resources.*
 import com.baltajmn.flowtime.core.navigation.MainGraph
 import com.baltajmn.flowtime.ui.FlowTimeAppState
+import kotlinx.coroutines.flow.Flow
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 private enum class Destination(
     val graph: MainGraph,
-    @DrawableRes val icon: Int,
-    @StringRes val label: Int
+    val icon: DrawableResource,
+    val label: StringResource
 ) {
-    Focus(MainGraph.Focus, R.drawable.ic_timer, R.string.nav_focus),
-    Tasks(MainGraph.TodoList, R.drawable.ic_list, R.string.nav_todo_list),
-    Stats(MainGraph.Stats, R.drawable.ic_stats, R.string.nav_stats),
-    Settings(MainGraph.Settings, R.drawable.ic_settings, R.string.nav_settings)
+    Focus(MainGraph.Focus, Res.drawable.ic_timer, Res.string.nav_focus),
+    Tasks(MainGraph.TodoList, Res.drawable.ic_list, Res.string.nav_todo_list),
+    Stats(MainGraph.Stats, Res.drawable.ic_stats, Res.string.nav_stats),
+    Settings(MainGraph.Settings, Res.drawable.ic_settings, Res.string.nav_settings)
 }
 
 /**
@@ -32,7 +33,9 @@ private enum class Destination(
 fun MainScreen(
     appState: FlowTimeAppState,
     showSound: Boolean,
-    onSoundChange: (Boolean) -> Unit
+    onSoundChange: (Boolean) -> Unit,
+    openFocus: Flow<Unit>,
+    onAddQuickTile: (() -> Unit)?
 ) {
     val currentRoute = appState.currentRoute
     val todoListState = rememberLazyListState()
@@ -60,7 +63,9 @@ fun MainScreen(
             todoListState = todoListState,
             settingsState = settingsState,
             showSound = showSound,
-            onSoundChange = onSoundChange
+            onSoundChange = onSoundChange,
+            openFocus = openFocus,
+            onAddQuickTile = onAddQuickTile
         )
     }
 }

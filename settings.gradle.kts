@@ -14,6 +14,8 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 //app
 include(
     ":app",
+    // La UI de la app, comun a Android y al iPhone: iosApp la enlaza como Shared.framework.
+    ":shared",
 )
 
 //Core
