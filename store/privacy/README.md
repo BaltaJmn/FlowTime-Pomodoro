@@ -52,3 +52,16 @@ servicios, y Play no cuenta eso como compartir.
 Lo que no se marca: el identificador de publicidad (el manifiesto quita `AD_ID`), la valoración
 (el diálogo es de Google Play y la app no la ve), la copia de Android (va a la cuenta de Google del
 usuario, no a nosotros) y los ficheros que exporta el usuario (los guarda donde elige).
+
+## App Store: privacidad de la app
+
+Lo mismo con los nombres de Apple, como en Purl. Las respuestas de *App Privacy* en App Store
+Connect tienen que coincidir con `iosApp/iosApp/PrivacyInfo.xcprivacy`, que lo declara dentro de la
+app porque RevenueCat va enlazado en el binario y no trae su manifiesto:
+
+| Tipo | Vinculado al usuario | Rastreo | Finalidad |
+|---|---|---|---|
+| Compras > Historial de compras | No | No | Funcionalidad de la app |
+| Identificadores > ID de usuario (el anónimo de RevenueCat) | No | No | Funcionalidad de la app |
+
+Si cambia lo que sale del móvil, se cambian las tres: Play, App Store Connect y el manifiesto.

@@ -15,6 +15,10 @@
 		<string>ru</string>
 		<string>hi</string>
 	</array>
+	<!-- Solo el HTTPS del sistema (RevenueCat): sin esto cada build de TestFlight espera a que se
+	     responda a mano lo del cifrado. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<!-- La sesión en la pantalla bloqueada y en la Dynamic Island (FocusActivities.swift). -->
 	<key>NSSupportsLiveActivities</key>
 	<true/>

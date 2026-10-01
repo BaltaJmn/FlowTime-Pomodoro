@@ -98,6 +98,12 @@ Activity) tienen que llevar las mismas, y App Store Connect lo comprueba al subi
    `iosMain`). Sin ella el iPhone no tiene tienda, y no se publica: Pro saldría gratis
    (`ProFeatures`).
 4. Los secretos de abajo, y la clave de compras integradas para RevenueCat (`~/keys/LEEME.md`).
+5. *App Privacy* con las respuestas de `store/privacy/README.md`, que son las del
+   `PrivacyInfo.xcprivacy` de la app. La URL de la política es la de Play, pero antes de la primera
+   versión en la App Store tiene que hablar también del iPhone: hoy solo nombra Google Play.
+
+`ITSAppUsesNonExemptEncryption` va a `NO` en el `Info.plist` (solo el HTTPS del sistema), así que
+los builds no se quedan en TestFlight esperando la pregunta del cifrado.
 
 ### Secretos de Apple
 
