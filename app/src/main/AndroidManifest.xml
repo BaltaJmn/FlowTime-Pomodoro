@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- La vibración al cambiar de fase con la app a la vista (#50). Es un permiso normal. -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Para que el trabajo del recordatorio sobreviva a un reinicio (JobInfo.setPersisted). -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- No molestar mientras se trabaja (#43). Es un permiso normal; el acceso lo da el usuario. -->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
@@ -140,13 +141,19 @@
                 android:value="true" />
         </service>
 
+        <!-- Ningún receptor de BOOT_COMPLETED, tampoco el de WorkManager (lo trae Glance): con
+             AmbientService, de reproducción, Play avisa de que Android 15 no deja arrancarlo al
+             reiniciar aunque nunca se arranque ahí. Lo que tiene que volver tras reiniciar lo hace
+             App al abrir el proceso, y el recordatorio es un trabajo persistente (ReminderJob).
+             WorkManager reprograma lo suyo al arrancar la app. -->
         <receiver
-            android:name=".session.BootReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+            tools:node="remove" />
+
+        <service
+            android:name=".reminder.ReminderJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver
             android:name=".session.SessionReceiver"

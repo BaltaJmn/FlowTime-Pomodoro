@@ -3,6 +3,11 @@ package com.baltajmn.flowtime.reminder
 import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.job.JobInfo
+import android.app.job.JobParameters
+import android.app.job.JobScheduler
+import android.app.job.JobService
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -26,9 +31,10 @@ import kotlinx.datetime.TimeZone
 import kotlin.time.Clock
 
 /**
- * El recordatorio diario (#45), con una alarma no exacta: unos minutos de margen bastan y no pide
- * permiso de alarmas exactas. Lo despierta [SessionReceiver], que también lo reprograma al reiniciar
- * el móvil o al cambiar la hora o la zona horaria.
+ * El recordatorio diario (#45), con un trabajo persistente de JobScheduler: no es exacto, pero unos
+ * minutos de margen bastan, y el sistema lo conserva al reiniciar sin que la app necesite un receptor
+ * de BOOT_COMPLETED. Lo despierta [ReminderJob] por [SessionReceiver], que también lo reprograma al
+ * cambiar la hora o la zona horaria.
  */
 class DailyReminder(
     private val context: Context,
@@ -36,23 +42,26 @@ class DailyReminder(
     private val goals: GoalRepository,
     private val engine: FocusEngine
 ) {
-    private val alarms = context.getSystemService(AlarmManager::class.java)
+    private val jobs = context.getSystemService(JobScheduler::class.java)
 
     /** La siguiente, o ninguna si está apagado. */
     fun schedule() {
-        val intent = PendingIntent.getBroadcast(
+        // Hasta la 2.2.1 iba con AlarmManager, y una alarma pendiente sigue ahí tras actualizar:
+        // sin cancelarla, ese día avisaría dos veces.
+        PendingIntent.getBroadcast(
             context,
             REQUEST_ALARM,
             Intent(context, SessionReceiver::class.java).setAction(ACTION),
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        val at = settings.reminder.value.next(Clock.System.now(), TimeZone.currentSystemDefault())
-            ?: return alarms.cancel(intent)
-        alarms.setWindow(
-            AlarmManager.RTC_WAKEUP,
-            at.toEpochMilliseconds(),
-            WINDOW_MILLIS,
-            intent
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_NO_CREATE
+        )?.let(context.getSystemService(AlarmManager::class.java)::cancel)
+        val now = Clock.System.now()
+        val at = settings.reminder.value.next(now, TimeZone.currentSystemDefault())
+            ?: return jobs.cancel(JOB_ID)
+        jobs.schedule(
+            JobInfo.Builder(JOB_ID, ComponentName(context, ReminderJob::class.java))
+                .setMinimumLatency((at - now).inWholeMilliseconds.coerceAtLeast(0))
+                .setPersisted(true)
+                .build()
         )
     }
 
@@ -116,11 +125,23 @@ class DailyReminder(
 
         // Ver la lista de ids en GoalWatcher.
         private const val ID = 5
-        private val WINDOW_MILLIS = TimeUnit.MINUTES.toMillis(10)
+
+        // Lejos de los de WorkManager (Glance), que los reparte desde 0.
+        private const val JOB_ID = 0x464C5754
 
         // Distintos de los de SessionNotification (el ordinal de cada acción y 100).
         private const val REQUEST_ALARM = 200
         private const val REQUEST_OPEN = 201
         private const val REQUEST_START = 202
     }
+}
+
+/** Despierta a [DailyReminder] a su hora. Lo demás, como con la alarma de antes, en SessionReceiver. */
+class ReminderJob : JobService() {
+    override fun onStartJob(params: JobParameters): Boolean {
+        sendBroadcast(Intent(this, SessionReceiver::class.java).setAction(DailyReminder.ACTION))
+        return false
+    }
+
+    override fun onStopJob(params: JobParameters) = false
 }

@@ -19,7 +19,8 @@ import com.baltajmn.flowtime.data.goal.today
 
 /**
  * Todo lo que llega con la app posiblemente cerrada: los botones de la notificación, la alarma de
- * fin de fase, el reinicio del móvil y los cambios de hora. El motor se reconstruye solo; aquí se
+ * fin de fase, el recordatorio y los cambios de hora. Al reiniciar el móvil no hay receptor (ver el
+ * manifiesto): lo pone al día App en cuanto se abre el proceso. El motor se reconstruye solo; aquí se
  * aplica la acción o se le pone al día, y se dejan listas la notificación y la siguiente alarma.
  */
 class SessionReceiver :
@@ -37,7 +38,7 @@ class SessionReceiver :
         get<PhaseAlarm>().schedule()
         get<FocusMode>().apply(engine.state.value)
         FocusTileService.refresh(context)
-        // Al reiniciar el sistema borra las alarmas, y con otra hora o zona horaria hay que recolocarla.
+        // Con otra hora o zona horaria, el recordatorio cae a otra hora: se recoloca.
         if (action == null) get<DailyReminder>().schedule()
         if (action == TimerAction.START) get<DailyReminder>().dismiss()
         later { FocusWidget.update(context) }

@@ -12,7 +12,8 @@ import com.baltajmn.flowtime.data.timer.FocusState
 /**
  * Despierta la app al final de cada fase con cuenta atrás, aunque esté cerrada y el móvil en reposo.
  * Va con el reloj desde el arranque, no con la hora: cambiar la hora o la zona horaria no la mueve.
- * Al reiniciar el móvil el sistema la borra; [SessionReceiver] la vuelve a poner.
+ * Al reiniciar el móvil el sistema la borra, y vuelve cuando la app abre su proceso (App): no hay
+ * receptor de BOOT_COMPLETED, ver el manifiesto.
  */
 class PhaseAlarm(
     private val context: Context,

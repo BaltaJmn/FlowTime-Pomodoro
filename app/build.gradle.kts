@@ -54,6 +54,5 @@ dependencies {
     implementation(libs.review.ktx)
     implementation(libs.glance.appwidget)
     implementation(libs.glance.material3)
-    implementation(libs.work.runtime)
     implementation(libs.androidx.foundation.layout.android)
 }
