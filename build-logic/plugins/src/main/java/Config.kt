@@ -1,7 +1,7 @@
 object Config {
     const val baseApplicationId = "com.baltajmn.flowtime"
-    const val versionCode = 58
-    const val versionName = "2.2.1"
+    const val versionCode = 59
+    const val versionName = "2.2.2"
 
     const val Shared = "$baseApplicationId.shared"
 
