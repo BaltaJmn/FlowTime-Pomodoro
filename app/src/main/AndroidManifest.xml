@@ -148,6 +148,7 @@
              WorkManager reprograma lo suyo al arrancar la app. -->
         <receiver
             android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+            tools:ignore="MissingClass"
             tools:node="remove" />
 
         <service
