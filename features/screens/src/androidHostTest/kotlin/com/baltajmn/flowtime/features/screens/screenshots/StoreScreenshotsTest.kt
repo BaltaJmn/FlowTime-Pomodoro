@@ -379,6 +379,70 @@ private val SAMPLES = mapOf(
             "20 पन्ने पढ़ना" to null,
             "प्रेज़ेंटेशन तैयार करना" to "स्लाइड 5 से 12"
         )
+    ),
+    "fr-FR" to Sample(
+        listOf("Études", "Travail", "Lecture", "Langues"),
+        listOf(
+            "Réviser le chapitre 4" to "Notes et exercices de la fin",
+            "Lire 20 pages" to null,
+            "Préparer la présentation" to "Diapositives 5 à 12"
+        )
+    ),
+    "id" to Sample(
+        listOf("Belajar", "Kerja", "Membaca", "Bahasa"),
+        listOf(
+            "Mengulang bab 4" to "Catatan dan latihan di akhir bab",
+            "Membaca 20 halaman" to null,
+            "Menyiapkan presentasi" to "Slide 5 sampai 12"
+        )
+    ),
+    "ja-JP" to Sample(
+        listOf("勉強", "仕事", "読書", "語学"),
+        listOf(
+            "第4章を復習する" to "ノートと章末の練習問題",
+            "20ページ読む" to null,
+            "プレゼンの準備" to "スライド5から12まで"
+        )
+    ),
+    "ko-KR" to Sample(
+        listOf("공부", "업무", "독서", "외국어"),
+        listOf(
+            "4장 복습하기" to "노트와 마지막 연습 문제",
+            "20쪽 읽기" to null,
+            "발표 준비하기" to "슬라이드 5부터 12까지"
+        )
+    ),
+    "nl-NL" to Sample(
+        listOf("Studie", "Werk", "Lezen", "Talen"),
+        listOf(
+            "Hoofdstuk 4 herhalen" to "Aantekeningen en de oefeningen aan het eind",
+            "20 pagina's lezen" to null,
+            "De presentatie voorbereiden" to "Dia's 5 tot 12"
+        )
+    ),
+    "pl-PL" to Sample(
+        listOf("Nauka", "Praca", "Czytanie", "Języki"),
+        listOf(
+            "Powtórzyć rozdział 4" to "Notatki i ćwiczenia z końca",
+            "Przeczytać 20 stron" to null,
+            "Przygotować prezentację" to "Slajdy od 5 do 12"
+        )
+    ),
+    "pt-BR" to Sample(
+        listOf("Estudo", "Trabalho", "Leitura", "Idiomas"),
+        listOf(
+            "Revisar o capítulo 4" to "Anotações e exercícios do final",
+            "Ler 20 páginas" to null,
+            "Preparar a apresentação" to "Slides 5 a 12"
+        )
+    ),
+    "tr-TR" to Sample(
+        listOf("Ders", "İş", "Okuma", "Diller"),
+        listOf(
+            "4. bölümü tekrar et" to "Notlar ve sondaki alıştırmalar",
+            "20 sayfa oku" to null,
+            "Sunumu hazırla" to "5 ile 12 arası slaytlar"
+        )
     )
 )
 
@@ -402,6 +466,31 @@ class StorePhoneRuTest : StorePhoneScreenshots("ru-RU")
 
 @Config(sdk = [34], qualifiers = "hi-rIN-$PHONE")
 class StorePhoneHiTest : StorePhoneScreenshots("hi-IN")
+
+// Los de la App Store que aún no tienen capturas de Play: solo el móvil, para el iPhone.
+@Config(sdk = [34], qualifiers = "fr-rFR-$PHONE")
+class StorePhoneFrTest : StorePhoneScreenshots("fr-FR")
+
+@Config(sdk = [34], qualifiers = "in-rID-$PHONE")
+class StorePhoneIdTest : StorePhoneScreenshots("id")
+
+@Config(sdk = [34], qualifiers = "ja-rJP-$PHONE")
+class StorePhoneJaTest : StorePhoneScreenshots("ja-JP")
+
+@Config(sdk = [34], qualifiers = "ko-rKR-$PHONE")
+class StorePhoneKoTest : StorePhoneScreenshots("ko-KR")
+
+@Config(sdk = [34], qualifiers = "nl-rNL-$PHONE")
+class StorePhoneNlTest : StorePhoneScreenshots("nl-NL")
+
+@Config(sdk = [34], qualifiers = "pl-rPL-$PHONE")
+class StorePhonePlTest : StorePhoneScreenshots("pl-PL")
+
+@Config(sdk = [34], qualifiers = "pt-rBR-$PHONE")
+class StorePhonePtTest : StorePhoneScreenshots("pt-BR")
+
+@Config(sdk = [34], qualifiers = "tr-rTR-$PHONE")
+class StorePhoneTrTest : StorePhoneScreenshots("tr-TR")
 
 @Config(sdk = [34], qualifiers = "es-rES-$TABLET")
 class StoreTabletEsTest : StoreTabletScreenshots("es-ES")

@@ -112,7 +112,67 @@ TITULARES = {
         "notification": ["ऐप बंद होने पर भी", "गिनती जारी"],
         "settings": ["आपकी पसंद से: लक्ष्य,", "रिमाइंडर और टैग"],
     },
+    "fr-FR": {
+        "focus": ["Concentrez-vous à votre rythme", "avec Pomodoro ou FlowTime"],
+        "dark": ["FlowTime : sans interruption,", "la pause s'adapte"],
+        "stats": ["Votre série, votre objectif", "et où passe votre temps"],
+        "tasks": ["Les tâches du jour :", "le reste passe à demain"],
+        "sounds": ["Pluie, café, feu :", "mélangez vos sons"],
+    },
+    "id": {
+        "focus": ["Fokus sesuai ritmemu", "dengan Pomodoro atau FlowTime"],
+        "dark": ["FlowTime: kerja tanpa putus,", "jedanya ikut menyesuaikan"],
+        "stats": ["Streak dan target harianmu,", "juga ke mana waktumu habis"],
+        "tasks": ["Tugas hari ini:", "sisanya pindah ke besok"],
+        "sounds": ["Hujan, kafe, api:", "racik suaramu sendiri"],
+    },
+    "ja-JP": {
+        "focus": ["自分のペースで集中", "ポモドーロでもFlowTimeでも"],
+        "dark": ["FlowTimeなら途切れず集中", "休憩は作業に合わせて"],
+        "stats": ["連続記録と1日の目標", "時間の使い道もひと目で"],
+        "tasks": ["今日のタスク", "未完了は明日に繰り越し"],
+        "sounds": ["雨、カフェ、焚き火", "好きな音をミックス"],
+    },
+    "ko-KR": {
+        "focus": ["내 리듬대로 집중", "포모도로 또는 FlowTime으로"],
+        "dark": ["FlowTime: 끊김 없이 집중,", "휴식은 일한 만큼"],
+        "stats": ["연속 기록과 하루 목표,", "시간을 어디에 썼는지까지"],
+        "tasks": ["오늘의 할 일:", "못 끝낸 일은 내일로"],
+        "sounds": ["비, 카페, 모닥불:", "나만의 소리를 섞어 보세요"],
+    },
+    "nl-NL": {
+        "focus": ["Focus in je eigen tempo", "met Pomodoro of FlowTime"],
+        "dark": ["FlowTime: geen onderbreking,", "de pauze past zich aan"],
+        "stats": ["Je reeks, je doel", "en waar je tijd heen gaat"],
+        "tasks": ["De taken van vandaag:", "de rest gaat naar morgen"],
+        "sounds": ["Regen, koffiebar, vuur:", "mix je eigen geluiden"],
+    },
+    "pl-PL": {
+        "focus": ["Skup się we własnym tempie", "z Pomodoro lub FlowTime"],
+        "dark": ["FlowTime: pracuj w skupieniu,", "przerwa dopasuje się sama"],
+        "stats": ["Twoja passa, Twój cel", "i na co idzie Twój czas"],
+        "tasks": ["Zadania na dziś:", "reszta przejdzie na jutro"],
+        "sounds": ["Deszcz, kawiarnia, ogień:", "zmiksuj własne dźwięki"],
+    },
+    "pt-BR": {
+        "focus": ["Concentre-se no seu ritmo", "com Pomodoro ou FlowTime"],
+        "dark": ["FlowTime: sem interrupções,", "a pausa se adapta a você"],
+        "stats": ["Sua sequência, sua meta", "e para onde vai seu tempo"],
+        "tasks": ["As tarefas de hoje:", "o resto fica para amanhã"],
+        "sounds": ["Chuva, cafeteria, fogo:", "misture seus próprios sons"],
+    },
+    "tr-TR": {
+        "focus": ["Kendi temponda odaklan", "Pomodoro ya da FlowTime ile"],
+        "dark": ["FlowTime: kesintisiz çalış,", "mola işine göre ayarlanır"],
+        "stats": ["Seri, günlük hedef", "ve zamanın nereye gittiği"],
+        "tasks": ["Bugünün görevleri:", "kalanlar yarına geçer"],
+        "sounds": ["Yağmur, kafe, ateş:", "kendi seslerini karıştır"],
+    },
 }
+
+# Los idiomas que aun no tienen capturas de Play: les faltan el widget y la notificacion del emulador.
+# Salen solo para el iPhone, que no las lleva.
+SOLO_IPHONE = {"fr-FR", "id", "ja-JP", "ko-KR", "nl-NL", "pl-PL", "pt-BR", "tr-TR"}
 
 
 def marco(png, lineas, formato, salida):
@@ -158,6 +218,8 @@ def render(svg, salida, ancho, alto):
 def main():
     for nombre, formato in FORMATOS.items():
         for idioma, titulares in TITULARES.items():
+            if idioma in SOLO_IPHONE and nombre != "iphone":
+                continue
             salida = RAIZ / "store" / "screenshots" / nombre / idioma
             salida.mkdir(parents=True, exist_ok=True)
             # play.sh sube todo lo que haya en la carpeta: una captura que ya no se usa no puede quedarse.
