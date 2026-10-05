@@ -16,11 +16,10 @@ import com.revenuecat.purchases.kmp.models.StoreProduct
 import com.revenuecat.purchases.kmp.models.StoreTransaction
 
 /**
- * La clave pública de iOS del proyecto de RevenueCat (`appl_`). Null hasta que existan la cuenta de
- * Apple y la app de iOS en RevenueCat (`~/keys/LEEME.md`): sin ella el iPhone no tiene tienda, y no se
- * publica.
+ * La clave pública de iOS del proyecto de RevenueCat (`appl_`, app "FlowTime (App Store)"). Sin ella el
+ * iPhone no tiene tienda, y no se publica.
  */
-val REVENUECAT_IOS_API_KEY: String? = null
+val REVENUECAT_IOS_API_KEY: String? = "appl_KztNvAUiqYBaSjDKNMOOzHtDpHb"
 
 /** Las compras en el iPhone: el mismo proyecto y los mismos derechos que en Android, con purchases-kmp. */
 class RevenueCatStore(apiKey: String) : Store {
