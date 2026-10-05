@@ -10,6 +10,7 @@ Este fichero es el **original**. Lo que se publica es una copia.
 **https://flowtime.baltajmn.dev/**, la misma dirección en tres sitios que tienen que coincidir:
 
 - Play Console, *Contenido de la aplicación > Política de privacidad*.
+- App Store Connect, *Información de la app > URL de la política de privacidad* (todos los idiomas).
 - La app, *Ajustes > Otros > Política de privacidad* (`PRIVACY_URL` en `SettingsScreen.kt`).
 - Esta carpeta.
 
