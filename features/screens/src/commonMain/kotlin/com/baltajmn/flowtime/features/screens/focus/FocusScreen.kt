@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -208,6 +211,7 @@ fun FocusContent(
             OneColumn(
                 state,
                 ring = minOf(maxWidth - 32.dp, 280.dp),
+                height = maxHeight,
                 onAction,
                 onSelectMode,
                 tools,
@@ -273,33 +277,69 @@ private fun TwoColumns(
 private fun OneColumn(
     state: FocusUiState,
     ring: Dp,
+    height: Dp,
     onAction: (TimerAction) -> Unit,
     onSelectMode: (TimerMode) -> Unit,
     tools: @Composable () -> Unit,
     today: @Composable () -> Unit
 ) {
-    Column(
+    RingColumn(
+        space = height - WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
+        maxRing = ring,
         modifier = Modifier
             .fillMaxSize()
             .readableWidth()
             .windowInsetsPadding(WindowInsets.statusBars)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        tools()
-        ModeSelector(state, onSelectMode)
-        ModeLine(state)
-        Spacer(modifier = Modifier.height(24.dp))
-        PhaseTitle(state)
-        Ring(state, size = ring)
-        Spacer(modifier = Modifier.height(32.dp))
-        ButtonsContent(state = state, onAction = onAction)
-        Spacer(modifier = Modifier.height(32.dp))
-        today()
-        Spacer(modifier = Modifier.height(24.dp))
+        top = {
+            tools()
+            ModeSelector(state, onSelectMode)
+            ModeLine(state)
+            Spacer(modifier = Modifier.height(24.dp))
+            PhaseTitle(state)
+        },
+        ring = { size -> Ring(state, size) },
+        bottom = {
+            Spacer(modifier = Modifier.height(32.dp))
+            ButtonsContent(state = state, onAction = onAction)
+            Spacer(modifier = Modifier.height(32.dp))
+            today()
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    )
+}
+
+/**
+ * Una columna centrada en la que el anillo cede alto para que todo quepa en [space] sin scroll: en el
+ * iPhone, la isla y la barra de abajo con el indicador de inicio dejan menos sitio que en Android, y la
+ * tarea quedaba debajo de la barra. Por debajo de [MIN_RING] el anillo ya no encoge y queda el scroll.
+ */
+@Composable
+private fun RingColumn(
+    space: Dp,
+    maxRing: Dp,
+    modifier: Modifier,
+    top: @Composable () -> Unit,
+    ring: @Composable (Dp) -> Unit,
+    bottom: @Composable () -> Unit
+) = SubcomposeLayout(modifier) { constraints ->
+    val loose = constraints.copy(minWidth = 0, minHeight = 0, maxHeight = Constraints.Infinity)
+    val above = subcompose("top", top).map { it.measure(loose) }
+    val below = subcompose("bottom", bottom).map { it.measure(loose) }
+    val free = space.roundToPx() - (above + below).sumOf { it.height }
+    val size = free.coerceIn(minOf(MIN_RING, maxRing).roundToPx(), maxRing.roundToPx()).toDp()
+    val rows = above + subcompose("ring") { ring(size) }.map { it.measure(loose) } + below
+    layout(constraints.maxWidth, rows.sumOf { it.height }.coerceAtLeast(constraints.minHeight)) {
+        var y = 0
+        rows.forEach {
+            it.place(Alignment.CenterHorizontally.align(it.width, constraints.maxWidth, layoutDirection), y)
+            y += it.height
+        }
     }
 }
+
+private val MIN_RING = 200.dp
 
 /** Con una sesión en marcha, el selector enseña su modo y no deja cambiarlo. */
 @Composable
