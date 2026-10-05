@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Sube las fichas de tienda de los seis idiomas de una vez.
+"""Sube las fichas de tienda de todos los idiomas de una vez.
 
-Play Console no tiene importacion masiva: cada idioma se pega a mano en tres campos, y son seis
-idiomas por dieciocho campos. La API de Android Publisher si acepta los seis en una sola edicion, y
-ademas la edicion es atomica: o entran todos los idiomas o no entra ninguno, que es justo lo que se
-quiere de un cambio de posicionamiento.
+Play Console no tiene importacion masiva: cada idioma se pega a mano en tres campos. La API de
+Android Publisher si acepta todos los idiomas en una sola edicion, y ademas la edicion es atomica:
+o entran todos los idiomas o no entra ninguno, que es justo lo que se quiere de un cambio de
+posicionamiento.
 
-Sin argumentos solo comprueba los limites y no toca Play. Con --subir hace el cambio de verdad, y
-con --estado no escribe nada: lee en que canal esta cada versionCode, que es la unica forma de saber
-desde fuera de la Console si una version llego a su canal o se quedo en borrador.
+Sin argumentos solo comprueba los limites, tambien los de la App Store, y no toca Play. Con --subir
+hace el cambio de verdad, y con --estado no escribe nada: lee en que canal esta cada versionCode, que
+es la unica forma de saber desde fuera de la Console si una version llego a su canal o se quedo en
+borrador.
 """
 import json
 import os
@@ -38,6 +39,21 @@ def leer():
         print("%-6s titulo %2d  corta %2d  larga %4d" % (
             d.name, len(ficha["title"]), len(ficha["shortDescription"]), len(ficha["fullDescription"])))
     return fichas
+
+
+# App Store Connect no tiene subida aqui: se pega a mano, pero los topes se comprueban igual. Las
+# palabras clave cuentan bytes, no caracteres, y una tilde son dos.
+TOPES_APPLE = {"name": 30, "subtitle": 30, "keywords": 100, "promo": 170, "description": 4000}
+
+
+def apple():
+    for d in sorted(p for p in (RAIZ.parent / "app-store").iterdir() if p.is_dir()):
+        for nombre, tope in TOPES_APPLE.items():
+            texto = (d / (nombre + ".txt")).read_text(encoding="utf-8").strip()
+            largo = len(texto.encode("utf-8")) if nombre == "keywords" else len(texto)
+            if not texto or largo > tope:
+                sys.exit("app-store/%s/%s.txt: %d, el tope es %d" % (d.name, nombre, largo, tope))
+        print("%-6s App Store dentro de los topes" % d.name)
 
 
 def conectar():
@@ -88,4 +104,5 @@ if __name__ == "__main__":
         subir(leer())
     else:
         leer()
+        apple()
         print("\nSolo comprobacion. Anade --subir para escribir en Play.")
