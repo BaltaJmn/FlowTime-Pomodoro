@@ -69,6 +69,8 @@ import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.compose.koinInject
 import com.baltajmn.flowtime.core.design.resources.*
+import com.baltajmn.flowtime.features.screens.platform.notificationsText
+import com.baltajmn.flowtime.features.screens.platform.notificationsTitle
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
@@ -132,8 +134,8 @@ fun FocusScreen(
     if (explainNotifications) {
         AlertDialog(
             onDismissRequest = { explainNotifications = false },
-            title = { Text(stringResource(Res.string.notifications_title)) },
-            text = { Text(stringResource(Res.string.notifications_text)) },
+            title = { Text(stringResource(notificationsTitle)) },
+            text = { Text(stringResource(notificationsText)) },
             confirmButton = {
                 TextButton(
                     onClick = {

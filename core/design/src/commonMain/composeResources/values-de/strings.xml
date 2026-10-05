@@ -353,4 +353,11 @@
     <string name="app_icon_change_title">Symbol ändern?</string>
     <string name="app_icon_change_text">Das Symbol ändert sich, wenn du die App verlässt. Auf manchen Handys verschwindet es dann vom Startbildschirm; falls das passiert, füge es aus der App-Liste wieder hinzu.</string>
     <string name="app_icon_change">Ändern</string>
+    <string name="alert_app_store">Fehler beim Verbinden mit dem App Store</string>
+    <string name="restore_nothing_ios">Keine Käufe gefunden. Prüfe deine Verbindung und ob du denselben Apple Account verwendest.</string>
+    <string name="pro_restore_nothing_ios">Pro wurde in diesem Apple Account nicht gefunden. Prüfe die Verbindung.</string>
+    <string name="pro_settings_text_ios">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels, Aufgaben und Mixe, 6 neue Klänge und 6 neue Designs und Symbole. Einmalzahlung, kein Abo.</string>
+    <string name="notifications_title_ios">Am Ende jeder Phase benachrichtigen?</string>
+    <string name="notifications_text_ios">Du erfährst, wann Pause ist und wann es weitergeht, auch bei geschlossener App.</string>
+    <string name="notifications_off_ios">Benachrichtigungen sind aus. Aktiviere sie, um bei geschlossener App benachrichtigt zu werden.</string>
 </resources>

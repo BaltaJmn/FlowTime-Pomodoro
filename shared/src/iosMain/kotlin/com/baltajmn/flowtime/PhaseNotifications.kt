@@ -68,7 +68,10 @@ internal class PhaseNotifications(private val engine: FocusEngine, private val d
     }
 }
 
-/** Con la app delante, el aviso se ve y suena igual que fuera. Tocarlo abre Concentración. */
+/**
+ * Con la app delante, el aviso se ve y suena igual que fuera, menos el del objetivo: ese lo celebra la
+ * app. Tocarlo abre Concentración.
+ */
 internal class NotificationDelegate(private val onOpen: () -> Unit) :
     NSObject(),
     UNUserNotificationCenterDelegateProtocol {
@@ -77,7 +80,11 @@ internal class NotificationDelegate(private val onOpen: () -> Unit) :
         willPresentNotification: UNNotification,
         withCompletionHandler: (UNNotificationPresentationOptions) -> Unit
     ) = withCompletionHandler(
-        UNNotificationPresentationOptionBanner or UNNotificationPresentationOptionList or UNNotificationPresentationOptionSound
+        if (willPresentNotification.request.identifier == GoalNotifications.ID) {
+            0uL
+        } else {
+            UNNotificationPresentationOptionBanner or UNNotificationPresentationOptionList or UNNotificationPresentationOptionSound
+        }
     )
 
     override fun userNotificationCenter(

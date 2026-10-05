@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.data.pro.CatalogItem
 import org.koin.compose.viewmodel.koinViewModel
 import com.baltajmn.flowtime.core.design.resources.*
+import com.baltajmn.flowtime.features.screens.platform.storeUnavailableText
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import com.baltajmn.flowtime.features.screens.platform.rememberPurchaseHost
@@ -142,7 +143,7 @@ fun StoreUnavailable(onRetry: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = stringResource(Res.string.alert_google_play),
+            text = stringResource(storeUnavailableText),
             color = MaterialTheme.colorScheme.error,
             textAlign = TextAlign.Center
         )

@@ -53,6 +53,29 @@ expect val hasFocusMode: Boolean
 /** Lo que dice Ajustes de la copia automática del sistema: la de Google en Android, la de iCloud en el iPhone. */
 expect val automaticBackupText: StringResource
 
+/** La tienda no responde: Google Play en Android, la App Store en el iPhone. */
+expect val storeUnavailableText: StringResource
+
+/** Restaurar compras sin encontrar ninguna: en la cuenta de Google, o en la cuenta de Apple. */
+expect val restoreNothingText: StringResource
+
+/** Lo mismo, desde la pantalla de Pro. */
+expect val proRestoreNothingText: StringResource
+
+/** Lo que trae Pro, en Ajustes: en el iPhone, sin No molestar ([hasFocusMode]). */
+expect val proSettingsText: StringResource
+
+/**
+ * Para qué se piden las notificaciones. En Android la sesión va en una notificación; en el iPhone va en
+ * la Live Activity, que no las necesita, y son para el aviso de fin de fase.
+ */
+expect val notificationsTitle: StringResource
+
+expect val notificationsText: StringResource
+
+/** Ajustes, con las notificaciones apagadas. */
+expect val notificationsOffText: StringResource
+
 /** Un aviso corto que se va solo: un Toast en Android. */
 @Composable
 expect fun rememberShowMessage(): (String) -> Unit

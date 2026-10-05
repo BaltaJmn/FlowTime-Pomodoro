@@ -357,4 +357,11 @@
     <string name="app_icon_change_title">Change the icon?</string>
     <string name="app_icon_change_text">The icon changes when you leave the app. On some phones it disappears from the home screen; if that happens, add it again from the app list.</string>
     <string name="app_icon_change">Change</string>
+    <string name="alert_app_store">Error connecting to the App Store</string>
+    <string name="restore_nothing_ios">No purchases found. Check your connection and that you are using the same Apple Account.</string>
+    <string name="pro_restore_nothing_ios">Pro wasn't found on this Apple Account. Check your connection.</string>
+    <string name="pro_settings_text_ios">Advanced stats, CSV export, unlimited tags, tasks and mixes, 6 new sounds and 6 new themes and icons. One-time payment, no subscription.</string>
+    <string name="notifications_title_ios">Get an alert when each phase ends?</string>
+    <string name="notifications_text_ios">You'll hear when it's time for a break and when it's time to get back to focus, even with the app closed.</string>
+    <string name="notifications_off_ios">Notifications are off. Turn them on to get alerts with the app closed.</string>
 </resources>

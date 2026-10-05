@@ -52,6 +52,7 @@ import com.baltajmn.flowtime.data.pro.Limits
 import com.baltajmn.flowtime.features.screens.support.StoreUnavailable
 import org.koin.compose.viewmodel.koinViewModel
 import com.baltajmn.flowtime.core.design.resources.*
+import com.baltajmn.flowtime.features.screens.platform.proRestoreNothingText
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -188,7 +189,7 @@ private fun ColumnScope.Offer(
     }
     val problem = when {
         state.failed -> Res.string.purchase_failed
-        state.nothingToRestore -> Res.string.pro_restore_nothing
+        state.nothingToRestore -> proRestoreNothingText
         else -> null
     }
     problem?.let {

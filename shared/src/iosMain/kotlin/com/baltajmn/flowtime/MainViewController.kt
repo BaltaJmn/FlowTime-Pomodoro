@@ -51,7 +51,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.review.ReviewPolicy
+import com.baltajmn.flowtime.data.review.calmMoments
 import com.baltajmn.flowtime.goal.GoalWatcher
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 
 /**
  * Arranca la app, también sin pantalla: iOS la abre en segundo plano cuando se pulsa un botón de la
@@ -77,6 +83,7 @@ suspend fun perform(action: String) {
     TimerAction.entries.firstOrNull { it.name == action }?.let(engine::perform)
     val state = engine.state.value
     koin.get<PhaseNotifications>().schedule()
+    koin.get<GoalNotifications>().schedule()
     koin.get<SessionActivity>().update(state)
     val goals = koin.get<GoalRepository>()
     koin.get<HomeWidgetUpdater>().update(state, goals.today.first(), goals.streak.first())
@@ -106,6 +113,7 @@ private val koin: Koin by lazy {
                 // En el iPhone la sesión solo avanza con la app abierta: la celebración, dentro de la app.
                 single { GoalWatcher(get(), get(), visible = { true }, notify = { false }) }
                 single { PhaseNotifications(get(), get()) }
+                single { GoalNotifications(get(), get(), get()) }
                 single { SessionActivity(get(), get(), sessionActivity) }
                 single { HomeWidgetUpdater(get(), widget) }
             }
@@ -127,10 +135,14 @@ private fun start(koin: Koin) {
     UNUserNotificationCenter.currentNotificationCenter().delegate = notificationDelegate
     val notifications = koin.get<PhaseNotifications>()
     scope.launch { engine.state.collect { notifications.schedule() } }
-    val activity = koin.get<SessionActivity>()
-    scope.launch { engine.state.collectLatest { activity.update(it) } }
-    val homeWidget = koin.get<HomeWidgetUpdater>()
     val goals = koin.get<GoalRepository>()
+    val goalNotifications = koin.get<GoalNotifications>()
+    scope.launch { combine(engine.state, goals.today) { _, _ -> }.collect { goalNotifications.schedule() } }
+    // Renombrar la etiqueta de la sesión en marcha cambia la Live Activity, como la notificación de Android.
+    val tags = koin.get<TagRepository>()
+    val activity = koin.get<SessionActivity>()
+    scope.launch { combine(engine.state, tags.all) { state, _ -> state }.collectLatest { activity.update(it) } }
+    val homeWidget = koin.get<HomeWidgetUpdater>()
     scope.launch {
         combine(engine.state, goals.today, goals.streak, ::Triple).collectLatest { (state, today, streak) ->
             homeWidget.update(state, today, streak)
@@ -145,6 +157,7 @@ private fun start(koin: Koin) {
     NSNotificationCenter.defaultCenter.addObserverForName(UIApplicationDidBecomeActiveNotification, null, null) {
         scope.launch {
             notifications.schedule()
+            goalNotifications.schedule()
             reminders.schedule()
         }
     }
@@ -155,7 +168,6 @@ private fun start(koin: Koin) {
             if (ambience.sleep.value == SleepTimer.SessionEnd) ambience.fadeOutAndStop()
         }
     }
-    val tags = koin.get<TagRepository>()
     scope.launch {
         val defaults = listOf(Res.string.tag_study, Res.string.tag_work, Res.string.tag_reading, Res.string.tag_home)
         tags.ensureDefaults(defaults.map { getString(it) })
@@ -171,6 +183,19 @@ private fun IosApp() {
     val celebration by goalWatcher.celebration.collectAsStateWithLifecycle()
     val dataProvider = koinInject<DataProvider>()
     var showSound by remember { mutableStateOf(dataProvider.getBoolean(SHOW_SOUND)) }
+    // La valoración, como en Android: solo con la app delante y en un momento tranquilo, al terminar
+    // una sesión o al cerrar la celebración del objetivo.
+    val engine = koinInject<FocusEngine>()
+    val reviews = koinInject<ReviewPolicy>()
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    LaunchedEffect(lifecycle) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            calmMoments(
+                sessionRunning = engine.state.map { it.isActive },
+                celebrating = goalWatcher.celebration.map { it != null }
+            ).collect { askForReview(reviews) }
+        }
+    }
     FlowTimeApp(
         appearance = appearance,
         showSound = showSound,

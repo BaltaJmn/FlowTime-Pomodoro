@@ -26,8 +26,15 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.baltajmn.flowtime.data.backup.PickedFile
 import com.baltajmn.flowtime.data.pro.PurchaseHost
-import com.baltajmn.flowtime.core.design.resources.backup_automatic
 import com.baltajmn.flowtime.core.design.resources.Res
+import com.baltajmn.flowtime.core.design.resources.alert_google_play
+import com.baltajmn.flowtime.core.design.resources.backup_automatic
+import com.baltajmn.flowtime.core.design.resources.notifications_off
+import com.baltajmn.flowtime.core.design.resources.notifications_text
+import com.baltajmn.flowtime.core.design.resources.notifications_title
+import com.baltajmn.flowtime.core.design.resources.pro_restore_nothing
+import com.baltajmn.flowtime.core.design.resources.pro_settings_text
+import com.baltajmn.flowtime.core.design.resources.restore_nothing
 import org.jetbrains.compose.resources.StringResource
 
 @Composable
@@ -101,6 +108,20 @@ actual val hasWallpaperColors: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_
 actual val hasFocusMode: Boolean = true
 
 actual val automaticBackupText: StringResource = Res.string.backup_automatic
+
+actual val storeUnavailableText: StringResource = Res.string.alert_google_play
+
+actual val restoreNothingText: StringResource = Res.string.restore_nothing
+
+actual val proRestoreNothingText: StringResource = Res.string.pro_restore_nothing
+
+actual val proSettingsText: StringResource = Res.string.pro_settings_text
+
+actual val notificationsTitle: StringResource = Res.string.notifications_title
+
+actual val notificationsText: StringResource = Res.string.notifications_text
+
+actual val notificationsOffText: StringResource = Res.string.notifications_off
 
 @Composable
 actual fun rememberShowMessage(): (String) -> Unit {

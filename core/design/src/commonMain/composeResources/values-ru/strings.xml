@@ -363,4 +363,11 @@
     <string name="app_icon_change_title">Сменить значок?</string>
     <string name="app_icon_change_text">Значок сменится, когда вы выйдете из приложения. На некоторых телефонах он при этом пропадает с главного экрана; если так случится, добавьте его снова из списка приложений.</string>
     <string name="app_icon_change">Сменить</string>
+    <string name="alert_app_store">Ошибка подключения к App Store</string>
+    <string name="restore_nothing_ios">Покупки не найдены. Проверьте подключение и то, что вы используете тот же Аккаунт Apple.</string>
+    <string name="pro_restore_nothing_ios">Pro не найден в этом Аккаунте Apple. Проверьте подключение.</string>
+    <string name="pro_settings_text_ios">Расширенная статистика, экспорт в CSV, неограниченные метки, задачи и миксы, 6 новых звуков и 6 новых тем и значков. Разовая оплата, без подписки.</string>
+    <string name="notifications_title_ios">Уведомлять в конце каждой фазы?</string>
+    <string name="notifications_text_ios">Вы узнаете, когда пора отдохнуть и когда вернуться к работе, даже если приложение закрыто.</string>
+    <string name="notifications_off_ios">Уведомления выключены. Включите их, чтобы получать оповещения, когда приложение закрыто.</string>
 </resources>

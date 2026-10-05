@@ -356,4 +356,11 @@
     <string name="app_icon_change_title">¿Cambiar el icono?</string>
     <string name="app_icon_change_text">El icono cambia al salir de la app. En algunos móviles desaparece de la pantalla de inicio; si pasa, vuelve a ponerlo desde la lista de apps.</string>
     <string name="app_icon_change">Cambiar</string>
+    <string name="alert_app_store">Error al conectar con la App Store</string>
+    <string name="restore_nothing_ios">No se ha encontrado ninguna compra. Comprueba la conexión y que usas la misma cuenta de Apple.</string>
+    <string name="pro_restore_nothing_ios">No se ha encontrado Pro en esta cuenta de Apple. Comprueba la conexión.</string>
+    <string name="pro_settings_text_ios">Estadísticas avanzadas, exportar a CSV, etiquetas, tareas y mezclas sin límite, 6 sonidos nuevos y 6 temas e iconos nuevos. Pago único, sin suscripción.</string>
+    <string name="notifications_title_ios">¿Avisarte al terminar cada fase?</string>
+    <string name="notifications_text_ios">Sabrás cuándo toca descansar y cuándo volver a concentrarte, también con la app cerrada.</string>
+    <string name="notifications_off_ios">Las notificaciones están desactivadas. Actívalas para recibir los avisos con la app cerrada.</string>
 </resources>

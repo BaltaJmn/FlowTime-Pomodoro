@@ -43,8 +43,15 @@ import platform.UIKit.UIAlertControllerStyleAlert
 import platform.UIKit.UIAlertController
 import platform.Foundation.NSTemporaryDirectory
 import platform.Foundation.NSFileManager
-import com.baltajmn.flowtime.core.design.resources.backup_automatic_ios
 import com.baltajmn.flowtime.core.design.resources.Res
+import com.baltajmn.flowtime.core.design.resources.alert_app_store
+import com.baltajmn.flowtime.core.design.resources.backup_automatic_ios
+import com.baltajmn.flowtime.core.design.resources.notifications_off_ios
+import com.baltajmn.flowtime.core.design.resources.notifications_text_ios
+import com.baltajmn.flowtime.core.design.resources.notifications_title_ios
+import com.baltajmn.flowtime.core.design.resources.pro_restore_nothing_ios
+import com.baltajmn.flowtime.core.design.resources.pro_settings_text_ios
+import com.baltajmn.flowtime.core.design.resources.restore_nothing_ios
 import org.jetbrains.compose.resources.StringResource
 import androidx.compose.runtime.rememberUpdatedState
 
@@ -127,6 +134,20 @@ actual val hasWallpaperColors: Boolean = false
 actual val hasFocusMode: Boolean = false
 
 actual val automaticBackupText: StringResource = Res.string.backup_automatic_ios
+
+actual val storeUnavailableText: StringResource = Res.string.alert_app_store
+
+actual val restoreNothingText: StringResource = Res.string.restore_nothing_ios
+
+actual val proRestoreNothingText: StringResource = Res.string.pro_restore_nothing_ios
+
+actual val proSettingsText: StringResource = Res.string.pro_settings_text_ios
+
+actual val notificationsTitle: StringResource = Res.string.notifications_title_ios
+
+actual val notificationsText: StringResource = Res.string.notifications_text_ios
+
+actual val notificationsOffText: StringResource = Res.string.notifications_off_ios
 
 /** Como un Toast: un aviso que se va solo a los dos segundos. */
 @Composable

@@ -353,4 +353,11 @@
     <string name="app_icon_change_title">आइकन बदलें?</string>
     <string name="app_icon_change_text">ऐप से बाहर निकलने पर आइकन बदल जाता है। कुछ फ़ोन में वह होम स्क्रीन से हट जाता है; ऐसा हो तो उसे ऐप सूची से फिर से जोड़ें।</string>
     <string name="app_icon_change">बदलें</string>
+    <string name="alert_app_store">App Store से कनेक्ट करने में त्रुटि</string>
+    <string name="restore_nothing_ios">कोई खरीदारी नहीं मिली। अपना कनेक्शन जांचें और देखें कि आप वही Apple खाता इस्तेमाल कर रहे हैं।</string>
+    <string name="pro_restore_nothing_ios">इस Apple खाते में Pro नहीं मिला। कनेक्शन जाँचें।</string>
+    <string name="pro_settings_text_ios">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग, कार्य और मिक्स, 6 नई ध्वनियाँ और 6 नई थीम और आइकन। एक बार भुगतान, कोई सदस्यता नहीं।</string>
+    <string name="notifications_title_ios">हर चरण खत्म होने पर सूचना दें?</string>
+    <string name="notifications_text_ios">ऐप बंद होने पर भी आपको पता चलेगा कि कब ब्रेक लेना है और कब फिर से ध्यान लगाना है।</string>
+    <string name="notifications_off_ios">सूचनाएं बंद हैं। ऐप बंद होने पर भी सूचनाएं पाने के लिए इन्हें चालू करें।</string>
 </resources>

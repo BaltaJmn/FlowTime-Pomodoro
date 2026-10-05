@@ -84,6 +84,9 @@ import com.baltajmn.flowtime.features.screens.support.SupportSheet
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.compose.koinInject
 import com.baltajmn.flowtime.core.design.resources.*
+import com.baltajmn.flowtime.features.screens.platform.notificationsOffText
+import com.baltajmn.flowtime.features.screens.platform.proSettingsText
+import com.baltajmn.flowtime.features.screens.platform.restoreNothingText
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.getString
@@ -298,7 +301,7 @@ fun SettingsContent(
                 }
 
                 PermissionNotice(
-                    text = Res.string.notifications_off,
+                    text = notificationsOffText,
                     granted = system::notificationsAllowed,
                     open = system::openNotificationSettings
                 )
@@ -490,7 +493,7 @@ fun ProCard(owned: Boolean, onOpen: () -> Unit) {
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = stringResource(
-                if (owned) Res.string.pro_settings_owned else Res.string.pro_settings_text
+                if (owned) Res.string.pro_settings_owned else proSettingsText
             ),
             style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
         )
@@ -514,7 +517,7 @@ fun SupportCard(
         val message = state.message ?: return@LaunchedEffect
         val text = when (message) {
             RestoreMessage.RESTORED -> Res.string.restore_done
-            RestoreMessage.NOTHING -> Res.string.restore_nothing
+            RestoreMessage.NOTHING -> restoreNothingText
         }
         showMessage(getString(text))
         onMessageShown()
