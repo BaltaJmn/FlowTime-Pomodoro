@@ -9,6 +9,7 @@ import com.baltajmn.flowtime.data.review.ReviewPolicy
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.IosTimeSource
 import com.baltajmn.flowtime.data.timer.TimeSource
+import kotlinx.cinterop.ExperimentalForeignApi
 import org.koin.dsl.module
 import platform.Foundation.NSBundle
 import platform.Foundation.NSDate
@@ -38,6 +39,7 @@ val DataModule = module {
 }
 
 /** Cuándo se instaló la app: iOS crea Documents al instalarla. Sin saberlo, como si fuera hace mucho. */
+@OptIn(ExperimentalForeignApi::class)
 private fun installedAt(): Long {
     val manager = NSFileManager.defaultManager
     val documents = manager.URLsForDirectory(NSDocumentDirectory, NSUserDomainMask).firstOrNull() as? NSURL
