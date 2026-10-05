@@ -63,7 +63,10 @@ app porque RevenueCat va enlazado en el binario y no trae su manifiesto:
 
 | Tipo | Vinculado al usuario | Rastreo | Finalidad |
 |---|---|---|---|
-| Compras > Historial de compras | No | No | Funcionalidad de la app |
-| Identificadores > ID de usuario (el anónimo de RevenueCat) | No | No | Funcionalidad de la app |
+| Compras > Historial de compras | No | No | Funcionalidad de la app y análisis de datos |
+
+Los identificadores no se marcan: RevenueCat pide *ID de usuario* solo con IDs propios e *ID de
+dispositivo* solo con integraciones que usen el IDFA, y la app usa su ID anónimo. Así quedaron las
+cuatro apps de la familia, publicado en App Store Connect el 05-10-2026.
 
 Si cambia lo que sale del móvil, se cambian las tres: Play, App Store Connect y el manifiesto.
