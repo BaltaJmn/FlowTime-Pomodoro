@@ -42,6 +42,10 @@ FORMATOS = {
     "play": {"origen": "phone", "lienzo": (1200, 2100), "letra": 62, "lineas": (170, 252), "arriba": 360, "abajo": 90,
              "radio": 46, "capturas": ["01_focus", "02_dark", "03_stats", "04_tasks", "05_sounds",
                                        "06_widget", "07_notification"]},
+    # App Store Connect pide el tamano exacto del iPhone de 6,9". El widget y la notificacion son del
+    # emulador de Android, asi que el iPhone se queda con las pantallas de la app.
+    "iphone": {"origen": "phone", "lienzo": (1320, 2868), "letra": 68, "lineas": (200, 290), "arriba": 400, "abajo": 110,
+               "radio": 50, "capturas": ["01_focus", "02_dark", "03_stats", "04_tasks", "05_sounds"]},
     "tablet": {"origen": "tablet", "lienzo": (2560, 1440), "letra": 72, "lineas": (150, 236), "arriba": 300, "abajo": 60,
                "radio": 36, "capturas": ["01_focus", "02_stats", "03_tasks", "04_settings"]},
 }
