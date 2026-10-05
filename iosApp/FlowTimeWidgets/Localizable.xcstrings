@@ -1,0 +1,96 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Start, pause and stop a session, with today's goal and your streak.": {
+      "comment": "La descripción del widget en la galería. Sale de widget_description en core/design/src/commonMain/composeResources.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start, pause and stop a session, with today's goal and your streak."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empieza, pausa y para una sesión, con el objetivo de hoy y tu racha."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starte, pausiere und beende eine Sitzung, mit dem heutigen Ziel und deiner Serie."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Démarrez, mettez en pause et arrêtez une session, avec l'objectif du jour et votre série."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvia, metti in pausa e ferma una sessione, con l'obiettivo di oggi e la tua serie."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comece, pause e pare uma sessão, com a meta de hoje e sua sequência."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start, pauzeer en stop een sessie, met het doel van vandaag en je reeks."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uruchamiaj, wstrzymuj i zatrzymuj sesję, z dzisiejszym celem i passą."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запускайте, ставьте на паузу и останавливайте сессию, с целью на сегодня и вашей серией."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugünkü hedefin ve serinle birlikte bir oturumu başlat, duraklat ve durdur."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mulai, jeda, dan hentikan sesi, lengkap dengan target hari ini dan streak-mu."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今日の目標と連続記録を見ながら、セッションの開始・一時停止・終了ができます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "오늘의 목표와 연속 기록을 보며 세션을 시작, 일시정지, 정지할 수 있어요."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सत्र शुरू करें, रोकें और बंद करें, आज के लक्ष्य और आपके लगातार दिनों के साथ।"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

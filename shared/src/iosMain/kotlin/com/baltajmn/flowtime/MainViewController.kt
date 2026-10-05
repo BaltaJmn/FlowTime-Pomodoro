@@ -115,7 +115,7 @@ private val koin: Koin by lazy {
                 single { PhaseNotifications(get(), get()) }
                 single { GoalNotifications(get(), get(), get()) }
                 single { SessionActivity(get(), get(), sessionActivity) }
-                single { HomeWidgetUpdater(get(), widget) }
+                single { HomeWidgetUpdater(get(), get(), widget) }
             }
         )
     }.koin
@@ -143,10 +143,12 @@ private fun start(koin: Koin) {
     val activity = koin.get<SessionActivity>()
     scope.launch { combine(engine.state, tags.all) { state, _ -> state }.collectLatest { activity.update(it) } }
     val homeWidget = koin.get<HomeWidgetUpdater>()
+    // Con cada cambio de la sesión, del progreso de hoy o del aspecto, como en Android.
+    val appearance = koin.get<AppearanceRepository>()
     scope.launch {
-        combine(engine.state, goals.today, goals.streak, ::Triple).collectLatest { (state, today, streak) ->
-            homeWidget.update(state, today, streak)
-        }
+        combine(engine.state, goals.today, goals.streak, appearance.appearance) { state, today, streak, _ ->
+            Triple(state, today, streak)
+        }.collectLatest { (state, today, streak) -> homeWidget.update(state, today, streak) }
     }
     val reminders = ReminderNotifications(koin.get(), koin.get(), engine)
     scope.launch {

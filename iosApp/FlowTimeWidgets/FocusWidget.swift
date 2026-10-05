@@ -8,9 +8,9 @@ struct FocusWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "FocusWidget", provider: Provider()) { entry in
             FocusWidgetView(state: entry.state)
-                .containerBackground(Color.iconBackground, for: .widget)
         }
         .configurationDisplayName("FlowTime")
+        .description(Text("Start, pause and stop a session, with today's goal and your streak."))
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
@@ -35,42 +35,49 @@ private struct Provider: TimelineProvider {
     }
 }
 
+/// Con los colores del tema de la app, como el widget de Android; el fondo, el de ese tema.
 struct FocusWidgetView: View {
     @Environment(\.widgetFamily) private var family
+    @Environment(\.colorScheme) private var scheme
     let state: FocusWidgetState?
 
     var body: some View {
-        if let state {
-            if family == .systemMedium {
-                Medium(state: state)
+        let palette = state?.palette(scheme) ?? .icon
+        Group {
+            if let state {
+                if family == .systemMedium {
+                    Medium(state: state, palette: palette)
+                } else {
+                    Small(state: state, palette: palette)
+                }
             } else {
-                Small(state: state)
+                // Hasta que se abre la app por primera vez.
+                Ring().frame(width: 56, height: 56)
             }
-        } else {
-            // Hasta que se abre la app por primera vez.
-            Ring().frame(width: 56, height: 56)
         }
+        .containerBackground(Color(argb: palette.background), for: .widget)
     }
 }
 
 private struct Small: View {
     let state: FocusWidgetState
+    let palette: WidgetPalette
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(state.status)
                 .font(.caption.weight(.medium))
-                .foregroundStyle(Color.iconRing.opacity(0.75))
+                .foregroundStyle(Color(argb: palette.secondaryText))
                 .lineLimit(1)
             Spacer(minLength: 0)
             Clock(countsDown: state.countsDown, date: state.date, time: state.time)
                 .font(.system(size: 32, weight: .bold).monospacedDigit())
-                .foregroundStyle(Color.iconRing)
+                .foregroundStyle(Color(argb: palette.text))
                 .minimumScaleFactor(0.6)
                 .lineLimit(1)
             HStack {
                 Spacer()
-                ActionButton(action: state.primary, label: state.primaryLabel, size: 44)
+                ActionButton(action: state.primary, label: state.primaryLabel, size: 44, palette: palette)
             }
         }
     }
@@ -78,6 +85,7 @@ private struct Small: View {
 
 private struct Medium: View {
     let state: FocusWidgetState
+    let palette: WidgetPalette
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -88,25 +96,25 @@ private struct Medium: View {
                     Text(streak).font(.caption)
                 }
             }
-            .foregroundStyle(Color.iconRing.opacity(0.75))
+            .foregroundStyle(Color(argb: palette.secondaryText))
             .lineLimit(1)
             HStack(spacing: 8) {
                 Clock(countsDown: state.countsDown, date: state.date, time: state.time)
                     .font(.system(size: 36, weight: .bold).monospacedDigit())
-                    .foregroundStyle(Color.iconRing)
+                    .foregroundStyle(Color(argb: palette.text))
                     .lineLimit(1)
                 Spacer(minLength: 0)
                 if let stop = state.stopLabel {
-                    ActionButton(action: "STOP", label: stop, size: 44, filled: false)
+                    ActionButton(action: "STOP", label: stop, size: 44, filled: false, palette: palette)
                 }
-                ActionButton(action: state.primary, label: state.primaryLabel, size: 44)
+                ActionButton(action: state.primary, label: state.primaryLabel, size: 44, palette: palette)
             }
             if let goal = state.goal {
-                Text(goal).font(.caption).foregroundStyle(Color.iconRing.opacity(0.75))
+                Text(goal).font(.caption).foregroundStyle(Color(argb: palette.secondaryText))
                 GeometryReader { size in
                     ZStack(alignment: .leading) {
-                        Capsule().fill(Color.iconTrack)
-                        Capsule().fill(Color.iconWater).frame(width: size.size.width * state.goalFraction)
+                        Capsule().fill(Color(argb: palette.track))
+                        Capsule().fill(Color(argb: palette.primary)).frame(width: size.size.width * state.goalFraction)
                     }
                 }
                 .frame(height: 6)

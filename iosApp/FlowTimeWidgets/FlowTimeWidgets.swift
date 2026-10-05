@@ -100,12 +100,14 @@ private struct Buttons: View {
     }
 }
 
-/// Un botón redondo con una acción de la sesión. Lo hace la app (FocusActionIntent), sin abrirla.
+/// Un botón redondo con una acción de la sesión. Lo hace la app (FocusActionIntent), sin abrirla. En
+/// la Live Activity, con los colores del icono; en el widget, con los del tema.
 struct ActionButton: View {
     let action: String
     let label: String
     var size: CGFloat = 32
     var filled = true
+    var palette = WidgetPalette.icon
 
     var body: some View {
         Button(intent: FocusActionIntent(action: action)) {
@@ -114,8 +116,8 @@ struct ActionButton: View {
                 .frame(width: size, height: size)
         }
         .buttonStyle(.plain)
-        .foregroundStyle(filled ? Color.iconBackground : Color.iconWater)
-        .background(filled ? Color.iconWater : Color.iconTrack, in: Circle())
+        .foregroundStyle(Color(argb: filled ? palette.onPrimary : palette.onSecondary))
+        .background(Color(argb: filled ? palette.primary : palette.secondary), in: Circle())
         .accessibilityLabel(label)
     }
 

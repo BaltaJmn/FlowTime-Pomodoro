@@ -14,7 +14,9 @@ final class FocusWidgetBridge: NSObject, HomeWidget {
         primaryLabel: String,
         stopLabel: String?,
         goal: String?,
-        goalFraction: Float
+        goalFraction: Float,
+        light: WidgetColors,
+        dark: WidgetColors
     ) {
         FocusWidgetState(
             status: status,
@@ -26,8 +28,26 @@ final class FocusWidgetBridge: NSObject, HomeWidget {
             primaryLabel: primaryLabel,
             stopLabel: stopLabel,
             goal: goal,
-            goalFraction: Double(goalFraction)
+            goalFraction: Double(goalFraction),
+            light: WidgetPalette(light),
+            dark: WidgetPalette(dark)
         ).save()
         WidgetCenter.shared.reloadAllTimelines()
+    }
+}
+
+private extension WidgetPalette {
+    /// Los Int de Kotlin llegan como Int32 con signo: el mismo ARGB, leído sin él.
+    init(_ colors: WidgetColors) {
+        self.init(
+            background: UInt32(bitPattern: colors.background),
+            text: UInt32(bitPattern: colors.text),
+            secondaryText: UInt32(bitPattern: colors.secondaryText),
+            primary: UInt32(bitPattern: colors.primary),
+            onPrimary: UInt32(bitPattern: colors.onPrimary),
+            secondary: UInt32(bitPattern: colors.secondary),
+            onSecondary: UInt32(bitPattern: colors.onSecondary),
+            track: UInt32(bitPattern: colors.track)
+        )
     }
 }
