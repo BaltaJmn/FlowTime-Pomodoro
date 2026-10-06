@@ -23,7 +23,9 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.data.di.DataModule
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.tag.TagRepository
+import com.baltajmn.flowtime.data.timer.DoNotDisturb
 import com.baltajmn.flowtime.data.timer.FocusEngine
+import com.baltajmn.flowtime.data.timer.FocusMode
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.features.screens.di.ScreensModule
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
@@ -99,6 +101,14 @@ private val openFocus = Channel<Unit>(Channel.CONFLATED)
 // El centro de notificaciones no retiene a su delegado.
 private val notificationDelegate = NotificationDelegate(onOpen = { openFocus.trySend(Unit) })
 
+// iOS no deja a una app encender No molestar.
+private object NoDoNotDisturb : DoNotDisturb {
+    override val granted = false
+    override val hasRules = false
+    override var filter = 0
+    override fun setRule(active: Boolean) = Unit
+}
+
 // Una sola vez, aunque iOS vuelva a crear la pantalla.
 private val koin: Koin by lazy {
     val koin = startKoin {
@@ -110,6 +120,8 @@ private val koin: Koin by lazy {
             ScreensModule,
             module {
                 single { AppIcons() }
+                // Ajustes lo pide aunque en el iPhone no enseñe la opción (hasFocusMode): sin él, no abría.
+                single { FocusMode(get(), NoDoNotDisturb, get<PurchasesRepository>().isPro) }
                 // En el iPhone la sesión solo avanza con la app abierta: la celebración, dentro de la app.
                 single { GoalWatcher(get(), get(), visible = { true }, notify = { false }) }
                 single { PhaseNotifications(get(), get()) }
