@@ -1,40 +1,32 @@
 name: Store listings
 
-# Separado de release.yml a proposito: la ficha se cambia muchas mas veces que la app, y no tiene
-# ninguna razon para arrastrar un build de Gradle ni para gastar un versionCode.
+# Same file in every app of the family; only the values under `with:` change (BaltaJmn/ci README).
+# Apart from release.yml on purpose: listings change far more often than the app, and need neither
+# a Gradle build nor a versionCode. A push only checks store/; writing to a store is chosen by hand.
 on:
+  push:
+    branches: [main]
+    paths: ['store/**']
   workflow_dispatch:
     inputs:
-      accion:
-        description: Que hacer en Play
+      target:
+        description: Where to upload the listing
         type: choice
-        # Por defecto la que no escribe. Subir la ficha es un cambio de cara al publico y se elige
-        # a proposito, no por dejar el desplegable como venia.
-        options: [estado, subir]
-        default: estado
-  push:
-    paths: ['store/listings/**']
+        options: [check, play, app-store, both]
+        default: check
+
+permissions:
+  contents: read
 
 jobs:
   listings:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      # En un push solo se comprueban los limites: un texto pasado de largo se ve aqui y no en la
-      # Console con el boton de guardar muerto y sin decir por que.
-      - run: python tools/play-listing/subir.py
-
-      - if: github.event_name == 'workflow_dispatch'
-        run: pip install google-api-python-client google-auth
-
-      # Solo a mano, y solo si se pide. Escribir la ficha es un cambio de cara al publico y el
-      # titulo ademas pasa por revision de Play, asi que no se dispara al empujar a main.
-      - if: github.event_name == 'workflow_dispatch'
-        run: python tools/play-listing/subir.py --${{ inputs.accion }}
-        env:
-          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+    uses: BaltaJmn/ci/.github/workflows/store-listings.yml@main
+    with:
+      package-name: com.baltajmn.flowtime
+      website: https://flowtime.baltajmn.dev/
+      target: ${{ inputs.target || 'check' }}
+    secrets:
+      PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+      APPSTORE_KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+      APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+      APPSTORE_PRIVATE_KEY: ${{ secrets.APPSTORE_PRIVATE_KEY }}

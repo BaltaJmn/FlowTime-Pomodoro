@@ -1,41 +1,45 @@
-name: Release to Play
+name: Release
 
-# Por etiqueta y no en cada push a main: cada subida gasta un versionCode y sale a
-# produccion. Se etiqueta cuando se quiere publicar (store/ci.md).
+# Same file in every app of the family; only the values under `with:` change (BaltaJmn/ci README).
+# Tag driven: every upload burns a versionCode. A tag ships the same version to both stores' test
+# channels, Play closed testing (alpha) and TestFlight. Production on Play and sending to App Review
+# are always a person's decision, in each console.
 on:
   push:
     tags: ['v*']
   workflow_dispatch:
     inputs:
-      track:
-        description: Canal de Play
+      stores:
+        description: Stores to upload to
         type: choice
-        options: [production, beta, alpha, internal]
-        default: production
+        options: [both, play, app-store]
+        default: both
+      track:
+        description: Play track
+        type: choice
+        options: [alpha, internal, beta, production]
+        default: alpha
       status:
-        description: draft sube la version sin publicarla, para revisarla o probarla antes en la consola
+        description: draft only while the app has never published a release on any Play track
         type: choice
         options: [completed, draft]
         default: completed
 
-# Lo unico que estos trabajos necesitan de GitHub es leer el codigo; las credenciales de Play van
-# como secretos.
 permissions:
   contents: read
 
 jobs:
-  release:
-    # La secuencia entera vive en BaltaJmn/ci, igual que en las demas apps.
+  play:
+    if: inputs.stores != 'app-store'
+    # Secrets go one by one and not with `secrets: inherit`: only these belong to a Play release.
     uses: BaltaJmn/ci/.github/workflows/android-play-release.yml@main
     with:
       package-name: com.baltajmn.flowtime
-      # La clave de subida se genero con CN=BaltaJmn, como la de Chroma, y el valor por defecto
-      # del workflow compartido es CN=Baltasar: sin esta linea la firma correcta se rechaza.
+      # The CN of this app's upload key: the check rejects a bundle signed with anything else.
       signer-cn: CN=BaltaJmn
       gradle-tasks: ':app:bundleRelease'
       aab-path: app/build/outputs/bundle/release/app-release.aab
-      # Esta app ya esta en produccion, asi que la etiqueta publica ahi y no en alpha.
-      track: ${{ inputs.track || 'production' }}
+      track: ${{ inputs.track || 'alpha' }}
       status: ${{ inputs.status || 'completed' }}
       whatsnew-dir: store/whatsnew
     secrets:
@@ -44,3 +48,19 @@ jobs:
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+
+  app-store:
+    if: inputs.stores != 'play'
+    uses: BaltaJmn/ci/.github/workflows/ios-testflight-release.yml@main
+    with:
+      # versionName and versionCode are the iOS version and build: one number for both stores.
+      version-file: build-logic/plugins/src/main/java/Config.kt
+    secrets:
+      APPSTORE_KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+      APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+      APPSTORE_PRIVATE_KEY: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      APPLE_DEVELOPMENT_P12: ${{ secrets.APPLE_DEVELOPMENT_P12 }}
+      APPLE_DEVELOPMENT_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_P12_PASSWORD }}
+      APPLE_DISTRIBUTION_P12: ${{ secrets.APPLE_DISTRIBUTION_P12 }}
+      APPLE_DISTRIBUTION_P12_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_P12_PASSWORD }}
