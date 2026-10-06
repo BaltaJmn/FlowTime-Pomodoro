@@ -36,7 +36,7 @@ class ProViewModelTest {
     fun `el precio sale de la tienda, y al comprar da las gracias`() {
         val viewModel = ProViewModel(FakePurchases())
         viewModel.load()
-        assertEquals("2,99 €", viewModel.state.value.product?.price)
+        assertEquals("$1.99", viewModel.state.value.product?.price)
         assertFalse(viewModel.state.value.isPro)
 
         viewModel.buy(activity)
@@ -59,7 +59,7 @@ class ProViewModelTest {
 
         purchases.online = true
         viewModel.load()
-        assertEquals("2,99 €", viewModel.state.value.product?.price)
+        assertEquals("$1.99", viewModel.state.value.product?.price)
     }
 
     @Test

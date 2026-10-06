@@ -125,7 +125,7 @@ class PurchasesRepositoryTest {
     }
 
     private companion object {
-        val PRO = CatalogItem(Products.PRO, "2,99 €")
-        val TIP = CatalogItem(Products.TIPS.first(), "1,99 €")
+        val PRO = CatalogItem(Products.PRO, "$1.99")
+        val TIP = CatalogItem(Products.TIPS.first(), "$1.99")
     }
 }
