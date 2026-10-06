@@ -4,7 +4,7 @@ Todo lo que se ve en la tienda sale de este repo (#54), en los 6 idiomas de la a
 
 | Qué | Dónde | De dónde sale |
 |---|---|---|
-| Título y descripciones | `store/listings/<idioma>/{title,short,full}.txt` | A mano. `python3 tools/play-listing/subir.py` comprueba los topes de Play (30, 80 y 4000); en CI lo hace `listings.yml` en cada push que los toque |
+| Título y descripciones | `store/listings/<idioma>/{title,short,full}.txt` | A mano. `listings.yml` comprueba los topes de las dos tiendas en cada push a `store/` (`python3 ../ci/tienda/comprobar.py .` en local) |
 | Capturas de móvil | `store/screenshots/play/<idioma>/01.png` a `07.png` | Roborazzi (`StoreScreenshotsTest`) y `tools/store/capturas.py` |
 | Capturas de tablet | `store/screenshots/tablet/<idioma>/01.png` a `04.png` | Igual |
 | Widget y notificación | `store/screenshots/raw/<idioma>/06_widget.png` y `07_notification.png` | Emulador: idioma por app (`cmd locale set-app-locales`), una sesión Pomodoro en marcha y el fondo de pantalla azul, para que el sistema tome los colores de la ficha |
@@ -29,7 +29,8 @@ Con la versión nueva ya en producción, no antes: la ficha enseña pantallas qu
 Confirmar la edición cuenta como publicar, así que va con el sí expreso del usuario.
 
 ```bash
-/Users/baltajmn/keys/play.sh ficha com.baltajmn.flowtime /Users/baltajmn/AndroidStudioProjects/FlowTime-Pomodoro <correo> ""
+gh workflow run listings.yml -f target=play
+/Users/baltajmn/keys/play.sh ficha com.baltajmn.flowtime . https://flowtime.baltajmn.dev/   # lo mismo, desde el Mac
 ```
 
 - En una sola edición: los textos de los 6 idiomas, el icono, el gráfico y las capturas de móvil.

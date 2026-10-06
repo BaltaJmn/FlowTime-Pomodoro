@@ -1,131 +1,46 @@
 # Publicar desde GitHub Actions
 
-Igual que las hermanas (Chroma, MoodTraker, Purl): la secuencia de Android vive en `BaltaJmn/ci`
-(`android-play-release.yml`) y `.github/workflows/release.yml` solo la llama con el paquete, el CN
-de la firma, la tarea de Gradle y la carpeta de notas. `tests.yml` corre `./gradlew build` en cada
-push a `main` y en cada pull request, y en macOS los tests de iOS de `core/data` y la compilación de
-todo `iosMain`: lo único que demuestra que el iPhone sigue compilando y enlazando. El de macOS cuesta
-diez veces más por minuto, y por eso el disparador no incluye ramas sueltas.
+Igual en las cuatro apps de la familia: el proceso, los workflows y los scripts viven en
+`BaltaJmn/ci` (`README.md` y `PUBLICAR.md`). Aquí, solo lo que es de FlowTime.
 
-## Cómo se dispara
+| Qué | Valor |
+|---|---|
+| Paquete de Play y bundle id de Apple | `com.baltajmn.flowtime` |
+| Clave de subida | `~/keys/flowtime-upload.jks`, alias `upload`, `CN=BaltaJmn` (el `signer-cn` de `release.yml`) |
+| Versión de las dos tiendas | `versionName` y `versionCode` de `build-logic/plugins/src/main/java/Config.kt` |
+| Web: contacto de Play, soporte y privacidad de Apple | https://flowtime.baltajmn.dev/ |
+| Pro | `pro_lifetime` en Play, `com.baltajmn.flowtime.pro_lifetime` en Apple; 1,99 EUR en las dos |
 
-**Por etiqueta**, no en cada push a `main`. FlowTime ya está en producción, así que la etiqueta
-publica **en producción**, no en `alpha` como las hermanas.
+FlowTime no tiene `androidApp`: el módulo es `:app` y la versión vive en `Config.kt`, por eso `release.yml` pasa `gradle-tasks`, `aab-path` y `version-file`. Ya está en producción en Play: la etiqueta va a `alpha` como en las demás, y se promociona a producción desde la consola. Además de Pro tiene tres propinas (`tip_small`, `tip_medium`, `tip_large`) y la compra antigua `support_developer`, fuera de RevenueCat.
 
-1. Subir `versionCode` (y `versionName`) en `build-logic/plugins/src/main/java/Config.kt`. Tiene
-   que ser mayor que el último de Play: `~/keys/play.sh estado com.baltajmn.flowtime`.
-2. Reescribir las notas de `store/whatsnew/whatsnew-<idioma>`, una por idioma de la ficha (tope 500 cada una).
-3. Commit, y la etiqueta:
+## Publicar una versión
 
-```bash
-git tag v2.1.0 && git push origin v2.1.0
-```
+1. Subir el `versionCode` (y `versionName` si toca). Un `versionCode` no se reutiliza nunca.
+2. Si cambia algo visible, reescribir `store/whatsnew/whatsnew-<idioma>` en todos los idiomas (tope 500).
+3. Commit, y `git tag vX.Y && git push origin vX.Y`: Play `alpha` y TestFlight, la misma versión.
+4. Producción en Play y el envío a revisión de Apple, a mano en cada consola.
 
-Disparo manual, para otro canal:
+Otro canal o una sola tienda: `gh workflow run release.yml -f stores=play -f track=internal`
+(`-f status=draft` mientras la app no haya publicado nada en Play).
 
-```bash
-gh workflow run release.yml --ref main -f track=internal
-```
+## Ficha
 
-Una versión que ya está en un canal de prueba no llega a producción con la etiqueta: la volvería a
-subir con el mismo `versionCode`, y Play lo rechaza. Se lleva esa misma desde la consola: *Producción > Crear nueva versión > Añadir de la biblioteca*,
-las notas de `store/whatsnew/` y *Resumen de publicación > Enviar a revisión*. Los formularios de un
-permiso nuevo (servicios en primer plano, alarma exacta) no salen al subir a interna, sino al
-preparar esa versión de producción (`store/formularios.md`). Interna sirve para comprobar, sin tocar
-producción, que Play acepta el AAB y la firma.
-
-## La firma
-
-Clave de subida en `~/keys/flowtime-upload.jks`, alias `upload`, `CN=BaltaJmn, O=BaltaJmn, C=ES`,
-RSA 4096, generada el 29-09-2026 con el comando de `~/keys/LEEME.md`. SHA-256 del certificado:
-`5A:BE:9A:97:4F:D0:F0:B2:B3:D6:06:12:48:29:CA:96:FD:3F:09:17:5A:EB:BB:89:61:81:69:5B:6B:BA:19:0B`.
-
-La anterior se perdió: el 29-09-2026 se pidió en Play Console (*Protegida con Play > Firma de
-aplicaciones*) el cambio de clave de subida con este certificado. **Hasta que Play lo active**, que
-avisa por correo con la fecha, rechaza cualquier AAB firmado con la nueva. Se comprueba en esa
-misma pantalla: el SHA-256 del certificado de subida tiene que ser el de arriba.
-
-`release.yml` pasa `signer-cn: CN=BaltaJmn` porque el valor por defecto del workflow compartido es
-`CN=Baltasar`. En local, `keystore.properties` en la raíz (git-ignorado); sin él la release cae a
-la clave de debug, que Play rechaza.
+Textos, gráficos y capturas en `store/`, con la estructura del README de `ci`. Cada push a `store/`
+la comprueba; para subirla, `gh workflow run listings.yml -f target=play` (o `app-store`, `both`).
+La App Store solo acepta cambios con una versión en preparación.
 
 ## Secretos del repositorio
 
-| Secreto | Qué es | De dónde sale |
-|---|---|---|
-| `KEYSTORE_BASE64` | El `.jks` de subida, en base64 | `~/keys/flowtime-upload.jks` |
-| `KEYSTORE_PASSWORD` | La del almacén | `keystore.properties` |
-| `KEY_ALIAS` | `upload` | |
-| `KEY_PASSWORD` | La de la clave (la misma, PKCS12) | `keystore.properties` |
-| `PLAY_SERVICE_ACCOUNT_JSON` | La cuenta de servicio **de publicar** | `~/keys/credenciales.sh`, que tiene este repo en `PLAY_REPOS` |
-
-Se ponen sin que el valor pase por la pantalla:
+Los cinco de Play salen de la clave de esta app y de la cuenta de servicio que publica. Se ponen sin
+que el valor pase por la pantalla:
 
 ```bash
-R=BaltaJmn/FlowTime-Pomodoro
-base64 -i ~/keys/flowtime-upload.jks | gh secret set KEYSTORE_BASE64 -R $R
-sed -n 's/^storePassword=//p' keystore.properties | tr -d '\n' | gh secret set KEYSTORE_PASSWORD -R $R
-sed -n 's/^keyPassword=//p' keystore.properties | tr -d '\n' | gh secret set KEY_PASSWORD -R $R
-printf upload | gh secret set KEY_ALIAS -R $R
-gh secret set PLAY_SERVICE_ACCOUNT_JSON -R $R < ~/keys/play-service-account.json
+base64 -i ~/keys/flowtime-upload.jks | gh secret set KEYSTORE_BASE64 -R BaltaJmn/FlowTime-Pomodoro
+sed -n 's/^storePassword=//p' keystore.properties | tr -d '\n' | gh secret set KEYSTORE_PASSWORD -R BaltaJmn/FlowTime-Pomodoro
+sed -n 's/^keyPassword=//p' keystore.properties | tr -d '\n' | gh secret set KEY_PASSWORD -R BaltaJmn/FlowTime-Pomodoro
+printf upload | gh secret set KEY_ALIAS -R BaltaJmn/FlowTime-Pomodoro
+gh secret set PLAY_SERVICE_ACCOUNT_JSON -R BaltaJmn/FlowTime-Pomodoro < ~/keys/play-service-account.json
 ```
 
-Al rotar la cuenta de publicar con `credenciales.sh play`, este secreto se actualiza solo.
-
-## iPhone: TestFlight
-
-`release-ios.yml` se dispara con la misma etiqueta `v*`, así que una etiqueta publica en las dos
-tiendas. Solo llama a `ios-testflight-release.yml` de `BaltaJmn/ci`, el mismo en las cuatro apps de
-iOS: archiva, firma con los certificados propios del equipo y sube a TestFlight. El README de
-`BaltaJmn/ci` cuenta por qué firma con dos `.p12`, y su `PUBLICAR.md`, el proceso entero de las dos
-tiendas.
-
-La versión y el número de build son el `versionName` y el `versionCode` de Android, que FlowTime
-guarda en `build-logic/plugins/src/main/java/Config.kt` (la entrada `version-file`). Van en la línea
-de `xcodebuild`, así que la app y su extensión (`FlowTimeWidgets`, la Live Activity) llevan siempre
-las mismas, y App Store Connect lo comprueba al subir. Sin máquina macOS libre:
-`~/keys/testflight.sh . build-logic/plugins/src/main/java/Config.kt`.
-
-
-El repositorio es privado: cada minuto de macOS cuenta como diez del cupo gratuito, y con la
-facturación de GitHub parada (pasó el 05-10-2026, "recent account payments have failed") Actions no
-arranca ningún trabajo. Entonces se sube con `~/keys/testflight.sh`, que firma igual.
-
-### Antes de la primera subida (usuario)
-
-1. Cuenta de Apple Developer y su Team ID.
-2. La app en App Store Connect con el identificador `com.baltajmn.flowtime`, que es para siempre.
-   El de la extensión, `com.baltajmn.flowtime.widgets`, lo registra Xcode al firmar
-   (`-allowProvisioningUpdates`), y también el App Group `group.com.baltajmn.flowtime` que comparten
-   la app y el widget. Si la primera subida fallara por alguno de los dos, se crean a mano en
-   *Certificates, Identifiers & Profiles* y se vuelve a lanzar.
-3. Los productos de compras integradas. En la App Store los ids son únicos en toda la cuenta (los
-   de MoodTraker cuentan), así que van con el de la app delante y lo de Play detrás:
-   `com.baltajmn.flowtime.pro_lifetime`, `.tip_small`, `.tip_medium` y `.tip_large`; la app se queda
-   con lo que va tras el último punto. Después, la app de iOS en el proyecto de RevenueCat con los
-   derechos `pro` y `supporter`, y su clave `appl_` en `REVENUECAT_IOS_API_KEY` (`core/data`,
-   `iosMain`). Sin ella el iPhone no tiene tienda, y no se publica: Pro saldría gratis
-   (`ProFeatures`).
-4. Los secretos de abajo, y la clave de compras integradas para RevenueCat (`~/keys/LEEME.md`).
-5. *App Privacy* con las respuestas de `store/privacy/README.md`, que son las del
-   `PrivacyInfo.xcprivacy` de la app. La URL de la política es la de Play, pero antes de la primera
-   versión en la App Store tiene que hablar también del iPhone: hoy solo nombra Google Play.
-
-`ITSAppUsesNonExemptEncryption` va a `NO` en el `Info.plist` (solo el HTTPS del sistema), así que
-los builds no se quedan en TestFlight esperando la pregunta del cifrado.
-
-### Secretos de Apple
-
-| Secreto | Qué es |
-|---|---|
-| `APPSTORE_KEY_ID` | El Key ID de la clave de la App Store Connect API |
-| `APPSTORE_ISSUER_ID` | El Issuer ID, el mismo para todas las claves de la cuenta |
-| `APPSTORE_PRIVATE_KEY` | El contenido del `.p8`, entero, con sus líneas `BEGIN`/`END` |
-| `APPLE_TEAM_ID` | El Team ID de la cuenta de desarrollador |
-| `APPLE_DEVELOPMENT_P12` | Certificado Apple Development con su clave, `.p12` en base64 |
-| `APPLE_DEVELOPMENT_P12_PASSWORD` | Su contraseña |
-| `APPLE_DISTRIBUTION_P12` | Certificado Apple Distribution con su clave, `.p12` en base64 |
-| `APPLE_DISTRIBUTION_P12_PASSWORD` | Su contraseña |
-
-Los ocho son de cuenta, iguales en los cuatro repos de iOS, y los pone `~/keys/credenciales.sh
-sincronizar`.
+Los ocho de Apple (`APPSTORE_*`, `APPLE_*`) son de cuenta, iguales en las cuatro apps: los pone
+`~/keys/credenciales.sh sincronizar`, que también renueva `PLAY_SERVICE_ACCOUNT_JSON` al rotarla.

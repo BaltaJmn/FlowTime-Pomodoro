@@ -163,7 +163,7 @@ En la App Store los identificadores son únicos en toda la cuenta, así que llev
 | Nombre de referencia | `FlowTime Pro (lifetime)` |
 | ID del producto | `com.baltajmn.flowtime.pro_lifetime` |
 | Tipo | No consumible |
-| Precio | El equivalente al de Play: 2,99 EUR en España |
+| Precio | 1,99 EUR en España, igual que en Play: `compra.py` de `BaltaJmn/ci` |
 | Derecho en RevenueCat | `pro` (oferta `default`, paquete `$rc_lifetime`) |
 | Captura para la revisión | La hoja de Pro (Ajustes > Pro > Ver Pro), con el botón de compra |
 | Notas de la revisión | `Unlocks advanced stats, CSV export, unlimited tags, tasks and mixes, 6 sounds, 6 themes and 6 app icons. Open Settings > Pro > See Pro. Restore Purchases is on that sheet and in Settings > Support FlowTime.` |
@@ -232,5 +232,5 @@ así que hay que crearlas o la hoja sale vacía y la revisión lo verá. Son tre
    palabras clave y texto promocional de los 14 idiomas (comprobado por API el 05-10-2026).
 5. **Capturas:** resuelto el 05-10-2026. Las 5 de `store/screenshots/iphone/<idioma>/` en los 14 idiomas, como
    pantalla de 6,9" (`APP_IPHONE_67` en la API, que acepta 1320x2868).
-6. **Build:** falta. Ninguna subida todavía: `release-ios.yml` la sube a TestFlight con la etiqueta `v*` cuando
+6. **Build:** falta. Ninguna subida todavía: `release.yml` la sube a TestFlight con la etiqueta `v*` cuando
    GitHub Actions vuelva a arrancar trabajos (el 05-10-2026 no arrancaban por un problema de facturación de la cuenta).
