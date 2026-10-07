@@ -8,9 +8,9 @@ servicio de publicar para Play. Cómo se hace cada paso: `~/keys/LEEME.md`.
 | Play (`com.baltajmn.flowtime`) | Tipo en RevenueCat | Derecho | Paquete de la oferta `default` | Precio en España |
 |---|---|---|---|---|
 | `pro_lifetime` | No consumible | `pro` | `$rc_lifetime` | 1,99 EUR, igual en las dos tiendas (`compra.py` de `BaltaJmn/ci`, 06-10-2026) |
-| `tip_small` | Consumible | `supporter` | `tip_small` | 1,99 EUR |
-| `tip_medium` | Consumible | `supporter` | `tip_medium` | 4,99 EUR |
-| `tip_large` | Consumible | `supporter` | `tip_large` | 9,99 EUR |
+| `tip_small` | Consumible | `supporter` | `tip_small` | 1,99 EUR, igual en las dos tiendas (`compra.py --solo-play`, 07-10-2026) |
+| `tip_medium` | Consumible | `supporter` | `tip_medium` | 4,99 EUR, igual en las dos tiendas (`compra.py --solo-play`, 07-10-2026) |
+| `tip_large` | Consumible | `supporter` | `tip_large` | 9,99 EUR, igual en las dos tiendas (`compra.py --solo-play`, 07-10-2026) |
 | `support_developer` (el de antes) | Fuera de RevenueCat | | | 1,19 EUR |
 
 - **Los ids son para siempre.** Un id borrado no se puede volver a usar.
