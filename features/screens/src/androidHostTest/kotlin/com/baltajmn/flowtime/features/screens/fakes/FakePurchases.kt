@@ -37,7 +37,7 @@ class FakePurchases(
     companion object {
         val CATALOG = Catalog(
             pro = CatalogItem(Products.PRO, "$1.99"),
-            tips = Products.TIPS.zip(listOf("$1.99", "$4.99", "$9.99"), ::CatalogItem)
+            tips = Products.TIPS.zip(listOf("$1.99", "$3.99", "$8.99"), ::CatalogItem)
         )
     }
 }
