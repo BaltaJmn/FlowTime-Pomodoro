@@ -2,7 +2,10 @@ package com.baltajmn.flowtime.navigation.main
 
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
+import com.baltajmn.flowtime.features.screens.focus.sessionRunning
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -41,6 +44,8 @@ fun MainScreen(
     onAddQuickTile: (() -> Unit)?
 ) {
     val currentRoute = appState.currentRoute
+    // Desde cualquier otra pestaña se ve que hay una sesión en marcha.
+    val running = sessionRunning()
     val todoListState = rememberLazyListState()
     val settingsState = rememberLazyListState()
 
@@ -51,17 +56,21 @@ fun MainScreen(
                     selected = currentRoute == destination.graph.route,
                     onClick = { appState.navigateTo(destination.graph) },
                     icon = {
-                        Icon(
-                            painter = painterResource(destination.icon),
-                            contentDescription = null
-                        )
+                        BadgedBox(
+                            badge = { if (destination == Destination.Focus && running) Badge() }
+                        ) {
+                            Icon(
+                                painter = painterResource(destination.icon),
+                                contentDescription = null
+                            )
+                        }
                     },
                     // Una línea siempre: con la letra al 200 %, "Settings" se partía en dos.
                     label = {
                         Text(
                             text = stringResource(destination.label),
                             maxLines = 1,
-                            autoSize = TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = LocalTextStyle.current.fontSize)
+                            autoSize = TextAutoSize.StepBased(minFontSize = 12.sp, maxFontSize = LocalTextStyle.current.fontSize)
                         )
                     }
                 )

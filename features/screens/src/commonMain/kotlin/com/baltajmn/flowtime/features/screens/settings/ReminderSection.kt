@@ -10,6 +10,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
+import com.baltajmn.flowtime.core.design.components.selectedChipBorder
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
@@ -56,7 +57,8 @@ fun ReminderCard(reminder: Reminder, onChange: (Reminder) -> Unit) {
                     FilterChip(
                         selected = reminder.on(day),
                         onClick = { onChange(reminder.toggle(day)) },
-                        label = { Text(text = Formats.shortWeekday(day)) }
+                        label = { Text(text = Formats.shortWeekday(day)) },
+                        border = selectedChipBorder(reminder.on(day))
                     )
                 }
             }

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="flow_time_title">FlowTime 準備完了</string>
-    <string name="pomodoro_title">ポモドーロ 準備完了</string>
     <string name="flow_time_settings_title">FlowTime の設定</string>
     <string name="flow_time_settings_in_the_first">最初の %1$s 分間は</string>
     <string name="flow_time_settings_rest">休憩する</string>
@@ -15,38 +13,13 @@
     <string name="settings_save">変更を保存</string>
     <string name="time_title_resting">休憩中</string>
     <string name="time_title_working">作業中</string>
-    <string name="button_break">休憩</string>
     <string name="dialog_confirm">OK</string>
     <string name="dialog_cancel">キャンセル</string>
-    <string name="go_to_history">履歴を見る</string>
     <string name="settings_intro">はじめに</string>
     <string name="settings_intro_button">見る</string>
     <string name="settings_rate">FlowTime は気に入りましたか？</string>
     <string name="settings_rate_button">評価する</string>
     <string name="settings_privacy">プライバシーポリシー</string>
-    <string name="others">その他</string>
-    <string name="remember">リマインダー</string>
-    <string name="mot_1">きっとできる！ :)</string>
-    <string name="mot_2">止まらず、続けよう :)</string>
-    <string name="mot_3">決意はすべてに勝つ :)</string>
-    <string name="mot_4">あなたは強い、続けよう :)</string>
-    <string name="mot_5">小さな一歩が大きな成功に :)</string>
-    <string name="mot_6">限界はない、あるのは可能性だけ :)</string>
-    <string name="mot_7">つくるのはあなた :)</string>
-    <string name="mot_8">続ければ、きっと勝てる :)</string>
-    <string name="mot_9">成功が待っている :)</string>
-    <string name="mot_10">負けないで、きっとできる！ :)</string>
-    <string name="mot_11">さあ、あなたにはその力がある :)</string>
-    <string name="mot_12">一歩一歩が大事、止まらないで :)</string>
-    <string name="mot_13">決意はどんな壁も越えていく :)</string>
-    <string name="mot_14">あなたは思っているより強い :)</string>
-    <string name="mot_15">小さな努力が大きな成果になる :)</string>
-    <string name="mot_16">限界はない、あるのは可能性だけ :)</string>
-    <string name="mot_17">自分の未来をつくるのはあなた :)</string>
-    <string name="mot_18">続けよう、成功はもうすぐ :)</string>
-    <string name="mot_19">道の先で成功が待っている :)</string>
-    <string name="mot_20">ぶれずに、勝利はあなたのもの！ :)</string>
-    <string name="percentage_title">パーセント 準備完了</string>
     <string name="percentage_settings_title">休憩の割合</string>
     <string name="support_developer">チップを送る</string>
     <string name="support_developer_title">FlowTime を応援</string>
@@ -65,7 +38,6 @@
     <string name="show_alert">各フェーズの終了を知らせる</string>
     <string name="alert_google_play">Google Play に接続できません</string>
     <string name="alert_google_play_desc">必要なデータを取得するには、インターネットに接続してください。</string>
-    <string name="advantage_title">特長</string>
     <string name="pomodoro_advantages">自分で決めた一定の時間で作業と休憩をくり返します。</string>
     <string name="flow_time_advantages">集中が続くかぎり作業します。長く作業するほど休憩も長くなります。</string>
     <string name="percentage_advantages">休憩は作業時間の一定割合になります。</string>
@@ -77,11 +49,9 @@
     <string name="import_replace">置き換える</string>
     <string name="import_sum">合算する</string>
 
-    <string name="nav_back">戻る</string>
     <string name="nav_todo_list">タスク</string>
     <string name="nav_settings">設定</string>
     <string name="mode_percentage">パーセント</string>
-    <string name="todo_list_title">ToDo リスト</string>
     <string name="todo_add_item">タスクを追加</string>
     <string name="todo_item_title">タイトル</string>
     <string name="todo_item_description">説明</string>
@@ -175,7 +145,7 @@
     <string name="backup_import_failed">バックアップを読み込めませんでした。何も変更されていません。</string>
     <string name="goal_title">1日の目標</string>
     <string name="goal_per_day">1日 %1$s</string>
-    <string name="goal_today">%1$s / %2$s</string>
+    <string name="goal_today">今日 %1$s / %2$s</string>
     <string name="goal_decrease">目標を下げる</string>
     <string name="goal_increase">目標を上げる</string>
     <string name="goal_reached">今日の目標を達成！</string>
@@ -252,8 +222,7 @@
     <string name="theme_supporter">サポーター</string>
     <string name="nav_focus">集中</string>
     <string name="nav_stats">統計</string>
-    <string name="cd_mode_settings">このモードの設定</string>
-    <string name="focus_mode_locked">モードを変えるにはセッションを終了してください</string>
+    <string name="cd_mode_settings">このモードを調整</string>
     <string name="sounds_title">サウンド</string>
     <string name="stats_year">年</string>
     <string name="stats_first_session">最初のセッションがここに表示されます</string>
@@ -331,7 +300,7 @@
     <string name="sound_train">電車</string>
     <string name="sound_typing">タイピング</string>
     <string name="sound_tent">テントに降る雨</string>
-    <string name="pro_sounds_title">6 つの新しいサウンド</string>
+    <string name="pro_sounds_title">新しいサウンド</string>
     <string name="pro_sounds_text">小川、夜のコオロギ、扇風機、電車、タイピング、テントに降る雨。購入前にそれぞれ 10 秒試聴できます。</string>
     <string name="cd_pro_sound">%1$s、Pro のサウンド</string>
     <string name="theme_lavender">ラベンダー</string>
@@ -356,4 +325,22 @@
     <string name="notifications_title_ios">各フェーズの終わりにお知らせしますか？</string>
     <string name="notifications_text_ios">アプリを閉じていても、休憩の時間と集中に戻る時間がわかります。</string>
     <string name="notifications_off_ios">通知がオフです。アプリを閉じていてもお知らせを受け取るには、通知をオンにしてください。</string>
+    <string name="stop_saved">保存: %1$s</string>
+    <string name="stop_too_short">1分未満: 保存されません</string>
+    <string name="todo_previous_day">前の日</string>
+    <string name="todo_next_day">次の日</string>
+    <string name="todo_empty">この日に予定はありません</string>
+    <string name="cd_focus_task">%1$s に取り組む</string>
+    <string name="session_added">追加した時間</string>
+    <string name="session_edit">セッションを編集</string>
+    <string name="sessions_add">時間を追加</string>
+    <string name="session_minutes">分</string>
+    <string name="settings_session_title">セッション中</string>
+    <string name="settings_about_title">について</string>
+    <string name="level_hint">集中した1分ごとに次のレベルにカウントされます</string>
+    <string name="cd_open_today">今日のセッションを見る</string>
+    <string name="session_minutes_range">1から%1$dまで</string>
+    <string name="session_deleted">セッションを削除しました</string>
+    <string name="appearance_dynamic_hint">壁紙の色をオフにしてテーマを選ぶ</string>
+    <string name="streak_free_day_left">今週のお休み日はまだ使えます</string>
 </resources>

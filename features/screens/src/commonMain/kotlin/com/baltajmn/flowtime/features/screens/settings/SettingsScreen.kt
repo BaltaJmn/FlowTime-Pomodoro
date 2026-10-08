@@ -50,6 +50,7 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -76,7 +77,6 @@ import com.baltajmn.flowtime.core.design.theme.Appearance
 import com.baltajmn.flowtime.core.design.theme.DarkMode
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
-import com.baltajmn.flowtime.features.screens.settings.enum.MotivationalPhrases
 import com.baltajmn.flowtime.features.screens.pro.ProAccess
 import com.baltajmn.flowtime.features.screens.pro.ProFeature
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
@@ -180,102 +180,32 @@ fun SettingsContent(
     ) {
         item { ScreenTitle(text = stringResource(Res.string.nav_settings)) }
         item { Spacer(modifier = Modifier.height(16.dp)) }
+        // Primero lo de cada sesión, después el aspecto y lo guardado; el apoyo y lo demás, al final.
         item { GoalCard(goal = state.goal, onChange = viewModel::changeGoal) }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item { ReminderCard(reminder = state.reminder, onChange = viewModel::setReminder) }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
-            TagsCard(
-                state = state.tags,
-                onAdd = viewModel::addTag,
-                onRename = viewModel::renameTag,
-                onRecolor = viewModel::recolorTag,
-                onArchive = viewModel::archiveTag,
-                onUnarchive = viewModel::unarchiveTag,
-                onMessageShown = viewModel::onTagMessageShown,
-                onSeePro = { onOpenPro(ProFeature.TAGS) }
-            )
-        }
-        item { Spacer(modifier = Modifier.height(24.dp)) }
-        if (state.purchases.pro != ProAccess.HIDDEN) {
-            item {
-                ProCard(
-                    owned = state.purchases.pro == ProAccess.OPEN,
-                    onOpen = { onOpenPro(null) }
-                )
-            }
-            item { Spacer(modifier = Modifier.height(24.dp)) }
-        }
-        if (ProFeatures.hasStore) {
-            item {
-                SupportCard(
-                    state = state.purchases,
-                    onTip = { showSupport = true },
-                    onRestore = viewModel::restorePurchases,
-                    onMessageShown = viewModel::onRestoreMessageShown
-                )
-            }
-            item { Spacer(modifier = Modifier.height(24.dp)) }
-        }
-        item {
-            AppearanceCard(
-                appearance = state.appearance,
-                isSupporter = state.purchases.isSupporter,
-                onDarkMode = viewModel::setDarkMode,
-                onDynamicColor = viewModel::setDynamicColor,
-                onTheme = viewModel::setTheme,
-                pro = state.purchases.pro,
-                onLockedTheme = { onOpenPro(ProFeature.THEMES) },
-                icon = state.appIcon,
-                onIcon = viewModel::setAppIcon
-            )
-        }
-        item { Spacer(modifier = Modifier.height(24.dp)) }
-        item {
-            SettingsCard(Res.string.others) {
+            val system = rememberSystemSettings()
+            SettingsCard(Res.string.settings_session_title) {
                 Spacer(modifier = Modifier.height(4.dp))
-
-                ButtonRow(
-                    text = Res.string.settings_intro,
-                    button = Res.string.settings_intro_button,
-                    onClick = navigateToIntro
-                )
-
-                val system = rememberSystemSettings()
-                ButtonRow(
-                    text = Res.string.settings_rate,
-                    button = Res.string.settings_rate_button,
-                    onClick = system::openStoreListing
-                )
-
-                val uriHandler = LocalUriHandler.current
-                ButtonRow(
-                    text = Res.string.settings_privacy,
-                    button = Res.string.settings_intro_button,
-                    onClick = { runCatching { uriHandler.openUri(PRIVACY_URL) } }
-                )
-
-                onAddQuickTile?.let {
-                    ButtonRow(
-                        text = Res.string.settings_quick_tile,
-                        button = Res.string.settings_quick_tile_button,
-                        onClick = it
-                    )
-                }
-
-                SwitchRow(
-                    text = Res.string.show_sound,
-                    checked = showSound,
-                    onCheckedChange = {
-                        onSoundChange.invoke(it)
-                        viewModel.saveSound(it)
-                    }
-                )
 
                 SwitchRow(
                     text = Res.string.show_alert,
                     checked = state.showAlert,
                     onCheckedChange = viewModel::saveAlert
+                )
+
+                PermissionNotice(
+                    text = notificationsOffText,
+                    granted = system::notificationsAllowed,
+                    open = system::openNotificationSettings
+                )
+
+                PermissionNotice(
+                    text = Res.string.exact_alarms_off,
+                    granted = system::exactAlarmsAllowed,
+                    open = system::openExactAlarmSettings
                 )
 
                 SwitchRow(
@@ -300,18 +230,50 @@ fun SettingsContent(
                     )
                 }
 
-                PermissionNotice(
-                    text = notificationsOffText,
-                    granted = system::notificationsAllowed,
-                    open = system::openNotificationSettings
+                SwitchRow(
+                    text = Res.string.show_sound,
+                    checked = showSound,
+                    onCheckedChange = {
+                        onSoundChange.invoke(it)
+                        viewModel.saveSound(it)
+                    }
                 )
 
-                PermissionNotice(
-                    text = Res.string.exact_alarms_off,
-                    granted = system::exactAlarmsAllowed,
-                    open = system::openExactAlarmSettings
-                )
+                onAddQuickTile?.let {
+                    ButtonRow(
+                        text = Res.string.settings_quick_tile,
+                        button = Res.string.settings_quick_tile_button,
+                        onClick = it
+                    )
+                }
             }
+        }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
+        item {
+            AppearanceCard(
+                appearance = state.appearance,
+                isSupporter = state.purchases.isSupporter,
+                onDarkMode = viewModel::setDarkMode,
+                onDynamicColor = viewModel::setDynamicColor,
+                onTheme = viewModel::setTheme,
+                pro = state.purchases.pro,
+                onLockedTheme = { onOpenPro(ProFeature.THEMES) },
+                icon = state.appIcon,
+                onIcon = viewModel::setAppIcon
+            )
+        }
+        item { Spacer(modifier = Modifier.height(24.dp)) }
+        item {
+            TagsCard(
+                state = state.tags,
+                onAdd = viewModel::addTag,
+                onRename = viewModel::renameTag,
+                onRecolor = viewModel::recolorTag,
+                onArchive = viewModel::archiveTag,
+                onUnarchive = viewModel::unarchiveTag,
+                onMessageShown = viewModel::onTagMessageShown,
+                onSeePro = { onOpenPro(ProFeature.TAGS) }
+            )
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
@@ -325,8 +287,52 @@ fun SettingsContent(
             )
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
-        item { PositiveText() }
-        item { Spacer(modifier = Modifier.height(192.dp)) }
+        if (state.purchases.pro != ProAccess.HIDDEN) {
+            item {
+                ProCard(
+                    owned = state.purchases.pro == ProAccess.OPEN,
+                    onOpen = { onOpenPro(null) }
+                )
+            }
+            item { Spacer(modifier = Modifier.height(24.dp)) }
+        }
+        if (ProFeatures.hasStore) {
+            item {
+                SupportCard(
+                    state = state.purchases,
+                    onTip = { showSupport = true },
+                    onRestore = viewModel::restorePurchases,
+                    onMessageShown = viewModel::onRestoreMessageShown
+                )
+            }
+            item { Spacer(modifier = Modifier.height(24.dp)) }
+        }
+        item {
+            SettingsCard(Res.string.settings_about_title) {
+                Spacer(modifier = Modifier.height(4.dp))
+
+                ButtonRow(
+                    text = Res.string.settings_intro,
+                    button = Res.string.settings_intro_button,
+                    onClick = navigateToIntro
+                )
+
+                val system = rememberSystemSettings()
+                ButtonRow(
+                    text = Res.string.settings_rate,
+                    button = Res.string.settings_rate_button,
+                    onClick = system::openStoreListing
+                )
+
+                val uriHandler = LocalUriHandler.current
+                ButtonRow(
+                    text = Res.string.settings_privacy,
+                    button = Res.string.settings_intro_button,
+                    onClick = { runCatching { uriHandler.openUri(PRIVACY_URL) } }
+                )
+            }
+        }
+        item { Spacer(modifier = Modifier.height(96.dp)) }
     }
 }
 
@@ -459,33 +465,6 @@ fun SwitchRow(
     }
 }
 
-/** El cierre de Ajustes: una frase, sin tarjeta. */
-@Composable
-fun PositiveText() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = stringResource(Res.string.remember),
-            textAlign = TextAlign.Center,
-            style = SubBody.copy(fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = stringResource(
-                MotivationalPhrases.entries[
-                    (MotivationalPhrases.entries.toTypedArray().indices).random()
-                ].resourceId
-            ),
-            textAlign = TextAlign.Center,
-            style = SubBody.copy(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurface)
-        )
-    }
-}
-
 /** Ajustes › FlowTime Pro: lo que incluye, o las gracias a quien ya lo tiene. */
 @Composable
 fun ProCard(owned: Boolean, onOpen: () -> Unit) {
@@ -577,9 +556,10 @@ fun AppearanceCard(
                     selected = appearance.darkMode == mode,
                     onClick = { onDarkMode(mode) },
                     shape = SegmentedButtonDefaults.itemShape(index, DarkMode.entries.size),
-                    colors = quietSegmentedColors()
+                    colors = quietSegmentedColors(),
+                    icon = {}
                 ) {
-                    Text(text = stringResource(mode.label))
+                    Text(text = stringResource(mode.label), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         }
@@ -594,6 +574,15 @@ fun AppearanceCard(
         }
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Apagados sin decir por qué parecían rotos.
+        if (!themesEnabled) {
+            Text(
+                text = stringResource(Res.string.appearance_dynamic_hint),
+                style = SubBody.copy(fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant),
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
 
         LazyRow(
             modifier = Modifier
@@ -645,7 +634,7 @@ private fun ThemeSwatch(
     }
     Box(
         modifier = Modifier
-            .size(40.dp)
+            .size(48.dp)
             .clip(CircleShape)
             .background(theme.color)
             .border(

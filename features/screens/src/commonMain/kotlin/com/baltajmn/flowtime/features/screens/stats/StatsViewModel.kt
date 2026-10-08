@@ -10,6 +10,8 @@ import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.goal.Streak
 import com.baltajmn.flowtime.data.pro.ProFeatures
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
+import com.baltajmn.flowtime.data.repository.FocusSession
+import com.baltajmn.flowtime.data.repository.SessionRepository
 import com.baltajmn.flowtime.data.stats.Level
 import com.baltajmn.flowtime.data.stats.PeriodKind
 import com.baltajmn.flowtime.data.stats.StatsPeriod
@@ -54,6 +56,7 @@ class StatsViewModel(
     private val getStudyTimeToClipboard: GetStudyTimeToClipboardUseCase,
     private val setStudyTimeFromClipboard: SetStudyTimeFromClipboardUseCase,
     private val prefs: DataProvider,
+    private val sessions: SessionRepository,
     private val sessionActive: () -> Boolean,
     private val proEnabled: Boolean = ProFeatures.enabled,
     private val today: () -> LocalDate = { systemToday() },
@@ -64,6 +67,7 @@ class StatsViewModel(
     val uiState: StateFlow<StatsUiState> = _uiState.asStateFlow()
 
     private var loading: Job? = null
+    private var watchingDay: Job? = null
 
     init {
         viewModelScope.launch {
@@ -110,6 +114,7 @@ class StatsViewModel(
         val dismissedAt = prefs.getLong(PRO_CARD_DISMISSED_AT)
         val proCardAllowed = !sessionActive() && (dismissedAt == 0L || clock() - dismissedAt > PRO_CARD_PAUSE_MILLIS)
         _uiState.update { it.copy(proCardAllowed = proCardAllowed) }
+        watchDay(period)
         loading?.cancel()
         loading = viewModelScope.launch {
             val now = today()
@@ -143,6 +148,49 @@ class StatsViewModel(
         byTag = stats.byTag(period, now).toList().sortedByDescending { it.second },
         topTasks = stats.topTasks(period, now).take(TOP_TASKS)
     )
+
+    /** Las sesiones del día que se ve, para corregirlas. En la semana o el mes, ninguna: serían muchas. */
+    private fun watchDay(period: StatsPeriod) {
+        val day = period.range(today()).start
+        if (period.kind == PeriodKind.DAY && watchingDay != null && _uiState.value.range.start == day) return
+        watchingDay?.cancel()
+        watchingDay = null
+        if (period.kind != PeriodKind.DAY) return _uiState.update { it.copy(daySessions = emptyList()) }
+        watchingDay = viewModelScope.launch {
+            sessions.sessionsOn(day).collect { list -> _uiState.update { it.copy(daySessions = list) } }
+        }
+    }
+
+    /** Borrar no pregunta: se puede deshacer, como una tarea. */
+    fun deleteSession(id: Long) {
+        val session = _uiState.value.daySessions.firstOrNull { it.id == id } ?: return
+        _uiState.update { it.copy(deletedSession = session) }
+        correct { sessions.delete(id) }
+    }
+
+    fun undoDeleteSession() {
+        val session = _uiState.value.deletedSession ?: return
+        _uiState.update { it.copy(deletedSession = null) }
+        correct { sessions.restore(session) }
+    }
+
+    fun onSessionDeletedShown() = _uiState.update { it.copy(deletedSession = null) }
+
+    fun setSessionMinutes(id: Long, minutes: Long) = correct { sessions.setSeconds(id, minutes * 60) }
+
+    /** El tiempo que no se cronometró, en el día que se ve; sin el periodo de un día, hoy. */
+    fun addMinutes(minutes: Long) {
+        val state = _uiState.value
+        val day = if (state.period.kind == PeriodKind.DAY) state.range.start else today()
+        correct { sessions.addToDays(mapOf(day to minutes * 60), replace = false) }
+    }
+
+    private fun correct(change: suspend () -> Unit) {
+        viewModelScope.launch {
+            change()
+            load()
+        }
+    }
 
     fun exportCsv(file: PickedFile) {
         viewModelScope.launch {
@@ -242,7 +290,11 @@ data class StatsUiState(
     /** Todas, también las archivadas: el tiempo de antes sigue siendo suyo. */
     val tags: List<Tag> = emptyList(),
     val pendingImport: StudyTimeImport? = null,
-    val message: StatsMessage? = null
+    val message: StatsMessage? = null,
+    /** Las sesiones del día, solo con el periodo de un día. */
+    val daySessions: List<FocusSession> = emptyList(),
+    /** La última sesión borrada, mientras se puede deshacer. */
+    val deletedSession: FocusSession? = null
 ) {
     /** La tarjeta discreta de Pro (#57): sin Pro y al llegar a una racha de 7 días. */
     val showProCard: Boolean

@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.core.design.components
 
+import com.baltajmn.flowtime.core.design.theme.SheetTitle
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
@@ -56,6 +57,9 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -74,17 +78,22 @@ private val SPACER = 10.dp
 fun SoundButton(playing: Boolean, onClick: () -> Unit) {
     val description = stringResource(if (playing) Res.string.cd_sounds_playing else Res.string.cd_sounds_stopped)
     IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = description }) {
-        LottieImage(
-            modifier = Modifier.size(30.dp),
-            animation = LottieAnimation.EQUALIZER,
-            // Animar siempre redibuja la pantalla sin parar y gasta batería.
-            playing = playing,
-            tintColor = if (playing) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-            }
-        )
+        if (playing) {
+            // Solo se anima mientras suena: animar siempre redibuja la pantalla y gasta batería.
+            LottieImage(
+                modifier = Modifier.size(30.dp),
+                animation = LottieAnimation.EQUALIZER,
+                playing = true,
+                tintColor = MaterialTheme.colorScheme.primary
+            )
+        } else {
+            // Parado, una nota: el ecualizador quieto no se leía como sonidos.
+            Icon(
+                painter = painterResource(Res.drawable.ic_music),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }
 
@@ -121,7 +130,8 @@ fun SoundSheet(
     DisposableEffect(Unit) { onDispose { preview?.let { ambience.play(it, false) } } }
     val locked = { type: PlayerType -> type.pro && proSoundsLocked }
 
-    ModalBottomSheet(onDismissRequest = onDismiss) {
+    // Entera desde el principio: a medias, los sonidos quedaban debajo del borde.
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         SoundSheetBody(
             sound = sound,
             sleep = sleep,
@@ -209,7 +219,7 @@ fun SoundSheetBody(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = stringResource(Res.string.sounds_title),
-                style = MaterialTheme.typography.titleLarge,
+                style = SheetTitle,
                 modifier = Modifier.weight(1f)
             )
             SleepButton(sleep = sleep, onSleep = onSleep)
@@ -458,17 +468,26 @@ fun SliderItem(
                 Modifier
             },
             painter = painterResource(type.icon),
-            contentDescription = soundName,
+            // El nombre ya se lee en el deslizador.
+            contentDescription = null,
             tint = iconTint ?: tone
         )
 
         // Pista fina y tirador corto: once barras gruesas una encima de otra pesaban demasiado.
         val colors = SliderDefaults.colors(thumbColor = tone, activeTrackColor = tone)
         val interaction = remember { MutableInteractionSource() }
+        // Con nombre: TalkBack decía solo "control deslizante, 40 %".
+        Column(modifier = Modifier.weight(1f).padding(horizontal = 10.dp)) {
+        // A la vista: los iconos solos no decían qué sonaba.
+        Text(
+            text = soundName,
+            style = MaterialTheme.typography.bodySmall.copy(fontSize = 13.sp),
+            color = if (isPlaying) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.clearAndSetSemantics {}
+        )
         Slider(
             modifier = Modifier
-                .padding(horizontal = 10.dp)
-                .weight(1f),
+                .semantics { contentDescription = soundName },
             value = volume,
             onValueChange = { newVolume ->
                 onVolumeChanged(type, newVolume)
@@ -489,6 +508,7 @@ fun SliderItem(
             },
             valueRange = 0f..1f
         )
+        }
 
         IconButton(
             onClick = {

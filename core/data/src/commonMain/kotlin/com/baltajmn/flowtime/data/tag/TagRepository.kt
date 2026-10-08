@@ -139,7 +139,7 @@ class DefaultTagRepository(
         return (0 until TagPalette.COUNT).firstOrNull { it !in used } ?: tags.size % TagPalette.COUNT
     }
 
-    private companion object {
+    companion object {
         const val MAX_NAME = 30
     }
 }

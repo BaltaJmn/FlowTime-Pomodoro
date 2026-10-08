@@ -1,6 +1,5 @@
 package com.baltajmn.flowtime.features.screens.common.composable.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -80,7 +80,7 @@ fun RangeItem(
                             (previousRange.totalRange + time.toInt()).toString()
                         }
                     ),
-                    style = Title.copy(fontSize = 10.sp),
+                    style = Title.copy(fontSize = 12.sp),
                     maxLines = 1
                 )
             },
@@ -93,7 +93,7 @@ fun RangeItem(
                 .weight(0.6f)
                 .onFocusChanged { focus ->
                     if (!focus.hasFocus && time.isBlank()) {
-                        time = 1.toString()
+                        time = range.endRange.toString()
                     }
                 }
         )
@@ -123,7 +123,7 @@ fun RangeItem(
             label = {
                 Text(
                     text = stringResource(Res.string.flow_time_settings_rest),
-                    style = Title.copy(fontSize = 10.sp),
+                    style = Title.copy(fontSize = 12.sp),
                     maxLines = 1
                 )
             },
@@ -136,18 +136,18 @@ fun RangeItem(
                 .weight(0.3f)
                 .onFocusChanged { focus ->
                     if (!focus.hasFocus && rest.isBlank()) {
-                        rest = 1.toString()
+                        rest = range.rest.toString()
                     }
                 }
         )
 
-        Icon(
-            imageVector = Icons.Filled.Close,
-            contentDescription = stringResource(Res.string.cd_delete_range),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier
-                .weight(0.1f)
-                .clickable { onDeleteClicked.invoke(index) }
-        )
+        // Botón de verdad: 48 dp para el dedo y se anuncia como botón.
+        IconButton(onClick = { onDeleteClicked(index) }) {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                contentDescription = stringResource(Res.string.cd_delete_range),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }

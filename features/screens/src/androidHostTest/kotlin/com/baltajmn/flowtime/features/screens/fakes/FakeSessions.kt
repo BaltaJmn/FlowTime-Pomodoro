@@ -1,8 +1,10 @@
 package com.baltajmn.flowtime.features.screens.fakes
 
+import com.baltajmn.flowtime.data.repository.FocusSession
 import com.baltajmn.flowtime.data.repository.SessionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -56,4 +58,22 @@ class FakeSessions : SessionRepository {
     }
 
     override fun importLegacyOnce() = Unit
+
+    val unrecorded = mutableListOf<Long>()
+
+    override fun unrecord(startedAt: Long) {
+        unrecorded += startedAt
+    }
+
+    val sessions = kotlinx.coroutines.flow.MutableStateFlow<List<FocusSession>>(emptyList())
+
+    override fun sessionsOn(day: LocalDate): Flow<List<FocusSession>> = sessions
+
+    override suspend fun delete(id: Long) = sessions.update { list -> list.filterNot { it.id == id } }
+
+    override suspend fun restore(session: FocusSession) = sessions.update { list -> (list + session).sortedBy { it.startedAt } }
+
+    override suspend fun setSeconds(id: Long, seconds: Long) = sessions.update { list ->
+        list.map { if (it.id == id) it.copy(focusSeconds = seconds) else it }
+    }
 }

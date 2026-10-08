@@ -13,6 +13,7 @@ import com.baltajmn.flowtime.data.tag.Tag
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.task.Task
 import com.baltajmn.flowtime.data.task.TaskRepository
+import com.baltajmn.flowtime.data.task.TaskResult
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusSnapshot
 import com.baltajmn.flowtime.data.timer.FocusState
@@ -55,7 +56,11 @@ data class FocusUiState(
     val taskTitle: String? = null,
     val pendingTasks: List<Task> = emptyList(),
     /** En el descanso de un bloque con tarea: preguntar si se ha terminado. */
-    val askTaskDone: Boolean = false
+    val askTaskDone: Boolean = false,
+    /** Lo trabajado al parar, en milisegundos, mientras se avisa y se puede deshacer. */
+    val stoppedMillis: Long? = null,
+    /** En el descanso, lo que se guardó del bloque que acaba de terminar. */
+    val savedMillis: Long = 0
 ) {
     val isActive get() = phase != Phase.IDLE
     val isBreak get() = phase == Phase.BREAK
@@ -81,6 +86,7 @@ class FocusViewModel(
         tasks.day(today, today).map { list -> list.filterNot(Task::done) }
     }
     private val answeredFor = MutableStateFlow<Long?>(null)
+    private val stopped = MutableStateFlow<Long?>(null)
 
     // El día sale del repositorio del objetivo: con la pantalla abierta pasada la medianoche, antes
     // seguía sumando los minutos de ayer.
@@ -96,7 +102,7 @@ class FocusViewModel(
         }.combine(answeredFor) { state, answered ->
             val asked = answered == engine.state.value.workStartedAt
             state.copy(askTaskDone = state.askTaskDone && !asked)
-        }.stateIn(
+        }.combine(stopped) { state, worked -> state.copy(stoppedMillis = worked) }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
             toUiState(engine.snapshot(), today = null, streak = 0, tags = emptyList())
@@ -112,7 +118,21 @@ class FocusViewModel(
         }
     }
 
-    fun onAction(action: TimerAction) = engine.perform(action)
+    /** Parar trabajando avisa de lo guardado; un descanso ya guardó su trabajo al empezar. */
+    fun onAction(action: TimerAction) {
+        if (action != TimerAction.STOP) return engine.perform(action)
+        val worked = engine.stop()
+        if (worked > 0) stopped.value = worked
+    }
+
+    fun undoStop() {
+        stopped.value = null
+        engine.undoStop()
+    }
+
+    fun onStoppedShown() {
+        stopped.value = null
+    }
 
     /** Con una sesión en marcha, el motor no lo cambia. */
     fun select(mode: TimerMode) = engine.select(mode)
@@ -128,6 +148,17 @@ class FocusViewModel(
         viewModelScope.launch {
             tasks.setDone(id, done = true, today = today())
             engine.setTask(null)
+        }
+    }
+
+    /** Una tarea nueva desde el selector, para hoy, y ya elegida: sin tareas no era un callejón sin salida. */
+    fun addTask(title: String, onLimit: () -> Unit) {
+        viewModelScope.launch {
+            when (val result = tasks.add(title, "", today())) {
+                is TaskResult.Done -> engine.setTask(result.id, null, title.trim())
+                TaskResult.LimitReached -> onLimit()
+                TaskResult.Invalid -> Unit
+            }
         }
     }
 
@@ -177,7 +208,8 @@ class FocusViewModel(
             hint = ring.hint,
             taskId = session.taskId,
             taskTitle = session.taskTitle,
-            askTaskDone = session.phase == Phase.BREAK && session.taskId != null
+            askTaskDone = session.phase == Phase.BREAK && session.taskId != null,
+            savedMillis = if (session.phase == Phase.BREAK) session.lastWorkMillis else 0
         )
     }
 }

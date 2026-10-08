@@ -26,6 +26,7 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import com.baltajmn.flowtime.data.goal.weekStart
 import kotlin.math.ceil
@@ -44,6 +45,7 @@ fun Bars(values: List<Long>, labels: List<String>, description: String, height: 
     val color = MaterialTheme.colorScheme.primary
     val empty = MaterialTheme.colorScheme.outlineVariant
     val labelStyle = MaterialTheme.typography.labelSmall.copy(
+        fontSize = 12.sp,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
     val measurer = rememberTextMeasurer()
@@ -53,7 +55,7 @@ fun Bars(values: List<Long>, labels: List<String>, description: String, height: 
             .height(height)
             .semantics { contentDescription = description }
     ) {
-        val labelHeight = 18.dp.toPx()
+        val labelHeight = 20.dp.toPx()
         val chartHeight = size.height - labelHeight
         val slot = size.width / values.size
         val barWidth = slot * 0.7f
@@ -107,9 +109,8 @@ fun YearHeatmap(year: Int, byDay: Map<LocalDate, Long>, description: String) {
             val seconds = byDay[day] ?: 0L
             drawRoundRect(
                 color = if (seconds > 0 && max > 0) {
-                    color.copy(
-                        alpha = ceil(4f * seconds / max) / 4f
-                    )
+                    // De 0.4 a 1: el cuarto más bajo se distinguía mal de un día vacío.
+                    color.copy(alpha = 0.2f + 0.2f * ceil(4f * seconds / max))
                 } else {
                     empty
                 },

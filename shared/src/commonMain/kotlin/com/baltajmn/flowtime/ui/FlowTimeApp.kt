@@ -1,6 +1,10 @@
 package com.baltajmn.flowtime.ui
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import com.baltajmn.flowtime.core.design.theme.Appearance
 import com.baltajmn.flowtime.core.design.theme.FlowTimeTheme
 import com.baltajmn.flowtime.features.screens.pro.ProRequest
@@ -23,15 +27,21 @@ fun FlowTimeApp(
     onAddQuickTile: (() -> Unit)? = null
 ) {
     FlowTimeTheme(appearance = appearance) {
-        celebration?.let { CelebrationDialog(it, onDismiss = onCelebrationShown) }
         proRequest?.let { ProSheet(from = it.from, onDismiss = onProClosed) }
 
-        FlowTimeNavHost(
-            flowTimeAppState = flowTimeAppState,
-            showSound = showSound,
-            onSoundChange = onSoundChange,
-            openFocus = openFocus,
-            onAddQuickTile = onAddQuickTile
-        )
+        Box(modifier = Modifier.fillMaxSize()) {
+            FlowTimeNavHost(
+                flowTimeAppState = flowTimeAppState,
+                showSound = showSound,
+                onSoundChange = onSoundChange,
+                openFocus = openFocus,
+                onAddQuickTile = onAddQuickTile
+            )
+            CelebrationBanner(
+                celebration = celebration,
+                onDismiss = onCelebrationShown,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+        }
     }
 }

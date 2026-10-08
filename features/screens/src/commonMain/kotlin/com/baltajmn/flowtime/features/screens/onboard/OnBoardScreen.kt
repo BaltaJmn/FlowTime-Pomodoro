@@ -262,7 +262,7 @@ private fun OnBoardItem(
                 .sizeIn(maxWidth = 96.dp, maxHeight = 96.dp)
                 .aspectRatio(1f),
             painter = painterResource(imageRes),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
             contentDescription = null
         )
         Text(text = stringResource(title), style = pageTitle())

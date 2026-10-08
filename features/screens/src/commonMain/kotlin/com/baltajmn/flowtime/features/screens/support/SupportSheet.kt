@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.features.screens.support
 
+import com.baltajmn.flowtime.core.design.theme.SheetTitle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -89,7 +92,8 @@ fun SupportContent(
             )
             Text(
                 text = stringResource(Res.string.support_thanks_title),
-                style = MaterialTheme.typography.headlineSmall
+                style = SheetTitle,
+                modifier = Modifier.semantics { heading() }
             )
             Text(text = stringResource(Res.string.support_thanks_text), textAlign = TextAlign.Center)
             Button(onClick = onUseTheme, modifier = Modifier.fillMaxWidth()) {
@@ -101,7 +105,8 @@ fun SupportContent(
 
         Text(
             text = stringResource(Res.string.support_sheet_title),
-            style = MaterialTheme.typography.headlineSmall
+            style = SheetTitle,
+            modifier = Modifier.semantics { heading() }
         )
         Text(text = stringResource(Res.string.support_sheet_text), textAlign = TextAlign.Center)
         Spacer(modifier = Modifier.height(4.dp))

@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FilterChip
+import com.baltajmn.flowtime.core.design.components.selectedChipBorder
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +37,8 @@ fun TagChips(tags: List<Tag>, selected: Long?, onSelect: (Long?) -> Unit) {
             FilterChip(
                 selected = tags.none { it.id == selected },
                 onClick = { onSelect(null) },
-                label = { Text(text = stringResource(Res.string.tag_none)) }
+                label = { Text(text = stringResource(Res.string.tag_none)) },
+                border = selectedChipBorder(tags.none { it.id == selected })
             )
         }
         items(tags, key = { it.id }) { tag ->
@@ -44,6 +46,7 @@ fun TagChips(tags: List<Tag>, selected: Long?, onSelect: (Long?) -> Unit) {
                 selected = tag.id == selected,
                 onClick = { onSelect(tag.id) },
                 label = { Text(text = tag.name) },
+                border = selectedChipBorder(tag.id == selected),
                 leadingIcon = {
                     Box(
                         modifier = Modifier

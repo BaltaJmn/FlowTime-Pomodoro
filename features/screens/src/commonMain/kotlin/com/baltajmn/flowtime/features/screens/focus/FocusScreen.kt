@@ -1,6 +1,25 @@
 package com.baltajmn.flowtime.features.screens.focus
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalDensity
+import com.baltajmn.flowtime.core.common.extensions.formatMinutesStudying
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,6 +68,7 @@ import com.baltajmn.flowtime.core.design.components.SoundSheet
 import com.baltajmn.flowtime.core.design.sound.Ambience
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.data.task.Task
+import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.Phase
 import com.baltajmn.flowtime.data.timer.TimerAction
 import com.baltajmn.flowtime.data.timer.TimerMode
@@ -82,6 +102,11 @@ import com.baltajmn.flowtime.features.screens.platform.KeepScreenOn
 
 private enum class FocusSheet { SOUNDS, MODE }
 
+/** Si hay una sesión en marcha: la pestaña de Enfoque lo marca desde cualquier otra pantalla. */
+@Composable
+fun sessionRunning(engine: FocusEngine = koinInject()): Boolean =
+    engine.state.collectAsStateWithLifecycle().value.isActive
+
 /** La pantalla de inicio (#51): el modo, el temporizador, empezar y el progreso de hoy. */
 @Composable
 fun FocusScreen(
@@ -89,7 +114,9 @@ fun FocusScreen(
     viewModel: FocusViewModel = koinViewModel(),
     ambience: Ambience = koinInject(),
     gate: ProGate = koinInject(),
-    proLauncher: ProLauncher = koinInject()
+    proLauncher: ProLauncher = koinInject(),
+    /** Lo de hoy en Estadísticas, para ver o corregir sus sesiones. */
+    onOpenToday: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val sound by ambience.state.collectAsStateWithLifecycle()
@@ -99,25 +126,48 @@ fun FocusScreen(
 
     KeepScreenOn(active = state.keepScreenOn && state.isActive && !state.paused)
 
-    FocusContent(
-        state = state,
-        showSound = showSound,
-        soundPlaying = sound.playing.isNotEmpty(),
-        onSelectMode = viewModel::select,
-        onAction = { action ->
-            viewModel.onAction(action)
-            // La primera sesión es cuando se entiende para qué sirve el permiso.
-            if (action == TimerAction.START && !notifications.granted()) {
-                explainNotifications = viewModel.explainNotificationsOnce()
-            }
-        },
-        onOpenSounds = { sheet = FocusSheet.SOUNDS },
-        onOpenModeSettings = { sheet = FocusSheet.MODE },
-        onTagSelected = viewModel::selectTag,
-        onTaskSelected = viewModel::selectTask,
-        onTaskDone = viewModel::completeTask,
-        onTaskNotYet = viewModel::keepTask
-    )
+    // Parar no pregunta: dice lo que se ha guardado y deja deshacerlo, como borrar una tarea.
+    val snackbar = remember { SnackbarHostState() }
+    state.stoppedMillis?.let { worked ->
+        val message = if (worked >= MINUTE_MILLIS) {
+            stringResource(Res.string.stop_saved, (worked / MINUTE_MILLIS).formatMinutesStudying())
+        } else {
+            stringResource(Res.string.stop_too_short)
+        }
+        val undo = stringResource(Res.string.task_undo)
+        // Más que el de borrar una tarea: parar sin querer es lo que más cuesta deshacer.
+        LaunchedEffect(worked) {
+            val result = snackbar.showSnackbar(message, undo, duration = SnackbarDuration.Long)
+            if (result == SnackbarResult.ActionPerformed) viewModel.undoStop() else viewModel.onStoppedShown()
+        }
+    }
+    // Al irse de la pantalla el aviso se pierde: deshacer ya no vale, y al volver no debe salir otra vez.
+    DisposableEffect(Unit) { onDispose { viewModel.onStoppedShown() } }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        FocusContent(
+            state = state,
+            showSound = showSound,
+            soundPlaying = sound.playing.isNotEmpty(),
+            onSelectMode = viewModel::select,
+            onAction = { action ->
+                viewModel.onAction(action)
+                // La primera sesión es cuando se entiende para qué sirve el permiso.
+                if (action == TimerAction.START && !notifications.granted()) {
+                    explainNotifications = viewModel.explainNotificationsOnce()
+                }
+            },
+            onOpenSounds = { sheet = FocusSheet.SOUNDS },
+            onOpenModeSettings = { sheet = FocusSheet.MODE },
+            onTagSelected = viewModel::selectTag,
+            onTaskSelected = viewModel::selectTask,
+            onTaskDone = viewModel::completeTask,
+            onTaskNotYet = viewModel::keepTask,
+            onCreateTask = { title -> viewModel.addTask(title) { proLauncher.open(ProFeature.TASKS) } },
+            onOpenToday = onOpenToday
+        )
+        SnackbarHost(hostState = snackbar, modifier = Modifier.align(Alignment.BottomCenter))
+    }
 
     when (sheet) {
         FocusSheet.SOUNDS -> SoundSheet(
@@ -168,7 +218,9 @@ fun FocusContent(
     onTagSelected: (Long?) -> Unit = {},
     onTaskSelected: (Task?) -> Unit = {},
     onTaskDone: () -> Unit = {},
-    onTaskNotYet: () -> Unit = {}
+    onTaskNotYet: () -> Unit = {},
+    onCreateTask: ((String) -> Unit)? = null,
+    onOpenToday: () -> Unit = {}
 ) {
     val tools = @Composable {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
@@ -182,9 +234,41 @@ fun FocusContent(
             }
         }
     }
+    // Antes de los botones, en qué se trabaja; después, lo que se lleva hoy. Lo que se elige va
+    // delante de la acción, y el resultado detrás.
+    // Con la sesión en marcha, la tarea y la etiqueta caben en una línea: tocarla las vuelve a abrir.
+    val setup = @Composable {
+        var open by rememberSaveable(state.isActive) { mutableStateOf(!state.isActive) }
+        if (open) {
+            TaskChip(
+                title = state.taskTitle,
+                pending = state.pendingTasks,
+                onSelect = onTaskSelected,
+                onCreate = onCreateTask
+            )
+        } else {
+            SessionLine(
+                task = state.taskTitle,
+                tag = state.tags.firstOrNull { it.id == state.tagId }?.name,
+                onClick = { open = true }
+            )
+        }
+        if (state.askTaskDone && state.taskTitle != null) {
+            TaskDoneQuestion(title = state.taskTitle, onYes = onTaskDone, onNotYet = onTaskNotYet)
+        }
+        if (open) TagChips(tags = state.tags, selected = state.tagId, onSelect = onTagSelected)
+    }
+    // Lo de hoy lleva a sus sesiones en Estadísticas; la racha, solo con la sesión parada.
     val today = @Composable {
-        MinutesStudying(minutesStudying = state.minutesToday, goal = state.goalToday)
-        if (state.streak > 0) {
+        Box(
+            modifier = Modifier
+                .clip(MaterialTheme.shapes.small)
+                .clickable(onClickLabel = stringResource(Res.string.cd_open_today), onClick = onOpenToday)
+                .padding(horizontal = 12.dp, vertical = 4.dp)
+        ) {
+            MinutesStudying(minutesStudying = state.minutesToday, goal = state.goalToday)
+        }
+        if (state.streak > 0 && !state.isActive) {
             Text(
                 text = pluralStringResource(Res.plurals.streak_days, state.streak, state.streak),
                 style = SubBody.copy(
@@ -193,12 +277,6 @@ fun FocusContent(
                 )
             )
         }
-        Spacer(modifier = Modifier.height(12.dp))
-        TagChips(tags = state.tags, selected = state.tagId, onSelect = onTagSelected)
-        TaskChip(title = state.taskTitle, pending = state.pendingTasks, onSelect = onTaskSelected)
-        if (state.askTaskDone && state.taskTitle != null) {
-            TaskDoneQuestion(title = state.taskTitle, onYes = onTaskDone, onNotYet = onTaskNotYet)
-        }
     }
 
     // Por el espacio que queda de verdad y no por la orientación del aparato (#46): en pantalla
@@ -206,7 +284,7 @@ fun FocusContent(
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         if (maxWidth > maxHeight) {
             val ring = minOf(maxHeight * 0.6f, maxWidth / 2 - 40.dp, 320.dp)
-            TwoColumns(state, ring, onAction, onSelectMode, tools, today)
+            TwoColumns(state, ring, onAction, onSelectMode, tools, setup, today)
         } else {
             OneColumn(
                 state,
@@ -215,6 +293,7 @@ fun FocusContent(
                 onAction,
                 onSelectMode,
                 tools,
+                setup,
                 today
             )
         }
@@ -228,6 +307,7 @@ private fun TwoColumns(
     onAction: (TimerAction) -> Unit,
     onSelectMode: (TimerMode) -> Unit,
     tools: @Composable () -> Unit,
+    setup: @Composable () -> Unit,
     today: @Composable () -> Unit
 ) {
     Row(
@@ -261,8 +341,12 @@ private fun TwoColumns(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                ModeSelector(state, onSelectMode)
-                ModeLine(state)
+                if (!state.isActive) {
+                    ModeSelector(state, onSelectMode)
+                    ModeLine(state)
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                setup()
                 Spacer(modifier = Modifier.height(16.dp))
                 ButtonsContent(state = state, onAction = onAction)
                 Spacer(modifier = Modifier.height(16.dp))
@@ -281,6 +365,7 @@ private fun OneColumn(
     onAction: (TimerAction) -> Unit,
     onSelectMode: (TimerMode) -> Unit,
     tools: @Composable () -> Unit,
+    setup: @Composable () -> Unit,
     today: @Composable () -> Unit
 ) {
     RingColumn(
@@ -292,18 +377,23 @@ private fun OneColumn(
             .windowInsetsPadding(WindowInsets.statusBars)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp),
+        // En marcha no se puede cambiar de modo: el selector no se enseña, y el modo va con la fase.
         top = {
             tools()
-            ModeSelector(state, onSelectMode)
-            ModeLine(state)
-            Spacer(modifier = Modifier.height(24.dp))
+            if (!state.isActive) {
+                ModeSelector(state, onSelectMode)
+                ModeLine(state)
+            }
+            Spacer(modifier = Modifier.height(if (state.isActive) 8.dp else 24.dp))
             PhaseTitle(state)
         },
         ring = { size -> Ring(state, size) },
         bottom = {
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+            setup()
+            Spacer(modifier = Modifier.height(16.dp))
             ButtonsContent(state = state, onAction = onAction)
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             today()
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -339,7 +429,26 @@ private fun RingColumn(
     }
 }
 
+/** Tarea y etiqueta de la sesión en marcha, en voz baja. */
+@Composable
+private fun SessionLine(task: String?, tag: String?, onClick: () -> Unit) {
+    TextButton(
+        onClick = onClick,
+        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant)
+    ) {
+        Text(
+            text = listOfNotNull(tag, task).joinToString(" · ").ifEmpty { stringResource(Res.string.task_pick_title) },
+            modifier = Modifier.widthIn(max = 280.dp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
+    }
+}
+
 private val MIN_RING = 200.dp
+
+private const val MINUTE_MILLIS = 60_000L
 
 /** Con una sesión en marcha, el selector enseña su modo y no deja cambiarlo. */
 @Composable
@@ -371,9 +480,7 @@ private fun ModeSelector(state: FocusUiState, onSelect: (TimerMode) -> Unit) {
 @Composable
 private fun ModeLine(state: FocusUiState) {
     Text(
-        text = stringResource(
-            if (state.isActive) Res.string.focus_mode_locked else state.mode.advantages
-        ),
+        text = stringResource(state.mode.advantages),
         modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
         textAlign = TextAlign.Center,
         style = SubBody.copy(fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -394,7 +501,13 @@ private fun PhaseTitle(state: FocusUiState) {
     }
     if (title != null) {
         Text(
+            text = stringResource(state.mode.label),
+            style = SubBody.copy(fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        )
+        // Se anuncia al cambiar: de trabajar a descansar, sin mirar.
+        Text(
             text = stringResource(title),
+            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
             style = SmallTitle.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -405,17 +518,24 @@ private fun PhaseTitle(state: FocusUiState) {
 private fun Ring(state: FocusUiState, size: Dp) {
     // Trabajo con primary y descanso con tertiary: se distinguen sin leer nada.
     val color = if (state.isBreak) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary
+    // El reloj se mide por el anillo, no por la letra del sistema: con la letra al 200 % se salía, y
+    // un anillo de 238 pt (el del iPhone) bajaba de golpe al tamaño pequeño. 64 sp en 280 dp.
+    val clock = with(LocalDensity.current) { (size * if (state.time.length > 5) 0.16f else 0.23f).toSp() }
     ProgressRing(progress = state.progress, modifier = Modifier.size(size), color = color) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            TimeContent(
-                secondsFormatted = state.time,
-                fontSize = when {
-                    size < 240.dp -> if (state.time.length > 5) 32.sp else 44.sp
-                    else -> if (state.time.length > 5) 44.sp else 64.sp
-                },
-                color = color
-            )
-            TimerHintText(hint = state.hint)
+            TimeContent(secondsFormatted = state.time, fontSize = clock, color = color)
+            // En el descanso, lo guardado del bloque: al terminar solo no había otro acuse que el color.
+            if (state.isBreak && state.savedMillis >= MINUTE_MILLIS) {
+                Text(
+                    text = stringResource(Res.string.stop_saved, (state.savedMillis / MINUTE_MILLIS).formatMinutesStudying()),
+                    modifier = Modifier.width(size * 0.7f),
+                    style = SubBody.copy(fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant),
+                    textAlign = TextAlign.Center,
+                    maxLines = 2
+                )
+            } else {
+                TimerHintText(hint = state.hint, modifier = Modifier.width(size * 0.7f))
+            }
         }
     }
 }

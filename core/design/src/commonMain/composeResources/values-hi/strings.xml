@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="flow_time_title">FlowTime तैयार</string>
-    <string name="pomodoro_title">पोमोडोरो तैयार</string>
     <string name="flow_time_settings_title">FlowTime सेटिंग्स</string>
     <string name="flow_time_settings_in_the_first">पहले %1$s मिनट में</string>
     <string name="flow_time_settings_rest">मैं आराम करूंगा</string>
@@ -15,38 +13,13 @@
     <string name="settings_save">परिवर्तनों को सुरक्षित करें</string>
     <string name="time_title_working">काम</string>
     <string name="time_title_resting">आराम</string>
-    <string name="button_break">ब्रेक</string>
     <string name="dialog_confirm">पुष्टि करें</string>
     <string name="dialog_cancel">रद्द करें</string>
-    <string name="go_to_history">इतिहास पर जाएं</string>
     <string name="settings_intro">परिचय</string>
     <string name="settings_intro_button">देखें</string>
     <string name="settings_rate">FlowTime पसंद आया?</string>
     <string name="settings_rate_button">रेटिंग दें</string>
     <string name="settings_privacy">गोपनीयता नीति</string>
-    <string name="others">अन्य</string>
-    <string name="remember">याद रखें</string>
-    <string name="mot_1">तुम कर सकते हो! :)</string>
-    <string name="mot_2">रुको मत, जारी रखो! :)</string>
-    <string name="mot_3">दृढ़ संकल्प सब कुछ जीत लेता है! :)</string>
-    <string name="mot_4">तुम मजबूत हो, जारी रखो! :)</string>
-    <string name="mot_5">छोटे कदम, बड़ी सफलता! :)</string>
-    <string name="mot_6">कोई सीमा नहीं, सिर्फ संभावनाएँ! :)</string>
-    <string name="mot_7">तुम सर्जक हो! :)</string>
-    <string name="mot_8">दृढ़ रहो, तुम जीतोगे! :)</string>
-    <string name="mot_9">सफलता तुम्हारा इंतजार कर रही है! :)</string>
-    <string name="mot_10">स्थिर रहो, तुम कर सकते हो! :)</string>
-    <string name="mot_11">आगे बढ़ो, तुम्हारे पास शक्ति है! :)</string>
-    <string name="mot_12">हर कदम मायने रखता है, रुको मत! :)</string>
-    <string name="mot_13">दृढ़ संकल्प हर बाधा को पार कर लेता है! :)</string>
-    <string name="mot_14">तुम जितना सोचते हो, उससे कहीं ज़्यादा मज़बूत हो! :)</string>
-    <string name="mot_15">छोटे प्रयास मिलकर बड़ी उपलब्धियाँ बनते हैं! :)</string>
-    <string name="mot_16">कोई सीमा नहीं, सिर्फ संभावनाएँ! :)</string>
-    <string name="mot_17">तुम अपने भविष्य के शिल्पकार हो! :)</string>
-    <string name="mot_18">दृढ़ रहो, तुम सफलता के करीब हो! :)</string>
-    <string name="mot_19">सफलता तुम्हारे मार्ग के अंत में इंतजार कर रही है! :)</string>
-    <string name="mot_20">स्थिर रहो, जीत तुम्हारी है! :)</string>
-    <string name="percentage_title">प्रतिशत मोड तैयार</string>
     <string name="percentage_settings_title">आराम का प्रतिशत</string>
     <string name="support_developer">टिप दें</string>
     <string name="support_developer_title">FlowTime का साथ दें</string>
@@ -65,7 +38,6 @@
     <string name="show_alert">हर चरण के अंत में सूचित करें</string>
     <string name="alert_google_play">Google Play से कनेक्ट करने में त्रुटि</string>
     <string name="alert_google_play_desc">आवश्यक डेटा प्राप्त करने के लिए सुनिश्चित करें कि आपके पास सक्रिय इंटरनेट कनेक्शन है।</string>
-    <string name="advantage_title">लाभ</string>
     <string name="pomodoro_advantages">काम और आराम तय ब्लॉकों में, जिन्हें आप खुद तय करते हैं।</string>
     <string name="flow_time_advantages">जब तक ध्यान बना रहे, काम करें। जितना लंबा काम, उतना लंबा ब्रेक।</string>
     <string name="percentage_advantages">ब्रेक आपके काम के समय का एक तय प्रतिशत होता है।</string>
@@ -76,11 +48,9 @@
     <string name="import_conflict_message">जिन दिनों में पहले से मिनट सहेजे गए हैं: %1$d। आप उनके साथ क्या करना चाहते हैं?</string>
     <string name="import_replace">बदलें</string>
     <string name="import_sum">जोड़ें</string>
-    <string name="nav_back">वापस</string>
     <string name="nav_todo_list">कार्य</string>
     <string name="nav_settings">सेटिंग्स</string>
     <string name="mode_percentage">प्रतिशत</string>
-    <string name="todo_list_title">कार्य सूची</string>
     <string name="todo_add_item">कार्य जोड़ें</string>
     <string name="todo_item_title">शीर्षक</string>
     <string name="todo_item_description">विवरण</string>
@@ -177,7 +147,7 @@
     <string name="backup_import_failed">बैकअप आयात नहीं हो सका। कुछ भी नहीं बदला।</string>
     <string name="goal_title">दैनिक लक्ष्य</string>
     <string name="goal_per_day">रोज़ %1$s</string>
-    <string name="goal_today">%2$s में से %1$s</string>
+    <string name="goal_today">आज %2$s में से %1$s</string>
     <string name="goal_decrease">लक्ष्य घटाएँ</string>
     <string name="goal_increase">लक्ष्य बढ़ाएँ</string>
     <string name="goal_reached">दैनिक लक्ष्य पूरा!</string>
@@ -256,8 +226,7 @@
     <string name="theme_supporter">Supporter</string>
     <string name="nav_focus">फ़ोकस</string>
     <string name="nav_stats">आँकड़े</string>
-    <string name="cd_mode_settings">इस मोड की सेटिंग</string>
-    <string name="focus_mode_locked">मोड बदलने के लिए सत्र रोकें</string>
+    <string name="cd_mode_settings">इस मोड को समायोजित करें</string>
     <string name="sounds_title">ध्वनियाँ</string>
     <string name="stats_year">साल</string>
     <string name="stats_first_session">आपका पहला सत्र यहां दिखेगा</string>
@@ -335,7 +304,7 @@
     <string name="sound_train">रेलगाड़ी</string>
     <string name="sound_typing">टाइपिंग</string>
     <string name="sound_tent">तंबू पर बारिश</string>
-    <string name="pro_sounds_title">6 नई ध्वनियाँ</string>
+    <string name="pro_sounds_title">नई ध्वनियाँ</string>
     <string name="pro_sounds_text">झरना, रात के झींगुर, पंखा, रेलगाड़ी, टाइपिंग और तंबू पर बारिश। खरीदने से पहले हर एक 10 सेकंड सुन सकते हैं।</string>
     <string name="cd_pro_sound">%1$s, Pro ध्वनि</string>
     <string name="theme_lavender">लैवेंडर</string>
@@ -360,4 +329,22 @@
     <string name="notifications_title_ios">हर चरण खत्म होने पर सूचना दें?</string>
     <string name="notifications_text_ios">ऐप बंद होने पर भी आपको पता चलेगा कि कब ब्रेक लेना है और कब फिर से ध्यान लगाना है।</string>
     <string name="notifications_off_ios">सूचनाएं बंद हैं। ऐप बंद होने पर भी सूचनाएं पाने के लिए इन्हें चालू करें।</string>
+    <string name="stop_saved">सहेजा गया: %1$s</string>
+    <string name="stop_too_short">एक मिनट से कम: नहीं सहेजा गया</string>
+    <string name="todo_previous_day">पिछला दिन</string>
+    <string name="todo_next_day">अगला दिन</string>
+    <string name="todo_empty">इस दिन के लिए कुछ भी योजनबद्ध नहीं है</string>
+    <string name="cd_focus_task">%1$s पर काम करें</string>
+    <string name="session_added">समय जोड़ा गया</string>
+    <string name="session_edit">सत्र संपादित करें</string>
+    <string name="sessions_add">समय जोड़ें</string>
+    <string name="session_minutes">मिनट</string>
+    <string name="settings_session_title">सत्र के दौरान</string>
+    <string name="settings_about_title">बारे में</string>
+    <string name="level_hint">फ़ोकस का हर मिनट अगले स्तर की ओर गिना जाता है</string>
+    <string name="cd_open_today">आज के सत्र देखें</string>
+    <string name="session_minutes_range">1 से %1$d तक</string>
+    <string name="session_deleted">सत्र हटाया गया</string>
+    <string name="appearance_dynamic_hint">वॉलपेपर के रंग बंद करके थीम चुनें</string>
+    <string name="streak_free_day_left">इस हफ़्ते का छुट्टी का दिन अभी बाकी है</string>
 </resources>

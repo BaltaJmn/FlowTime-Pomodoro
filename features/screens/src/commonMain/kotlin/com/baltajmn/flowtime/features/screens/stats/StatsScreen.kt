@@ -1,6 +1,24 @@
 package com.baltajmn.flowtime.features.screens.stats
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import com.baltajmn.flowtime.data.tag.Tag
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.TextField
+import androidx.compose.ui.text.input.KeyboardType
+import com.baltajmn.flowtime.data.repository.FocusSession
+import kotlin.time.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
@@ -97,7 +115,10 @@ import kotlinx.datetime.Month
 @Composable
 fun StatsScreen(
     viewModel: StatsViewModel = koinViewModel(),
-    proLauncher: ProLauncher = koinInject()
+    proLauncher: ProLauncher = koinInject(),
+    /** Venir a ver hoy: el periodo pasa al día. */
+    openToday: Boolean = false,
+    onTodayOpened: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val showMessage = rememberShowMessage()
@@ -105,7 +126,14 @@ fun StatsScreen(
     val csvFile = rememberCreateFile("text/csv", viewModel::exportCsv)
 
     // Cada vez que se entra: puede haber sesiones nuevas.
-    LaunchedEffect(Unit) { viewModel.load() }
+    LaunchedEffect(openToday) {
+        if (openToday) {
+            viewModel.selectPeriod(PeriodKind.DAY)
+            onTodayOpened()
+        } else {
+            viewModel.load()
+        }
+    }
 
     state.message?.let { message ->
         LaunchedEffect(message) {
@@ -120,6 +148,17 @@ fun StatsScreen(
         )
     }
 
+    // Borrar una sesión no pregunta: se puede deshacer.
+    val snackbar = remember { SnackbarHostState() }
+    val deletedText = stringResource(Res.string.session_deleted)
+    val undoText = stringResource(Res.string.task_undo)
+    LaunchedEffect(state.deletedSession) {
+        if (state.deletedSession == null) return@LaunchedEffect
+        val result = snackbar.showSnackbar(deletedText, undoText, duration = SnackbarDuration.Long)
+        if (result == SnackbarResult.ActionPerformed) viewModel.undoDeleteSession() else viewModel.onSessionDeletedShown()
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
     StatsContent(
         state = state,
         onPeriod = viewModel::selectPeriod,
@@ -129,8 +168,13 @@ fun StatsScreen(
         onDismissProCard = viewModel::dismissProCard,
         onCopyHistory = { viewModel.exportStudyTime { clipboard.setText(AnnotatedString(it)) } },
         onPasteHistory = { viewModel.importStudyTime(clipboard.getText()?.text.orEmpty()) },
-        onExportCsv = { csvFile("flowtime-${today()}.csv") }
+        onExportCsv = { csvFile("flowtime-${today()}.csv") },
+        onDeleteSession = viewModel::deleteSession,
+        onSessionMinutes = viewModel::setSessionMinutes,
+        onAddMinutes = viewModel::addMinutes
     )
+    SnackbarHost(hostState = snackbar, modifier = Modifier.align(Alignment.BottomCenter))
+    }
 }
 
 @Composable
@@ -143,7 +187,10 @@ fun StatsContent(
     onDismissProCard: () -> Unit,
     onCopyHistory: () -> Unit,
     onPasteHistory: () -> Unit,
-    onExportCsv: () -> Unit
+    onExportCsv: () -> Unit,
+    onDeleteSession: (Long) -> Unit = {},
+    onSessionMinutes: (Long, Long) -> Unit = { _, _ -> },
+    onAddMinutes: (Long) -> Unit = {}
 ) {
     val unlockStats = { onUnlock(ProFeature.STATS) }
     val summary: LazyListScope.() -> Unit = summary@{
@@ -156,14 +203,17 @@ fun StatsContent(
                 onExportCsv = onExportCsv
             )
         }
-        item { LevelCard(state.level) }
         state.today?.let { today -> item { GoalProgressCard(today, state.streak) } }
         if (state.loading) return@summary
         if (!state.hasSessions) {
-            item { FirstSessionCard() }
+            item { FirstSessionCard(onAddMinutes) }
             return@summary
         }
-        item { PeriodCard(state, onPeriod, onPrevious, onNext, unlockStats) }
+        item {
+            PeriodCard(state, onPeriod, onPrevious, onNext, unlockStats) {
+                DaySessions(state.daySessions, state.tags, onDeleteSession, onSessionMinutes, onAddMinutes)
+            }
+        }
         if (state.showProCard) {
             item {
                 ProStreakCard(
@@ -173,6 +223,8 @@ fun StatsContent(
                 )
             }
         }
+        // El nivel, después de los números del periodo: es lo de siempre, no lo de hoy.
+        item { LevelCard(state.level) }
     }
     val details = state.details
     val hasDetails = !state.loading && state.hasSessions && state.pro != ProAccess.HIDDEN &&
@@ -186,7 +238,8 @@ fun StatsContent(
         item {
             DetailCard(Res.string.stats_by_mode) {
                 val colors = MaterialTheme.colorScheme
-                val palette = listOf(colors.primary, colors.tertiary, colors.secondary)
+                // Sin tertiary: en la pantalla de enfoque es el color del descanso.
+                val palette = listOf(colors.primary, colors.secondary, colors.outline)
                 val shares = details.byMode.map { (mode, seconds) ->
                     Share(stringResource(mode.label), palette[mode.ordinal % palette.size], seconds)
                 }
@@ -371,6 +424,10 @@ private fun LevelCard(level: Level) {
                     .height(8.dp),
                 drawStopIndicator = {}
             )
+            Text(
+                text = stringResource(Res.string.level_hint),
+                style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+            )
         }
     }
 }
@@ -414,8 +471,21 @@ private fun GoalProgressCard(today: DayProgress, streak: Streak) {
     }
 }
 
+/** Sin sesiones todavía. Se puede añadir el tiempo de antes de usar la app, o el que no se cronometró. */
 @Composable
-private fun FirstSessionCard() {
+private fun FirstSessionCard(onAdd: (Long) -> Unit) {
+    var adding by rememberSaveable { mutableStateOf(false) }
+    if (adding) {
+        MinutesDialog(
+            title = Res.string.sessions_add,
+            initial = null,
+            onDismiss = { adding = false },
+            onSave = { minutes ->
+                adding = false
+                onAdd(minutes)
+            }
+        )
+    }
     FlowCard {
         Column(
             modifier = Modifier
@@ -427,7 +497,7 @@ private fun FirstSessionCard() {
             Icon(
                 painter = painterResource(Res.drawable.ic_stats),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(48.dp)
             )
             Text(
@@ -435,6 +505,7 @@ private fun FirstSessionCard() {
                 style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
                 textAlign = TextAlign.Center
             )
+            TextButton(onClick = { adding = true }) { Text(text = stringResource(Res.string.sessions_add)) }
         }
     }
 }
@@ -488,7 +559,8 @@ private fun PeriodCard(
     onPeriod: (PeriodKind) -> Unit,
     onPrevious: () -> Unit,
     onNext: () -> Unit,
-    onUnlock: () -> Unit
+    onUnlock: () -> Unit,
+    dayContent: @Composable () -> Unit = {}
 ) {
     val period = state.period
     val kinds = listOfNotNull(
@@ -552,9 +624,153 @@ private fun PeriodCard(
                     onUnlock
                 )
             }
+            if (period.kind == PeriodKind.DAY) dayContent()
         }
     }
 }
+
+/**
+ * Las sesiones de un día, para corregir lo que el reloj no supo: la que se quedó contando, la que
+ * no se cronometró. Tocar una la edita.
+ */
+@Composable
+private fun DaySessions(
+    sessions: List<FocusSession>,
+    tags: List<Tag>,
+    onDelete: (Long) -> Unit,
+    onMinutes: (Long, Long) -> Unit,
+    onAdd: (Long) -> Unit
+) {
+    var editing by remember { mutableStateOf<FocusSession?>(null) }
+    var adding by rememberSaveable { mutableStateOf(false) }
+
+    Column(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+        sessions.forEach { session ->
+            val minutes = (session.focusSeconds / 60).formatMinutesStudying()
+            val name = if (session.added) {
+                stringResource(Res.string.session_added)
+            } else {
+                "${clockTime(session.startedAt)} - ${clockTime(session.endedAt)}"
+            }
+            // En qué fue, para reconocerla sin recordar la hora.
+            val what = listOfNotNull(tags.firstOrNull { it.id == session.tagId }?.name, session.taskTitle)
+                .joinToString(", ")
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 48.dp)
+                    .clickable(onClickLabel = stringResource(Res.string.session_edit)) { editing = session }
+                    .semantics(mergeDescendants = true) {}
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(text = name, style = SubBody.copy(color = MaterialTheme.colorScheme.onSurface))
+                    if (what.isNotEmpty()) {
+                        Text(
+                            text = what,
+                            style = SubBody.copy(fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+                Text(text = minutes, style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant))
+                // Que se puede tocar para corregirla.
+                Icon(
+                    imageVector = Icons.Filled.Edit,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+        TextButton(onClick = { adding = true }, modifier = Modifier.align(Alignment.Start)) {
+            Icon(imageVector = Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = stringResource(Res.string.sessions_add))
+        }
+    }
+
+    editing?.let { session ->
+        MinutesDialog(
+            title = Res.string.session_edit,
+            initial = session.focusSeconds / 60,
+            onDismiss = { editing = null },
+            onSave = { minutes ->
+                editing = null
+                onMinutes(session.id, minutes)
+            },
+            onDelete = {
+                editing = null
+                onDelete(session.id)
+            }
+        )
+    }
+    if (adding) {
+        MinutesDialog(
+            title = Res.string.sessions_add,
+            initial = null,
+            onDismiss = { adding = false },
+            onSave = { minutes ->
+                adding = false
+                onAdd(minutes)
+            }
+        )
+    }
+}
+
+/** Los minutos de una sesión, de 1 a un día entero. Sin un número válido, Guardar no se puede pulsar. */
+@Composable
+private fun MinutesDialog(
+    title: StringResource,
+    initial: Long?,
+    onDismiss: () -> Unit,
+    onSave: (Long) -> Unit,
+    onDelete: (() -> Unit)? = null
+) {
+    var text by rememberSaveable { mutableStateOf(initial?.toString().orEmpty()) }
+    val minutes = text.toLongOrNull()?.takeIf { it in 1..MINUTES_PER_DAY }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = stringResource(title)) },
+        text = {
+            Column {
+                // Fuera de rango, se dice por qué Guardar no se puede pulsar.
+                TextField(
+                    value = text,
+                    onValueChange = { value -> text = value.filter(Char::isDigit).take(4) },
+                    label = { Text(text = stringResource(Res.string.session_minutes)) },
+                    supportingText = { Text(text = stringResource(Res.string.session_minutes_range, MINUTES_PER_DAY)) },
+                    isError = text.isNotEmpty() && minutes == null,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+                // Borrar, lejos de Cancelar y Guardar: se puede deshacer, pero no se pulsa por error.
+                onDelete?.let { delete ->
+                    TextButton(onClick = delete, modifier = Modifier.padding(top = 8.dp)) {
+                        Text(text = stringResource(Res.string.mix_delete), color = MaterialTheme.colorScheme.error)
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { minutes?.let(onSave) }, enabled = minutes != null) {
+                Text(text = stringResource(Res.string.save))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(text = stringResource(Res.string.dialog_cancel)) }
+        }
+    )
+}
+
+private const val MINUTES_PER_DAY = 24 * 60L
+
+/** La hora de un instante en la del móvil, en el formato del idioma. */
+private fun clockTime(millis: Long): String =
+    Formats.shortTime(Instant.fromEpochMilliseconds(millis).toLocalDateTime(TimeZone.currentSystemDefault()).time)
 
 @Composable
 private fun PeriodBody(state: StatsUiState, changeAccess: ProAccess, onUnlock: () -> Unit) {
@@ -579,11 +795,14 @@ private fun PeriodBody(state: StatsUiState, changeAccess: ProAccess, onUnlock: (
             Res.string.stats_average_session,
             (summary.averageSessionSeconds / 60).formatMinutesStudying()
         )
-        SummaryRow(
-            Res.string.stats_daily_average,
-            (summary.dailyAverageSeconds / 60).formatMinutesStudying()
-        )
-        best?.let { SummaryRow(Res.string.stats_best_day, it) }
+        // En un solo día, la media diaria y el mejor día repetirían el total.
+        if (kind != PeriodKind.DAY) {
+            SummaryRow(
+                Res.string.stats_daily_average,
+                (summary.dailyAverageSeconds / 60).formatMinutesStudying()
+            )
+            best?.let { SummaryRow(Res.string.stats_best_day, it) }
+        }
         state.details.change?.let { change ->
             ProGate(changeAccess, onUnlock) {
                 SummaryRow(

@@ -71,7 +71,9 @@ data class FocusState(
     /** La tarea en la que se trabaja. Como la etiqueta, sigue hasta que se cambie o se complete. */
     val taskId: Long? = null,
     /** Su título, para la notificación y el aviso, que no pueden esperar a la base de datos. */
-    val taskTitle: String? = null
+    val taskTitle: String? = null,
+    /** En un descanso, lo que se trabajó en el bloque de antes: para decir lo guardado al terminar solo. */
+    val lastWorkMillis: Long = 0
 ) {
     val isActive: Boolean get() = phase != Phase.IDLE
     val isPaused: Boolean get() = isActive && !running
@@ -107,6 +109,9 @@ class FocusEngine(
     private val _state = MutableStateFlow(restore())
     val state: StateFlow<FocusState> = _state.asStateFlow()
 
+    // La sesión tal como estaba al pararla, mientras se pueda deshacer. Solo en memoria.
+    private var stoppedFrom: FocusState? = null
+
     /**
      * Se llama en cada cambio de fase, en el mismo hilo y al momento, también en los que se ven tarde
      * al volver a la app. Síncrono a propósito: con la app cerrada, quien despierta al motor es una
@@ -140,17 +145,20 @@ class FocusEngine(
     }
 
     /** [mode] solo cuenta al empezar: el resto de acciones son sobre la sesión en marcha. */
-    fun perform(action: TimerAction, mode: TimerMode = _state.value.mode) = when (action) {
-        TimerAction.START -> start(mode)
-        TimerAction.PAUSE -> pause()
-        TimerAction.RESUME -> resume()
-        TimerAction.BREAK -> takeBreak()
-        TimerAction.SKIP_BREAK -> skipBreak()
-        TimerAction.STOP -> stop()
+    fun perform(action: TimerAction, mode: TimerMode = _state.value.mode) {
+        when (action) {
+            TimerAction.START -> start(mode)
+            TimerAction.PAUSE -> pause()
+            TimerAction.RESUME -> resume()
+            TimerAction.BREAK -> takeBreak()
+            TimerAction.SKIP_BREAK -> skipBreak()
+            TimerAction.STOP -> stop()
+        }
     }
 
     @JvmSynchronized
     fun start(mode: TimerMode) {
+        stoppedFrom = null
         sync()
         val current = _state.value
         if (current.phase == Phase.WORK) record(current, elapsedMillis(current), overshoot = 0)
@@ -212,13 +220,35 @@ class FocusEngine(
         if (s.phase == Phase.BREAK) change(s, newWork(s.mode, overshoot = 0, s), overshoot = 0)
     }
 
-    /** Para la sesión. Lo trabajado hasta ahora se guarda. */
+    /**
+     * Para la sesión. Lo trabajado hasta ahora se guarda, y es lo que devuelve: 0 si no se estaba
+     * trabajando (un descanso ya guardó su trabajo).
+     */
     @JvmSynchronized
-    fun stop() {
+    fun stop(): Long {
         sync()
         val s = _state.value
-        if (s.phase == Phase.WORK) record(s, elapsedMillis(s), overshoot = 0)
-        if (s.isActive) set(s.stopped())
+        val worked = if (s.phase == Phase.WORK) elapsedMillis(s) else 0
+        if (s.phase == Phase.WORK) record(s, worked, overshoot = 0)
+        if (s.isActive) {
+            set(s.stopped())
+            stoppedFrom = s
+        }
+        return worked
+    }
+
+    /**
+     * Deshace [stop] justo después: la sesión sigue como si no se hubiera parado, con el tiempo de
+     * entremedias, y lo guardado se borra. Con otra sesión ya empezada no hace nada.
+     */
+    @JvmSynchronized
+    fun undoStop() {
+        val s = stoppedFrom ?: return
+        stoppedFrom = null
+        if (_state.value.isActive) return
+        if (s.phase == Phase.WORK) sessions.unrecord(s.workStartedAt)
+        set(s.copy(tagId = _state.value.tagId, taskId = _state.value.taskId, taskTitle = _state.value.taskTitle))
+        sync()
     }
 
     /** Pasa por las fases que hayan terminado desde la última vez, aunque la app estuviera cerrada. */
@@ -292,7 +322,8 @@ class FocusEngine(
                     workStartedAt = s.workStartedAt,
                     tagId = s.tagId,
                     taskId = s.taskId,
-                    taskTitle = s.taskTitle
+                    taskTitle = s.taskTitle,
+                    lastWorkMillis = workedMillis
                 ),
                 overshoot
             )

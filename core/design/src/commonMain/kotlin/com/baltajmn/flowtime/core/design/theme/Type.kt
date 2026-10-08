@@ -41,6 +41,15 @@ val SubBody: TextStyle
         fontSize = 15.sp
     )
 
+/** El título de cada hoja y diálogo propio: uno solo, en 600 como los de pantalla, pero menor. */
+val SheetTitle: TextStyle
+    @Composable get() = TextStyle(
+        fontFamily = FontFamily.Mulish,
+        fontWeight = FontWeight.W600,
+        fontSize = 22.sp,
+        letterSpacing = (-0.2).sp
+    )
+
 val Button: TextStyle
     @Composable get() = TextStyle(
         fontFamily = FontFamily.Mulish,
@@ -68,7 +77,8 @@ val AppTypography: Typography
                 displaySmall = displaySmall.mulish(),
                 headlineLarge = headlineLarge.mulish(),
                 headlineMedium = headlineMedium.mulish(),
-                headlineSmall = headlineSmall.mulish(),
+                // Títulos de diálogo como los de las hojas (SheetTitle): antes 24 sp finos, otra voz.
+                headlineSmall = headlineSmall.mulish(FontWeight.W600).copy(fontSize = 22.sp, letterSpacing = (-0.2).sp),
                 titleLarge = titleLarge.mulish(),
                 titleMedium = titleMedium.mulish(FontWeight.W600),
                 titleSmall = titleSmall.mulish(FontWeight.W600),

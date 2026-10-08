@@ -57,6 +57,8 @@ class TodoListViewModel(
 
     fun minusDay() = selectedDate.update { it.minus(1, DateTimeUnit.DAY) }
 
+    fun goToday() = selectedDate.update { today() }
+
     fun onAddItem(title: String, description: String) =
         change { tasks.add(title, description, selectedDate.value) }
 

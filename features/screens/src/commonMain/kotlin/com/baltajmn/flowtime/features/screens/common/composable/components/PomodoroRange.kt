@@ -53,7 +53,7 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
             label = {
                 Text(
                     text = stringResource(Res.string.pomodoro_settings_working),
-                    style = Title.copy(fontSize = 10.sp),
+                    style = Title.copy(fontSize = 12.sp),
                     maxLines = 1
                 )
             },
@@ -66,7 +66,7 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
                 .weight(0.6f)
                 .onFocusChanged { focus ->
                     if (!focus.hasFocus && time.isBlank()) {
-                        time = 1.toString()
+                        time = range.endRange.toString()
                     }
                 }
         )
@@ -95,7 +95,7 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
             label = {
                 Text(
                     text = stringResource(Res.string.pomodoro_settings_resting),
-                    style = Title.copy(fontSize = 10.sp),
+                    style = Title.copy(fontSize = 12.sp),
                     maxLines = 1
                 )
             },
@@ -108,7 +108,7 @@ fun PomodoroRange(range: RangeModel, onValueChanged: (RangeModel) -> Unit) {
                 .weight(0.4f)
                 .onFocusChanged { focus ->
                     if (!focus.hasFocus && rest.isBlank()) {
-                        rest = 1.toString()
+                        rest = range.rest.toString()
                     }
                 }
         )

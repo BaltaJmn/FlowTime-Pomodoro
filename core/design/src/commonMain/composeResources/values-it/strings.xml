@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="flow_time_title">FlowTime pronto</string>
-    <string name="pomodoro_title">Pomodoro Pronto</string>
     <string name="flow_time_settings_title">Impostazioni di FlowTime</string>
     <string name="flow_time_settings_in_the_first">Nei primi %1$s minuti</string>
     <string name="flow_time_settings_rest">Riposo</string>
@@ -15,38 +13,13 @@
     <string name="settings_save">Salva le modifiche</string>
     <string name="time_title_working">Lavoro</string>
     <string name="time_title_resting">Riposo</string>
-    <string name="button_break">Pausa</string>
     <string name="dialog_confirm">Conferma</string>
     <string name="dialog_cancel">Annulla</string>
-    <string name="go_to_history">Vai alla cronologia</string>
     <string name="settings_intro">Introduzione</string>
     <string name="settings_intro_button">Vedi</string>
     <string name="settings_rate">Ti piace FlowTime?</string>
     <string name="settings_rate_button">Valuta</string>
     <string name="settings_privacy">Informativa sulla privacy</string>
-    <string name="others">Altro</string>
-    <string name="remember">Ricorda</string>
-    <string name="mot_1">Puoi farcela! :)</string>
-    <string name="mot_2">Non fermarti, continua :)</string>
-    <string name="mot_3">La determinazione vince :)</string>
-    <string name="mot_4">Sei forte, continua :)</string>
-    <string name="mot_5">Piccoli passi, grande successo :)</string>
-    <string name="mot_6">Senza limiti, solo possibilità :)</string>
-    <string name="mot_7">Sei il creatore :)</string>
-    <string name="mot_8">Persisti, trionferai :)</string>
-    <string name="mot_9">Il successo ti aspetta :)</string>
-    <string name="mot_10">Tieni duro, ce la farai! :)</string>
-    <string name="mot_11">Dai tutto, hai il potere :)</string>
-    <string name="mot_12">Ogni passo conta, non fermarti :)</string>
-    <string name="mot_13">La determinazione supera ogni ostacolo :)</string>
-    <string name="mot_14">Sei più forte di quanto immagini :)</string>
-    <string name="mot_15">Piccoli sforzi portano a grandi successi :)</string>
-    <string name="mot_16">Nessun limite, solo possibilità :)</string>
-    <string name="mot_17">Sei l'architetto del tuo destino :)</string>
-    <string name="mot_18">Persisti, sei più vicino al successo :)</string>
-    <string name="mot_19">Il successo ti attende alla fine del percorso :)</string>
-    <string name="mot_20">Resta saldo, il trionfo è tuo! :)</string>
-    <string name="percentage_title">Modalità percentuale pronta</string>
     <string name="percentage_settings_title">Percentuale di riposo</string>
     <string name="support_developer">Lascia una mancia</string>
     <string name="support_developer_title">Sostieni FlowTime</string>
@@ -65,7 +38,6 @@
     <string name="show_alert">Avvisami alla fine di ogni fase</string>
     <string name="alert_google_play">Errore di connessione a Google Play</string>
     <string name="alert_google_play_desc">Assicurati di avere una connessione internet attiva per recuperare i dati necessari.</string>
-    <string name="advantage_title">Vantaggi</string>
     <string name="pomodoro_advantages">Lavoro e pausa in blocchi fissi, decisi da te.</string>
     <string name="flow_time_advantages">Lavora finché resti concentrato. Più lavori, più lunga è la pausa.</string>
     <string name="percentage_advantages">La pausa è una percentuale fissa del tempo lavorato.</string>
@@ -76,11 +48,9 @@
     <string name="import_conflict_message">Giorni con minuti già salvati: %1$d. Cosa vuoi fare?</string>
     <string name="import_replace">Sostituisci</string>
     <string name="import_sum">Somma</string>
-    <string name="nav_back">Indietro</string>
     <string name="nav_todo_list">Attività</string>
     <string name="nav_settings">Impostazioni</string>
     <string name="mode_percentage">Percentuale</string>
-    <string name="todo_list_title">Lista delle attività</string>
     <string name="todo_add_item">Aggiungi attività</string>
     <string name="todo_item_title">Titolo</string>
     <string name="todo_item_description">Descrizione</string>
@@ -180,7 +150,7 @@
     <string name="backup_import_failed">Impossibile importare il backup. Non è cambiato nulla.</string>
     <string name="goal_title">Obiettivo giornaliero</string>
     <string name="goal_per_day">%1$s al giorno</string>
-    <string name="goal_today">%1$s di %2$s</string>
+    <string name="goal_today">%1$s di %2$s oggi</string>
     <string name="goal_decrease">Abbassa l'obiettivo</string>
     <string name="goal_increase">Alza l'obiettivo</string>
     <string name="goal_reached">Obiettivo raggiunto!</string>
@@ -259,8 +229,7 @@
     <string name="theme_supporter">Supporter</string>
     <string name="nav_focus">Focus</string>
     <string name="nav_stats">Statistiche</string>
-    <string name="cd_mode_settings">Impostazioni della modalità</string>
-    <string name="focus_mode_locked">Ferma la sessione per cambiare modalità</string>
+    <string name="cd_mode_settings">Regola questa modalità</string>
     <string name="sounds_title">Suoni</string>
     <string name="stats_year">Anno</string>
     <string name="stats_first_session">La tua prima sessione apparirà qui</string>
@@ -338,7 +307,7 @@
     <string name="sound_train">Treno</string>
     <string name="sound_typing">Digitazione</string>
     <string name="sound_tent">Pioggia sulla tenda</string>
-    <string name="pro_sounds_title">6 nuovi suoni</string>
+    <string name="pro_sounds_title">Nuovi suoni</string>
     <string name="pro_sounds_text">Ruscello, grilli di notte, ventilatore, treno, digitazione e pioggia sulla tenda. Puoi ascoltarli 10 secondi prima di acquistare.</string>
     <string name="cd_pro_sound">%1$s, suono Pro</string>
     <string name="theme_lavender">Lavanda</string>
@@ -363,4 +332,22 @@
     <string name="notifications_title_ios">Avvisarti alla fine di ogni fase?</string>
     <string name="notifications_text_ios">Saprai quando è ora di una pausa e quando tornare a concentrarti, anche con l'app chiusa.</string>
     <string name="notifications_off_ios">Le notifiche sono disattivate. Attivale per ricevere gli avvisi con l'app chiusa.</string>
+    <string name="stop_saved">Salvato: %1$s</string>
+    <string name="stop_too_short">Meno di un minuto: non salvato</string>
+    <string name="todo_previous_day">Giorno precedente</string>
+    <string name="todo_next_day">Giorno successivo</string>
+    <string name="todo_empty">Nulla previsto per questo giorno</string>
+    <string name="cd_focus_task">Lavora su %1$s</string>
+    <string name="session_added">Tempo aggiunto</string>
+    <string name="session_edit">Modifica sessione</string>
+    <string name="sessions_add">Aggiungi tempo</string>
+    <string name="session_minutes">Minuti</string>
+    <string name="settings_session_title">Durante una sessione</string>
+    <string name="settings_about_title">Informazioni</string>
+    <string name="level_hint">Ogni minuto di concentrazione conta verso il livello successivo</string>
+    <string name="cd_open_today">Guarda le sessioni di oggi</string>
+    <string name="session_minutes_range">Da 1 a %1$d</string>
+    <string name="session_deleted">Sessione eliminata</string>
+    <string name="appearance_dynamic_hint">Spegni i colori dello sfondo per scegliere un tema</string>
+    <string name="streak_free_day_left">Hai ancora il giorno libero di questa settimana</string>
 </resources>

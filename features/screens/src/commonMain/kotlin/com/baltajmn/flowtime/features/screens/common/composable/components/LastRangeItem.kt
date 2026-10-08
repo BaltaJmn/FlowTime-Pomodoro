@@ -61,7 +61,7 @@ fun LastRangeItem(
                         Res.string.flow_time_setting_after,
                         previousRange.totalRange
                     ),
-                    style = Title.copy(fontSize = 10.sp),
+                    style = Title.copy(fontSize = 12.sp),
                     maxLines = 1
                 )
             },
@@ -73,7 +73,7 @@ fun LastRangeItem(
                 .padding(8.dp)
                 .onFocusChanged { focus ->
                     if (!focus.hasFocus && rest.isBlank()) {
-                        rest = 1.toString()
+                        rest = range.rest.toString()
                     }
                 }
         )

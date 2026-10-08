@@ -51,7 +51,7 @@ private val ScreensPresentationModule: Module
         viewModel { TodoListViewModel(get()) }
         viewModel {
             val engine = get<FocusEngine>()
-            StatsViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), { engine.state.value.isActive })
+            StatsViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), { engine.state.value.isActive })
         }
         viewModelOf(::OnBoardViewModel)
         viewModelOf(::SplashViewModel)

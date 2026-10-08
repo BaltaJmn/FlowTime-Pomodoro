@@ -58,7 +58,7 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
                         time
                     ),
                     style = Title.copy(
-                        fontSize = 10.sp
+                        fontSize = 12.sp
                     ),
                     maxLines = 1
                 )
@@ -72,7 +72,7 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
                 .weight(0.6f)
                 .onFocusChanged { focus ->
                     if (!focus.hasFocus && time.isBlank()) {
-                        time = 1.toString()
+                        time = range.endRange.toString()
                     }
                 }
         )
@@ -102,7 +102,7 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
             label = {
                 Text(
                     text = stringResource(Res.string.flow_time_settings_rest),
-                    style = Title.copy(fontSize = 10.sp),
+                    style = Title.copy(fontSize = 12.sp),
                     maxLines = 1
                 )
             },
@@ -115,7 +115,7 @@ fun FirstRangeItem(index: Int, range: RangeModel, onValueChanged: (Int, RangeMod
                 .weight(0.4f)
                 .onFocusChanged { focus ->
                     if (!focus.hasFocus && rest.isBlank()) {
-                        rest = 1.toString()
+                        rest = range.rest.toString()
                     }
                 }
         )

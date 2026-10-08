@@ -3,6 +3,10 @@ package com.baltajmn.flowtime.navigation.main
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.baltajmn.flowtime.core.navigation.GRAPH
@@ -29,21 +33,29 @@ fun MainGraph(
     /** Pide al sistema poner el botón en los ajustes rápidos; null donde no se puede. */
     onAddQuickTile: (() -> Unit)?
 ) {
+    // Desde "45 min de 1 h" en Enfoque: Estadísticas abre en el día de hoy.
+    var openToday by rememberSaveable { mutableStateOf(false) }
     NavHost(
         navController = appState.mainNavController,
         route = GRAPH.Main,
         startDestination = Focus.route
     ) {
         composable(route = Focus.route) {
-            FocusScreen(showSound = showSound)
+            FocusScreen(
+                showSound = showSound,
+                onOpenToday = {
+                    openToday = true
+                    appState.navigateTo(Stats)
+                }
+            )
         }
 
         composable(route = TodoList.route) {
-            TodoListScreen(listState = todoListState)
+            TodoListScreen(listState = todoListState, onOpenFocus = appState::navigateToFocus)
         }
 
         composable(route = Stats.route) {
-            StatsScreen()
+            StatsScreen(openToday = openToday, onTodayOpened = { openToday = false })
         }
 
         composable(route = Settings.route) {

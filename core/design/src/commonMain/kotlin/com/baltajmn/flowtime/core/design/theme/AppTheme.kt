@@ -49,19 +49,20 @@ enum class AppTheme(
         Tint.INK -> greyScheme(dark).let { grey ->
             val ink = if (dark) Color.White else Color.Black
             val onInk = if (dark) Color.Black else Color.White
-            grey.copy(primary = ink, onPrimary = onInk, tertiary = ink, onTertiary = onInk)
+            grey.copy(primary = ink, onPrimary = onInk)
         }
     }
 
     // TonalSpot le da color a cualquier base, también a un gris casi puro: el gris salía verde y el
-    // negro, violeta. Con todas las paletas sacadas del color base, se quedan en gris.
+    // negro, violeta. Con todas las paletas sacadas del color base, se quedan en gris. Menos tertiary,
+    // el color del descanso: en gris era el mismo que el del trabajo y el anillo no los distinguía.
     private fun greyScheme(dark: Boolean) = dynamicColorScheme(
         seedColor = color,
         isDark = dark,
         isAmoled = false,
         primary = color,
         secondary = color,
-        tertiary = color,
+        tertiary = REST,
         neutral = color,
         neutralVariant = color,
         style = PaletteStyle.TonalSpot
@@ -69,3 +70,6 @@ enum class AppTheme(
 
     private enum class Tint { COLOR, GREY, INK }
 }
+
+/** El descanso de los temas sin color: un gris azulado, apagado como ellos. */
+private val REST = Color(0xFF7C99A8)

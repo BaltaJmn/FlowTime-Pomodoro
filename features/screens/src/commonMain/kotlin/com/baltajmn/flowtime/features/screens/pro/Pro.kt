@@ -109,7 +109,8 @@ fun ProGate(access: ProAccess, onUnlock: () -> Unit, content: @Composable () -> 
                 Surface(
                     modifier = Modifier.align(Alignment.Center),
                     shape = MaterialTheme.shapes.extraLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    // Tonal: con varias tarjetas bloqueadas, cinco píldoras llenas gritaban más que la pantalla.
+                    color = MaterialTheme.colorScheme.secondaryContainer
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),

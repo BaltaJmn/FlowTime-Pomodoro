@@ -1,14 +1,13 @@
 package com.baltajmn.flowtime.features.screens.pro
 
+import com.baltajmn.flowtime.core.design.theme.SheetTitle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,13 +15,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -42,7 +37,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
@@ -97,7 +93,6 @@ fun ProContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
             .navigationBarsPadding()
             .padding(start = 24.dp, end = 12.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -105,7 +100,7 @@ fun ProContent(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = stringResource(Res.string.pro_title),
-                style = MaterialTheme.typography.headlineSmall,
+                style = SheetTitle,
                 modifier = Modifier
                     .weight(1f)
                     .semantics { heading() }
@@ -117,27 +112,33 @@ fun ProContent(
                 )
             }
         }
+        // Lo que se compra se desplaza; el precio y el botón se quedan siempre a la vista.
         Column(
-            modifier = Modifier.padding(end = 12.dp),
+            modifier = Modifier
+                .weight(1f, fill = false)
+                .verticalScroll(rememberScrollState())
+                .padding(end = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            if (state.isPro) Thanks(onClose) else Offer(state, from, onBuy, onRestore, onRetry)
+            if (state.isPro) Thanks(onClose) else Offer(from)
+        }
+        if (!state.isPro) {
+            Column(
+                modifier = Modifier.padding(end = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Purchase(state, onBuy, onRestore, onRetry)
+            }
         }
     }
 }
 
 @Composable
-private fun ColumnScope.Offer(
-    state: ProUiState,
-    from: ProFeature?,
-    onBuy: () -> Unit,
-    onRestore: () -> Unit,
-    onRetry: () -> Unit
-) {
+private fun Offer(from: ProFeature?) {
     Text(
         text = stringResource(Res.string.pro_headline),
         style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.onSurface
     )
     // Desde una función bloqueada, esa la primera. No molestar, solo donde existe.
     ProFeature.entries.filter { it != ProFeature.DND || hasFocusMode }
@@ -160,7 +161,16 @@ private fun ColumnScope.Offer(
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
-    Spacer(modifier = Modifier.height(4.dp))
+}
+
+@Composable
+private fun ColumnScope.Purchase(
+    state: ProUiState,
+    onBuy: () -> Unit,
+    onRestore: () -> Unit,
+    onRetry: () -> Unit
+) {
+    HorizontalDivider()
     Text(
         text = listOfNotNull(state.product?.price, stringResource(Res.string.pro_one_time)).joinToString(
             " · "
@@ -185,7 +195,12 @@ private fun ColumnScope.Offer(
         enabled = state.product != null && !state.busy,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(text = stringResource(Res.string.pro_buy))
+        // Mientras la tienda contesta, que se vea que algo pasa.
+        if (state.busy) {
+            CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+        } else {
+            Text(text = stringResource(Res.string.pro_buy))
+        }
     }
     val problem = when {
         state.failed -> Res.string.purchase_failed
@@ -195,7 +210,8 @@ private fun ColumnScope.Offer(
     problem?.let {
         Text(
             text = stringResource(it),
-            color = MaterialTheme.colorScheme.error,
+            // No haber nada que restaurar no es un error.
+            color = if (state.failed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
@@ -221,7 +237,7 @@ private fun ColumnScope.Thanks(onClose: () -> Unit) {
     )
     Text(
         text = stringResource(Res.string.support_thanks_title),
-        style = MaterialTheme.typography.headlineSmall,
+        style = SheetTitle,
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth()
     )
@@ -239,38 +255,38 @@ private fun ColumnScope.Thanks(onClose: () -> Unit) {
 private fun FeatureRow(feature: ProFeature) {
     val (icon, title, text) = when (feature) {
         ProFeature.STATS -> Triple(
-            Icons.Filled.DateRange,
+            painterResource(Res.drawable.ic_stats),
             Res.string.pro_stats_title,
             Res.string.pro_stats_text
         )
-        ProFeature.CSV -> Triple(Icons.Filled.Share, Res.string.pro_csv_title, Res.string.pro_csv_text)
+        ProFeature.CSV -> Triple(rememberVectorPainter(Icons.Filled.Share), Res.string.pro_csv_title, Res.string.pro_csv_text)
         ProFeature.TAGS -> Triple(
-            Icons.Filled.Star,
+            rememberVectorPainter(Icons.Filled.Star),
             Res.string.pro_tags_title,
             Res.string.pro_tags_text
         )
         ProFeature.TASKS -> Triple(
-            Icons.Filled.CheckCircle,
+            painterResource(Res.drawable.ic_list),
             Res.string.pro_tasks_title,
             Res.string.pro_tasks_text
         )
         ProFeature.MIXES -> Triple(
-            Icons.Filled.Favorite,
+            painterResource(Res.drawable.ic_tune),
             Res.string.pro_mixes_title,
             Res.string.pro_mixes_text
         )
         ProFeature.SOUNDS -> Triple(
-            Icons.Filled.PlayArrow,
+            painterResource(Res.drawable.ic_music),
             Res.string.pro_sounds_title,
             Res.string.pro_sounds_text
         )
         ProFeature.THEMES -> Triple(
-            Icons.Filled.Face,
+            rememberVectorPainter(Icons.Filled.Face),
             Res.string.pro_themes_title,
             Res.string.pro_themes_text
         )
         ProFeature.DND -> Triple(
-            Icons.Filled.Notifications,
+            rememberVectorPainter(Icons.Filled.Notifications),
             Res.string.pro_dnd_title,
             Res.string.pro_dnd_text
         )
@@ -289,7 +305,7 @@ private fun FeatureRow(feature: ProFeature) {
 }
 
 @Composable
-private fun FeatureRow(icon: ImageVector, title: StringResource, text: String) {
+private fun FeatureRow(icon: Painter, title: StringResource, text: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -304,7 +320,7 @@ private fun FeatureRow(icon: ImageVector, title: StringResource, text: String) {
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = icon,
+                painter = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(22.dp)

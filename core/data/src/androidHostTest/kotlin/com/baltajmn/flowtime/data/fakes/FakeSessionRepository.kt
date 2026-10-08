@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.data.fakes
 
+import com.baltajmn.flowtime.data.repository.FocusSession
 import com.baltajmn.flowtime.data.repository.SessionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,4 +44,18 @@ class FakeSessionRepository : SessionRepository {
     }
 
     override fun importLegacyOnce() = Unit
+
+    val unrecorded = mutableListOf<Long>()
+
+    override fun unrecord(startedAt: Long) {
+        unrecorded += startedAt
+    }
+
+    override fun sessionsOn(day: LocalDate): Flow<List<FocusSession>> = MutableStateFlow(emptyList())
+
+    override suspend fun delete(id: Long) = Unit
+
+    override suspend fun restore(session: FocusSession) = Unit
+
+    override suspend fun setSeconds(id: Long, seconds: Long) = Unit
 }

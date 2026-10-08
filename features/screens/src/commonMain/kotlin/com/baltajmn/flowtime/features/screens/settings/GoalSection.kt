@@ -89,9 +89,7 @@ internal fun streakText(streak: Streak): String {
     }
     val days = pluralStringResource(Res.plurals.streak_days, streak.current, streak.current)
     val text = if (streak.best > streak.current) "$days · $best" else days
-    return if (streak.freeDayUsedThisWeek) {
-        text + "\n" + stringResource(Res.string.streak_free_day_used)
-    } else {
-        text
-    }
+    // El día libre se presenta mientras se tiene, no la primera vez que ya se ha gastado.
+    val freeDay = if (streak.freeDayUsedThisWeek) Res.string.streak_free_day_used else Res.string.streak_free_day_left
+    return text + "\n" + stringResource(freeDay)
 }

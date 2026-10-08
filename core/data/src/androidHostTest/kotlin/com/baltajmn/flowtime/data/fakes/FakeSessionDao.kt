@@ -6,6 +6,7 @@ import com.baltajmn.flowtime.core.database.model.HourSeconds
 import com.baltajmn.flowtime.core.database.model.ModeSeconds
 import com.baltajmn.flowtime.core.database.model.PeriodTotals
 import com.baltajmn.flowtime.core.database.model.SessionDb
+import com.baltajmn.flowtime.core.database.model.SessionRow
 import com.baltajmn.flowtime.core.database.model.TagSeconds
 import com.baltajmn.flowtime.core.database.model.TaskSeconds
 import com.baltajmn.flowtime.core.database.model.TaskTotal
@@ -60,6 +61,24 @@ class FakeSessionDao : SessionDao() {
         .map { (tag, sessions) -> TagSeconds(tag, sessions.sumOf { it.focusSeconds }) }
 
     override suspend fun all() = rows.sortedBy { it.startedAt }
+
+    override fun on(day: String): Flow<List<SessionRow>> = flowOf(
+        rows.filter { it.localDate == day }.sortedBy { it.startedAt }.map {
+            SessionRow(it.id, it.startedAt, it.endedAt, it.localDate, it.mode, it.focusSeconds, it.tagId, it.taskId, null)
+        }
+    )
+
+    override suspend fun delete(id: Long) {
+        rows.removeAll { it.id == id }
+    }
+
+    override suspend fun setSeconds(id: Long, seconds: Long) {
+        rows.replaceAll { if (it.id == id) it.copy(focusSeconds = seconds, endedAt = it.startedAt + seconds * 1000) else it }
+    }
+
+    override suspend fun deleteStartedAt(startedAt: Long) {
+        rows.removeAll { it.startedAt == startedAt && it.mode != SessionDb.MODE_LEGACY }
+    }
 
     override fun secondsByTask(): Flow<List<TaskSeconds>> = flowOf(
         rows.filter { it.taskId != null }

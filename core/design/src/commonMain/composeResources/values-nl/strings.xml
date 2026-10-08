@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="flow_time_title">FlowTime klaar</string>
-    <string name="pomodoro_title">Pomodoro klaar</string>
     <string name="flow_time_settings_title">FlowTime-instellingen</string>
     <string name="flow_time_settings_in_the_first">In de eerste %1$s minuten</string>
     <string name="flow_time_settings_rest">rust ik</string>
@@ -15,38 +13,13 @@
     <string name="settings_save">Wijzigingen opslaan</string>
     <string name="time_title_resting">Pauze</string>
     <string name="time_title_working">Aan het werk</string>
-    <string name="button_break">Pauze</string>
     <string name="dialog_confirm">Bevestigen</string>
     <string name="dialog_cancel">Annuleren</string>
-    <string name="go_to_history">Naar geschiedenis</string>
     <string name="settings_intro">Introductie</string>
     <string name="settings_intro_button">Bekijken</string>
     <string name="settings_rate">Vind je FlowTime leuk?</string>
     <string name="settings_rate_button">Beoordelen</string>
     <string name="settings_privacy">Privacybeleid</string>
-    <string name="others">Overig</string>
-    <string name="remember">Herinnering</string>
-    <string name="mot_1">Jij kunt het! :)</string>
-    <string name="mot_2">Niet stoppen, ga door :)</string>
-    <string name="mot_3">Vastberadenheid overwint alles :)</string>
-    <string name="mot_4">Je bent sterk, ga door :)</string>
-    <string name="mot_5">Kleine stappen, groot succes :)</string>
-    <string name="mot_6">Geen grenzen, alleen mogelijkheden :)</string>
-    <string name="mot_7">Jij bent de maker :)</string>
-    <string name="mot_8">Hou vol, je gaat het halen :)</string>
-    <string name="mot_9">Succes wacht op je :)</string>
-    <string name="mot_10">Blijf sterk, het gaat je lukken! :)</string>
-    <string name="mot_11">Ga ervoor, je kunt het :)</string>
-    <string name="mot_12">Elke stap telt, stop niet :)</string>
-    <string name="mot_13">Vastberadenheid overwint elk obstakel :)</string>
-    <string name="mot_14">Je bent sterker dan je denkt :)</string>
-    <string name="mot_15">Kleine inspanningen leiden tot grote prestaties :)</string>
-    <string name="mot_16">Geen grenzen, alleen mogelijkheden :)</string>
-    <string name="mot_17">Jij bent de architect van je eigen lot :)</string>
-    <string name="mot_18">Hou vol, je bent dichter bij succes :)</string>
-    <string name="mot_19">Aan het eind van de weg wacht succes :)</string>
-    <string name="mot_20">Blijf standvastig, de overwinning is van jou! :)</string>
-    <string name="percentage_title">Percentage klaar</string>
     <string name="percentage_settings_title">Pauzepercentage</string>
     <string name="support_developer">Fooi geven</string>
     <string name="support_developer_title">Steun FlowTime</string>
@@ -65,7 +38,6 @@
     <string name="show_alert">Waarschuw me als een fase eindigt</string>
     <string name="alert_google_play">Fout bij verbinden met Google Play</string>
     <string name="alert_google_play_desc">Zorg voor een actieve internetverbinding om de benodigde gegevens op te halen.</string>
-    <string name="advantage_title">Voordelen</string>
     <string name="pomodoro_advantages">Werk en rust in vaste blokken die je zelf instelt.</string>
     <string name="flow_time_advantages">Werk zolang je gefocust blijft. Hoe langer je werkt, hoe langer de pauze.</string>
     <string name="percentage_advantages">Je pauze is een vast percentage van de tijd die je hebt gewerkt.</string>
@@ -77,11 +49,9 @@
     <string name="import_replace">Vervangen</string>
     <string name="import_sum">Optellen</string>
 
-    <string name="nav_back">Terug</string>
     <string name="nav_todo_list">Taken</string>
     <string name="nav_settings">Instellingen</string>
     <string name="mode_percentage">Percentage</string>
-    <string name="todo_list_title">Takenlijst</string>
     <string name="todo_add_item">Taak toevoegen</string>
     <string name="todo_item_title">Titel</string>
     <string name="todo_item_description">Beschrijving</string>
@@ -178,7 +148,7 @@
     <string name="backup_import_failed">De back-up kon niet worden geïmporteerd. Er is niets veranderd.</string>
     <string name="goal_title">Dagdoel</string>
     <string name="goal_per_day">%1$s per dag</string>
-    <string name="goal_today">%1$s van %2$s</string>
+    <string name="goal_today">%1$s van %2$s vandaag</string>
     <string name="goal_decrease">Doel verlagen</string>
     <string name="goal_increase">Doel verhogen</string>
     <string name="goal_reached">Dagdoel gehaald!</string>
@@ -257,8 +227,7 @@
     <string name="theme_supporter">Supporter</string>
     <string name="nav_focus">Focus</string>
     <string name="nav_stats">Statistieken</string>
-    <string name="cd_mode_settings">Instellingen voor deze modus</string>
-    <string name="focus_mode_locked">Stop de sessie om van modus te wisselen</string>
+    <string name="cd_mode_settings">Pas deze modus aan</string>
     <string name="sounds_title">Geluiden</string>
     <string name="stats_year">Jaar</string>
     <string name="stats_first_session">Je eerste sessie verschijnt hier</string>
@@ -336,7 +305,7 @@
     <string name="sound_train">Trein</string>
     <string name="sound_typing">Typen</string>
     <string name="sound_tent">Regen op een tent</string>
-    <string name="pro_sounds_title">6 nieuwe geluiden</string>
+    <string name="pro_sounds_title">Nieuwe geluiden</string>
     <string name="pro_sounds_text">Beek, krekels in de nacht, ventilator, trein, typen en regen op een tent. Luister elk 10 seconden voordat je koopt.</string>
     <string name="cd_pro_sound">%1$s, Pro-geluid</string>
     <string name="theme_lavender">Lavendel</string>
@@ -361,4 +330,22 @@
     <string name="notifications_title_ios">Een melding als elke fase eindigt?</string>
     <string name="notifications_text_ios">Je weet wanneer het tijd is voor pauze en wanneer je weer gaat focussen, ook als de app gesloten is.</string>
     <string name="notifications_off_ios">Meldingen staan uit. Zet ze aan om meldingen te krijgen als de app gesloten is.</string>
+    <string name="stop_saved">Opgeslagen: %1$s</string>
+    <string name="stop_too_short">Minder dan een minuut, niet opgeslagen</string>
+    <string name="todo_previous_day">Vorige dag</string>
+    <string name="todo_next_day">Volgende dag</string>
+    <string name="todo_empty">Niets gepland voor deze dag</string>
+    <string name="cd_focus_task">Aan %1$s werken</string>
+    <string name="session_added">Tijd toegevoegd</string>
+    <string name="session_edit">Sessie bewerken</string>
+    <string name="sessions_add">Tijd toevoegen</string>
+    <string name="session_minutes">Minuten</string>
+    <string name="settings_session_title">Tijdens een sessie</string>
+    <string name="settings_about_title">Over</string>
+    <string name="level_hint">Elke minuut focus telt mee voor het volgende level</string>
+    <string name="cd_open_today">Sessies van vandaag bekijken</string>
+    <string name="session_minutes_range">Van 1 tot %1$d</string>
+    <string name="session_deleted">Sessie verwijderd</string>
+    <string name="appearance_dynamic_hint">Zet de kleuren van de achtergrond uit om een thema te kiezen</string>
+    <string name="streak_free_day_left">Je hebt de vrije dag van deze week nog</string>
 </resources>

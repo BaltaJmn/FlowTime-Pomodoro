@@ -23,6 +23,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import com.baltajmn.flowtime.data.tag.DefaultTagRepository
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -76,7 +78,10 @@ fun TagsCard(
                     text = tag.name,
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { editing = tag.id }
+                        .clickable(
+                            onClickLabel = stringResource(Res.string.tag_rename),
+                            role = Role.Button
+                        ) { editing = tag.id }
                         .padding(vertical = 12.dp),
                     style = SubBody.copy(
                         fontSize = 16.sp,
@@ -175,13 +180,15 @@ private fun NameDialog(initial: String, onConfirm: (String) -> Unit, onDismiss: 
         text = {
             OutlinedTextField(
                 value = name,
-                onValueChange = { name = it },
+                // El mismo tope que guarda el repositorio: lo que no cabe no se escribe.
+                onValueChange = { name = it.take(DefaultTagRepository.MAX_NAME) },
                 label = { Text(text = stringResource(Res.string.tag_name)) },
+                supportingText = { Text(text = "${name.length}/${DefaultTagRepository.MAX_NAME}") },
                 singleLine = true
             )
         },
         confirmButton = {
-            TextButton(onClick = { onConfirm(name) }) {
+            TextButton(onClick = { onConfirm(name) }, enabled = name.isNotBlank()) {
                 Text(text = stringResource(Res.string.dialog_confirm))
             }
         },

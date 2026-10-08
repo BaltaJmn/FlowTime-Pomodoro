@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="flow_time_title">FlowTime 준비 완료</string>
-    <string name="pomodoro_title">뽀모도로 준비 완료</string>
     <string name="flow_time_settings_title">FlowTime 설정</string>
     <string name="flow_time_settings_in_the_first">처음 %1$s분 동안</string>
     <string name="flow_time_settings_rest">휴식할게요</string>
@@ -15,38 +13,13 @@
     <string name="settings_save">변경 사항 저장</string>
     <string name="time_title_resting">휴식 중</string>
     <string name="time_title_working">작업 중</string>
-    <string name="button_break">휴식</string>
     <string name="dialog_confirm">확인</string>
     <string name="dialog_cancel">취소</string>
-    <string name="go_to_history">기록 보기</string>
     <string name="settings_intro">소개</string>
     <string name="settings_intro_button">보기</string>
     <string name="settings_rate">FlowTime이 마음에 드세요?</string>
     <string name="settings_rate_button">평가하기</string>
     <string name="settings_privacy">개인정보 처리방침</string>
-    <string name="others">기타</string>
-    <string name="remember">알림</string>
-    <string name="mot_1">할 수 있어요! :)</string>
-    <string name="mot_2">멈추지 말고 계속해요 :)</string>
-    <string name="mot_3">결심은 모든 것을 이겨요 :)</string>
-    <string name="mot_4">당신은 강해요, 계속해요 :)</string>
-    <string name="mot_5">작은 걸음이 큰 성공으로 :)</string>
-    <string name="mot_6">한계는 없고, 가능성만 있어요 :)</string>
-    <string name="mot_7">만드는 사람은 바로 당신 :)</string>
-    <string name="mot_8">꾸준히 하면 이겨요 :)</string>
-    <string name="mot_9">성공이 기다리고 있어요 :)</string>
-    <string name="mot_10">힘내요, 해낼 거예요! :)</string>
-    <string name="mot_11">가 봐요, 당신에겐 힘이 있어요 :)</string>
-    <string name="mot_12">한 걸음 한 걸음이 중요해요, 멈추지 마요 :)</string>
-    <string name="mot_13">결심은 어떤 장애물도 넘어요 :)</string>
-    <string name="mot_14">생각보다 훨씬 강해요 :)</string>
-    <string name="mot_15">작은 노력이 모여 큰 성취가 돼요 :)</string>
-    <string name="mot_16">한계는 없고, 가능성만 있어요 :)</string>
-    <string name="mot_17">당신의 운명은 당신이 설계해요 :)</string>
-    <string name="mot_18">꾸준히 해요, 성공이 가까워요 :)</string>
-    <string name="mot_19">길 끝에서 성공이 기다려요 :)</string>
-    <string name="mot_20">흔들리지 마요, 승리는 당신 거예요! :)</string>
-    <string name="percentage_title">퍼센트 준비 완료</string>
     <string name="percentage_settings_title">휴식 비율</string>
     <string name="support_developer">팁 남기기</string>
     <string name="support_developer_title">FlowTime 응원하기</string>
@@ -65,7 +38,6 @@
     <string name="show_alert">각 단계가 끝나면 알리기</string>
     <string name="alert_google_play">Google Play에 연결하는 중 오류가 발생했어요</string>
     <string name="alert_google_play_desc">필요한 데이터를 가져오려면 인터넷에 연결되어 있는지 확인하세요.</string>
-    <string name="advantage_title">장점</string>
     <string name="pomodoro_advantages">직접 정한 고정 블록으로 일하고 쉬어요.</string>
     <string name="flow_time_advantages">집중이 이어지는 동안 일해요. 오래 일할수록 휴식도 길어져요.</string>
     <string name="percentage_advantages">휴식은 일한 시간의 일정 비율이에요.</string>
@@ -77,11 +49,9 @@
     <string name="import_replace">바꾸기</string>
     <string name="import_sum">더하기</string>
 
-    <string name="nav_back">뒤로</string>
     <string name="nav_todo_list">할 일</string>
     <string name="nav_settings">설정</string>
     <string name="mode_percentage">퍼센트</string>
-    <string name="todo_list_title">할 일 목록</string>
     <string name="todo_add_item">할 일 추가</string>
     <string name="todo_item_title">제목</string>
     <string name="todo_item_description">설명</string>
@@ -175,7 +145,7 @@
     <string name="backup_import_failed">백업을 가져오지 못했어요. 바뀐 건 없어요.</string>
     <string name="goal_title">하루 목표</string>
     <string name="goal_per_day">하루 %1$s</string>
-    <string name="goal_today">%1$s / %2$s</string>
+    <string name="goal_today">오늘 %1$s / %2$s</string>
     <string name="goal_decrease">목표 낮추기</string>
     <string name="goal_increase">목표 높이기</string>
     <string name="goal_reached">오늘 목표 달성!</string>
@@ -252,8 +222,7 @@
     <string name="theme_supporter">서포터</string>
     <string name="nav_focus">집중</string>
     <string name="nav_stats">통계</string>
-    <string name="cd_mode_settings">이 모드 설정</string>
-    <string name="focus_mode_locked">모드를 바꾸려면 세션을 멈추세요</string>
+    <string name="cd_mode_settings">이 모드 조정</string>
     <string name="sounds_title">사운드</string>
     <string name="stats_year">연</string>
     <string name="stats_first_session">첫 세션이 여기에 표시돼요</string>
@@ -331,7 +300,7 @@
     <string name="sound_train">기차</string>
     <string name="sound_typing">타이핑</string>
     <string name="sound_tent">텐트 위 빗소리</string>
-    <string name="pro_sounds_title">새 사운드 6개</string>
+    <string name="pro_sounds_title">새 사운드</string>
     <string name="pro_sounds_text">시냇물, 밤의 귀뚜라미, 선풍기, 기차, 타이핑, 텐트 위 빗소리. 구매 전에 각각 10초씩 들어볼 수 있어요.</string>
     <string name="cd_pro_sound">%1$s, Pro 사운드</string>
     <string name="theme_lavender">라벤더</string>
@@ -356,4 +325,22 @@
     <string name="notifications_title_ios">각 단계가 끝날 때 알려 드릴까요?</string>
     <string name="notifications_text_ios">앱을 닫아도 쉬어야 할 때와 다시 집중할 때를 알 수 있어요.</string>
     <string name="notifications_off_ios">알림이 꺼져 있어요. 앱을 닫아도 알림을 받으려면 켜세요.</string>
+    <string name="stop_saved">저장됨: %1$s</string>
+    <string name="stop_too_short">1분 미만, 저장되지 않음</string>
+    <string name="todo_previous_day">이전 날</string>
+    <string name="todo_next_day">다음 날</string>
+    <string name="todo_empty">이날을 위해 계획된 일이 없어요</string>
+    <string name="cd_focus_task">%1$s 작업하기</string>
+    <string name="session_added">시간 추가됨</string>
+    <string name="session_edit">세션 편집</string>
+    <string name="sessions_add">시간 추가</string>
+    <string name="session_minutes">분</string>
+    <string name="settings_session_title">세션 중</string>
+    <string name="settings_about_title">정보</string>
+    <string name="level_hint">집중한 1분마다 다음 레벨을 향해 카운트됩니다</string>
+    <string name="cd_open_today">오늘의 세션 보기</string>
+    <string name="session_minutes_range">1부터 %1$d까지</string>
+    <string name="session_deleted">세션 삭제됨</string>
+    <string name="appearance_dynamic_hint">테마를 고르려면 배경화면 색상을 꺼 주세요</string>
+    <string name="streak_free_day_left">이번 주 쉬는 날이 아직 남아 있어요</string>
 </resources>

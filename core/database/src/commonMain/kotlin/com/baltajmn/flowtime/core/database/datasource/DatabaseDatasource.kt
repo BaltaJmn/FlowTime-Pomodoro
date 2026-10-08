@@ -17,6 +17,7 @@ import com.baltajmn.flowtime.core.database.model.ModeSeconds
 import com.baltajmn.flowtime.core.database.model.PeriodTotals
 import com.baltajmn.flowtime.core.database.model.SessionDb
 import com.baltajmn.flowtime.core.database.model.SessionDb.Companion.DAY_SECONDS
+import com.baltajmn.flowtime.core.database.model.SessionRow
 import com.baltajmn.flowtime.core.database.model.TagDb
 import com.baltajmn.flowtime.core.database.model.TagSeconds
 import com.baltajmn.flowtime.core.database.model.TaskSeconds
@@ -115,6 +116,24 @@ abstract class SessionDao {
 
     @Query("SELECT * FROM session ORDER BY startedAt")
     abstract suspend fun all(): List<SessionDb>
+
+    /** Las de un día, con el título de su tarea, para corregirlas a mano: la que se quedó contando, la que faltó. */
+    @Query(
+        "SELECT session.*, task.title AS taskTitle FROM session LEFT JOIN task ON task.id = session.taskId " +
+            "WHERE session.localDate = :day ORDER BY session.startedAt"
+    )
+    abstract fun on(day: String): Flow<List<SessionRow>>
+
+    @Query("DELETE FROM session WHERE id = :id")
+    abstract suspend fun delete(id: Long)
+
+    /** El fin pasa a ser el inicio más ese tiempo: lo que se corrige es lo que se trabajó. */
+    @Query("UPDATE session SET focusSeconds = :seconds, endedAt = startedAt + :seconds * 1000 WHERE id = :id")
+    abstract suspend fun setSeconds(id: Long, seconds: Long)
+
+    /** Deshacer "Parar": la sesión que se acaba de guardar, que es la única con ese inicio. */
+    @Query("DELETE FROM session WHERE startedAt = :startedAt AND mode != '${SessionDb.MODE_LEGACY}'")
+    abstract suspend fun deleteStartedAt(startedAt: Long)
 
     /** El tiempo de cada tarea, que se actualiza con cada sesión nueva. */
     @Query(

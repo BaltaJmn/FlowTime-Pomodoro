@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="flow_time_title">FlowTime hazır</string>
-    <string name="pomodoro_title">Pomodoro hazır</string>
     <string name="flow_time_settings_title">FlowTime ayarları</string>
     <string name="flow_time_settings_in_the_first">İlk %1$s dakikada</string>
     <string name="flow_time_settings_rest">dinleneceğim</string>
@@ -15,38 +13,13 @@
     <string name="settings_save">Değişiklikleri kaydet</string>
     <string name="time_title_resting">Dinleniyor</string>
     <string name="time_title_working">Çalışıyor</string>
-    <string name="button_break">Mola</string>
     <string name="dialog_confirm">Onayla</string>
     <string name="dialog_cancel">İptal</string>
-    <string name="go_to_history">Geçmişe git</string>
     <string name="settings_intro">Tanıtım</string>
     <string name="settings_intro_button">Gör</string>
     <string name="settings_rate">FlowTime'ı sevdin mi?</string>
     <string name="settings_rate_button">Puan ver</string>
     <string name="settings_privacy">Gizlilik politikası</string>
-    <string name="others">Diğer</string>
-    <string name="remember">Hatırlatma</string>
-    <string name="mot_1">Başarabilirsin! :)</string>
-    <string name="mot_2">Durma, devam et :)</string>
-    <string name="mot_3">Kararlılık her şeyi yener :)</string>
-    <string name="mot_4">Güçlüsün, devam et :)</string>
-    <string name="mot_5">Küçük adımlar, büyük başarı :)</string>
-    <string name="mot_6">Sınır yok, sadece olasılıklar var :)</string>
-    <string name="mot_7">Yaratan sensin :)</string>
-    <string name="mot_8">Sebat et, kazanacaksın :)</string>
-    <string name="mot_9">Başarı seni bekliyor :)</string>
-    <string name="mot_10">Güçlü kal, başaracaksın! :)</string>
-    <string name="mot_11">Haydi, bu güç sende var :)</string>
-    <string name="mot_12">Her adım önemli, durma :)</string>
-    <string name="mot_13">Kararlılık her engeli aşar :)</string>
-    <string name="mot_14">Sandığından daha güçlüsün :)</string>
-    <string name="mot_15">Küçük çabalar büyük başarılara dönüşür :)</string>
-    <string name="mot_16">Sınır yok, sadece olasılıklar var :)</string>
-    <string name="mot_17">Kaderinin mimarı sensin :)</string>
-    <string name="mot_18">Sebat et, başarıya daha yakınsın :)</string>
-    <string name="mot_19">Yolun sonunda başarı seni bekliyor :)</string>
-    <string name="mot_20">Sağlam dur, zafer senin! :)</string>
-    <string name="percentage_title">Yüzde hazır</string>
     <string name="percentage_settings_title">Mola yüzdesi</string>
     <string name="support_developer">Bahşiş bırak</string>
     <string name="support_developer_title">FlowTime'ı destekle</string>
@@ -65,7 +38,6 @@
     <string name="show_alert">Her aşama bittiğinde haber ver</string>
     <string name="alert_google_play">Google Play'e bağlanırken hata oluştu</string>
     <string name="alert_google_play_desc">Gerekli verileri almak için internet bağlantın olduğundan emin ol.</string>
-    <string name="advantage_title">Avantajlar</string>
     <string name="pomodoro_advantages">Belirlediğin sabit bloklarla çalış ve dinlen.</string>
     <string name="flow_time_advantages">Odaklı kaldığın sürece çalış. Ne kadar uzun çalışırsan mola o kadar uzun olur.</string>
     <string name="percentage_advantages">Molan, çalıştığın sürenin sabit bir yüzdesidir.</string>
@@ -77,11 +49,9 @@
     <string name="import_replace">Değiştir</string>
     <string name="import_sum">Topla</string>
 
-    <string name="nav_back">Geri</string>
     <string name="nav_todo_list">Görevler</string>
     <string name="nav_settings">Ayarlar</string>
     <string name="mode_percentage">Yüzde</string>
-    <string name="todo_list_title">Yapılacaklar listesi</string>
     <string name="todo_add_item">Görev ekle</string>
     <string name="todo_item_title">Başlık</string>
     <string name="todo_item_description">Açıklama</string>
@@ -178,7 +148,7 @@
     <string name="backup_import_failed">Yedek içe aktarılamadı. Hiçbir şey değişmedi.</string>
     <string name="goal_title">Günlük hedef</string>
     <string name="goal_per_day">Günde %1$s</string>
-    <string name="goal_today">%1$s / %2$s</string>
+    <string name="goal_today">Bugün %1$s / %2$s</string>
     <string name="goal_decrease">Hedefi düşür</string>
     <string name="goal_increase">Hedefi yükselt</string>
     <string name="goal_reached">Günlük hedefe ulaşıldı!</string>
@@ -257,8 +227,7 @@
     <string name="theme_supporter">Destekçi</string>
     <string name="nav_focus">Odak</string>
     <string name="nav_stats">İstatistik</string>
-    <string name="cd_mode_settings">Bu modun ayarları</string>
-    <string name="focus_mode_locked">Modu değiştirmek için oturumu durdur</string>
+    <string name="cd_mode_settings">Bu modu ayarla</string>
     <string name="sounds_title">Sesler</string>
     <string name="stats_year">Yıl</string>
     <string name="stats_first_session">İlk oturumun burada görünecek</string>
@@ -336,7 +305,7 @@
     <string name="sound_train">Tren</string>
     <string name="sound_typing">Klavye</string>
     <string name="sound_tent">Çadırda yağmur</string>
-    <string name="pro_sounds_title">6 yeni ses</string>
+    <string name="pro_sounds_title">Yeni sesler</string>
     <string name="pro_sounds_text">Dere, gece cırcır böcekleri, vantilatör, tren, klavye ve çadırda yağmur. Satın almadan önce her birini 10 saniye dinle.</string>
     <string name="cd_pro_sound">%1$s, Pro sesi</string>
     <string name="theme_lavender">Lavanta</string>
@@ -361,4 +330,22 @@
     <string name="notifications_title_ios">Her aşama bittiğinde haber verilsin mi?</string>
     <string name="notifications_text_ios">Uygulama kapalıyken bile mola zamanını ve odaklanmaya dönme zamanını bilirsin.</string>
     <string name="notifications_off_ios">Bildirimler kapalı. Uygulama kapalıyken uyarı almak için aç.</string>
+    <string name="stop_saved">Kaydedildi: %1$s</string>
+    <string name="stop_too_short">Bir dakikadan az, kaydedilmedi</string>
+    <string name="todo_previous_day">Önceki gün</string>
+    <string name="todo_next_day">Sonraki gün</string>
+    <string name="todo_empty">Bu gün için hiçbir şey planlanmamış</string>
+    <string name="cd_focus_task">%1$s üzerinde çalış</string>
+    <string name="session_added">Eklenen süre</string>
+    <string name="session_edit">Oturumu düzenle</string>
+    <string name="sessions_add">Süre ekle</string>
+    <string name="session_minutes">Dakika</string>
+    <string name="settings_session_title">Oturum sırasında</string>
+    <string name="settings_about_title">Hakkında</string>
+    <string name="level_hint">Her odak dakikası sonraki seviyeye doğru sayılır</string>
+    <string name="cd_open_today">Bugünün oturumlarını gör</string>
+    <string name="session_minutes_range">1 ile %1$d arasında</string>
+    <string name="session_deleted">Oturum silindi</string>
+    <string name="appearance_dynamic_hint">Tema seçmek için duvar kâğıdı renklerini kapat</string>
+    <string name="streak_free_day_left">Bu haftanın serbest günü henüz kullanılmadı</string>
 </resources>

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="flow_time_title">FlowTime siap</string>
-    <string name="pomodoro_title">Pomodoro siap</string>
     <string name="flow_time_settings_title">Pengaturan FlowTime</string>
     <string name="flow_time_settings_in_the_first">Dalam %1$s menit pertama</string>
     <string name="flow_time_settings_rest">aku istirahat</string>
@@ -15,38 +13,13 @@
     <string name="settings_save">Simpan perubahan</string>
     <string name="time_title_resting">Istirahat</string>
     <string name="time_title_working">Bekerja</string>
-    <string name="button_break">Istirahat</string>
     <string name="dialog_confirm">Konfirmasi</string>
     <string name="dialog_cancel">Batal</string>
-    <string name="go_to_history">Lihat riwayat</string>
     <string name="settings_intro">Pengenalan</string>
     <string name="settings_intro_button">Lihat</string>
     <string name="settings_rate">Suka FlowTime?</string>
     <string name="settings_rate_button">Beri nilai</string>
     <string name="settings_privacy">Kebijakan privasi</string>
-    <string name="others">Lainnya</string>
-    <string name="remember">Pengingat</string>
-    <string name="mot_1">Kamu pasti bisa! :)</string>
-    <string name="mot_2">Jangan berhenti, terus maju :)</string>
-    <string name="mot_3">Tekad mengalahkan segalanya :)</string>
-    <string name="mot_4">Kamu kuat, terus lanjutkan :)</string>
-    <string name="mot_5">Langkah kecil, sukses besar :)</string>
-    <string name="mot_6">Tanpa batas, hanya ada kemungkinan :)</string>
-    <string name="mot_7">Kamulah penciptanya :)</string>
-    <string name="mot_8">Bertahanlah, kamu akan menang :)</string>
-    <string name="mot_9">Sukses sedang menunggumu :)</string>
-    <string name="mot_10">Tetap kuat, kamu pasti berhasil! :)</string>
-    <string name="mot_11">Ayo, kamu punya kekuatannya :)</string>
-    <string name="mot_12">Setiap langkah berarti, jangan berhenti :)</string>
-    <string name="mot_13">Tekad mengatasi rintangan apa pun :)</string>
-    <string name="mot_14">Kamu lebih kuat dari yang kamu kira :)</string>
-    <string name="mot_15">Usaha kecil menghasilkan pencapaian besar :)</string>
-    <string name="mot_16">Tanpa batas, hanya ada kemungkinan :)</string>
-    <string name="mot_17">Kamu arsitek takdirmu sendiri :)</string>
-    <string name="mot_18">Bertahanlah, sukses makin dekat :)</string>
-    <string name="mot_19">Sukses menunggumu di ujung jalan :)</string>
-    <string name="mot_20">Tetap teguh, kemenangan milikmu! :)</string>
-    <string name="percentage_title">Persentase siap</string>
     <string name="percentage_settings_title">Persentase istirahat</string>
     <string name="support_developer">Beri tip</string>
     <string name="support_developer_title">Dukung FlowTime</string>
@@ -65,7 +38,6 @@
     <string name="show_alert">Beri tahu saat setiap fase berakhir</string>
     <string name="alert_google_play">Gagal terhubung ke Google Play</string>
     <string name="alert_google_play_desc">Pastikan kamu terhubung ke internet untuk mengambil data yang diperlukan.</string>
-    <string name="advantage_title">Kelebihan</string>
     <string name="pomodoro_advantages">Bekerja dan istirahat dalam blok tetap yang kamu atur.</string>
     <string name="flow_time_advantages">Bekerjalah selama kamu masih fokus. Makin lama kamu bekerja, makin panjang istirahatnya.</string>
     <string name="percentage_advantages">Istirahatmu adalah persentase tetap dari waktu kerjamu.</string>
@@ -77,11 +49,9 @@
     <string name="import_replace">Ganti</string>
     <string name="import_sum">Jumlahkan</string>
 
-    <string name="nav_back">Kembali</string>
     <string name="nav_todo_list">Tugas</string>
     <string name="nav_settings">Pengaturan</string>
     <string name="mode_percentage">Persentase</string>
-    <string name="todo_list_title">Daftar tugas</string>
     <string name="todo_add_item">Tambah tugas</string>
     <string name="todo_item_title">Judul</string>
     <string name="todo_item_description">Deskripsi</string>
@@ -175,7 +145,7 @@
     <string name="backup_import_failed">Cadangan tidak bisa diimpor. Tidak ada yang berubah.</string>
     <string name="goal_title">Target harian</string>
     <string name="goal_per_day">%1$s sehari</string>
-    <string name="goal_today">%1$s dari %2$s</string>
+    <string name="goal_today">%1$s dari %2$s hari ini</string>
     <string name="goal_decrease">Turunkan target</string>
     <string name="goal_increase">Naikkan target</string>
     <string name="goal_reached">Target harian tercapai!</string>
@@ -252,8 +222,7 @@
     <string name="theme_supporter">Pendukung</string>
     <string name="nav_focus">Fokus</string>
     <string name="nav_stats">Statistik</string>
-    <string name="cd_mode_settings">Pengaturan mode ini</string>
-    <string name="focus_mode_locked">Hentikan sesi untuk ganti mode</string>
+    <string name="cd_mode_settings">Sesuaikan mode ini</string>
     <string name="sounds_title">Suara</string>
     <string name="stats_year">Tahun</string>
     <string name="stats_first_session">Sesi pertamamu akan muncul di sini</string>
@@ -331,7 +300,7 @@
     <string name="sound_train">Kereta</string>
     <string name="sound_typing">Mengetik</string>
     <string name="sound_tent">Hujan di tenda</string>
-    <string name="pro_sounds_title">6 suara baru</string>
+    <string name="pro_sounds_title">Suara baru</string>
     <string name="pro_sounds_text">Sungai kecil, jangkrik malam, kipas angin, kereta, mengetik, dan hujan di tenda. Dengarkan masing-masing selama 10 detik sebelum membeli.</string>
     <string name="cd_pro_sound">%1$s, suara Pro</string>
     <string name="theme_lavender">Lavender</string>
@@ -356,4 +325,22 @@
     <string name="notifications_title_ios">Beri tahu saat setiap fase berakhir?</string>
     <string name="notifications_text_ios">Kamu akan tahu kapan waktunya istirahat dan kapan kembali fokus, bahkan saat aplikasi ditutup.</string>
     <string name="notifications_off_ios">Notifikasi mati. Nyalakan untuk menerima pemberitahuan saat aplikasi ditutup.</string>
+    <string name="stop_saved">Tersimpan: %1$s</string>
+    <string name="stop_too_short">Kurang dari satu menit, tidak disimpan</string>
+    <string name="todo_previous_day">Hari sebelumnya</string>
+    <string name="todo_next_day">Hari berikutnya</string>
+    <string name="todo_empty">Tidak ada yang direncanakan untuk hari ini</string>
+    <string name="cd_focus_task">Kerja pada %1$s</string>
+    <string name="session_added">Waktu ditambahkan</string>
+    <string name="session_edit">Edit sesi</string>
+    <string name="sessions_add">Tambah waktu</string>
+    <string name="session_minutes">Menit</string>
+    <string name="settings_session_title">Selama sesi</string>
+    <string name="settings_about_title">Tentang</string>
+    <string name="level_hint">Setiap menit fokus dihitung menuju level berikutnya</string>
+    <string name="cd_open_today">Lihat sesi hari ini</string>
+    <string name="session_minutes_range">Dari 1 hingga %1$d</string>
+    <string name="session_deleted">Sesi dihapus</string>
+    <string name="appearance_dynamic_hint">Matikan warna wallpaper untuk memilih tema</string>
+    <string name="streak_free_day_left">Hari bebas minggu ini masih tersedia</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.baltajmn.flowtime.features.screens.edit
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import com.baltajmn.flowtime.features.screens.settings.SwitchRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,8 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.baltajmn.flowtime.core.design.theme.LargeTitle
-import com.baltajmn.flowtime.core.design.theme.SubBody
+import com.baltajmn.flowtime.core.design.theme.SheetTitle
 import com.baltajmn.flowtime.core.persistence.model.RangeModel
 import com.baltajmn.flowtime.data.timer.TimerMode
 import com.baltajmn.flowtime.features.screens.common.composable.components.PercentageRange
@@ -52,17 +53,19 @@ fun ModeSettingsSheet(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { viewModel.reload() }
 
+    // Cerrar con el gesto también guarda: antes se perdía lo cambiado sin avisar.
+    val close = {
+        viewModel.saveChanges()
+        onDismiss()
+    }
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
+        onDismissRequest = close,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ) {
         ModeSettingsContent(
             state = state,
             viewModel = viewModel,
-            onSave = {
-                viewModel.saveChanges()
-                onDismiss()
-            }
+            onSave = close
         )
     }
 }
@@ -82,23 +85,11 @@ fun ModeSettingsContent(state: EditState, viewModel: EditViewModel, onSave: () -
             TimerMode.PERCENTAGE -> percentageSettings(state, viewModel)
         }
 
+        // Toda la fila cambia el interruptor, como en Ajustes.
         item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(Res.string.pomodoro_continue_after_break),
-                    style = SubBody.copy(
-                        fontSize = 15.sp,
-                        color = MaterialTheme.colorScheme.onSurface
-                    ),
-                    modifier = Modifier.weight(1f)
-                )
-                Switch(
+            Box(modifier = Modifier.padding(vertical = 4.dp)) {
+                SwitchRow(
+                    text = Res.string.pomodoro_continue_after_break,
                     checked = state.continueAfterBreak,
                     onCheckedChange = viewModel::setContinueAfterBreak
                 )
@@ -107,7 +98,7 @@ fun ModeSettingsContent(state: EditState, viewModel: EditViewModel, onSave: () -
 
         item {
             Button(onClick = onSave, modifier = Modifier.fillMaxWidth()) {
-                Text(text = stringResource(Res.string.settings_save), style = SubBody)
+                Text(text = stringResource(Res.string.settings_save))
             }
         }
 
@@ -118,7 +109,7 @@ fun ModeSettingsContent(state: EditState, viewModel: EditViewModel, onSave: () -
 private fun LazyListScope.title(text: StringResource) = item {
     Text(
         text = stringResource(text),
-        style = LargeTitle.copy(fontSize = 26.sp, color = MaterialTheme.colorScheme.onSurface)
+        style = SheetTitle.copy(color = MaterialTheme.colorScheme.onSurface)
     )
 }
 

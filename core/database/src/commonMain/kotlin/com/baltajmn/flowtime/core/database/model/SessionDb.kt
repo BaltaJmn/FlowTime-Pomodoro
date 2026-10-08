@@ -43,3 +43,16 @@ data class SessionDb(
 }
 
 data class DaySeconds(val localDate: String, val seconds: Long)
+
+/** Una sesión con el título de su tarea, si tiene y no se ha borrado. */
+data class SessionRow(
+    val id: Long,
+    val startedAt: Long,
+    val endedAt: Long,
+    val localDate: String,
+    val mode: String,
+    val focusSeconds: Long,
+    val tagId: Long?,
+    val taskId: Long?,
+    val taskTitle: String?
+)

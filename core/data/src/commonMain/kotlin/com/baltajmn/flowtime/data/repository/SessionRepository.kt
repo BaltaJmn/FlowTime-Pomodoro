@@ -13,6 +13,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -44,6 +45,39 @@ interface SessionRepository {
 
     /** El historial de antes de las sesiones pasa a la base de datos, una sola vez. */
     fun importLegacyOnce()
+
+    /** Deshace el [record] de la sesión que empezó en [startedAt]. Tampoco espera. */
+    fun unrecord(startedAt: Long)
+
+    /** Las de un día, también el tiempo añadido a mano, para corregirlas. */
+    fun sessionsOn(day: LocalDate): Flow<List<FocusSession>>
+
+    suspend fun delete(id: Long)
+
+    /** Deshacer [delete]: la misma sesión, con su id. */
+    suspend fun restore(session: FocusSession)
+
+    suspend fun setSeconds(id: Long, seconds: Long)
+}
+
+/** Una sesión guardada, con lo necesario para enseñarla y para devolverla si se borra. */
+data class FocusSession(
+    val id: Long,
+    val startedAt: Long,
+    val endedAt: Long,
+    val focusSeconds: Long,
+    val localDate: String = "",
+    val mode: String = "",
+    val tagId: Long? = null,
+    val taskId: Long? = null,
+    val taskTitle: String? = null
+) {
+    /** Tiempo sin sesión detrás: importado o añadido a mano. */
+    val added: Boolean get() = mode == MODE_ADDED
+
+    companion object {
+        const val MODE_ADDED = SessionDb.MODE_LEGACY
+    }
 }
 
 class DefaultSessionRepository(
@@ -57,6 +91,10 @@ class DefaultSessionRepository(
     // podía leer antes de que terminara y enseñar el historial vacío.
     @Volatile
     private var legacyImport: Job? = null
+
+    // Deshacer espera a que se haya guardado lo que deshace.
+    @Volatile
+    private var lastRecord: Job? = null
 
     override fun record(
         mode: String,
@@ -75,11 +113,42 @@ class DefaultSessionRepository(
             tagId = tagId,
             taskId = taskId
         )
-        scope.launch {
+        lastRecord = scope.launch {
             legacyImport?.join()
             dao.insert(session)
         }
     }
+
+    override fun unrecord(startedAt: Long) {
+        val saving = lastRecord
+        scope.launch {
+            saving?.join()
+            dao.deleteStartedAt(startedAt)
+        }
+    }
+
+    override fun sessionsOn(day: LocalDate): Flow<List<FocusSession>> = dao.on(day.toString()).map { list ->
+        list.map {
+            FocusSession(it.id, it.startedAt, it.endedAt, it.focusSeconds, it.localDate, it.mode, it.tagId, it.taskId, it.taskTitle)
+        }
+    }
+
+    override suspend fun delete(id: Long) = dao.delete(id)
+
+    override suspend fun restore(session: FocusSession) = dao.insert(
+        SessionDb(
+            id = session.id,
+            startedAt = session.startedAt,
+            endedAt = session.endedAt,
+            localDate = session.localDate,
+            mode = session.mode,
+            focusSeconds = session.focusSeconds,
+            tagId = session.tagId,
+            taskId = session.taskId
+        )
+    )
+
+    override suspend fun setSeconds(id: Long, seconds: Long) = dao.setSeconds(id, seconds)
 
     override fun secondsOn(day: LocalDate): Flow<Long> = dao.secondsOn(day.toString())
 

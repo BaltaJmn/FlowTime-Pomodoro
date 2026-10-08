@@ -76,6 +76,7 @@ class StatsViewModelTest {
             getStudyTimeToClipboard = GetStudyTimeToClipboard(sessions),
             setStudyTimeFromClipboard = SetStudyTimeFromClipboard(sessions),
             prefs = prefs,
+            sessions = sessions,
             sessionActive = { sessionActive },
             proEnabled = proEnabled,
             today = { sep30 },

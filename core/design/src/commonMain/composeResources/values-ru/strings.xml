@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="flow_time_title">FlowTime: готово</string>
-    <string name="pomodoro_title">Помодоро: готово</string>
     <string name="flow_time_settings_title">Настройки FlowTime</string>
     <string name="flow_time_settings_in_the_first">В первые %1$s минут</string>
     <string name="flow_time_settings_rest">Я буду отдыхать</string>
@@ -15,38 +13,13 @@
     <string name="settings_save">Сохранить изменения</string>
     <string name="time_title_working">Работа</string>
     <string name="time_title_resting">Отдых</string>
-    <string name="button_break">Перерыв</string>
     <string name="dialog_confirm">Подтвердить</string>
     <string name="dialog_cancel">Отмена</string>
-    <string name="go_to_history">Перейти в историю</string>
     <string name="settings_intro">Введение</string>
     <string name="settings_intro_button">Открыть</string>
     <string name="settings_rate">Нравится FlowTime?</string>
     <string name="settings_rate_button">Оценить</string>
     <string name="settings_privacy">Политика конфиденциальности</string>
-    <string name="others">Другие</string>
-    <string name="remember">Помни</string>
-    <string name="mot_1">Ты сможешь! :)</string>
-    <string name="mot_2">Не останавливайся, продолжай! :)</string>
-    <string name="mot_3">Решимость побеждает! :)</string>
-    <string name="mot_4">Ты сильный, продолжай! :)</string>
-    <string name="mot_5">Маленькие шаги, большой успех! :)</string>
-    <string name="mot_6">Нет предела, только возможности! :)</string>
-    <string name="mot_7">Ты создатель! :)</string>
-    <string name="mot_8">Не сдавайся, ты победишь! :)</string>
-    <string name="mot_9">Успех ждет тебя! :)</string>
-    <string name="mot_10">Будь стойким, ты достигнешь цели! :)</string>
-    <string name="mot_11">Вперед, у тебя есть сила! :)</string>
-    <string name="mot_12">Каждый шаг важен, не останавливайся! :)</string>
-    <string name="mot_13">Решимость преодолевает любые преграды! :)</string>
-    <string name="mot_14">Ты сильнее, чем думаешь! :)</string>
-    <string name="mot_15">Маленькие усилия приводят к большим достижениям! :)</string>
-    <string name="mot_16">Нет предела, только возможности! :)</string>
-    <string name="mot_17">Ты архитектор своей судьбы! :)</string>
-    <string name="mot_18">Не сдавайся, ты ближе к успеху! :)</string>
-    <string name="mot_19">Успех ждет тебя в конце пути! :)</string>
-    <string name="mot_20">Будь стойким, победа твоя! :)</string>
-    <string name="percentage_title">Процентный режим: готово</string>
     <string name="percentage_settings_title">Процент отдыха</string>
     <string name="support_developer">Оставить чаевые</string>
     <string name="support_developer_title">Поддержите FlowTime</string>
@@ -65,7 +38,6 @@
     <string name="show_alert">Сообщать об окончании каждой фазы</string>
     <string name="alert_google_play">Ошибка подключения к Google Play</string>
     <string name="alert_google_play_desc">Убедитесь, что у вас есть активное интернет-соединение для получения необходимых данных.</string>
-    <string name="advantage_title">Преимущества</string>
     <string name="pomodoro_advantages">Работа и отдых фиксированными блоками, которые вы задаёте сами.</string>
     <string name="flow_time_advantages">Работайте, пока сохраняется концентрация. Чем дольше работа, тем длиннее перерыв.</string>
     <string name="percentage_advantages">Перерыв равен заданному проценту от времени работы.</string>
@@ -76,11 +48,9 @@
     <string name="import_conflict_message">Дней, для которых уже сохранены минуты: %1$d. Что с ними сделать?</string>
     <string name="import_replace">Заменить</string>
     <string name="import_sum">Сложить</string>
-    <string name="nav_back">Назад</string>
     <string name="nav_todo_list">Задачи</string>
     <string name="nav_settings">Настройки</string>
     <string name="mode_percentage">Процент</string>
-    <string name="todo_list_title">Список дел</string>
     <string name="todo_add_item">Добавить задачу</string>
     <string name="todo_item_title">Название</string>
     <string name="todo_item_description">Описание</string>
@@ -183,7 +153,7 @@
     <string name="backup_import_failed">Не удалось импортировать копию. Ничего не изменилось.</string>
     <string name="goal_title">Цель на день</string>
     <string name="goal_per_day">%1$s в день</string>
-    <string name="goal_today">%1$s из %2$s</string>
+    <string name="goal_today">%1$s из %2$s сегодня</string>
     <string name="goal_decrease">Уменьшить цель</string>
     <string name="goal_increase">Увеличить цель</string>
     <string name="goal_reached">Цель на день выполнена!</string>
@@ -266,8 +236,7 @@
     <string name="theme_supporter">Supporter</string>
     <string name="nav_focus">Фокус</string>
     <string name="nav_stats">Статистика</string>
-    <string name="cd_mode_settings">Настройки режима</string>
-    <string name="focus_mode_locked">Остановите сессию, чтобы сменить режим</string>
+    <string name="cd_mode_settings">Настрой этот режим</string>
     <string name="sounds_title">Звуки</string>
     <string name="stats_year">Год</string>
     <string name="stats_first_session">Здесь появится ваша первая сессия</string>
@@ -345,7 +314,7 @@
     <string name="sound_train">Поезд</string>
     <string name="sound_typing">Печать на клавиатуре</string>
     <string name="sound_tent">Дождь по палатке</string>
-    <string name="pro_sounds_title">6 новых звуков</string>
+    <string name="pro_sounds_title">Новые звуки</string>
     <string name="pro_sounds_text">Ручей, ночные сверчки, вентилятор, поезд, печать на клавиатуре и дождь по палатке. Каждый можно послушать 10 секунд до покупки.</string>
     <string name="cd_pro_sound">%1$s, звук Pro</string>
     <string name="theme_lavender">Лаванда</string>
@@ -370,4 +339,22 @@
     <string name="notifications_title_ios">Уведомлять в конце каждой фазы?</string>
     <string name="notifications_text_ios">Вы узнаете, когда пора отдохнуть и когда вернуться к работе, даже если приложение закрыто.</string>
     <string name="notifications_off_ios">Уведомления выключены. Включите их, чтобы получать оповещения, когда приложение закрыто.</string>
+    <string name="stop_saved">Сохранено: %1$s</string>
+    <string name="stop_too_short">Менее одной минуты, не сохранено</string>
+    <string name="todo_previous_day">Предыдущий день</string>
+    <string name="todo_next_day">Следующий день</string>
+    <string name="todo_empty">Ничего не запланировано на этот день</string>
+    <string name="cd_focus_task">Работать над %1$s</string>
+    <string name="session_added">Добавленное время</string>
+    <string name="session_edit">Отредактировать сеанс</string>
+    <string name="sessions_add">Добавить время</string>
+    <string name="session_minutes">Минуты</string>
+    <string name="settings_session_title">Во время сеанса</string>
+    <string name="settings_about_title">О приложении</string>
+    <string name="level_hint">Каждая минута фокуса считается на следующий уровень</string>
+    <string name="cd_open_today">Посмотреть сеансы за сегодня</string>
+    <string name="session_minutes_range">От 1 до %1$d</string>
+    <string name="session_deleted">Сеанс удален</string>
+    <string name="appearance_dynamic_hint">Отключи цвета обоев, чтобы выбрать тему</string>
+    <string name="streak_free_day_left">Свободный день этой недели еще не использован</string>
 </resources>

@@ -233,6 +233,26 @@ class FocusEngineTest {
     }
 
     @Test
+    fun `deshacer parar sigue contando como si no se hubiera parado y borra lo guardado`() {
+        val start = time.wall
+        engine.start(TimerMode.FLOW_TIME)
+        time.advance(minutes(20))
+
+        assertEquals(minutes(20), engine.stop())
+        time.advance(seconds(3))
+        engine.undoStop()
+
+        assertEquals(Phase.WORK, engine.state.value.phase)
+        assertEquals(minutes(20) + seconds(3), engine.snapshot().elapsedMillis)
+        assertEquals(listOf(start), sessions.unrecorded)
+        // Solo justo después: con otra sesión empezada, no hace nada.
+        engine.stop()
+        engine.start(TimerMode.POMODORO)
+        engine.undoStop()
+        assertEquals(TimerMode.POMODORO, engine.state.value.mode)
+    }
+
+    @Test
     fun `menos de un minuto no es una sesion`() {
         engine.start(TimerMode.FLOW_TIME)
         time.advance(seconds(59))
