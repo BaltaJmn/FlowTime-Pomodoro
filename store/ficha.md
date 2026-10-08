@@ -43,3 +43,16 @@ gh workflow run listings.yml -f target=play
   `$E:c` es un modificador y se come la `c`.
 - El gráfico va solo en el idioma por defecto (es-ES) y Play lo enseña en todos: por eso no lleva
   texto que traducir.
+
+## App Store
+
+Solo iPhone (`TARGETED_DEVICE_FAMILY = 1`): `store/screenshots/iphone/<idioma>/01.png` a `05.png`, a
+1320x2868 (6,9"), salen del mismo `capturas.py`. En Apple las capturas son de una versión, así que
+solo se cambian con una versión en preparación (`appstore.py estado` dice si la hay):
+
+```bash
+python3 ../ci/tienda/appstore.py capturas com.baltajmn.flowtime . --dry --reemplazar   # qué cambiaría
+python3 ../ci/tienda/appstore.py capturas com.baltajmn.flowtime . --reemplazar
+```
+
+Sin `--reemplazar` solo rellena los idiomas que aún no tienen capturas.
