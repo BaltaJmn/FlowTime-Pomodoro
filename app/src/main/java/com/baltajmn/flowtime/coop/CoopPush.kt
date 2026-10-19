@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.coop
 
 import android.content.Context
+import android.util.Log
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
 import com.baltajmn.flowtime.core.design.R
@@ -39,7 +40,9 @@ object CoopPush {
                 .build()
         )
         if (FirebaseApp.getApps(context).isEmpty()) FirebaseApp.initializeApp(context, options)
-        FirebaseMessaging.getInstance().token.addOnSuccessListener { publish(account, it) }
+        FirebaseMessaging.getInstance().token
+            .addOnSuccessListener { publish(account, it) }
+            .addOnFailureListener { Log.w("CoopPush", "sin token de FCM", it) }
     }
 
     fun publish(account: CoopAccount, token: String) {

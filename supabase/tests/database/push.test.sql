@@ -3,7 +3,7 @@
 -- Con: supabase test db
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(11);
+select plan(12);
 
 -- En local el Vault esta vacio; en el proyecto ya tiene los dos.
 select vault.create_secret('http://localhost', 'project_url') where not exists (select 1 from vault.secrets where name = 'project_url');
@@ -23,6 +23,10 @@ insert into flowtime.profiles (id, display_name, invite_code) values
 set local role authenticated;
 set local request.jwt.claims to '{"sub": "00000000-0000-0000-0000-00000000000a", "role": "authenticated"}';
 select throws_ok('select * from flowtime.push_tokens', '42501', null, 'la app no lee los tokens');
+reset role;
+select ok(has_table_privilege('service_role', 'flowtime.push_tokens', 'select, delete'), 'flowtime-push los lee y borra');
+set local role authenticated;
+set local request.jwt.claims to '{"sub": "00000000-0000-0000-0000-00000000000a", "role": "authenticated"}';
 select lives_ok($$ select flowtime.register_push_token('tok-ana', 'android', 'es') $$, 'Ana registra su token');
 set local request.jwt.claims to '{"sub": "00000000-0000-0000-0000-00000000000b", "role": "authenticated"}';
 select lives_ok($$ select flowtime.register_push_token('tok-bea', 'ios', 'en') $$, 'Bea registra el suyo');

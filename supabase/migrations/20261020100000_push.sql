@@ -13,6 +13,8 @@ create table flowtime.push_tokens (
 create index push_tokens_user on flowtime.push_tokens (user_id);
 alter table flowtime.push_tokens enable row level security;
 revoke all on flowtime.push_tokens from public, anon, authenticated;
+-- La Edge Function los lee y borra los muertos.
+grant all on flowtime.push_tokens to service_role;
 
 -- Un movil que cambia de cuenta deja de avisar a la anterior: el token es de quien lo registro ultimo.
 create function flowtime.register_push_token(token text, platform text, lang text) returns void

@@ -125,18 +125,25 @@ class CoopAccount {
     val pushToken = MutableStateFlow<PushToken?>(null)
 
     /**
-     * Apunta el token en cuanto hay perfil, y otra vez si cambia: sin perfil la base no lo admite. Sin
-     * permiso de notificaciones se apunta igual y el sistema no enseña nada. Una vez por proceso.
+     * Apunta el token al arrancar con sesión, sin esperar a que se abra Coop, y otra vez si cambia la
+     * cuenta o el token. Sin perfil la base no lo admite: espera a que se elija nombre. Sin permiso de
+     * notificaciones se apunta igual y el sistema no enseña nada. Una vez por proceso.
      */
     fun watchPush(scope: CoroutineScope) {
         if (!available || watchingPush) return
         watchingPush = true
         scope.launch {
-            // Con la persona: el mismo token se vuelve a apuntar al entrar con otra cuenta.
-            combine(me, pushToken) { me, token -> if (me != null && token != null) me.id to token else null }
+            combine(status, me, pushToken) { status, me, token ->
+                if (status is SessionStatus.Authenticated && token != null) Triple(userId(), me != null, token) else null
+            }
                 .filterNotNull()
                 .distinctUntilChanged()
-                .collect { (_, token) -> runCatching { client.postgrest.rpc("register_push_token", token) } }
+                .collect { (_, hasProfile, token) ->
+                    // Sin red falla y se queda así hasta el próximo arranque: el aviso no es crítico.
+                    runCatching {
+                        if (hasProfile) client.postgrest.rpc("register_push_token", token) else loadMe()
+                    }
+                }
         }
     }
 
