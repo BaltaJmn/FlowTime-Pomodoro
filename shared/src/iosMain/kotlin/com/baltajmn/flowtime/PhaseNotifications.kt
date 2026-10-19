@@ -69,10 +69,11 @@ internal class PhaseNotifications(private val engine: FocusEngine, private val d
 }
 
 /**
- * Con la app delante, el aviso se ve y suena igual que fuera, menos el del objetivo: ese lo celebra la
- * app. Tocarlo abre Concentración.
+ * Con la app delante, el aviso se ve y suena igual que fuera, menos el del objetivo, que lo celebra la
+ * app, y los push de Coop, que Realtime ya pone en su lista. Tocarlo abre Concentración, con la `url`
+ * del aviso si la trae.
  */
-internal class NotificationDelegate(private val onOpen: () -> Unit) :
+internal class NotificationDelegate(private val onOpen: (url: String?) -> Unit) :
     NSObject(),
     UNUserNotificationCenterDelegateProtocol {
     override fun userNotificationCenter(
@@ -80,7 +81,9 @@ internal class NotificationDelegate(private val onOpen: () -> Unit) :
         willPresentNotification: UNNotification,
         withCompletionHandler: (UNNotificationPresentationOptions) -> Unit
     ) = withCompletionHandler(
-        if (willPresentNotification.request.identifier == GoalNotifications.ID) {
+        if (willPresentNotification.request.identifier == GoalNotifications.ID ||
+            willPresentNotification.request.content.userInfo["url"] != null
+        ) {
             0uL
         } else {
             UNNotificationPresentationOptionBanner or UNNotificationPresentationOptionList or UNNotificationPresentationOptionSound
@@ -92,7 +95,7 @@ internal class NotificationDelegate(private val onOpen: () -> Unit) :
         didReceiveNotificationResponse: UNNotificationResponse,
         withCompletionHandler: () -> Unit
     ) {
-        onOpen()
+        onOpen(didReceiveNotificationResponse.notification.request.content.userInfo["url"] as? String)
         withCompletionHandler()
     }
 }

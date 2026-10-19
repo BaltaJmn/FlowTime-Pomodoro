@@ -31,6 +31,9 @@ const val FRIEND_LINK = "https://flowtime.baltajmn.dev/f/"
 /** El de una sala: https://flowtime.baltajmn.dev/r/<código>. */
 const val ROOM_LINK = "https://flowtime.baltajmn.dev/r/"
 
+/** Abre Coop sin hacer nada más: lo que manda tocar un aviso push (docs/coop-push.md). */
+const val COOP_LINK = "https://flowtime.baltajmn.dev/"
+
 /** El código de un enlace de amistad, o null si no es uno: 10 hexadecimales, como los da el servidor. */
 fun friendCodeOf(link: String): String? =
     link.trim().removePrefix(FRIEND_LINK).lowercase().takeIf { link.trim().startsWith(FRIEND_LINK) && it.matches(Regex("[0-9a-f]{10}")) }

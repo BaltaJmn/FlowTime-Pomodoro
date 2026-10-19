@@ -12,6 +12,9 @@
 	<array>
 		<string>Default</string>
 	</array>
+	<!-- Coop: avisos push (docs/coop-push.md). Al exportar para TestFlight Xcode lo pasa a production. -->
+	<key>aps-environment</key>
+	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:flowtime.baltajmn.dev</string>

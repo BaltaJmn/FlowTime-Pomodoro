@@ -134,6 +134,12 @@ in to both apps with the same Apple or Google account, it is one account, but ea
 name, friends and data, and neither app can see the other's.</p>
 <p>A report sends us an email with the names of the two people involved so that we can act within 24
 hours; it is delivered by <strong>Resend, Inc.</strong> as a processor.</p>
+<p>So that Coop can tell you when someone sends you a friend request, accepts yours or invites you to
+their room, also with the app closed, we store a <strong>notification token</strong> for your phone with
+your Coop account. It is handed to <strong>Google</strong> (Firebase Cloud Messaging, on Android) or
+<strong>Apple</strong> (Apple Push Notification service, on iPhone) to deliver each notification, together
+with its text, which includes the chosen name of the person who caused it. The token is deleted when you
+sign out or delete your Coop account. If you turn notifications off for FlowTime, nothing is shown.</p>
 <p>You can change your name, block and unblock people, sign out and <strong>delete your Coop account at
 any time from the app</strong> (Coop, Account, Delete account). Deleting it removes your name, friends,
 blocks and room membership from the server at once; if you also use Chroma with the same account, the
@@ -152,7 +158,7 @@ The app needs an internet connection only for purchases and, if you use it, for 
 <div class="wrap">
 <table>
   <tr><th>Permission</th><th>Why</th></tr>
-  <tr><td>Notifications</td><td>To show the time left, the alert at the end of each phase and the daily reminder, if you turn it on.</td></tr>
+  <tr><td>Notifications</td><td>To show the time left, the alert at the end of each phase and the daily reminder, if you turn it on; and, if you use Coop, friend requests and room invitations.</td></tr>
   <tr><td>Alarms and reminders</td><td>So that the alert at the end of each phase arrives on time with the app closed.</td></tr>
   <tr><td>Run at startup</td><td>To restore the timer's alarms and your reminder after the phone restarts.</td></tr>
   <tr><td>Media playback in the background</td><td>To keep the ambient sounds playing when you leave the app.</td></tr>
@@ -297,6 +303,13 @@ desarrollador: si inicias sesión en las dos con la misma cuenta de Apple o Goog
 pero cada app guarda su propio nombre, amigos y datos, y ninguna puede ver los de la otra.</p>
 <p>Un reporte nos llega por correo con los nombres de las dos personas, para poder actuar en 24 horas;
 lo entrega <strong>Resend, Inc.</strong> como encargado del tratamiento.</p>
+<p>Para que Coop te avise cuando alguien te envía una solicitud de amistad, acepta la tuya o te invita a
+su sala, también con la app cerrada, guardamos con tu cuenta de Coop un <strong>identificador de
+notificaciones</strong> de tu móvil. Se entrega a <strong>Google</strong> (Firebase Cloud Messaging, en
+Android) o a <strong>Apple</strong> (servicio de notificaciones push de Apple, en iPhone) para hacer
+llegar cada aviso, junto con su texto, que incluye el nombre elegido de quien lo provoca. Se borra al
+cerrar sesión o al borrar tu cuenta de Coop. Si desactivas las notificaciones de FlowTime, no se muestra
+nada.</p>
 <p>Puedes cambiar tu nombre, bloquear y desbloquear, cerrar sesión y <strong>borrar tu cuenta de Coop
 cuando quieras desde la app</strong> (Coop, Cuenta, Borrar cuenta). Al borrarla se eliminan al momento
 del servidor tu nombre, tus amigos, tus bloqueos y tu sala; si también usas Chroma con la misma cuenta,
@@ -315,7 +328,7 @@ necesita conexión a internet solo para las compras y, si lo usas, para Coop.</p
 <div class="wrap">
 <table>
   <tr><th>Permiso</th><th>Para qué</th></tr>
-  <tr><td>Notificaciones</td><td>Para mostrar el tiempo que queda, el aviso al terminar cada fase y el recordatorio diario, si lo activas.</td></tr>
+  <tr><td>Notificaciones</td><td>Para mostrar el tiempo que queda, el aviso al terminar cada fase y el recordatorio diario, si lo activas; y, si usas Coop, las solicitudes de amistad y las invitaciones a sala.</td></tr>
   <tr><td>Alarmas y recordatorios</td><td>Para que el aviso al terminar cada fase llegue a su hora con la app cerrada.</td></tr>
   <tr><td>Ejecutar al inicio</td><td>Para recuperar las alarmas del temporizador y tu recordatorio tras reiniciar el móvil.</td></tr>
   <tr><td>Reproducción en segundo plano</td><td>Para que los sonidos ambientales sigan sonando al salir de la app.</td></tr>

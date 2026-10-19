@@ -22,10 +22,15 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 /** Adonde vuelve el inicio de sesión por la web: com.baltajmn.flowtime://login. */
 const val LOGIN_SCHEME = "com.baltajmn.flowtime"
@@ -37,6 +42,10 @@ data class Profile(
     @SerialName("display_name") val displayName: String,
     @SerialName("invite_code") val inviteCode: String = ""
 )
+
+/** `platform`: android, ios o ios-sandbox (builds de Xcode). `lang`: el idioma de los avisos. */
+@Serializable
+data class PushToken(val token: String, val platform: String, val lang: String)
 
 @Serializable
 private data class NewProfile(val id: String, @SerialName("display_name") val displayName: String)
@@ -112,8 +121,33 @@ class CoopAccount {
         loadMe()
     }
 
+    /** El de este móvil, cuando la plataforma lo tiene: FCM en Android, APNs en iOS (docs/coop-push.md). */
+    val pushToken = MutableStateFlow<PushToken?>(null)
+
+    /**
+     * Apunta el token en cuanto hay perfil, y otra vez si cambia: sin perfil la base no lo admite. Sin
+     * permiso de notificaciones se apunta igual y el sistema no enseña nada. Una vez por proceso.
+     */
+    fun watchPush(scope: CoroutineScope) {
+        if (!available || watchingPush) return
+        watchingPush = true
+        scope.launch {
+            // Con la persona: el mismo token se vuelve a apuntar al entrar con otra cuenta.
+            combine(me, pushToken) { me, token -> if (me != null && token != null) me.id to token else null }
+                .filterNotNull()
+                .distinctUntilChanged()
+                .collect { (_, token) -> runCatching { client.postgrest.rpc("register_push_token", token) } }
+        }
+    }
+
+    private var watchingPush = false
+
     /** Deja la cuenta donde está: al volver a entrar vuelven los amigos. */
     suspend fun signOut() = withContext(NonCancellable) {
+        // Antes de soltar la sesión, que hace falta para borrarlo: este móvil deja de avisar a esta cuenta.
+        pushToken.value?.let { token ->
+            runCatching { client.postgrest.rpc("unregister_push_token", buildJsonObject { put("token", token.token) }) }
+        }
         // Sin red no se le puede decir al servidor, pero el móvil tiene que soltar la sesión igual.
         runCatching { client.auth.signOut() }.onFailure { runCatching { client.auth.clearSession() } }
         forget()

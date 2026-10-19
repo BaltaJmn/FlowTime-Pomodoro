@@ -21,7 +21,10 @@ import com.baltajmn.flowtime.core.persistence.di.PersistenceModule
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
 import com.baltajmn.flowtime.data.di.DataModule
+import com.baltajmn.flowtime.data.coop.COOP_LINK
 import com.baltajmn.flowtime.data.coop.CoopAccount
+import com.baltajmn.flowtime.data.coop.PushToken
+import platform.Foundation.NSBundle
 import com.baltajmn.flowtime.data.coop.CoopFriends
 import com.baltajmn.flowtime.data.coop.LOGIN_SCHEME
 import io.github.jan.supabase.auth.handleDeeplinks
@@ -111,6 +114,15 @@ fun openUrl(url: String) {
     }
 }
 
+/**
+ * El token de APNs (iosApp, AppDelegate) para los avisos de Coop (docs/coop-push.md). `sandbox`: build de
+ * Xcode, que va al APNs de desarrollo.
+ */
+fun setPushToken(token: String, sandbox: Boolean) {
+    val lang = (NSBundle.mainBundle.preferredLocalizations.firstOrNull() as? String)?.take(2) ?: "en"
+    koin.get<CoopAccount>().pushToken.value = PushToken(token, if (sandbox) "ios-sandbox" else "ios", lang)
+}
+
 // Antes que Koin, que las necesita al arrancar.
 private lateinit var sessionActivity: LiveActivity
 private lateinit var widget: HomeWidget
@@ -119,7 +131,11 @@ private lateinit var widget: HomeWidget
 private val openFocus = Channel<Unit>(Channel.CONFLATED)
 
 // El centro de notificaciones no retiene a su delegado.
-private val notificationDelegate = NotificationDelegate(onOpen = { openFocus.trySend(Unit) })
+private val notificationDelegate = NotificationDelegate(onOpen = { url ->
+    // Un aviso push de Coop abre su hoja; el resto, Concentración sin más.
+    if (url == COOP_LINK) koin.get<CoopFriends>().pendingLink.value = url
+    openFocus.trySend(Unit)
+})
 
 // iOS no deja a una app encender No molestar.
 private object NoDoNotDisturb : DoNotDisturb {
@@ -161,6 +177,7 @@ private fun start(koin: Koin) {
     val scope = MainScope()
     engine.runIn(scope)
     koin.get<GoalWatcher>().watch(scope)
+    koin.get<CoopAccount>().watchPush(scope)
     // Configura RevenueCat, si hay clave. Después, sus propios avisos lo tienen al día.
     val purchases = koin.get<PurchasesRepository>()
     scope.launch { purchases.refresh() }

@@ -15,6 +15,8 @@ import com.baltajmn.flowtime.core.design.sound.SleepTimer
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
+import com.baltajmn.flowtime.coop.CoopPush
+import com.baltajmn.flowtime.data.coop.CoopAccount
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.reminder.ReminderRepository
@@ -64,6 +66,9 @@ class App : Application() {
         val reminder = get<DailyReminder>()
         engine.onPhaseChange = ::alert
         val scope = MainScope()
+        val coop = get<CoopAccount>()
+        coop.watchPush(scope)
+        CoopPush.start(this, coop)
         engine.runIn(scope)
         scope.launch {
             engine.state.collect { state ->

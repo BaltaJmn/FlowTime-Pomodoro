@@ -52,6 +52,7 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.review.ktx)
+    implementation(libs.firebase.messaging)
     implementation(libs.glance.appwidget)
     implementation(libs.glance.material3)
     implementation(libs.androidx.foundation.layout.android)

@@ -5,6 +5,9 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 
 type Kind = "friend_request" | "friend_accepted" | "room_invite";
 
+// Tocar el aviso abre Coop: COOP_LINK de CoopFriends.kt.
+const COOP_LINK = "https://flowtime.baltajmn.dev/";
+
 // {n} es el nombre visible de quien actua. room_invite es coop_invited_by de la app.
 const TEXTS: Record<string, Record<Kind, string>> = {
   en: { friend_request: "{n} sent you a friend request", friend_accepted: "{n} accepted your friend request", room_invite: "{n} invites you to their room" },
@@ -97,7 +100,7 @@ async function sendApns(token: string, sandbox: boolean, body: string): Promise<
       "apns-topic": "com.baltajmn.flowtime",
       "apns-push-type": "alert",
     },
-    body: JSON.stringify({ aps: { alert: { title: "FlowTime", body }, sound: "default" }, coop: 1 }),
+    body: JSON.stringify({ aps: { alert: { title: "FlowTime", body }, sound: "default" }, url: COOP_LINK }),
   });
   if (res.ok) return false;
   const reason = (await res.json().catch(() => ({}))).reason;
@@ -115,7 +118,7 @@ async function sendFcm(token: string, body: string): Promise<boolean> {
         token,
         notification: { title: "FlowTime", body },
         android: { notification: { channel_id: "coop" } },
-        data: { coop: "1" },
+        data: { url: COOP_LINK },
       },
     }),
   });

@@ -90,15 +90,17 @@ si del usuario, y conviene hacerlo con la version que lleve Coop, no antes.
 | Informacion personal > Nombre | Si | No | No | No (solo Coop) | Funcionalidad de la app |
 | Informacion personal > Direccion de correo | Si | No | No | No (solo Coop) | Funcionalidad de la app, gestion de la cuenta |
 | Informacion personal > ID de usuario | Si | No | No | No (solo Coop) | Funcionalidad de la app, gestion de la cuenta |
+| Identificadores de dispositivo u otros identificadores | Si | No | No | No (solo Coop) | Funcionalidad de la app. El token de push y el ID de instalacion de Firebase que genera el SDK de FCM (docs/coop-push.md); la fila ya esta marcada por RevenueCat, solo cambia la nota |
 | Mensajes > Otro contenido generado por el usuario | No | | | | Los reportes no llevan texto libre |
 
-Supabase y Resend tratan por cuenta nuestra: no es compartir.
+Supabase, Resend, Google (FCM) y Apple (APNs) tratan por cuenta nuestra: no es compartir.
 
 **App Store Connect, App Privacy.** Se anaden, vinculados al usuario, sin rastreo, finalidad
 *Funcionalidad de la app*: *Informacion de contacto > Nombre*, *Informacion de contacto > Correo
-electronico*, *Identificadores > ID de usuario*. El manifiesto `PrivacyInfo.xcprivacy` declara los
-mismos tres tipos (`NSPrivacyCollectedDataTypeName`, `...EmailAddress`, `...UserID`, vinculados, sin
-rastreo, `NSPrivacyCollectedDataTypePurposeAppFunctionality`). La sesion de Supabase se guarda en
+electronico*, *Identificadores > ID de usuario* e *Identificadores > ID de dispositivo* (el token de
+APNs de los avisos de Coop, docs/coop-push.md). El manifiesto `PrivacyInfo.xcprivacy` declara los
+mismos cuatro tipos (`NSPrivacyCollectedDataTypeName`, `...EmailAddress`, `...UserID`, `...DeviceID`,
+vinculados, sin rastreo, `NSPrivacyCollectedDataTypePurposeAppFunctionality`). La sesion de Supabase se guarda en
 `NSUserDefaults`, que ya esta declarado (`CA92.1`).
 
 **Clasificacion por edad.** Play (cuestionario IARC): *Los usuarios pueden interactuar* = Si (nombres

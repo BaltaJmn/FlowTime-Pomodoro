@@ -21,6 +21,7 @@ import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.data.review.calmMoments
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.coop.CoopAccount
+import com.baltajmn.flowtime.data.coop.COOP_LINK
 import com.baltajmn.flowtime.data.coop.CoopFriends
 import com.baltajmn.flowtime.data.coop.LOGIN_SCHEME
 import io.github.jan.supabase.auth.handleDeeplinks
@@ -118,6 +119,11 @@ class FlowTimeActivity : ComponentActivity() {
     private fun openFocusIfAsked(intent: Intent?) {
         if (intent == null) return
         if (SessionNotification.timerToOpen(intent) != null) openFocus.trySend(Unit)
+        // Un aviso push de Coop: FCM pone su `url` en los extras.
+        if (intent.getStringExtra("url") == COOP_LINK) {
+            coopFriends.pendingLink.value = COOP_LINK
+            openFocus.trySend(Unit)
+        }
         val link = intent.data ?: return
         if (link.scheme == LOGIN_SCHEME && coop.available) {
             coop.client.handleDeeplinks(intent)
