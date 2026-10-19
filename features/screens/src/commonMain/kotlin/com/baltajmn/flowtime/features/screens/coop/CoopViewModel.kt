@@ -7,6 +7,7 @@ import com.baltajmn.flowtime.data.coop.Blocked
 import com.baltajmn.flowtime.data.coop.CoopAccount
 import com.baltajmn.flowtime.data.coop.CoopFriends
 import com.baltajmn.flowtime.data.coop.CoopRooms
+import com.baltajmn.flowtime.data.coop.COOP_LINK
 import com.baltajmn.flowtime.data.coop.FRIEND_LINK
 import com.baltajmn.flowtime.data.coop.Friendship
 import com.baltajmn.flowtime.data.coop.Profile
@@ -154,6 +155,7 @@ class CoopViewModel(
 
     /** Un enlace abierto desde fuera: de amistad o de sala. Sin cuenta, espera en pendingLink. */
     private fun openLink(link: String) {
+        if (link == COOP_LINK) return
         if (link.startsWith(FRIEND_LINK)) addFriend(link) else join(link)
     }
 
