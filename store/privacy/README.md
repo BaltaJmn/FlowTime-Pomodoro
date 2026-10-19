@@ -70,3 +70,40 @@ dispositivo* solo con integraciones que usen el IDFA, y la app usa su ID anónim
 cuatro apps de la familia, publicado en App Store Connect el 05-10-2026.
 
 Si cambia lo que sale del móvil, se cambian las tres: Play, App Store Connect y el manifiesto.
+
+## Coop (#74): lo que cambia, en borrador
+
+Con Coop sale del movil algo mas, solo para quien lo abre (docs/coop.md). La politica ya lo cuenta
+(`index.html`, 19-10-2026, sin publicar). Nada de esto se publica ni se cambia en las consolas sin el
+si del usuario, y conviene hacerlo con la version que lleve Coop, no antes.
+
+**Play Console, seguridad de los datos.** Cambian:
+
+| Pregunta | Respuesta |
+|---|---|
+| ¿Permite crear una cuenta? | Si, con OAuth (Apple y Google) |
+| ¿Se puede iniciar sesion con cuentas de fuera? | Si |
+| ¿Ofreces una forma de pedir que se borren los datos? | Si: desde la app (Coop > Cuenta > Borrar cuenta). Play pide ademas una URL de borrado: hace falta una pagina, como `delete.html` de Chroma |
+
+| Tipo | Recogido | Compartido | Efimero | Obligatorio | Finalidad |
+|---|---|---|---|---|---|
+| Informacion personal > Nombre | Si | No | No | No (solo Coop) | Funcionalidad de la app |
+| Informacion personal > Direccion de correo | Si | No | No | No (solo Coop) | Funcionalidad de la app, gestion de la cuenta |
+| Informacion personal > ID de usuario | Si | No | No | No (solo Coop) | Funcionalidad de la app, gestion de la cuenta |
+| Mensajes > Otro contenido generado por el usuario | No | | | | Los reportes no llevan texto libre |
+
+Supabase y Resend tratan por cuenta nuestra: no es compartir.
+
+**App Store Connect, App Privacy.** Se anaden, vinculados al usuario, sin rastreo, finalidad
+*Funcionalidad de la app*: *Informacion de contacto > Nombre*, *Informacion de contacto > Correo
+electronico*, *Identificadores > ID de usuario*. El manifiesto `PrivacyInfo.xcprivacy` declara los
+mismos tres tipos (`NSPrivacyCollectedDataTypeName`, `...EmailAddress`, `...UserID`, vinculados, sin
+rastreo, `NSPrivacyCollectedDataTypePurposeAppFunctionality`). La sesion de Supabase se guarda en
+`NSUserDefaults`, que ya esta declarado (`CA92.1`).
+
+**Clasificacion por edad.** Play (cuestionario IARC): *Los usuarios pueden interactuar* = Si (nombres
+visibles entre usuarios, sin chat). App Store: *Contenido generado por usuarios / interaccion* y la
+casilla de 16 anos en la app. Apple 1.2 pide reportar, bloquear y actuar en 24 h: hecho
+(`store/coop.md`, "Actuar sobre un reporte").
+
+**Iniciar sesion con Apple (4.8).** Google como opcion obliga a ofrecer Apple, igual de visible: hecho.
