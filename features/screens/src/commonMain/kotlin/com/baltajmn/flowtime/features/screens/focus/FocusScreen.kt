@@ -249,12 +249,14 @@ fun FocusContent(
             }
             if (showSound) SoundButton(playing = soundPlaying, onClick = onOpenSounds)
             // En una sala los tiempos son los de la sala, no los de Ajustes.
-            if (!state.inCoop) IconButton(onClick = onOpenModeSettings) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_tune),
-                    contentDescription = stringResource(Res.string.cd_mode_settings),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            if (!state.inCoop) {
+                IconButton(onClick = onOpenModeSettings) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_tune),
+                        contentDescription = stringResource(Res.string.cd_mode_settings),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }

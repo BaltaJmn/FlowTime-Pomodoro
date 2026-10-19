@@ -135,9 +135,11 @@ private class Matrix(val version: Int) {
     }
 
     private fun drawFinder(x: Int, y: Int) {
-        for (dy in -4..4) for (dx in -4..4) {
-            val distance = maxOf(abs(dx), abs(dy))
-            if (x + dx in 0 until size && y + dy in 0 until size) set(x + dx, y + dy, distance != 2 && distance != 4)
+        for (dy in -4..4) {
+            for (dx in -4..4) {
+                val distance = maxOf(abs(dx), abs(dy))
+                if (x + dx in 0 until size && y + dy in 0 until size) set(x + dx, y + dy, distance != 2 && distance != 4)
+            }
         }
     }
 
@@ -185,18 +187,20 @@ private class Matrix(val version: Int) {
     }
 
     private fun applyMask(mask: Int) {
-        for (y in 0 until size) for (x in 0 until size) {
-            val invert = when (mask) {
-                0 -> (x + y) % 2 == 0
-                1 -> y % 2 == 0
-                2 -> x % 3 == 0
-                3 -> (x + y) % 3 == 0
-                4 -> (x / 3 + y / 2) % 2 == 0
-                5 -> x * y % 2 + x * y % 3 == 0
-                6 -> (x * y % 2 + x * y % 3) % 2 == 0
-                else -> ((x + y) % 2 + x * y % 3) % 2 == 0
+        for (y in 0 until size) {
+            for (x in 0 until size) {
+                val invert = when (mask) {
+                    0 -> (x + y) % 2 == 0
+                    1 -> y % 2 == 0
+                    2 -> x % 3 == 0
+                    3 -> (x + y) % 3 == 0
+                    4 -> (x / 3 + y / 2) % 2 == 0
+                    5 -> x * y % 2 + x * y % 3 == 0
+                    6 -> (x * y % 2 + x * y % 3) % 2 == 0
+                    else -> ((x + y) % 2 + x * y % 3) % 2 == 0
+                }
+                if (!function[y][x] && invert) modules[y][x] = !modules[y][x]
             }
-            if (!function[y][x] && invert) modules[y][x] = !modules[y][x]
         }
     }
 
@@ -211,7 +215,11 @@ private class Matrix(val version: Int) {
                     val dark = if (horizontal) modules[a][b] else modules[b][a]
                     if (dark == runColor) {
                         run++
-                        if (run == 5) result += N1 else if (run > 5) result++
+                        if (run == 5) {
+                            result += N1
+                        } else if (run > 5) {
+                            result++
+                        }
                     } else {
                         addHistory(run, history)
                         if (!runColor) result += finderLike(history) * N3
@@ -227,9 +235,11 @@ private class Matrix(val version: Int) {
                 result += finderLike(history) * N3
             }
         }
-        for (y in 0 until size - 1) for (x in 0 until size - 1) {
-            val c = modules[y][x]
-            if (c == modules[y][x + 1] && c == modules[y + 1][x] && c == modules[y + 1][x + 1]) result += N2
+        for (y in 0 until size - 1) {
+            for (x in 0 until size - 1) {
+                val c = modules[y][x]
+                if (c == modules[y][x + 1] && c == modules[y + 1][x] && c == modules[y + 1][x + 1]) result += N2
+            }
         }
         val dark = modules.sumOf { row -> row.count { it } }
         val total = size * size

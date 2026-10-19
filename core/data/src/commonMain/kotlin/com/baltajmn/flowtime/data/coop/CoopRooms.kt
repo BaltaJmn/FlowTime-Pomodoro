@@ -169,13 +169,13 @@ class CoopRooms(
             launch {
                 merge(*EVENTS.map { event -> ch.broadcastFlow<JsonObject>(event).map { event to it } }.toTypedArray())
                     .collect { (event, payload) ->
-                    val by = (payload["by"] as? JsonPrimitive)?.contentOrNull
-                    runCatching { refresh() }
-                    val name = _room.value?.members?.firstOrNull { it.id == by }?.displayName
-                    if (name != null && by != account.userId() && event != "members") {
-                        _lastEvent.value = RoomEvent(event, name)
+                        val by = (payload["by"] as? JsonPrimitive)?.contentOrNull
+                        runCatching { refresh() }
+                        val name = _room.value?.members?.firstOrNull { it.id == by }?.displayName
+                        if (name != null && by != account.userId() && event != "members") {
+                            _lastEvent.value = RoomEvent(event, name)
+                        }
                     }
-                }
             }
             runCatching { ch.subscribe(blockUntilSubscribed = true) }
         }
