@@ -260,7 +260,7 @@
     <string name="pro_restore_nothing">Pro wurde in diesem Google-Konto nicht gefunden. Prüfe die Verbindung.</string>
     <string name="pro_thanks_text">Du hast FlowTime Pro: Alles aus Pro ist freigeschaltet. Danke, dass du FlowTime unterstützt.</string>
     <string name="pro_see">Pro ansehen</string>
-    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels, Aufgaben und Mixe, 6 neue Klänge, 6 neue Designs und Symbole und automatisch "Nicht stören". Einmalzahlung, kein Abo.</string>
+    <string name="pro_settings_text">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels, Aufgaben und Mixe, 6 neue Klänge, 6 neue Designs und Symbole und automatisch "Nicht stören". Zahle einmal und behalte Pro für immer, oder zahle monatlich.</string>
     <string name="pro_settings_owned">Du hast Pro. Danke, dass du FlowTime unterstützt.</string>
     <string name="pro_card_text">Mit Pro siehst du, zu welchen Zeiten und woran du dich am besten konzentrierst.</string>
     <string name="pro_card_dismiss">Jetzt nicht</string>
@@ -325,7 +325,7 @@
     <string name="alert_app_store">Fehler beim Verbinden mit dem App Store</string>
     <string name="restore_nothing_ios">Keine Käufe gefunden. Prüfe deine Verbindung und ob du denselben Apple Account verwendest.</string>
     <string name="pro_restore_nothing_ios">Pro wurde in diesem Apple Account nicht gefunden. Prüfe die Verbindung.</string>
-    <string name="pro_settings_text_ios">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels, Aufgaben und Mixe, 6 neue Klänge und 6 neue Designs und Symbole. Einmalzahlung, kein Abo.</string>
+    <string name="pro_settings_text_ios">Erweiterte Statistiken, CSV-Export, unbegrenzte Labels, Aufgaben und Mixe, 6 neue Klänge und 6 neue Designs und Symbole. Zahle einmal und behalte Pro für immer, oder zahle monatlich.</string>
     <string name="notifications_title_ios">Am Ende jeder Phase benachrichtigen?</string>
     <string name="notifications_text_ios">Du erfährst, wann Pause ist und wann es weitergeht, auch bei geschlossener App.</string>
     <string name="notifications_off_ios">Benachrichtigungen sind aus. Aktiviere sie, um bei geschlossener App benachrichtigt zu werden.</string>
@@ -347,4 +347,13 @@
     <string name="session_deleted">Sitzung gelöscht</string>
     <string name="appearance_dynamic_hint">Schalte die Farben des Hintergrundbilds aus, um ein Design zu wählen</string>
     <string name="streak_free_day_left">Diese Woche hast du noch deinen freien Tag</string>
+    <string name="pro_plan_forever">Für immer</string>
+    <string name="pro_plan_monthly">Monatlich</string>
+    <string name="pro_best_value">Bestes Angebot</string>
+    <string name="pro_forever_note">Zahl einmal und es gehört dir für immer. Das sind nur zwei Monate des Monatsabos.</string>
+    <string name="pro_per_month">%1$s / Monat</string>
+    <string name="pro_subscribe">Abonnieren für %1$s / Monat</string>
+    <string name="pro_subscription_terms">Das Monatsabo verlängert sich automatisch jeden Monat, bis du kündigst. Kündige jederzeit in den Einstellungen deines App-Store- oder Google-Play-Kontos, mindestens 24 Stunden vor dem Verlängerungsdatum. Die Zahlung wird über dein Store-Konto abgerechnet. Pro ist freigeschaltet, solange das Abo aktiv ist; deine Daten werden nie gelöscht.</string>
+    <string name="pro_terms_of_use">Nutzungsbedingungen</string>
+    <string name="pro_subscription_ended">Dein Monatsabo ist abgelaufen, daher ist Pro wieder gesperrt. Deine Daten sind sicher. Abonniere erneut oder kaufe Pro für immer.</string>
 </resources>

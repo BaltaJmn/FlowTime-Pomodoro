@@ -2,6 +2,11 @@ package com.baltajmn.flowtime.features.screens.pro
 
 import com.baltajmn.flowtime.core.design.theme.SheetTitle
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -76,7 +81,8 @@ fun ProSheet(from: ProFeature?, onDismiss: () -> Unit, viewModel: ProViewModel =
             onBuy = { host?.let(viewModel::buy) },
             onRestore = viewModel::restore,
             onRetry = viewModel::load,
-            onClose = onDismiss
+            onClose = onDismiss,
+            onPick = viewModel::pick
         )
     }
 }
@@ -88,7 +94,8 @@ fun ProContent(
     onBuy: () -> Unit,
     onRestore: () -> Unit,
     onRetry: () -> Unit,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    onPick: (monthly: Boolean) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -127,7 +134,7 @@ fun ProContent(
                 modifier = Modifier.padding(end = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Purchase(state, onBuy, onRestore, onRetry)
+                Purchase(state, onBuy, onRestore, onRetry, onPick)
             }
         }
     }
@@ -168,17 +175,48 @@ private fun ColumnScope.Purchase(
     state: ProUiState,
     onBuy: () -> Unit,
     onRestore: () -> Unit,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    onPick: (monthly: Boolean) -> Unit
 ) {
     HorizontalDivider()
-    Text(
-        text = listOfNotNull(state.product?.price, stringResource(Res.string.pro_one_time)).joinToString(
-            " · "
-        ),
-        style = MaterialTheme.typography.titleMedium,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth()
-    )
+    val monthly = state.monthly
+    if (state.ended) {
+        Text(
+            text = stringResource(Res.string.pro_subscription_ended),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+    if (monthly != null && state.product != null) {
+        // El vitalicio, destacado y premarcado; el mes es sobre todo el ancla.
+        PlanOption(
+            title = stringResource(Res.string.pro_plan_forever),
+            price = state.product.price,
+            caption = stringResource(Res.string.pro_forever_note),
+            badge = stringResource(Res.string.pro_best_value),
+            selected = !state.monthlyPicked,
+            enabled = !state.busy,
+            onClick = { onPick(false) }
+        )
+        PlanOption(
+            title = stringResource(Res.string.pro_plan_monthly),
+            price = stringResource(Res.string.pro_per_month, monthly.price),
+            caption = null,
+            badge = null,
+            selected = state.monthlyPicked,
+            enabled = !state.busy,
+            onClick = { onPick(true) }
+        )
+    } else {
+        Text(
+            text = listOfNotNull(state.product?.price, stringResource(Res.string.pro_one_time)).joinToString(
+                " · "
+            ),
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
     when {
         state.loading -> CircularProgressIndicator(
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -199,7 +237,31 @@ private fun ColumnScope.Purchase(
         if (state.busy) {
             CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
         } else {
-            Text(text = stringResource(Res.string.pro_buy))
+            val picked = if (state.monthlyPicked) monthly else null
+            Text(
+                text = if (picked != null) {
+                    stringResource(Res.string.pro_subscribe, picked.price)
+                } else {
+                    stringResource(Res.string.pro_buy)
+                }
+            )
+        }
+    }
+    if (monthly != null && state.product != null) {
+        // Apple 3.1.2: renovación, cómo cancelar y los dos documentos, junto a la compra.
+        val uriHandler = LocalUriHandler.current
+        Text(
+            text = stringResource(Res.string.pro_subscription_terms),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            TextButton(onClick = { runCatching { uriHandler.openUri(TERMS_URL) } }) {
+                Text(text = stringResource(Res.string.pro_terms_of_use))
+            }
+            TextButton(onClick = { runCatching { uriHandler.openUri(PRIVACY_URL) } }) {
+                Text(text = stringResource(Res.string.settings_privacy))
+            }
         }
     }
     val problem = when {
@@ -222,6 +284,40 @@ private fun ColumnScope.Purchase(
         modifier = Modifier.align(Alignment.CenterHorizontally)
     ) {
         Text(text = stringResource(Res.string.restore_purchases))
+    }
+}
+
+private const val TERMS_URL = "https://flowtime.baltajmn.dev/terms.html"
+private const val PRIVACY_URL = "https://flowtime.baltajmn.dev/"
+
+@Composable
+private fun PlanOption(
+    title: String,
+    price: String,
+    caption: String?,
+    badge: String?,
+    selected: Boolean,
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    val colors = MaterialTheme.colorScheme
+    val shape = RoundedCornerShape(12.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(shape)
+            .border(if (selected) 2.dp else 1.dp, if (selected) colors.primary else colors.outlineVariant, shape)
+            .selectable(selected = selected, enabled = enabled, role = Role.RadioButton, onClick = onClick)
+            .padding(12.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = title, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+            Text(text = price, style = MaterialTheme.typography.titleSmall)
+        }
+        badge?.let { Text(text = it, style = MaterialTheme.typography.labelSmall, color = colors.primary) }
+        caption?.let {
+            Text(text = it, style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
+        }
     }
 }
 

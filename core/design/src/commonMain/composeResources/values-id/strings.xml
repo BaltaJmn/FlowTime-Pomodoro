@@ -256,7 +256,7 @@
     <string name="pro_restore_nothing">Pro tidak ditemukan di akun Google ini. Periksa koneksimu.</string>
     <string name="pro_thanks_text">Kamu punya FlowTime Pro: semua fitur Pro terbuka. Terima kasih sudah mendukung FlowTime.</string>
     <string name="pro_see">Lihat Pro</string>
-    <string name="pro_settings_text">Statistik lanjutan, ekspor CSV, label, tugas dan mix tanpa batas, 6 suara baru, 6 tema dan ikon baru, serta Jangan Ganggu otomatis. Sekali bayar, tanpa langganan.</string>
+    <string name="pro_settings_text">Statistik lanjutan, ekspor CSV, label, tugas dan mix tanpa batas, 6 suara baru, 6 tema dan ikon baru, serta Jangan Ganggu otomatis. Bayar sekali dan pakai Pro selamanya, atau bayar bulan demi bulan.</string>
     <string name="pro_settings_owned">Kamu punya Pro. Terima kasih sudah mendukung FlowTime.</string>
     <string name="pro_card_text">Dengan Pro kamu bisa melihat jam berapa dan pada apa kamu paling fokus.</string>
     <string name="pro_card_dismiss">Nanti saja</string>
@@ -321,7 +321,7 @@
     <string name="alert_app_store">Gagal terhubung ke App Store</string>
     <string name="restore_nothing_ios">Tidak ada pembelian ditemukan. Periksa koneksimu dan pastikan kamu memakai Akun Apple yang sama.</string>
     <string name="pro_restore_nothing_ios">Pro tidak ditemukan di Akun Apple ini. Periksa koneksimu.</string>
-    <string name="pro_settings_text_ios">Statistik lanjutan, ekspor CSV, label, tugas dan mix tanpa batas, 6 suara baru, serta 6 tema dan ikon baru. Sekali bayar, tanpa langganan.</string>
+    <string name="pro_settings_text_ios">Statistik lanjutan, ekspor CSV, label, tugas dan mix tanpa batas, 6 suara baru, serta 6 tema dan ikon baru. Bayar sekali dan pakai Pro selamanya, atau bayar bulan demi bulan.</string>
     <string name="notifications_title_ios">Beri tahu saat setiap fase berakhir?</string>
     <string name="notifications_text_ios">Kamu akan tahu kapan waktunya istirahat dan kapan kembali fokus, bahkan saat aplikasi ditutup.</string>
     <string name="notifications_off_ios">Notifikasi mati. Nyalakan untuk menerima pemberitahuan saat aplikasi ditutup.</string>
@@ -343,4 +343,13 @@
     <string name="session_deleted">Sesi dihapus</string>
     <string name="appearance_dynamic_hint">Matikan warna wallpaper untuk memilih tema</string>
     <string name="streak_free_day_left">Hari bebas minggu ini masih tersedia</string>
+    <string name="pro_plan_forever">Selamanya</string>
+    <string name="pro_plan_monthly">Bulanan</string>
+    <string name="pro_best_value">Paling hemat</string>
+    <string name="pro_forever_note">Bayar sekali dan jadi milikmu selamanya. Itu hanya setara dua bulan paket bulanan.</string>
+    <string name="pro_per_month">%1$s / bulan</string>
+    <string name="pro_subscribe">Berlangganan seharga %1$s / bulan</string>
+    <string name="pro_subscription_terms">Paket bulanan diperpanjang otomatis setiap bulan sampai kamu membatalkannya. Batalkan kapan saja di pengaturan akun App Store atau Google Play, paling lambat 24 jam sebelum tanggal perpanjangan. Pembayaran ditagih ke akun toko kamu. Pro terbuka selama paket aktif; datamu tidak pernah dihapus.</string>
+    <string name="pro_terms_of_use">Ketentuan penggunaan</string>
+    <string name="pro_subscription_ended">Paket bulananmu telah berakhir, jadi Pro terkunci lagi. Datamu aman. Berlangganan lagi atau beli Pro selamanya.</string>
 </resources>
