@@ -427,7 +427,7 @@
     <string name="pro_forever_note">Pay once and it's yours for good. That's just two months of the monthly plan.</string>
     <string name="pro_per_month">%1$s / month</string>
     <string name="pro_subscribe">Subscribe for %1$s / month</string>
-    <string name="pro_subscription_terms">The monthly plan renews automatically every month until you cancel. Cancel any time in your App Store or Google Play account settings, at least 24 hours before the renewal date. Payment is charged to your store account. Pro is unlocked while it is active; your data is never deleted.</string>
+    <string name="pro_subscription_terms">The monthly plan renews automatically every month until you cancel. Cancel any time in your %1$s account settings, at least 24 hours before the renewal date. Payment is charged to your store account. Pro is unlocked while it is active; your data is never deleted.</string>
     <string name="pro_terms_of_use">Terms of use</string>
     <string name="pro_subscription_ended">Your monthly plan has ended, so Pro is locked again. Your data is safe. Subscribe again or buy Pro forever.</string>
     <string name="coop_share_my_link">Share your link</string>

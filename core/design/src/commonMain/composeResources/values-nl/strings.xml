@@ -424,7 +424,7 @@
     <string name="pro_forever_note">Betaal één keer en het is voor altijd van jou. Dat is slechts twee maanden van het maandabonnement.</string>
     <string name="pro_per_month">%1$s / maand</string>
     <string name="pro_subscribe">Abonneer voor %1$s / maand</string>
-    <string name="pro_subscription_terms">Het maandabonnement wordt elke maand automatisch verlengd totdat je opzegt. Zeg op elk moment op in de instellingen van je App Store- of Google Play-account, minstens 24 uur voor de verlengingsdatum. De betaling wordt via je storeaccount in rekening gebracht. Pro is ontgrendeld zolang het abonnement actief is; je gegevens worden nooit verwijderd.</string>
+    <string name="pro_subscription_terms">Het maandabonnement wordt elke maand automatisch verlengd totdat je opzegt. Zeg op elk moment op in de instellingen van je %1$s-account, minstens 24 uur voor de verlengingsdatum. De betaling wordt via je storeaccount in rekening gebracht. Pro is ontgrendeld zolang het abonnement actief is; je gegevens worden nooit verwijderd.</string>
     <string name="pro_terms_of_use">Gebruiksvoorwaarden</string>
     <string name="pro_subscription_ended">Je maandabonnement is afgelopen, dus Pro is weer vergrendeld. Je gegevens zijn veilig. Abonneer je opnieuw of koop Pro voor altijd.</string>
     <string name="coop_share_my_link">Deel je link</string>

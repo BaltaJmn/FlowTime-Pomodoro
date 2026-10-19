@@ -56,6 +56,9 @@ expect val hasAppleSignIn: Boolean
 /** Lo que dice Ajustes de la copia automática del sistema: la de Google en Android, la de iCloud en el iPhone. */
 expect val automaticBackupText: StringResource
 
+/** La tienda que cobra la suscripción, para el texto de renovación. */
+expect val storeName: String
+
 /** La tienda no responde: Google Play en Android, la App Store en el iPhone. */
 expect val storeUnavailableText: StringResource
 

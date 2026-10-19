@@ -426,7 +426,7 @@
     <string name="pro_forever_note">Paghi una volta e resta tuo per sempre. Sono solo due mesi del piano mensile.</string>
     <string name="pro_per_month">%1$s / mese</string>
     <string name="pro_subscribe">Abbonati a %1$s / mese</string>
-    <string name="pro_subscription_terms">Il piano mensile si rinnova automaticamente ogni mese finché non lo annulli. Annulla in qualsiasi momento nelle impostazioni del tuo account App Store o Google Play, almeno 24 ore prima della data di rinnovo. Il pagamento viene addebitato sul tuo account dello store. Pro resta sbloccato finché il piano è attivo; i tuoi dati non vengono mai eliminati.</string>
+    <string name="pro_subscription_terms">Il piano mensile si rinnova automaticamente ogni mese finché non lo annulli. Annulla in qualsiasi momento nelle impostazioni del tuo account %1$s, almeno 24 ore prima della data di rinnovo. Il pagamento viene addebitato sul tuo account dello store. Pro resta sbloccato finché il piano è attivo; i tuoi dati non vengono mai eliminati.</string>
     <string name="pro_terms_of_use">Termini di utilizzo</string>
     <string name="pro_subscription_ended">Il tuo piano mensile è terminato, quindi Pro è di nuovo bloccato. I tuoi dati sono al sicuro. Abbonati di nuovo o acquista Pro per sempre.</string>
     <string name="coop_share_my_link">Condividi il tuo link</string>

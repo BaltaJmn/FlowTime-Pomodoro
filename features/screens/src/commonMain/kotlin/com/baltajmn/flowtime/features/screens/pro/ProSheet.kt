@@ -57,6 +57,7 @@ import com.baltajmn.flowtime.features.screens.platform.proRestoreNothingText
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import com.baltajmn.flowtime.features.screens.platform.storeName
 import com.baltajmn.flowtime.features.screens.platform.hasFocusMode
 import com.baltajmn.flowtime.features.screens.platform.rememberPurchaseHost
 
@@ -251,7 +252,7 @@ private fun ColumnScope.Purchase(
         // Apple 3.1.2: renovación, cómo cancelar y los dos documentos, junto a la compra.
         val uriHandler = LocalUriHandler.current
         Text(
-            text = stringResource(Res.string.pro_subscription_terms),
+            text = stringResource(Res.string.pro_subscription_terms, storeName),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

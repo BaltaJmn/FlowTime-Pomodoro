@@ -429,7 +429,7 @@
     <string name="pro_forever_note">Pague uma vez e fica seu para sempre. Equivale a apenas dois meses do plano mensal.</string>
     <string name="pro_per_month">%1$s / mês</string>
     <string name="pro_subscribe">Assinar por %1$s / mês</string>
-    <string name="pro_subscription_terms">O plano mensal é renovado automaticamente todo mês até você cancelar. Cancele quando quiser nas configurações da sua conta da App Store ou do Google Play, pelo menos 24 horas antes da data de renovação. O pagamento é cobrado na sua conta da loja. O Pro fica desbloqueado enquanto o plano estiver ativo; seus dados nunca são apagados.</string>
+    <string name="pro_subscription_terms">O plano mensal é renovado automaticamente todo mês até você cancelar. Cancele quando quiser nas configurações da sua conta %1$s, pelo menos 24 horas antes da data de renovação. O pagamento é cobrado na sua conta da loja. O Pro fica desbloqueado enquanto o plano estiver ativo; seus dados nunca são apagados.</string>
     <string name="pro_terms_of_use">Termos de uso</string>
     <string name="pro_subscription_ended">Seu plano mensal terminou, então o Pro foi bloqueado novamente. Seus dados estão seguros. Assine de novo ou compre o Pro para sempre.</string>
     <string name="coop_share_my_link">Compartilhe seu link</string>

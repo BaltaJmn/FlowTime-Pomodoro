@@ -424,7 +424,7 @@
     <string name="pro_forever_note">Bir kez öde, sonsuza dek senin olsun. Bu, aylık planın yalnızca iki ayına denk geliyor.</string>
     <string name="pro_per_month">%1$s / ay</string>
     <string name="pro_subscribe">%1$s / ay karşılığında abone ol</string>
-    <string name="pro_subscription_terms">Aylık plan, sen iptal edene kadar her ay otomatik olarak yenilenir. App Store veya Google Play hesap ayarlarından yenileme tarihinden en az 24 saat önce istediğin zaman iptal edebilirsin. Ödeme mağaza hesabından tahsil edilir. Pro, plan etkin olduğu sürece açıktır; verilerin asla silinmez.</string>
+    <string name="pro_subscription_terms">Aylık plan, sen iptal edene kadar her ay otomatik olarak yenilenir. %1$s hesap ayarlarından yenileme tarihinden en az 24 saat önce istediğin zaman iptal edebilirsin. Ödeme mağaza hesabından tahsil edilir. Pro, plan etkin olduğu sürece açıktır; verilerin asla silinmez.</string>
     <string name="pro_terms_of_use">Kullanım koşulları</string>
     <string name="pro_subscription_ended">Aylık planın sona erdi, bu yüzden Pro yeniden kilitlendi. Verilerin güvende. Tekrar abone ol veya Pro'yu sonsuza dek satın al.</string>
     <string name="coop_share_my_link">Bağlantını paylaş</string>

@@ -109,6 +109,8 @@ actual val hasFocusMode: Boolean = true
 
 actual val hasAppleSignIn: Boolean = false
 
+actual val storeName: String = "Google Play"
+
 actual val automaticBackupText: StringResource = Res.string.backup_automatic
 
 actual val storeUnavailableText: StringResource = Res.string.alert_google_play

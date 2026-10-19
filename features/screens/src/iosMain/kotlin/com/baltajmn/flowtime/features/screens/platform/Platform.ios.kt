@@ -137,6 +137,8 @@ actual val hasFocusMode: Boolean = false
 
 actual val hasAppleSignIn: Boolean = true
 
+actual val storeName: String = "App Store"
+
 actual val automaticBackupText: StringResource = Res.string.backup_automatic_ios
 
 actual val storeUnavailableText: StringResource = Res.string.alert_app_store

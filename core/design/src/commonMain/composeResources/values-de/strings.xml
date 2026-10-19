@@ -423,7 +423,7 @@
     <string name="pro_forever_note">Zahl einmal und es gehört dir für immer. Das sind nur zwei Monate des Monatsabos.</string>
     <string name="pro_per_month">%1$s / Monat</string>
     <string name="pro_subscribe">Abonnieren für %1$s / Monat</string>
-    <string name="pro_subscription_terms">Das Monatsabo verlängert sich automatisch jeden Monat, bis du kündigst. Kündige jederzeit in den Einstellungen deines App-Store- oder Google-Play-Kontos, mindestens 24 Stunden vor dem Verlängerungsdatum. Die Zahlung wird über dein Store-Konto abgerechnet. Pro ist freigeschaltet, solange das Abo aktiv ist; deine Daten werden nie gelöscht.</string>
+    <string name="pro_subscription_terms">Das Monatsabo verlängert sich automatisch jeden Monat, bis du kündigst. Kündige jederzeit in den Einstellungen deines %1$s-Kontos, mindestens 24 Stunden vor dem Verlängerungsdatum. Die Zahlung wird über dein Store-Konto abgerechnet. Pro ist freigeschaltet, solange das Abo aktiv ist; deine Daten werden nie gelöscht.</string>
     <string name="pro_terms_of_use">Nutzungsbedingungen</string>
     <string name="pro_subscription_ended">Dein Monatsabo ist abgelaufen, daher ist Pro wieder gesperrt. Deine Daten sind sicher. Abonniere erneut oder kaufe Pro für immer.</string>
     <string name="coop_share_my_link">Teile deinen Link</string>
