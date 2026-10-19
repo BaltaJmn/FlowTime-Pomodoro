@@ -24,8 +24,8 @@ select is(
   array['accept_friend', 'block_user', 'can_listen', 'create_room', 'decline_friend', 'decline_room_invite',
         'delete_my_data', 'has_open_request', 'invite_to_room', 'is_friend', 'join_room', 'leave_room',
         'my_blocks', 'my_friendships', 'my_profile', 'my_room', 'my_room_id', 'my_room_invites',
-        'regenerate_code', 'remove_friend', 'remove_member', 'request_friend', 'room_control', 'shares_room',
-        'unblock_user'],
+        'regenerate_code', 'register_push_token', 'remove_friend', 'remove_member', 'request_friend',
+        'room_control', 'shares_room', 'unblock_user', 'unregister_push_token'],
   'con sesión solo se ejecutan las funciones de la app'
 );
 select is(
