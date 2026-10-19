@@ -229,8 +229,8 @@ sin sesión se guarda en memoria y se usa al terminar de entrar.
 - **Borrar cuenta** (Apple 5.1.1(v), Play): función `flowtime-delete-account`. Saca a la persona de su
   sala con `leave_room`, borra los reportes sobre ella y su fila de `flowtime.profiles` (lo demás cae
   en cascada). Después borra el usuario de `auth.users` **solo si no tiene fila en
-  `public.profiles`** (Chroma). El `delete-account` de Chroma necesita el cambio simetrico (no borrar
-  el usuario si existe `flowtime.profiles`); se lo paso a la sesión de Chroma.
+  `public.profiles`** (Chroma). El `delete-account` de Chroma pregunta a
+  `public.used_by_other_app(uid)`, que FlowTime redefine para mirar `flowtime.profiles`.
 - **Reportar**: inserta en `flowtime.reports`; `flowtime-report-notify` manda el correo por Resend
   como en Chroma (mismos secretos de Resend). Actuar: borrar el perfil desde el panel.
 - **Bloquear y desbloquear**: como Chroma, más lo de salas de 3.3.

@@ -3,7 +3,7 @@
 -- Con: supabase test db
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(8);
+select plan(10);
 
 insert into auth.users (id, email) values
   ('00000000-0000-0000-0000-00000000000a', 'a@test'),
@@ -26,6 +26,11 @@ select lives_ok(
   'un reporte se guarda aunque el aviso no salga'
 );
 
+reset role;
+select is(public.used_by_other_app('00000000-0000-0000-0000-00000000000a'), true, 'Chroma sabe que Ana usa FlowTime');
+select is(has_function_privilege('authenticated', 'public.used_by_other_app(uuid)', 'execute'), false, 'y nadie con sesión puede preguntarlo');
+
+set local role authenticated;
 set local request.jwt.claims to '{"sub": "00000000-0000-0000-0000-00000000000a", "role": "authenticated"}';
 select is(flowtime.delete_my_data(), false, 'sin Chroma, el usuario se puede borrar');
 select is((select count(*) from flowtime.my_profile())::int, 0, 'el perfil se fue');
