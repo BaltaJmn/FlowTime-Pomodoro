@@ -50,6 +50,9 @@ expect val hasWallpaperColors: Boolean
 /** No molestar mientras se trabaja (#43): solo Android deja que una app lo encienda. */
 expect val hasFocusMode: Boolean
 
+/** Apple para entrar en Coop: solo en el iPhone. Google, en los dos. */
+expect val hasAppleSignIn: Boolean
+
 /** Lo que dice Ajustes de la copia automática del sistema: la de Google en Android, la de iCloud en el iPhone. */
 expect val automaticBackupText: StringResource
 
@@ -79,6 +82,10 @@ expect val notificationsOffText: StringResource
 /** Un aviso corto que se va solo: un Toast en Android. */
 @Composable
 expect fun rememberShowMessage(): (String) -> Unit
+
+/** La hoja de compartir del sistema con un texto: los enlaces de Coop. */
+@Composable
+expect fun rememberShareText(): (String) -> Unit
 
 /** Abre el selector para guardar un fichero nuevo, con [mime] y el nombre que se le pase. */
 @Composable

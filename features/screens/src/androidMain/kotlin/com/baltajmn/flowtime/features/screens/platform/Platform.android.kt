@@ -107,6 +107,8 @@ actual val hasWallpaperColors: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_
 
 actual val hasFocusMode: Boolean = true
 
+actual val hasAppleSignIn: Boolean = false
+
 actual val automaticBackupText: StringResource = Res.string.backup_automatic
 
 actual val storeUnavailableText: StringResource = Res.string.alert_google_play
@@ -127,6 +129,17 @@ actual val notificationsOffText: StringResource = Res.string.notifications_off
 actual fun rememberShowMessage(): (String) -> Unit {
     val context = LocalContext.current
     return remember(context) { { text -> Toast.makeText(context, text, Toast.LENGTH_LONG).show() } }
+}
+
+@Composable
+actual fun rememberShareText(): (String) -> Unit {
+    val context = LocalContext.current
+    return remember(context) {
+        { text ->
+            val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text)
+            context.startActivity(Intent.createChooser(send, null))
+        }
+    }
 }
 
 @Composable

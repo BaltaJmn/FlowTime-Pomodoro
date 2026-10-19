@@ -41,6 +41,8 @@ import platform.UIKit.UIDocumentPickerViewController
 import platform.UIKit.UIDocumentPickerDelegateProtocol
 import platform.UIKit.UIAlertControllerStyleAlert
 import platform.UIKit.UIAlertController
+import platform.UIKit.UIActivityViewController
+import platform.UIKit.popoverPresentationController
 import platform.Foundation.NSTemporaryDirectory
 import platform.Foundation.NSFileManager
 import com.baltajmn.flowtime.core.design.resources.Res
@@ -133,6 +135,8 @@ actual val hasWallpaperColors: Boolean = false
 
 actual val hasFocusMode: Boolean = false
 
+actual val hasAppleSignIn: Boolean = true
+
 actual val automaticBackupText: StringResource = Res.string.backup_automatic_ios
 
 actual val storeUnavailableText: StringResource = Res.string.alert_app_store
@@ -166,6 +170,19 @@ actual fun rememberShowMessage(): (String) -> Unit {
 }
 
 private const val MESSAGE_NANOS = 2_000_000_000L
+
+@Composable
+actual fun rememberShareText(): (String) -> Unit {
+    val controller = LocalUIViewController.current
+    return remember(controller) {
+        { text ->
+            val sheet = UIActivityViewController(activityItems = listOf(text), applicationActivities = null)
+            // En iPad sale como popover: sin un ancla, en una esquina fuera de la pantalla.
+            sheet.popoverPresentationController?.sourceView = controller.view
+            controller.presentViewController(sheet, animated = true, completion = null)
+        }
+    }
+}
 
 /**
  * El selector del iPhone guarda un fichero que ya existe: se le da uno vacío con ese nombre, lo mueve

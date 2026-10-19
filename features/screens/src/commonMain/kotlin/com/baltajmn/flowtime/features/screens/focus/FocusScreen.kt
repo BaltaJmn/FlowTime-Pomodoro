@@ -84,6 +84,9 @@ import com.baltajmn.flowtime.features.screens.common.composable.components.Timer
 import com.baltajmn.flowtime.features.screens.common.composable.components.advantages
 import com.baltajmn.flowtime.features.screens.common.composable.components.label
 import com.baltajmn.flowtime.features.screens.edit.ModeSettingsSheet
+import com.baltajmn.flowtime.features.screens.coop.CoopSheet
+import com.baltajmn.flowtime.data.coop.CoopAccount
+import com.baltajmn.flowtime.data.coop.CoopFriends
 import com.baltajmn.flowtime.data.pro.Limits
 import com.baltajmn.flowtime.data.pro.ProFeatures
 import com.baltajmn.flowtime.data.pro.ProGate
@@ -100,7 +103,7 @@ import org.jetbrains.compose.resources.stringResource
 import com.baltajmn.flowtime.features.screens.platform.rememberNotificationPermission
 import com.baltajmn.flowtime.features.screens.platform.KeepScreenOn
 
-private enum class FocusSheet { SOUNDS, MODE }
+private enum class FocusSheet { SOUNDS, MODE, COOP }
 
 /** Si hay una sesión en marcha: la pestaña de Enfoque lo marca desde cualquier otra pantalla. */
 @Composable
@@ -115,6 +118,8 @@ fun FocusScreen(
     ambience: Ambience = koinInject(),
     gate: ProGate = koinInject(),
     proLauncher: ProLauncher = koinInject(),
+    coop: CoopAccount = koinInject(),
+    coopFriends: CoopFriends = koinInject(),
     /** Lo de hoy en Estadísticas, para ver o corregir sus sesiones. */
     onOpenToday: () -> Unit = {}
 ) {
@@ -123,6 +128,10 @@ fun FocusScreen(
     val notifications = rememberNotificationPermission()
     var explainNotifications by remember { mutableStateOf(false) }
     var sheet by rememberSaveable { mutableStateOf<FocusSheet?>(null) }
+
+    // Un enlace de Coop abierto desde fuera abre la hoja, que lo usa en cuanto hay cuenta.
+    val coopLink by coopFriends.pendingLink.collectAsStateWithLifecycle()
+    LaunchedEffect(coopLink) { if (coopLink != null && coop.available) sheet = FocusSheet.COOP }
 
     KeepScreenOn(active = state.keepScreenOn && state.isActive && !state.paused)
 
@@ -159,6 +168,7 @@ fun FocusScreen(
             },
             onOpenSounds = { sheet = FocusSheet.SOUNDS },
             onOpenModeSettings = { sheet = FocusSheet.MODE },
+            onOpenCoop = if (coop.available) ({ sheet = FocusSheet.COOP }) else null,
             onTagSelected = viewModel::selectTag,
             onTaskSelected = viewModel::selectTask,
             onTaskDone = viewModel::completeTask,
@@ -181,6 +191,7 @@ fun FocusScreen(
             mixes = koinInject()
         )
         FocusSheet.MODE -> ModeSettingsSheet(mode = state.mode, onDismiss = { sheet = null })
+        FocusSheet.COOP -> CoopSheet(onDismiss = { sheet = null })
         null -> Unit
     }
 
@@ -215,6 +226,8 @@ fun FocusContent(
     onAction: (TimerAction) -> Unit,
     onOpenSounds: () -> Unit,
     onOpenModeSettings: () -> Unit,
+    /** Estudiar juntos; null sin servidor configurado, y entonces no se enseña. */
+    onOpenCoop: (() -> Unit)? = null,
     onTagSelected: (Long?) -> Unit = {},
     onTaskSelected: (Task?) -> Unit = {},
     onTaskDone: () -> Unit = {},
@@ -224,13 +237,26 @@ fun FocusContent(
 ) {
     val tools = @Composable {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+            if (onOpenCoop != null) {
+                IconButton(onClick = onOpenCoop) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_group),
+                        contentDescription = stringResource(Res.string.coop_open),
+                        // En una sala, con el color de lo que está en marcha.
+                        tint = if (state.inCoop) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
             if (showSound) SoundButton(playing = soundPlaying, onClick = onOpenSounds)
-            IconButton(onClick = onOpenModeSettings) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_tune),
-                    contentDescription = stringResource(Res.string.cd_mode_settings),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            // En una sala los tiempos son los de la sala, no los de Ajustes.
+            if (!state.inCoop) {
+                IconButton(onClick = onOpenModeSettings) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_tune),
+                        contentDescription = stringResource(Res.string.cd_mode_settings),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }
@@ -341,7 +367,7 @@ private fun TwoColumns(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                if (!state.isActive) {
+                if (!state.isActive && !state.inCoop) {
                     ModeSelector(state, onSelectMode)
                     ModeLine(state)
                     Spacer(modifier = Modifier.height(16.dp))
@@ -380,7 +406,7 @@ private fun OneColumn(
         // En marcha no se puede cambiar de modo: el selector no se enseña, y el modo va con la fase.
         top = {
             tools()
-            if (!state.isActive) {
+            if (!state.isActive && !state.inCoop) {
                 ModeSelector(state, onSelectMode)
                 ModeLine(state)
             }

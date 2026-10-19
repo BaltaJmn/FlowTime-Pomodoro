@@ -1,0 +1,22 @@
+# Solo para el entorno local (supabase start) y la CI. El proyecto de verdad es el de Chroma, y su
+# configuración (inicio de sesión, URLs) se cambia en su panel: docs/coop.md 3.1.
+project_id = "flowtime"
+
+[db]
+major_version = 17
+
+[api]
+schemas = ["public", "graphql_public", "flowtime"]
+
+[auth]
+site_url = "https://flowtime.baltajmn.dev"
+additional_redirect_urls = ["com.baltajmn.flowtime://login"]
+
+[auth.email]
+enable_signup = false
+
+[functions.flowtime-report-notify]
+verify_jwt = false
+
+[functions.flowtime-delete-account]
+verify_jwt = true

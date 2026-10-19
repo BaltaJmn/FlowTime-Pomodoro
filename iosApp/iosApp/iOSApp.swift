@@ -16,6 +16,8 @@ struct iOSApp: App {
         WindowGroup {
             // Compose se ocupa de las zonas seguras (la isla, la barra de inicio), como en Android.
             ComposeView().ignoresSafeArea()
+                // Coop: la vuelta del inicio de sesión y los enlaces universales de amistad y de sala.
+                .onOpenURL { url in MainViewControllerKt.openUrl(url: url.absoluteString) }
         }
     }
 }

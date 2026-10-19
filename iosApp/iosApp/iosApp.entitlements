@@ -7,5 +7,14 @@
 	<array>
 		<string>group.com.baltajmn.flowtime</string>
 	</array>
+	<!-- Coop: Sign in with Apple y los enlaces https://flowtime.baltajmn.dev/f/ y /r/ (docs/coop.md 5). -->
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
+	</array>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:flowtime.baltajmn.dev</string>
+	</array>
 </dict>
 </plist>

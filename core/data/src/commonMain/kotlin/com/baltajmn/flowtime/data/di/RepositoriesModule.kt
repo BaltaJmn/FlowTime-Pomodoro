@@ -15,6 +15,9 @@ import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.task.DefaultTaskRepository
 import com.baltajmn.flowtime.data.task.TaskRepository
 import com.baltajmn.flowtime.data.timer.FocusEngine
+import com.baltajmn.flowtime.data.coop.CoopAccount
+import com.baltajmn.flowtime.data.coop.CoopFriends
+import com.baltajmn.flowtime.data.coop.CoopRooms
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -49,4 +52,8 @@ internal val RepositoriesModule = module {
     single<TaskRepository> { DefaultTaskRepository(get(), get(), get()) }
     single<StatsRepository> { DefaultStatsRepository(get()) }
     singleOf(::FocusEngine)
+    singleOf(::CoopAccount)
+    singleOf(::CoopFriends)
+    // Al arrancar: con una sala a medias, los botones del temporizador ya tienen que ir a la sala.
+    single(createdAtStart = true) { CoopRooms(get(), get(), get(), get()) }
 }

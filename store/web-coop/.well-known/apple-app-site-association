@@ -1,0 +1,10 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["BR5ZH8XYP6.com.baltajmn.flowtime"],
+        "components": [{ "/": "/f/*" }, { "/": "/r/*" }]
+      }
+    ]
+  }
+}
