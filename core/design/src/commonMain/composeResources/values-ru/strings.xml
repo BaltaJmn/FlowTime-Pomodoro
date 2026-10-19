@@ -436,4 +436,11 @@
     <string name="pro_subscription_terms">Ежемесячный план продлевается автоматически каждый месяц, пока ты его не отменишь. Отменить можно в любой момент в настройках аккаунта App Store или Google Play, не позднее чем за 24 часа до даты продления. Оплата списывается с твоего аккаунта в магазине. Pro разблокирован, пока план активен; твои данные никогда не удаляются.</string>
     <string name="pro_terms_of_use">Условия использования</string>
     <string name="pro_subscription_ended">Твой ежемесячный план закончился, поэтому Pro снова заблокирован. Твои данные в безопасности. Подпишись снова или купи Pro навсегда.</string>
+    <string name="coop_share_my_link">Поделитесь ссылкой</string>
+    <string name="coop_show_qr">QR-код</string>
+    <string name="coop_person_menu">Другие действия для %1$s</string>
+    <string name="coop_new_link_text">Ваша текущая ссылка перестанет работать. Тем, кто ещё не использовал её, понадобится новая.</string>
+    <string name="coop_add_friend">Добавить друга</string>
+    <string name="coop_account_in_settings">Ваше имя в Coop, заблокированные пользователи и удаление аккаунта находятся в Настройках.</string>
+    <string name="coop_settings_title">Аккаунт Coop</string>
 </resources>

@@ -422,4 +422,11 @@
     <string name="pro_subscription_terms">월간 플랜은 해지하기 전까지 매달 자동으로 갱신돼요. 갱신일 최소 24시간 전까지 App Store 또는 Google Play 계정 설정에서 언제든지 해지할 수 있어요. 결제는 스토어 계정으로 청구돼요. Pro는 플랜이 활성화된 동안 잠금 해제되며, 데이터는 절대 삭제되지 않아요.</string>
     <string name="pro_terms_of_use">이용 약관</string>
     <string name="pro_subscription_ended">월간 플랜이 종료되어 Pro가 다시 잠겼어요. 데이터는 안전해요. 다시 구독하거나 Pro를 평생 구매할 수 있어요.</string>
+    <string name="coop_share_my_link">내 링크 공유하기</string>
+    <string name="coop_show_qr">QR 코드</string>
+    <string name="coop_person_menu">%1$s의 추가 옵션</string>
+    <string name="coop_new_link_text">현재 링크는 더 이상 작동하지 않아요. 아직 사용하지 않은 분은 새 링크가 필요해요.</string>
+    <string name="coop_add_friend">친구 추가</string>
+    <string name="coop_account_in_settings">Coop 이름, 차단한 사람, 계정 삭제는 설정에 있어요.</string>
+    <string name="coop_settings_title">Coop 계정</string>
 </resources>

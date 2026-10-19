@@ -437,4 +437,11 @@
     <string name="pro_subscription_terms">Plan miesięczny odnawia się automatycznie co miesiąc, dopóki go nie anulujesz. Możesz anulować w dowolnym momencie w ustawieniach konta App Store lub Google Play, co najmniej 24 godziny przed datą odnowienia. Płatność jest pobierana z konta w sklepie. Pro jest odblokowane, dopóki plan jest aktywny; Twoje dane nigdy nie są usuwane.</string>
     <string name="pro_terms_of_use">Warunki korzystania</string>
     <string name="pro_subscription_ended">Twój plan miesięczny wygasł, więc Pro jest znowu zablokowane. Twoje dane są bezpieczne. Subskrybuj ponownie lub kup Pro na zawsze.</string>
+    <string name="coop_share_my_link">Udostępnij swój link</string>
+    <string name="coop_show_qr">Kod QR</string>
+    <string name="coop_person_menu">Więcej opcji dla %1$s</string>
+    <string name="coop_new_link_text">Twój obecny link przestanie działać. Osoby, które jeszcze z niego nie korzystały, będą potrzebować nowego.</string>
+    <string name="coop_add_friend">Dodaj znajomego</string>
+    <string name="coop_account_in_settings">Nazwa w Coop, zablokowane osoby i usuwanie konta są w Ustawieniach.</string>
+    <string name="coop_settings_title">Konto Coop</string>
 </resources>

@@ -422,4 +422,11 @@
     <string name="pro_subscription_terms">Paket bulanan diperpanjang otomatis setiap bulan sampai kamu membatalkannya. Batalkan kapan saja di pengaturan akun App Store atau Google Play, paling lambat 24 jam sebelum tanggal perpanjangan. Pembayaran ditagih ke akun toko kamu. Pro terbuka selama paket aktif; datamu tidak pernah dihapus.</string>
     <string name="pro_terms_of_use">Ketentuan penggunaan</string>
     <string name="pro_subscription_ended">Paket bulananmu telah berakhir, jadi Pro terkunci lagi. Datamu aman. Berlangganan lagi atau beli Pro selamanya.</string>
+    <string name="coop_share_my_link">Bagikan tautanmu</string>
+    <string name="coop_show_qr">Kode QR</string>
+    <string name="coop_person_menu">Opsi lainnya untuk %1$s</string>
+    <string name="coop_new_link_text">Tautan saat ini tidak akan berfungsi lagi. Siapa pun yang belum memakainya perlu yang baru.</string>
+    <string name="coop_add_friend">Tambahkan teman</string>
+    <string name="coop_account_in_settings">Nama Coop, orang yang diblokir, dan penghapusan akun ada di Pengaturan.</string>
+    <string name="coop_settings_title">Akun Coop</string>
 </resources>

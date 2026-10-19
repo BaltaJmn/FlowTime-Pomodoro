@@ -429,4 +429,11 @@
     <string name="pro_subscription_terms">Il piano mensile si rinnova automaticamente ogni mese finché non lo annulli. Annulla in qualsiasi momento nelle impostazioni del tuo account App Store o Google Play, almeno 24 ore prima della data di rinnovo. Il pagamento viene addebitato sul tuo account dello store. Pro resta sbloccato finché il piano è attivo; i tuoi dati non vengono mai eliminati.</string>
     <string name="pro_terms_of_use">Termini di utilizzo</string>
     <string name="pro_subscription_ended">Il tuo piano mensile è terminato, quindi Pro è di nuovo bloccato. I tuoi dati sono al sicuro. Abbonati di nuovo o acquista Pro per sempre.</string>
+    <string name="coop_share_my_link">Condividi il tuo link</string>
+    <string name="coop_show_qr">Codice QR</string>
+    <string name="coop_person_menu">Altre opzioni per %1$s</string>
+    <string name="coop_new_link_text">Il tuo link attuale smetterà di funzionare. Chi non l'ha ancora usato avrà bisogno del nuovo.</string>
+    <string name="coop_add_friend">Aggiungi un amico</string>
+    <string name="coop_account_in_settings">Il nome Coop, le persone bloccate e l'eliminazione dell'account sono in Impostazioni.</string>
+    <string name="coop_settings_title">Account Coop</string>
 </resources>

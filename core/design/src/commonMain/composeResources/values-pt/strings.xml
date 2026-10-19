@@ -432,4 +432,11 @@
     <string name="pro_subscription_terms">O plano mensal é renovado automaticamente todo mês até você cancelar. Cancele quando quiser nas configurações da sua conta da App Store ou do Google Play, pelo menos 24 horas antes da data de renovação. O pagamento é cobrado na sua conta da loja. O Pro fica desbloqueado enquanto o plano estiver ativo; seus dados nunca são apagados.</string>
     <string name="pro_terms_of_use">Termos de uso</string>
     <string name="pro_subscription_ended">Seu plano mensal terminou, então o Pro foi bloqueado novamente. Seus dados estão seguros. Assine de novo ou compre o Pro para sempre.</string>
+    <string name="coop_share_my_link">Compartilhe seu link</string>
+    <string name="coop_show_qr">Código QR</string>
+    <string name="coop_person_menu">Mais opções para %1$s</string>
+    <string name="coop_new_link_text">Seu link atual vai parar de funcionar. Quem ainda não o usou vai precisar do novo.</string>
+    <string name="coop_add_friend">Adicionar um amigo</string>
+    <string name="coop_account_in_settings">Seu nome no Coop, as pessoas bloqueadas e a exclusão da conta estão em Ajustes.</string>
+    <string name="coop_settings_title">Conta no Coop</string>
 </resources>

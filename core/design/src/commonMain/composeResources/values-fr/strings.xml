@@ -432,4 +432,11 @@
     <string name="pro_subscription_terms">L'abonnement mensuel se renouvelle automatiquement chaque mois jusqu'à ce que tu l'annules. Annule à tout moment dans les réglages de ton compte App Store ou Google Play, au moins 24 heures avant la date de renouvellement. Le paiement est prélevé sur ton compte de la boutique. Pro reste débloqué tant que l'abonnement est actif ; tes données ne sont jamais supprimées.</string>
     <string name="pro_terms_of_use">Conditions d'utilisation</string>
     <string name="pro_subscription_ended">Ton abonnement mensuel est terminé, donc Pro est de nouveau verrouillé. Tes données sont en sécurité. Abonne-toi à nouveau ou achète Pro à vie.</string>
+    <string name="coop_share_my_link">Partagez votre lien</string>
+    <string name="coop_show_qr">Code QR</string>
+    <string name="coop_person_menu">Plus d'options pour %1$s</string>
+    <string name="coop_new_link_text">Votre lien actuel ne fonctionnera plus. Ceux qui ne l'ont pas encore utilisé auront besoin du nouveau.</string>
+    <string name="coop_add_friend">Ajouter un ami</string>
+    <string name="coop_account_in_settings">Votre nom Coop, les personnes bloquées et la suppression du compte se trouvent dans les Réglages.</string>
+    <string name="coop_settings_title">Compte Coop</string>
 </resources>

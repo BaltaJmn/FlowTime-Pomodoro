@@ -422,4 +422,11 @@
     <string name="pro_subscription_terms">月額プランは、解約するまで毎月自動的に更新されます。更新日の24時間前までに、App StoreまたはGoogle Playのアカウント設定からいつでも解約できます。料金はストアのアカウントに請求されます。Proはプランが有効な間は利用でき、データが削除されることはありません。</string>
     <string name="pro_terms_of_use">利用規約</string>
     <string name="pro_subscription_ended">月額プランが終了したため、Proは再びロックされました。データは安全に保たれています。もう一度登録するか、Proを買い切りで購入できます。</string>
+    <string name="coop_share_my_link">リンクを共有</string>
+    <string name="coop_show_qr">QRコード</string>
+    <string name="coop_person_menu">%1$s のその他のオプション</string>
+    <string name="coop_new_link_text">現在のリンクは使えなくなります。まだ使っていない人は新しいリンクが必要です。</string>
+    <string name="coop_add_friend">友だちを追加</string>
+    <string name="coop_account_in_settings">Coop の名前、ブロックした相手、アカウントの削除は設定にあります。</string>
+    <string name="coop_settings_title">Coop アカウント</string>
 </resources>

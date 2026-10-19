@@ -426,4 +426,11 @@
     <string name="pro_subscription_terms">मासिक प्लान तुम्हारे रद्द करने तक हर महीने अपने आप रिन्यू होता है। रिन्यूअल की तारीख़ से कम से कम 24 घंटे पहले, App Store या Google Play के अकाउंट सेटिंग्स में कभी भी रद्द कर सकते हो। भुगतान तुम्हारे स्टोर अकाउंट से लिया जाता है। प्लान चालू रहने तक Pro अनलॉक रहता है; तुम्हारा डेटा कभी नहीं हटाया जाता।</string>
     <string name="pro_terms_of_use">उपयोग की शर्तें</string>
     <string name="pro_subscription_ended">तुम्हारा मासिक प्लान समाप्त हो गया है, इसलिए Pro फिर से लॉक हो गया है। तुम्हारा डेटा सुरक्षित है। दोबारा सब्सक्राइब करो या Pro हमेशा के लिए खरीदो।</string>
+    <string name="coop_share_my_link">अपना लिंक साझा करें</string>
+    <string name="coop_show_qr">QR कोड</string>
+    <string name="coop_person_menu">%1$s के लिए और विकल्प</string>
+    <string name="coop_new_link_text">आपका मौजूदा लिंक काम करना बंद कर देगा। जिसने अभी तक इसका इस्तेमाल नहीं किया है, उसे नए लिंक की ज़रूरत होगी।</string>
+    <string name="coop_add_friend">एक दोस्त जोड़ें</string>
+    <string name="coop_account_in_settings">आपका Coop नाम, ब्लॉक किए गए लोग और खाता हटाना सेटिंग्स में हैं।</string>
+    <string name="coop_settings_title">Coop खाता</string>
 </resources>

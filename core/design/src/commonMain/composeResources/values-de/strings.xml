@@ -426,4 +426,11 @@
     <string name="pro_subscription_terms">Das Monatsabo verlängert sich automatisch jeden Monat, bis du kündigst. Kündige jederzeit in den Einstellungen deines App-Store- oder Google-Play-Kontos, mindestens 24 Stunden vor dem Verlängerungsdatum. Die Zahlung wird über dein Store-Konto abgerechnet. Pro ist freigeschaltet, solange das Abo aktiv ist; deine Daten werden nie gelöscht.</string>
     <string name="pro_terms_of_use">Nutzungsbedingungen</string>
     <string name="pro_subscription_ended">Dein Monatsabo ist abgelaufen, daher ist Pro wieder gesperrt. Deine Daten sind sicher. Abonniere erneut oder kaufe Pro für immer.</string>
+    <string name="coop_share_my_link">Teile deinen Link</string>
+    <string name="coop_show_qr">QR-Code</string>
+    <string name="coop_person_menu">Weitere Optionen für %1$s</string>
+    <string name="coop_new_link_text">Dein aktueller Link funktioniert nicht mehr. Wer ihn noch nicht genutzt hat, braucht den neuen.</string>
+    <string name="coop_add_friend">Freund hinzufügen</string>
+    <string name="coop_account_in_settings">Dein Coop-Name, blockierte Personen und das Löschen des Kontos findest du in den Einstellungen.</string>
+    <string name="coop_settings_title">Coop-Konto</string>
 </resources>
