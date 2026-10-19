@@ -1,6 +1,6 @@
 # Coop: estudiar juntos
 
-Diseño de la v1, 19-10-2026. Pendiente del visto bueno del usuario antes de escribir código.
+Diseño de la v1, 19-10-2026, aprobado ese día. Lo que cambió al implementarlo está en cada sección.
 
 ## 1. Qué es
 
