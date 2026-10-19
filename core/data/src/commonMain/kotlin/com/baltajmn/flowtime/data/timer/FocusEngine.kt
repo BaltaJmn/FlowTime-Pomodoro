@@ -7,6 +7,8 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.getObject
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.setObject
+import com.baltajmn.flowtime.data.coop.CoopRoom
+import com.baltajmn.flowtime.data.coop.RoomPhase
 import com.baltajmn.flowtime.data.repository.SessionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -73,13 +75,21 @@ data class FocusState(
     /** Su título, para la notificación y el aviso, que no pueden esperar a la base de datos. */
     val taskTitle: String? = null,
     /** En un descanso, lo que se trabajó en el bloque de antes: para decir lo guardado al terminar solo. */
-    val lastWorkMillis: Long = 0
+    val lastWorkMillis: Long = 0,
+    /** En una sala de Coop: sus duraciones mandan sobre las de Ajustes. Null estudiando solo. */
+    val coop: CoopTimer? = null,
+    /** Lo que llevaba el trabajo de la sala al entrar a mitad: eso no lo trabajó esta persona. */
+    val uncountedMillis: Long = 0
 ) {
     val isActive: Boolean get() = phase != Phase.IDLE
     val isPaused: Boolean get() = isActive && !running
     val countsDown: Boolean get() = durationMillis > 0
     val actions: List<TimerAction> get() = actionsFor(mode, phase, isPaused)
 }
+
+/** Lo que la sesión toma de una sala de Coop (docs/coop.md 4): siempre Pomodoro, con sus tiempos. */
+@Serializable
+data class CoopTimer(val roomId: String, val workMillis: Long, val breakMillis: Long)
 
 /** La sesión en un instante: lo que enseña la pantalla. */
 data class FocusSnapshot(val state: FocusState, val elapsedMillis: Long) {
@@ -119,6 +129,12 @@ class FocusEngine(
      */
     var onPhaseChange: (PhaseChange) -> Unit = {}
 
+    /**
+     * En una sala, las acciones no cambian el estado aquí: van a la sala, y el estado vuelve por
+     * [follow] cuando contesta. Lo pone quien maneja la sala.
+     */
+    var coopControl: (TimerAction) -> Unit = {}
+
     fun snapshot(state: FocusState = _state.value) = FocusSnapshot(state, elapsedMillis(state))
 
     /** Una instantánea al cambiar el estado y, mientras cuenta, otra en cada cambio de segundo. */
@@ -146,6 +162,7 @@ class FocusEngine(
 
     /** [mode] solo cuenta al empezar: el resto de acciones son sobre la sesión en marcha. */
     fun perform(action: TimerAction, mode: TimerMode = _state.value.mode) {
+        if (_state.value.coop != null) return coopControl(action)
         when (action) {
             TimerAction.START -> start(mode)
             TimerAction.PAUSE -> pause()
@@ -226,6 +243,10 @@ class FocusEngine(
      */
     @JvmSynchronized
     fun stop(): Long {
+        if (_state.value.coop != null) {
+            coopControl(TimerAction.STOP)
+            return 0
+        }
         sync()
         val s = _state.value
         val worked = if (s.phase == Phase.WORK) elapsedMillis(s) else 0
@@ -251,6 +272,66 @@ class FocusEngine(
         sync()
     }
 
+    /**
+     * Pone la sesión como dice la sala, con [clockOffset] (cuánto va adelantado el servidor). Lo
+     * trabajado que la sala corta (alguien para, o salta a otro trabajo) se guarda como al parar; una
+     * pausa, o el mismo trabajo, no corta nada. Las fases que terminan solas las sigue haciendo [sync].
+     */
+    @JvmSynchronized
+    fun follow(room: CoopRoom, clockOffset: Long) {
+        sync()
+        val current = _state.value
+        val now = time.wallMillis()
+        val at = room.phaseAt(now + clockOffset)
+        val coop = CoopTimer(room.id, room.workMillis, room.breakMillis)
+        val same = current.coop?.roomId == room.id && sameWork(current, at)
+        val next = if (at.phase == Phase.IDLE) {
+            current.copy(coop = coop).stopped().copy(mode = TimerMode.POMODORO)
+        } else {
+            FocusState(
+                mode = TimerMode.POMODORO,
+                phase = at.phase,
+                running = room.running,
+                countedMillis = at.phaseElapsed,
+                anchorWall = now,
+                anchorElapsed = time.elapsedMillis(),
+                anchorBoot = time.bootCount(),
+                durationMillis = at.phaseDuration,
+                // Lo que lleva el ciclo en marcha, sin contar las pausas: basta para saber si es el mismo trabajo.
+                workStartedAt = if (same) current.workStartedAt else now - at.cycleElapsed,
+                tagId = current.tagId,
+                taskId = current.taskId,
+                taskTitle = current.taskTitle,
+                lastWorkMillis = if (at.phase == Phase.BREAK) room.workMillis else 0,
+                coop = coop,
+                uncountedMillis = when {
+                    same -> current.uncountedMillis
+                    at.phase == Phase.WORK -> at.phaseElapsed
+                    else -> 0
+                }
+            )
+        }
+        if (current.phase == Phase.WORK && next.workStartedAt != current.workStartedAt) {
+            record(current, elapsedMillis(current), overshoot = 0)
+        }
+        stoppedFrom = null
+        set(next)
+    }
+
+    // El trabajo de ahora sigue siendo el de antes: los dos en trabajo y lo contado no ha ido hacia atrás.
+    private fun sameWork(current: FocusState, at: RoomPhase): Boolean =
+        current.phase == Phase.WORK && at.phase == Phase.WORK && at.phaseElapsed + TOLERANCE >= elapsedMillis(current)
+
+    /** Fuera de la sala: lo trabajado se guarda y se vuelve a estudiar solo, parado. */
+    @JvmSynchronized
+    fun leaveCoop() {
+        sync()
+        val s = _state.value
+        if (s.coop == null) return
+        if (s.phase == Phase.WORK) record(s, elapsedMillis(s), overshoot = 0)
+        set(s.copy(coop = null).stopped())
+    }
+
     /** Pasa por las fases que hayan terminado desde la última vez, aunque la app estuviera cerrada. */
     @JvmSynchronized
     fun sync() {
@@ -274,11 +355,10 @@ class FocusEngine(
         var inMillis = snapshot(state).remainingMillis
         while (changes.size < count && s.running && s.countsDown) {
             // Lo mismo que finishWork y afterBreak, sin guardar nada.
-            val breakMillis = if (s.phase == Phase.WORK) breakMillis(s.mode, s.durationMillis) else 0
+            val breakMillis = if (s.phase == Phase.WORK) breakMillis(s, s.durationMillis) else 0
             val next = when {
                 breakMillis > 0 -> s.copy(phase = Phase.BREAK, durationMillis = breakMillis)
-                dataProvider.getCheckValue(s.mode.continueAfterBreakKey) ->
-                    s.copy(phase = Phase.WORK, durationMillis = workMillis(s.mode))
+                continuesAfterBreak(s) -> s.copy(phase = Phase.WORK, durationMillis = workMillis(s))
                 else -> s.stopped()
             }
             changes += inMillis to PhaseChange(s.mode, s.phase, next.phase, lateMillis = 0)
@@ -300,6 +380,15 @@ class FocusEngine(
 
     fun percentage(): Long = TimerDefaults.percentage(dataProvider.getLong(SharedPreferencesItem.PERCENTAGE_RANGE))
 
+    /** Con sala, sus tiempos. */
+    private fun workMillis(s: FocusState): Long = s.coop?.workMillis ?: workMillis(s.mode)
+
+    private fun breakMillis(s: FocusState, workedMillis: Long): Long = s.coop?.breakMillis ?: breakMillis(s.mode, workedMillis)
+
+    // Una sala sigue de ciclo en ciclo hasta que alguien la para.
+    private fun continuesAfterBreak(s: FocusState): Boolean =
+        s.coop != null || dataProvider.getCheckValue(s.mode.continueAfterBreakKey)
+
     private fun breakMillis(mode: TimerMode, workedMillis: Long): Long = when (mode) {
         TimerMode.POMODORO -> pomodoroRange().rest * MINUTE
         TimerMode.FLOW_TIME -> flowTimeBreakSeconds(workedMillis / 1000, flowTimeRanges()) * 1000
@@ -311,7 +400,7 @@ class FocusEngine(
 
     private fun finishWork(s: FocusState, workedMillis: Long, overshoot: Long) {
         record(s, workedMillis, overshoot)
-        val breakMillis = breakMillis(s.mode, workedMillis)
+        val breakMillis = breakMillis(s, workedMillis)
         val next = if (breakMillis > 0) {
             anchored(
                 FocusState(
@@ -323,7 +412,8 @@ class FocusEngine(
                     tagId = s.tagId,
                     taskId = s.taskId,
                     taskTitle = s.taskTitle,
-                    lastWorkMillis = workedMillis
+                    lastWorkMillis = workedMillis,
+                    coop = s.coop
                 ),
                 overshoot
             )
@@ -336,7 +426,7 @@ class FocusEngine(
     private fun finishBreak(s: FocusState, overshoot: Long) = change(s, afterBreak(s, overshoot), overshoot)
 
     private fun afterBreak(s: FocusState, overshoot: Long) =
-        if (dataProvider.getCheckValue(s.mode.continueAfterBreakKey)) {
+        if (continuesAfterBreak(s)) {
             newWork(s.mode, overshoot, s)
         } else {
             s.stopped()
@@ -344,7 +434,7 @@ class FocusEngine(
 
     /** Parada, con lo que se lleva a la sesión siguiente: el modo, la etiqueta y la tarea. */
     private fun FocusState.stopped() =
-        FocusState(mode = mode, tagId = tagId, taskId = taskId, taskTitle = taskTitle)
+        FocusState(mode = mode, tagId = tagId, taskId = taskId, taskTitle = taskTitle, coop = coop)
 
     /** Un trabajo nuevo con la etiqueta y la tarea de [from]. */
     private fun newWork(mode: TimerMode, overshoot: Long, from: FocusState) = anchored(
@@ -352,11 +442,12 @@ class FocusEngine(
             mode = mode,
             phase = Phase.WORK,
             running = true,
-            durationMillis = workMillis(mode),
+            durationMillis = from.coop?.workMillis ?: workMillis(mode),
             workStartedAt = time.wallMillis() - overshoot,
             tagId = from.tagId,
             taskId = from.taskId,
-            taskTitle = from.taskTitle
+            taskTitle = from.taskTitle,
+            coop = from.coop
         ),
         overshoot
     )
@@ -379,11 +470,13 @@ class FocusEngine(
 
     // Con los segundos reales, sin las pausas. Menos de un minuto no se guarda: un empezar y parar
     // sin querer no es una sesión.
-    private fun record(s: FocusState, workedMillis: Long, overshoot: Long) {
+    // En una sala a la que se entró a mitad, desde que se entró.
+    private fun record(s: FocusState, phaseMillis: Long, overshoot: Long) {
+        val workedMillis = phaseMillis - s.uncountedMillis
         if (workedMillis < MINUTE) return
         sessions.record(
             mode = s.mode.name,
-            startedAt = s.workStartedAt,
+            startedAt = s.workStartedAt + s.uncountedMillis,
             endedAt = time.wallMillis() - overshoot,
             focusSeconds = workedMillis / 1000,
             tagId = s.tagId,
@@ -410,5 +503,8 @@ class FocusEngine(
     private companion object {
         const val MINUTE = 60_000L
         const val NO_TAG = 0L
+
+        // Lo que puede ir hacia atrás una cuenta entre móviles sin que sea otro trabajo: el desfase de reloj.
+        const val TOLERANCE = 5_000L
     }
 }
