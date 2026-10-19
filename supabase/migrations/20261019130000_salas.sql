@@ -125,15 +125,15 @@ create function flowtime.new_room_code() returns text
 language plpgsql set search_path = '' as $$
 declare
   alphabet constant text := 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-  code text;
+  candidate text;
 begin
   loop
     select string_agg(substr(alphabet, (get_byte(b, i) % 31) + 1, 1), '')
-    into code
+    into candidate
     from (select extensions.gen_random_bytes(6) as b) x, generate_series(0, 5) i;
-    exit when not exists (select 1 from flowtime.rooms where rooms.code = new_room_code.code);
+    exit when not exists (select 1 from flowtime.rooms r where r.code = candidate);
   end loop;
-  return code;
+  return candidate;
 end;
 $$;
 
