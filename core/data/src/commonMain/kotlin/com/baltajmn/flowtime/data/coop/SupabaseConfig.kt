@@ -14,5 +14,5 @@ object SupabaseConfig {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqZmJtdmFnZmxmcHRxaGFiZGxuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0MDEyMzQsImV4cCI6MjEwNzk3NzIzNH0.1Ybi39q6bcAnPfR9AKulFgdacx8NhtpWF-VF3vzGL98"
 
     /** El cliente OAuth web de Google, que pide el inicio de sesión nativo en Android. */
-    val googleServerClientId: String? = null
+    val googleServerClientId: String? = "682890414578-3kmkv8rjqkl6pk9obqq6jisbpl0e1q5q.apps.googleusercontent.com"
 }

@@ -22,10 +22,14 @@ eu-central-1, plan Free), con el esquema `flowtime`. Diseno: `docs/coop.md`.
 2. *Authentication > URL Configuration > Redirect URLs*: anadir `com.baltajmn.flowtime://login`.
 3. *Authentication > Sign In / Providers > Apple > Client IDs*: anadir `com.baltajmn.flowtime` (el
    bundle de iOS). El Services ID de Chroma sirve para el flujo web de las dos apps.
-4. Google (cuando se configure tambien para Chroma): un cliente OAuth Android con el paquete
-   `com.baltajmn.flowtime` y los SHA-1 de la firma de Play y de depuracion, y uno iOS con el bundle;
-   los dos en *Client IDs* de Google en Supabase. El cliente web es el mismo que el de Chroma y va en
-   `SupabaseConfig.googleServerClientId`.
+4. Google, hecho el 19-10-2026: proyecto propio de Google Cloud `flowtime-baltajmn` (con el de Chroma
+   la pantalla de consentimiento diria "Chroma"). Cliente web "FlowTime Supabase" (redirect
+   `https://djfbmvagflfptqhabdln.supabase.co/auth/v1/callback`), anadido al final de *Client IDs* de
+   Google en Supabase (el de Chroma sigue el primero: es el que usa el flujo web) y en
+   `SupabaseConfig.googleServerClientId`. Tres clientes Android `com.baltajmn.flowtime`: firma de
+   Play, clave de subida y debug. Sin cliente iOS: en el iPhone Coop entra solo con Apple.
+   **Pendiente:** el consentimiento esta en "Prueba" (solo usuarios de prueba). Publicarlo en
+   *Google Auth Platform > Publico > Publicar app*; con solo email y perfil no pide verificacion.
 5. App ID `com.baltajmn.flowtime` en developer.apple.com con *Sign in with Apple* y *Associated
    Domains* (#72).
 
