@@ -224,9 +224,9 @@ sin sesión se guarda en memoria y se usa al terminar de entrar.
 ## 6. Cuenta, borrado y moderación
 
 - **Sesión**: `supabase-kt` 3.8.0 con Auth, Postgrest, Realtime y Functions, y `compose-auth`
-  (solo Apple nativo en iPhone y solo Google nativo en Android; el flujo web con
-  `com.baltajmn.flowtime://login` queda de reserva). Una cuenta de Apple no se abre en Android ni una
-  de Google en iPhone: se acepta, Coop es de cada dispositivo. Se copia `Social.kt` de Chroma casí tal cual, con su manejo de
+  (Android: solo Google, nativo. iPhone: Apple nativo y Google con el cliente iOS propio de FlowTime,
+  sin SDK, en `GoogleSignInIos.kt`, porque el flujo web de Supabase ensenaria el consentimiento de
+  Chroma). Una cuenta de Apple no se abre en Android: se acepta. Se copia `Social.kt` de Chroma casí tal cual, con su manejo de
   sesión perdida.
 - **Borrar cuenta** (Apple 5.1.1(v), Play): función `flowtime-delete-account`. Saca a la persona de su
   sala con `leave_room`, borra los reportes sobre ella y su fila de `flowtime.profiles` (lo demás cae

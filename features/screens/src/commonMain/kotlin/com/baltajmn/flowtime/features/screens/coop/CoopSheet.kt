@@ -57,6 +57,7 @@ import com.baltajmn.flowtime.core.design.components.FlowCard
 import com.baltajmn.flowtime.core.design.resources.*
 import com.baltajmn.flowtime.core.design.theme.SheetTitle
 import com.baltajmn.flowtime.data.coop.CoopAccount
+import com.baltajmn.flowtime.data.coop.signInWithGoogleFallback
 import com.baltajmn.flowtime.data.coop.CoopRoom
 import com.baltajmn.flowtime.data.coop.FRIEND_LINK
 import com.baltajmn.flowtime.data.coop.ROOM_LINK
@@ -65,7 +66,7 @@ import com.baltajmn.flowtime.data.coop.qrEncode
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusState
 import com.baltajmn.flowtime.data.timer.Phase
-import com.baltajmn.flowtime.features.screens.platform.hasGoogleSignIn
+import com.baltajmn.flowtime.features.screens.platform.hasAppleSignIn
 import com.baltajmn.flowtime.features.screens.platform.rememberShareText
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Apple
@@ -128,17 +129,23 @@ fun CoopSheet(onDismiss: () -> Unit, viewModel: CoopViewModel = koinViewModel())
 private fun Intro(onFailed: () -> Unit, account: CoopAccount = koinInject()) {
     val auth = account.client.composeAuth
     val onResult = { r: NativeSignInResult -> if (r is NativeSignInResult.Error || r is NativeSignInResult.NetworkError) onFailed() }
-    // Cada plataforma con su cuenta nativa: Apple en iPhone, Google en Android. Apple 4.8 solo pide Apple en iOS.
-    val signIn = if (hasGoogleSignIn) {
-        auth.rememberSignInWithGoogle(onResult = onResult, fallback = { account.client.auth.signInWith(Google) })
-    } else {
-        auth.rememberSignInWithApple(onResult = onResult, fallback = { account.client.auth.signInWith(Apple) })
-    }
+    // Google en los dos (nativo en Android, propio en el iPhone); Apple solo en el iPhone.
+    val google = auth.rememberSignInWithGoogle(
+        onResult = onResult,
+        fallback = { runCatching { account.signInWithGoogleFallback() }.onFailure { onFailed() } }
+    )
+    val apple = auth.rememberSignInWithApple(onResult = onResult, fallback = { account.client.auth.signInWith(Apple) })
 
     Text(stringResource(Res.string.coop_intro))
     Text(stringResource(Res.string.coop_no_account_needed), color = MaterialTheme.colorScheme.onSurfaceVariant)
-    OutlinedButton(onClick = { signIn.startFlow() }, modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(if (hasGoogleSignIn) Res.string.coop_sign_in_google else Res.string.coop_sign_in_apple))
+    // Apple primero e igual de visible que Google donde esta: App Store 4.8.
+    if (hasAppleSignIn) {
+        OutlinedButton(onClick = { apple.startFlow() }, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(Res.string.coop_sign_in_apple))
+        }
+    }
+    OutlinedButton(onClick = { google.startFlow() }, modifier = Modifier.fillMaxWidth()) {
+        Text(stringResource(Res.string.coop_sign_in_google))
     }
 }
 

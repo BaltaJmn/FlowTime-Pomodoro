@@ -50,8 +50,8 @@ expect val hasWallpaperColors: Boolean
 /** No molestar mientras se trabaja (#43): solo Android deja que una app lo encienda. */
 expect val hasFocusMode: Boolean
 
-/** La cuenta de Coop: Google en Android, Apple en el iPhone. */
-expect val hasGoogleSignIn: Boolean
+/** Apple para entrar en Coop: solo en el iPhone. Google, en los dos. */
+expect val hasAppleSignIn: Boolean
 
 /** Lo que dice Ajustes de la copia automática del sistema: la de Google en Android, la de iCloud en el iPhone. */
 expect val automaticBackupText: StringResource
