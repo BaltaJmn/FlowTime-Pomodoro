@@ -177,6 +177,11 @@ class CoopRooms(
                         }
                     }
             }
+            // Lo que llegó mientras el canal estaba caído (pantalla apagada, red, un error al unirse) no se
+            // repite: cada vez que queda suscrito, también el primero (cierra el hueco desde my_room), se relee.
+            launch {
+                ch.status.collect { if (it == RealtimeChannel.Status.SUBSCRIBED) runCatching { refresh() } }
+            }
             runCatching { ch.subscribe(blockUntilSubscribed = true) }
         }
     }
