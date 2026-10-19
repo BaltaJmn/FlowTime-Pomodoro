@@ -50,10 +50,7 @@ expect val hasWallpaperColors: Boolean
 /** No molestar mientras se trabaja (#43): solo Android deja que una app lo encienda. */
 expect val hasFocusMode: Boolean
 
-/**
- * Google en Coop: nativo en Android. En el iPhone solo quedaria el flujo web, que ensena la pantalla de
- * consentimiento del primer cliente de Supabase (Chroma); alli basta Apple.
- */
+/** La cuenta de Coop: Google en Android, Apple en el iPhone. */
 expect val hasGoogleSignIn: Boolean
 
 /** Lo que dice Ajustes de la copia automática del sistema: la de Google en Android, la de iCloud en el iPhone. */

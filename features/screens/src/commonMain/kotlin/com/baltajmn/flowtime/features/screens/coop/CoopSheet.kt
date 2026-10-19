@@ -128,20 +128,17 @@ fun CoopSheet(onDismiss: () -> Unit, viewModel: CoopViewModel = koinViewModel())
 private fun Intro(onFailed: () -> Unit, account: CoopAccount = koinInject()) {
     val auth = account.client.composeAuth
     val onResult = { r: NativeSignInResult -> if (r is NativeSignInResult.Error || r is NativeSignInResult.NetworkError) onFailed() }
-    // Nativo donde la plataforma lo tiene (Apple en iPhone, Google en Android); Apple en Android, por la web.
-    val apple = auth.rememberSignInWithApple(onResult = onResult, fallback = { account.client.auth.signInWith(Apple) })
-    val google = auth.rememberSignInWithGoogle(onResult = onResult, fallback = { account.client.auth.signInWith(Google) })
+    // Cada plataforma con su cuenta nativa: Apple en iPhone, Google en Android. Apple 4.8 solo pide Apple en iOS.
+    val signIn = if (hasGoogleSignIn) {
+        auth.rememberSignInWithGoogle(onResult = onResult, fallback = { account.client.auth.signInWith(Google) })
+    } else {
+        auth.rememberSignInWithApple(onResult = onResult, fallback = { account.client.auth.signInWith(Apple) })
+    }
 
     Text(stringResource(Res.string.coop_intro))
     Text(stringResource(Res.string.coop_no_account_needed), color = MaterialTheme.colorScheme.onSurfaceVariant)
-    // Apple primero e igual de visible que Google: App Store 4.8.
-    OutlinedButton(onClick = { apple.startFlow() }, modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(Res.string.coop_sign_in_apple))
-    }
-    if (hasGoogleSignIn) {
-        OutlinedButton(onClick = { google.startFlow() }, modifier = Modifier.fillMaxWidth()) {
-            Text(stringResource(Res.string.coop_sign_in_google))
-        }
+    OutlinedButton(onClick = { signIn.startFlow() }, modifier = Modifier.fillMaxWidth()) {
+        Text(stringResource(if (hasGoogleSignIn) Res.string.coop_sign_in_google else Res.string.coop_sign_in_apple))
     }
 }
 
