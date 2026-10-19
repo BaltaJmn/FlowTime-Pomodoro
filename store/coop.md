@@ -30,8 +30,10 @@ eu-central-1, plan Free), con el esquema `flowtime`. Diseno: `docs/coop.md`.
    Play, clave de subida y debug. Sin cliente iOS: en el iPhone Coop entra solo con Apple.
    **Pendiente:** el consentimiento esta en "Prueba" (solo usuarios de prueba). Publicarlo en
    *Google Auth Platform > Publico > Publicar app*; con solo email y perfil no pide verificacion.
-5. App ID `com.baltajmn.flowtime` en developer.apple.com con *Sign in with Apple* y *Associated
-   Domains* (#72).
+5. App ID `com.baltajmn.flowtime` (`5VT8J4B49Z`) con *Sign in with Apple* (primaria) y *Associated
+   Domains* (#72): hecho el 19-10-2026 por la API de App Store Connect (`APPLE_ID_AUTH` y
+   `ASSOCIATED_DOMAINS` en `/v1/bundleIdCapabilities`). Los perfiles los rehace
+   `-allowProvisioningUpdates` en el siguiente archive.
 
 ## Actuar sobre un reporte
 
