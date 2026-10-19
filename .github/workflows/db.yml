@@ -1,0 +1,27 @@
+name: Database
+
+# Coop (docs/coop.md): la seguridad del servidor vive en RLS y en funciones security definer, y los
+# tests de pgTAP son lo que impide que una migracion abra una politica. Aparte de los builds: la base
+# local tarda minutos que un cambio de la app no necesita.
+on:
+  push:
+    paths: ['supabase/**', '.github/workflows/db.yml']
+
+concurrency:
+  group: db-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  pgtap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      # Aplica cada migracion a una base nueva, que ya es una prueba: una que no corre para aqui.
+      - run: supabase start
+      - run: supabase test db

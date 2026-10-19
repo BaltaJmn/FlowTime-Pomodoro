@@ -56,7 +56,7 @@ rompería el `push` del otro. Por eso:
 - `supabase/migrations/` de este repo es la fuente de FlowTime y sirve tal cual para `supabase start`
   y `supabase test db` en local y en CI.
 - Al proyecto compartido se aplican con `supabase/aplicar.sh`, que pasa con `psql` cada fichero que
-  no este en `flowtime.migraciones` (una tabla de una columna) y lo apunta, todo en una transacción
+  no este en `public.flowtime_migraciones` (una tabla sin permisos para nadie; en `public` porque tiene que existir antes que el esquema) y lo apunta, todo en una transacción
   por fichero. No toca `supabase_migrations`, así que el `push` de Chroma sigue funcionando.
 - Las funciones Edge de FlowTime llevan prefijo `flowtime-` (el espacio de nombres es del proyecto).
 
@@ -147,7 +147,7 @@ El cliente no escribe directamente en amistades, bloqueos, salas ni miembros: to
 | `room_invites` | las que recibo o mandó | solo por funciones |
 | `friendships`, `blocks` | las mias | solo por funciones |
 | `reports` | nadie | insert con `reporter = auth.uid()` y el reportado amigo o de mi sala; 20 al día |
-| `invite_attempts`, `migraciones` | nadie | nadie |
+| `invite_attempts`, `flowtime_migraciones` | nadie | nadie |
 
 Bloquear a alguien de tu sala: si eres el dueño, lo saca; si no, no lo saca (no es tu sala) pero
 deja de poder invitarte y tú a él, y no podéis volver a coincidir por código en una sala de uno de
