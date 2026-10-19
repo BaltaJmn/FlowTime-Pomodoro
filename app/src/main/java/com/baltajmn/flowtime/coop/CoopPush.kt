@@ -22,12 +22,13 @@ object CoopPush {
     /** El de `channel_id` en flowtime-push. */
     const val CHANNEL = "coop"
 
-    // La mitad pública del proyecto de Firebase, la de google-services.json: sin el plugin de Gradle.
+    // La mitad pública del proyecto de Firebase flowtime-pomodoro, la de google-services.json: sin el
+    // plugin de Gradle.
     private val options = FirebaseOptions.Builder()
-        .setProjectId("TODO")
-        .setApplicationId("TODO")
-        .setApiKey("TODO")
-        .setGcmSenderId("TODO")
+        .setProjectId("flowtime-pomodoro")
+        .setApplicationId("1:891606962323:android:71a5a5e4134545c0047d66")
+        .setApiKey("AIzaSyBD5f4sh5S-xFz8yQ-ubDzXPhtzO-U6g3E")
+        .setGcmSenderId("891606962323")
         .build()
 
     fun start(context: Context, account: CoopAccount) {
