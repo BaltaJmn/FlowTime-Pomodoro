@@ -130,6 +130,17 @@ actual fun rememberShowMessage(): (String) -> Unit {
 }
 
 @Composable
+actual fun rememberShareText(): (String) -> Unit {
+    val context = LocalContext.current
+    return remember(context) {
+        { text ->
+            val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text)
+            context.startActivity(Intent.createChooser(send, null))
+        }
+    }
+}
+
+@Composable
 actual fun rememberCreateFile(mime: String, onPicked: (PickedFile) -> Unit): (suggestedName: String) -> Unit {
     val picked by rememberUpdatedState(onPicked)
     val launcher = rememberLauncherForActivityResult(CreateDocument(mime)) { uri -> uri?.let { picked(PickedFile(it)) } }

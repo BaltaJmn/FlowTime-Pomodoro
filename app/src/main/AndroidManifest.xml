@@ -35,10 +35,26 @@
         <activity
             android:name=".FlowTimeActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.FlowTime">
             <!-- Mantener pulsado el botón de los ajustes rápidos abre la app. -->
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+            </intent-filter>
+            <!-- Coop: la vuelta del inicio de sesión por la web (docs/coop.md 6). -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="com.baltajmn.flowtime" android:host="login" />
+            </intent-filter>
+            <!-- Coop: los enlaces de amistad y de sala, verificados con assetlinks.json de la web. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="flowtime.baltajmn.dev" android:pathPrefix="/f/" />
+                <data android:pathPrefix="/r/" />
             </intent-filter>
         </activity>
 

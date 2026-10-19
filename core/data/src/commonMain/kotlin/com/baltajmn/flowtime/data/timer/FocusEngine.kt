@@ -189,7 +189,8 @@ class FocusEngine(
     @JvmSynchronized
     fun select(mode: TimerMode) {
         val s = _state.value
-        if (!s.isActive && s.mode != mode) set(s.copy(mode = mode))
+        // En una sala el modo es siempre Pomodoro, el de la sala.
+        if (!s.isActive && s.mode != mode && s.coop == null) set(s.copy(mode = mode))
     }
 
     /** Con la sesión en marcha, cambia la del trabajo en curso, que es el que se guarda al terminar. */
@@ -377,6 +378,9 @@ class FocusEngine(
         dataProvider.getObject<List<RangeModel>>(SharedPreferencesItem.FLOW_TIME_RANGE)
             ?: TimerDefaults.flowTimeRanges()
         ).withCumulativeTotals()
+
+    /** El descanso del Pomodoro de Ajustes: con el trabajo, los tiempos de una sala nueva. */
+    fun pomodoroBreakMillis(): Long = pomodoroRange().rest * MINUTE
 
     fun percentage(): Long = TimerDefaults.percentage(dataProvider.getLong(SharedPreferencesItem.PERCENTAGE_RANGE))
 

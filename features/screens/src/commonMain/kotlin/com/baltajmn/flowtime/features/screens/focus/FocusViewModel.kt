@@ -38,6 +38,8 @@ data class FocusUiState(
     val mode: TimerMode = TimerMode.FLOW_TIME,
     val phase: Phase = Phase.IDLE,
     val paused: Boolean = false,
+    /** En una sala de Coop: el modo y los tiempos son los de la sala. */
+    val inCoop: Boolean = false,
     val time: String = "00:00",
     val minutesToday: String = "",
     /** El objetivo de hoy, ya formateado. Vacío hasta que se lee. */
@@ -121,6 +123,7 @@ class FocusViewModel(
     /** Parar trabajando avisa de lo guardado; un descanso ya guardó su trabajo al empezar. */
     fun onAction(action: TimerAction) {
         if (action != TimerAction.STOP) return engine.perform(action)
+        // En una sala parar va a la sala, y lo guardado llega cuando contesta: sin deshacer.
         val worked = engine.stop()
         if (worked > 0) stopped.value = worked
     }
@@ -197,6 +200,7 @@ class FocusViewModel(
             mode = mode,
             phase = session.phase,
             paused = session.isPaused,
+            inCoop = session.coop != null,
             time = (if (session.isActive) snapshot.displaySeconds else engine.workMillis(mode) / 1000).formatSecondsToTime(),
             minutesToday = ((today?.seconds ?: 0) / 60).formatMinutesStudying(),
             goalToday = today?.goalMinutes?.toLong()?.formatMinutesStudying().orEmpty(),

@@ -80,6 +80,10 @@ expect val notificationsOffText: StringResource
 @Composable
 expect fun rememberShowMessage(): (String) -> Unit
 
+/** La hoja de compartir del sistema con un texto: los enlaces de Coop. */
+@Composable
+expect fun rememberShareText(): (String) -> Unit
+
 /** Abre el selector para guardar un fichero nuevo, con [mime] y el nombre que se le pase. */
 @Composable
 expect fun rememberCreateFile(mime: String, onPicked: (PickedFile) -> Unit): (suggestedName: String) -> Unit

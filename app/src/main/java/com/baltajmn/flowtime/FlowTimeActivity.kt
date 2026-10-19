@@ -20,6 +20,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
 import com.baltajmn.flowtime.data.review.calmMoments
 import com.baltajmn.flowtime.data.timer.FocusEngine
+import com.baltajmn.flowtime.data.coop.CoopAccount
+import com.baltajmn.flowtime.data.coop.CoopFriends
+import com.baltajmn.flowtime.data.coop.LOGIN_SCHEME
+import io.github.jan.supabase.auth.handleDeeplinks
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.features.screens.settings.AppIcons
 import com.baltajmn.flowtime.goal.GoalWatcher
@@ -43,6 +47,8 @@ class FlowTimeActivity : ComponentActivity() {
     private val reviewPrompter: ReviewPrompter by inject()
     private val proLauncher: ProLauncher by inject()
     private val appIcons: AppIcons by inject()
+    private val coop: CoopAccount by inject()
+    private val coopFriends: CoopFriends by inject()
     private val showSound: MutableState<Boolean> = mutableStateOf(true)
 
     // Se guarda hasta que la pantalla principal lo recoge: al abrir la app desde la notificación, antes
@@ -107,8 +113,18 @@ class FlowTimeActivity : ComponentActivity() {
     }
 
     // La notificación abre la pantalla de concentración, que ya enseña el modo de la sesión en marcha.
+    // Un enlace de Coop también: su hoja se abre allí. La vuelta del inicio de sesión por la web la
+    // recoge el cliente de Supabase.
     private fun openFocusIfAsked(intent: Intent?) {
-        if (intent != null && SessionNotification.timerToOpen(intent) != null) openFocus.trySend(Unit)
+        if (intent == null) return
+        if (SessionNotification.timerToOpen(intent) != null) openFocus.trySend(Unit)
+        val link = intent.data ?: return
+        if (link.scheme == LOGIN_SCHEME && coop.available) {
+            coop.client.handleDeeplinks(intent)
+        } else if (link.host == "flowtime.baltajmn.dev") {
+            coopFriends.pendingLink.value = link.toString()
+            openFocus.trySend(Unit)
+        }
     }
 
     // Desde Android 14 se puede descartar; vuelve al abrir la app, y también justo después de dar

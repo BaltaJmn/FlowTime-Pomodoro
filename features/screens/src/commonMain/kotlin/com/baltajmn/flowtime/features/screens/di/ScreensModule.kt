@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.features.screens.di
 
 import com.baltajmn.flowtime.data.timer.FocusEngine
+import com.baltajmn.flowtime.features.screens.coop.CoopViewModel
 import com.baltajmn.flowtime.features.screens.edit.EditViewModel
 import com.baltajmn.flowtime.features.screens.focus.FocusViewModel
 import com.baltajmn.flowtime.features.screens.history.usecases.GetAllStudyTime
@@ -57,5 +58,6 @@ private val ScreensPresentationModule: Module
         viewModelOf(::SplashViewModel)
         viewModelOf(::SupportViewModel)
         viewModelOf(::ProViewModel)
+        viewModelOf(::CoopViewModel)
         single { ProLauncher() }
     }
