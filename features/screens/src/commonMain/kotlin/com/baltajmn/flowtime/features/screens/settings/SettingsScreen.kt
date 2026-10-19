@@ -1,5 +1,6 @@
 package com.baltajmn.flowtime.features.screens.settings
 
+import com.baltajmn.flowtime.features.screens.coop.CoopAccountCard
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -307,6 +308,7 @@ fun SettingsContent(
             }
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }
+        item { CoopAccountCard() }
         item {
             SettingsCard(Res.string.settings_about_title) {
                 Spacer(modifier = Modifier.height(4.dp))

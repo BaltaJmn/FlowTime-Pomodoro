@@ -41,7 +41,9 @@ data class CoopUi(
     /** Lo que contestó la última acción, para enseñarlo una vez. */
     val message: StringResource? = null,
     val blocked: List<Blocked>? = null,
-    val invited: Set<String> = emptySet()
+    val invited: Set<String> = emptySet(),
+    /** La respuesta a anadir un amigo, que se ensena junto al campo y no arriba de la hoja. */
+    val friendMessage: StringResource? = null
 )
 
 class CoopViewModel(
@@ -139,10 +141,16 @@ class CoopViewModel(
         local.value = local.value.copy(invited = local.value.invited + id)
     }
 
-    fun addFriend(link: String) = act {
+    /** [onSent] solo si la solicitud salio o ya erais amigos: si no, el enlace se queda para corregirlo. */
+    fun addFriend(link: String, onSent: () -> Unit = {}) = act {
         val code = friendCodeOf(link) ?: link.trim().lowercase().takeIf { it.matches(Regex("[0-9a-f]{10}")) }
-            ?: return@act say(Res.string.coop_friend_not_found)
-        say(friendAnswer(friends.request(code)))
+        val answer = if (code == null) "not_found" else friends.request(code)
+        if (answer == "sent" || answer == "accepted" || answer == "already") onSent()
+        local.value = local.value.copy(friendMessage = friendAnswer(answer))
+    }
+
+    fun onFriendMessageShown() {
+        local.value = local.value.copy(friendMessage = null)
     }
 
     /** Un enlace abierto desde fuera: de amistad o de sala. Sin cuenta, espera en pendingLink. */

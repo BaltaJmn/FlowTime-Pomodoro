@@ -263,7 +263,7 @@
     <string name="pro_restore_nothing">Pro non è stato trovato in questo account Google. Controlla la connessione.</string>
     <string name="pro_thanks_text">Hai FlowTime Pro: tutto ciò che è Pro è sbloccato. Grazie per il tuo supporto a FlowTime.</string>
     <string name="pro_see">Scopri Pro</string>
-    <string name="pro_settings_text">Statistiche avanzate, esportazione CSV, etichette, attività e mix illimitati, 6 nuovi suoni, 6 nuovi temi e icone e Non disturbare automatico. Pagamento unico, senza abbonamento.</string>
+    <string name="pro_settings_text">Statistiche avanzate, esportazione CSV, etichette, attività e mix illimitati, 6 nuovi suoni, 6 nuovi temi e icone e Non disturbare automatico. Paga una volta e tieni Pro per sempre, oppure paga mese per mese.</string>
     <string name="pro_settings_owned">Hai Pro. Grazie per il tuo supporto a FlowTime.</string>
     <string name="pro_card_text">Con Pro vedi in quali ore e su cosa ti concentri meglio.</string>
     <string name="pro_card_dismiss">Non ora</string>
@@ -328,7 +328,7 @@
     <string name="alert_app_store">Errore di connessione all'App Store</string>
     <string name="restore_nothing_ios">Nessun acquisto trovato. Controlla la connessione e di usare lo stesso Account Apple.</string>
     <string name="pro_restore_nothing_ios">Pro non è stato trovato in questo Account Apple. Controlla la connessione.</string>
-    <string name="pro_settings_text_ios">Statistiche avanzate, esportazione CSV, etichette, attività e mix illimitati, 6 nuovi suoni e 6 nuovi temi e icone. Pagamento unico, senza abbonamento.</string>
+    <string name="pro_settings_text_ios">Statistiche avanzate, esportazione CSV, etichette, attività e mix illimitati, 6 nuovi suoni e 6 nuovi temi e icone. Paga una volta e tieni Pro per sempre, oppure paga mese per mese.</string>
     <string name="notifications_title_ios">Avvisarti alla fine di ogni fase?</string>
     <string name="notifications_text_ios">Saprai quando è ora di una pausa e quando tornare a concentrarti, anche con l'app chiusa.</string>
     <string name="notifications_off_ios">Le notifiche sono disattivate. Attivale per ricevere gli avvisi con l'app chiusa.</string>
@@ -420,4 +420,20 @@
     <string name="coop_cancel">Annulla</string>
     <string name="coop_qr">Codice QR del tuo link</string>
     <string name="coop_new_link">Nuovo link</string>
+    <string name="pro_plan_forever">Per sempre</string>
+    <string name="pro_plan_monthly">Mensile</string>
+    <string name="pro_best_value">Miglior valore</string>
+    <string name="pro_forever_note">Paghi una volta e resta tuo per sempre. Sono solo due mesi del piano mensile.</string>
+    <string name="pro_per_month">%1$s / mese</string>
+    <string name="pro_subscribe">Abbonati a %1$s / mese</string>
+    <string name="pro_subscription_terms">Il piano mensile si rinnova automaticamente ogni mese finché non lo annulli. Annulla in qualsiasi momento nelle impostazioni del tuo account App Store o Google Play, almeno 24 ore prima della data di rinnovo. Il pagamento viene addebitato sul tuo account dello store. Pro resta sbloccato finché il piano è attivo; i tuoi dati non vengono mai eliminati.</string>
+    <string name="pro_terms_of_use">Termini di utilizzo</string>
+    <string name="pro_subscription_ended">Il tuo piano mensile è terminato, quindi Pro è di nuovo bloccato. I tuoi dati sono al sicuro. Abbonati di nuovo o acquista Pro per sempre.</string>
+    <string name="coop_share_my_link">Condividi il tuo link</string>
+    <string name="coop_show_qr">Codice QR</string>
+    <string name="coop_person_menu">Altre opzioni per %1$s</string>
+    <string name="coop_new_link_text">Il tuo link attuale smetterà di funzionare. Chi non l'ha ancora usato avrà bisogno del nuovo.</string>
+    <string name="coop_add_friend">Aggiungi un amico</string>
+    <string name="coop_account_in_settings">Il nome Coop, le persone bloccate e l'eliminazione dell'account sono in Impostazioni.</string>
+    <string name="coop_settings_title">Account Coop</string>
 </resources>

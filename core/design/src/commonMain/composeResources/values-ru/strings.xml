@@ -270,7 +270,7 @@
     <string name="pro_restore_nothing">Pro не найден в этом аккаунте Google. Проверьте подключение.</string>
     <string name="pro_thanks_text">У вас FlowTime Pro: всё из Pro открыто. Спасибо за поддержку FlowTime.</string>
     <string name="pro_see">Узнать о Pro</string>
-    <string name="pro_settings_text">Расширенная статистика, экспорт в CSV, неограниченные метки, задачи и миксы, 6 новых звуков, 6 новых тем и значков и автоматический «Не беспокоить». Разовая оплата, без подписки.</string>
+    <string name="pro_settings_text">Расширенная статистика, экспорт в CSV, неограниченные метки, задачи и миксы, 6 новых звуков, 6 новых тем и значков и автоматический «Не беспокоить». Заплати один раз и пользуйся Pro всегда или плати помесячно.</string>
     <string name="pro_settings_owned">У вас Pro. Спасибо за поддержку FlowTime.</string>
     <string name="pro_card_text">С Pro видно, в какие часы и над чем вам лучше всего работается.</string>
     <string name="pro_card_dismiss">Не сейчас</string>
@@ -335,7 +335,7 @@
     <string name="alert_app_store">Ошибка подключения к App Store</string>
     <string name="restore_nothing_ios">Покупки не найдены. Проверьте подключение и то, что вы используете тот же Аккаунт Apple.</string>
     <string name="pro_restore_nothing_ios">Pro не найден в этом Аккаунте Apple. Проверьте подключение.</string>
-    <string name="pro_settings_text_ios">Расширенная статистика, экспорт в CSV, неограниченные метки, задачи и миксы, 6 новых звуков и 6 новых тем и значков. Разовая оплата, без подписки.</string>
+    <string name="pro_settings_text_ios">Расширенная статистика, экспорт в CSV, неограниченные метки, задачи и миксы, 6 новых звуков и 6 новых тем и значков. Заплати один раз и пользуйся Pro всегда или плати помесячно.</string>
     <string name="notifications_title_ios">Уведомлять в конце каждой фазы?</string>
     <string name="notifications_text_ios">Вы узнаете, когда пора отдохнуть и когда вернуться к работе, даже если приложение закрыто.</string>
     <string name="notifications_off_ios">Уведомления выключены. Включите их, чтобы получать оповещения, когда приложение закрыто.</string>
@@ -427,4 +427,20 @@
     <string name="coop_cancel">Отмена</string>
     <string name="coop_qr">QR-код вашей ссылки</string>
     <string name="coop_new_link">Новая ссылка</string>
+    <string name="pro_plan_forever">Навсегда</string>
+    <string name="pro_plan_monthly">Ежемесячно</string>
+    <string name="pro_best_value">Самое выгодное</string>
+    <string name="pro_forever_note">Заплати один раз, и это твоё навсегда. Это всего два месяца ежемесячного плана.</string>
+    <string name="pro_per_month">%1$s / месяц</string>
+    <string name="pro_subscribe">Подписаться за %1$s / месяц</string>
+    <string name="pro_subscription_terms">Ежемесячный план продлевается автоматически каждый месяц, пока ты его не отменишь. Отменить можно в любой момент в настройках аккаунта App Store или Google Play, не позднее чем за 24 часа до даты продления. Оплата списывается с твоего аккаунта в магазине. Pro разблокирован, пока план активен; твои данные никогда не удаляются.</string>
+    <string name="pro_terms_of_use">Условия использования</string>
+    <string name="pro_subscription_ended">Твой ежемесячный план закончился, поэтому Pro снова заблокирован. Твои данные в безопасности. Подпишись снова или купи Pro навсегда.</string>
+    <string name="coop_share_my_link">Поделитесь ссылкой</string>
+    <string name="coop_show_qr">QR-код</string>
+    <string name="coop_person_menu">Другие действия для %1$s</string>
+    <string name="coop_new_link_text">Ваша текущая ссылка перестанет работать. Тем, кто ещё не использовал её, понадобится новая.</string>
+    <string name="coop_add_friend">Добавить друга</string>
+    <string name="coop_account_in_settings">Ваше имя в Coop, заблокированные пользователи и удаление аккаунта находятся в Настройках.</string>
+    <string name="coop_settings_title">Аккаунт Coop</string>
 </resources>

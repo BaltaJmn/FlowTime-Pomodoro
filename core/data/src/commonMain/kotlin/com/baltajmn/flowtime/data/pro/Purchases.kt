@@ -10,19 +10,26 @@ import kotlinx.coroutines.flow.asStateFlow
 /** Lo que se vende en Play. Los ids son para siempre: uno borrado no se puede volver a usar. */
 object Products {
     const val PRO = "pro_lifetime"
+    const val PRO_MONTHLY = "pro_monthly"
     val TIPS = listOf("tip_small", "tip_medium", "tip_large")
 }
 
-/** Los derechos de RevenueCat: Pro, y la insignia de quien ha dejado alguna propina. */
+/**
+ * Los derechos de RevenueCat: Pro (el vitalicio o el mensual activo, el mismo derecho), y la insignia
+ * de quien ha dejado alguna propina. [PRO_ENDED] no es de RevenueCat: las tiendas lo añaden a lo que
+ * devuelven cuando Pro existió y ya no está activo, es decir, un mensual que caducó.
+ */
 object Entitlements {
     const val PRO = "pro"
     const val SUPPORTER = "supporter"
+    const val PRO_ENDED = "pro_ended"
 }
 
 /** Un producto, con el precio que pone la tienda para el país del usuario ya formateado. */
 data class CatalogItem(val id: String, val price: String)
 
-data class Catalog(val pro: CatalogItem?, val tips: List<CatalogItem>)
+/** [pro] es el vitalicio, el que se destaca; [proMonthly] es el mensual, sobre todo el ancla. */
+data class Catalog(val pro: CatalogItem?, val tips: List<CatalogItem>, val proMonthly: CatalogItem? = null)
 
 enum class PurchaseOutcome { Success, Cancelled, Failed }
 
@@ -33,6 +40,9 @@ expect open class PurchaseHost
 interface PurchasesRepository {
     val isPro: StateFlow<Boolean>
     val isSupporter: StateFlow<Boolean>
+
+    /** Tuvo un mensual y caducó: Pro está cerrado otra vez, y la pantalla de Pro lo dice. */
+    val proEnded: StateFlow<Boolean>
 
     /** Vuelve a preguntar a la tienda. Si falla, lo guardado se queda como estaba. */
     suspend fun refresh()
@@ -75,6 +85,8 @@ class DefaultPurchasesRepository(
     private val supporter = MutableStateFlow(prefs.getBoolean(IS_SUPPORTER, false))
     override val isPro: StateFlow<Boolean> = pro.asStateFlow()
     override val isSupporter: StateFlow<Boolean> = supporter.asStateFlow()
+    private val ended = MutableStateFlow(false)
+    override val proEnded: StateFlow<Boolean> = ended.asStateFlow()
 
     init {
         store?.onChange(::save)
@@ -106,6 +118,7 @@ class DefaultPurchasesRepository(
     // Billing 8, una propina ya consumida no se puede recuperar desde Google.
     private fun save(entitlements: Set<String>) {
         pro.value = Entitlements.PRO in entitlements
+        ended.value = !pro.value && Entitlements.PRO_ENDED in entitlements
         supporter.value = supporter.value || Entitlements.SUPPORTER in entitlements
         prefs.setBoolean(IS_PRO, pro.value)
         prefs.setBoolean(IS_SUPPORTER, supporter.value)

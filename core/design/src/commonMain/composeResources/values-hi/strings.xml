@@ -260,7 +260,7 @@
     <string name="pro_restore_nothing">इस Google खाते में Pro नहीं मिला। कनेक्शन जाँचें।</string>
     <string name="pro_thanks_text">आपके पास FlowTime Pro है: Pro की हर चीज़ अनलॉक है। FlowTime का साथ देने के लिए धन्यवाद।</string>
     <string name="pro_see">Pro देखें</string>
-    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग, कार्य और मिक्स, 6 नई ध्वनियाँ, 6 नई थीम और आइकन, और अपने-आप 'परेशान न करें'। एक बार भुगतान, कोई सदस्यता नहीं।</string>
+    <string name="pro_settings_text">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग, कार्य और मिक्स, 6 नई ध्वनियाँ, 6 नई थीम और आइकन, और अपने-आप 'परेशान न करें'। एक बार भुगतान करो और Pro हमेशा के लिए रखो, या महीने-दर-महीने भुगतान करो।</string>
     <string name="pro_settings_owned">आपके पास Pro है। FlowTime का साथ देने के लिए धन्यवाद।</string>
     <string name="pro_card_text">Pro के साथ देखें कि आप किस समय और किस पर सबसे अच्छा ध्यान लगाते हैं।</string>
     <string name="pro_card_dismiss">अभी नहीं</string>
@@ -325,7 +325,7 @@
     <string name="alert_app_store">App Store से कनेक्ट करने में त्रुटि</string>
     <string name="restore_nothing_ios">कोई खरीदारी नहीं मिली। अपना कनेक्शन जांचें और देखें कि आप वही Apple खाता इस्तेमाल कर रहे हैं।</string>
     <string name="pro_restore_nothing_ios">इस Apple खाते में Pro नहीं मिला। कनेक्शन जाँचें।</string>
-    <string name="pro_settings_text_ios">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग, कार्य और मिक्स, 6 नई ध्वनियाँ और 6 नई थीम और आइकन। एक बार भुगतान, कोई सदस्यता नहीं।</string>
+    <string name="pro_settings_text_ios">उन्नत आँकड़े, CSV एक्सपोर्ट, असीमित टैग, कार्य और मिक्स, 6 नई ध्वनियाँ और 6 नई थीम और आइकन। एक बार भुगतान करो और Pro हमेशा के लिए रखो, या महीने-दर-महीने भुगतान करो।</string>
     <string name="notifications_title_ios">हर चरण खत्म होने पर सूचना दें?</string>
     <string name="notifications_text_ios">ऐप बंद होने पर भी आपको पता चलेगा कि कब ब्रेक लेना है और कब फिर से ध्यान लगाना है।</string>
     <string name="notifications_off_ios">सूचनाएं बंद हैं। ऐप बंद होने पर भी सूचनाएं पाने के लिए इन्हें चालू करें।</string>
@@ -417,4 +417,20 @@
     <string name="coop_cancel">रद्द करें</string>
     <string name="coop_qr">आपके लिंक का QR कोड</string>
     <string name="coop_new_link">नया लिंक</string>
+    <string name="pro_plan_forever">हमेशा के लिए</string>
+    <string name="pro_plan_monthly">मासिक</string>
+    <string name="pro_best_value">सबसे बढ़िया मूल्य</string>
+    <string name="pro_forever_note">एक बार भुगतान करो और यह हमेशा के लिए तुम्हारा हो जाता है। यह मासिक प्लान के सिर्फ़ दो महीनों के बराबर है।</string>
+    <string name="pro_per_month">%1$s / माह</string>
+    <string name="pro_subscribe">%1$s / माह में सब्सक्राइब करो</string>
+    <string name="pro_subscription_terms">मासिक प्लान तुम्हारे रद्द करने तक हर महीने अपने आप रिन्यू होता है। रिन्यूअल की तारीख़ से कम से कम 24 घंटे पहले, App Store या Google Play के अकाउंट सेटिंग्स में कभी भी रद्द कर सकते हो। भुगतान तुम्हारे स्टोर अकाउंट से लिया जाता है। प्लान चालू रहने तक Pro अनलॉक रहता है; तुम्हारा डेटा कभी नहीं हटाया जाता।</string>
+    <string name="pro_terms_of_use">उपयोग की शर्तें</string>
+    <string name="pro_subscription_ended">तुम्हारा मासिक प्लान समाप्त हो गया है, इसलिए Pro फिर से लॉक हो गया है। तुम्हारा डेटा सुरक्षित है। दोबारा सब्सक्राइब करो या Pro हमेशा के लिए खरीदो।</string>
+    <string name="coop_share_my_link">अपना लिंक साझा करें</string>
+    <string name="coop_show_qr">QR कोड</string>
+    <string name="coop_person_menu">%1$s के लिए और विकल्प</string>
+    <string name="coop_new_link_text">आपका मौजूदा लिंक काम करना बंद कर देगा। जिसने अभी तक इसका इस्तेमाल नहीं किया है, उसे नए लिंक की ज़रूरत होगी।</string>
+    <string name="coop_add_friend">एक दोस्त जोड़ें</string>
+    <string name="coop_account_in_settings">आपका Coop नाम, ब्लॉक किए गए लोग और खाता हटाना सेटिंग्स में हैं।</string>
+    <string name="coop_settings_title">Coop खाता</string>
 </resources>

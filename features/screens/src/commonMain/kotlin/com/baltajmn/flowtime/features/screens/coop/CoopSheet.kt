@@ -1,6 +1,14 @@
 package com.baltajmn.flowtime.features.screens.coop
 
 import androidx.compose.foundation.Canvas
+import com.baltajmn.flowtime.features.screens.settings.SettingsCard
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -57,6 +65,7 @@ import com.baltajmn.flowtime.core.design.components.FlowCard
 import com.baltajmn.flowtime.core.design.resources.*
 import com.baltajmn.flowtime.core.design.theme.SheetTitle
 import com.baltajmn.flowtime.data.coop.CoopAccount
+import com.baltajmn.flowtime.data.coop.signInWithGoogleFallback
 import com.baltajmn.flowtime.data.coop.CoopRoom
 import com.baltajmn.flowtime.data.coop.FRIEND_LINK
 import com.baltajmn.flowtime.data.coop.ROOM_LINK
@@ -65,7 +74,7 @@ import com.baltajmn.flowtime.data.coop.qrEncode
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusState
 import com.baltajmn.flowtime.data.timer.Phase
-import com.baltajmn.flowtime.features.screens.platform.hasGoogleSignIn
+import com.baltajmn.flowtime.features.screens.platform.hasAppleSignIn
 import com.baltajmn.flowtime.features.screens.platform.rememberShareText
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Apple
@@ -103,7 +112,11 @@ fun CoopSheet(onDismiss: () -> Unit, viewModel: CoopViewModel = koinViewModel())
                 modifier = Modifier.semantics { heading() }
             )
             ui.message?.let { message ->
-                Text(text = stringResource(message), color = MaterialTheme.colorScheme.primary)
+                Text(
+                    text = stringResource(message),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }
+                )
                 LaunchedEffect(message) {
                     delay(4_000)
                     viewModel.onMessageShown()
@@ -128,17 +141,23 @@ fun CoopSheet(onDismiss: () -> Unit, viewModel: CoopViewModel = koinViewModel())
 private fun Intro(onFailed: () -> Unit, account: CoopAccount = koinInject()) {
     val auth = account.client.composeAuth
     val onResult = { r: NativeSignInResult -> if (r is NativeSignInResult.Error || r is NativeSignInResult.NetworkError) onFailed() }
-    // Cada plataforma con su cuenta nativa: Apple en iPhone, Google en Android. Apple 4.8 solo pide Apple en iOS.
-    val signIn = if (hasGoogleSignIn) {
-        auth.rememberSignInWithGoogle(onResult = onResult, fallback = { account.client.auth.signInWith(Google) })
-    } else {
-        auth.rememberSignInWithApple(onResult = onResult, fallback = { account.client.auth.signInWith(Apple) })
-    }
+    // Google en los dos (nativo en Android, propio en el iPhone); Apple solo en el iPhone.
+    val google = auth.rememberSignInWithGoogle(
+        onResult = onResult,
+        fallback = { runCatching { account.signInWithGoogleFallback() }.onFailure { onFailed() } }
+    )
+    val apple = auth.rememberSignInWithApple(onResult = onResult, fallback = { account.client.auth.signInWith(Apple) })
 
     Text(stringResource(Res.string.coop_intro))
     Text(stringResource(Res.string.coop_no_account_needed), color = MaterialTheme.colorScheme.onSurfaceVariant)
-    OutlinedButton(onClick = { signIn.startFlow() }, modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(if (hasGoogleSignIn) Res.string.coop_sign_in_google else Res.string.coop_sign_in_apple))
+    // Apple primero e igual de visible que Google donde esta: App Store 4.8.
+    if (hasAppleSignIn) {
+        OutlinedButton(onClick = { apple.startFlow() }, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(Res.string.coop_sign_in_apple))
+        }
+    }
+    OutlinedButton(onClick = { google.startFlow() }, modifier = Modifier.fillMaxWidth()) {
+        Text(stringResource(Res.string.coop_sign_in_google))
     }
 }
 
@@ -169,7 +188,6 @@ private fun Ready(ui: CoopUi, viewModel: CoopViewModel) {
     val room = ui.room
     if (room == null) NoRoom(ui, viewModel) else Room(room, ui, viewModel)
     Friends(ui, viewModel, inRoom = room != null)
-    Account(ui, viewModel)
 }
 
 @Composable
@@ -221,113 +239,180 @@ private fun Room(room: CoopRoom, ui: CoopUi, viewModel: CoopViewModel, engine: F
             ui.event?.let { Text(stringResource(eventLabel(it.action), it.byName), color = MaterialTheme.colorScheme.onSurfaceVariant) }
             Text(stringResource(Res.string.coop_room_hint), color = MaterialTheme.colorScheme.onSurfaceVariant)
             FilledTonalButton(onClick = { share(shareText) }) { Text(stringResource(Res.string.coop_share_room)) }
+            // Quien esta, dentro de la misma tarjeta: la sala es una sola cosa.
+            room.members.forEach { member ->
+                PersonRow(
+                    name = member.displayName,
+                    actions = buildList {
+                        if (member.id != ui.me?.id) {
+                            if (room.owner == ui.me?.id) add(Res.string.coop_remove to { viewModel.removeMember(member.id) })
+                            add(Res.string.coop_report to { viewModel.report(member.id) })
+                            add(Res.string.coop_block to { viewModel.block(member.id) })
+                        }
+                    },
+                    blockName = member.displayName
+                )
+            }
+            TextButton(onClick = viewModel::leave, enabled = !ui.busy) { Text(stringResource(Res.string.coop_leave)) }
         }
     }
-    room.members.forEach { member ->
-        PersonRow(
-            name = member.displayName,
-            actions = buildList {
-                if (member.id != ui.me?.id) {
-                    if (room.owner == ui.me?.id) add(Res.string.coop_remove to { viewModel.removeMember(member.id) })
-                    add(Res.string.coop_report to { viewModel.report(member.id) })
-                    add(Res.string.coop_block to { viewModel.block(member.id) })
-                }
-            },
-            blockName = member.displayName
-        )
-    }
-    TextButton(onClick = viewModel::leave, enabled = !ui.busy) { Text(stringResource(Res.string.coop_leave)) }
 }
 
+/**
+ * Amigos en tres tarjetas: solicitudes (si hay), la lista y como anadir a alguien. Sin amigos todavia,
+ * la lista no sale y "Tu enlace" va primero: es lo unico que lleva al primero.
+ */
 @Composable
 private fun Friends(ui: CoopUi, viewModel: CoopViewModel, inRoom: Boolean) {
     val me = ui.me ?: return
-    val share = rememberShareText()
-    val link = FRIEND_LINK + me.inviteCode
-    val shareText = stringResource(Res.string.coop_share_link_text, link)
-    var friendLink by rememberSaveable { mutableStateOf("") }
-    var showQr by rememberSaveable { mutableStateOf(false) }
-
     val requests = ui.friends.filter { it.status != "accepted" }
+    val accepted = ui.friends.filter { it.status == "accepted" }
+
     if (requests.isNotEmpty()) {
-        Text(stringResource(Res.string.coop_requests), style = MaterialTheme.typography.titleMedium)
-        requests.forEach { request ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(request.displayName, modifier = Modifier.weight(1f))
-                TextButton(onClick = { viewModel.accept(request.id) }) { Text(stringResource(Res.string.coop_accept)) }
-                TextButton(onClick = { viewModel.decline(request.id) }) { Text(stringResource(Res.string.coop_decline)) }
+        SettingsCard(Res.string.coop_requests) {
+            requests.forEach { request ->
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 4.dp)) {
+                    Text(request.displayName, modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    TextButton(onClick = { viewModel.decline(request.id) }) { Text(stringResource(Res.string.coop_decline)) }
+                    FilledTonalButton(onClick = { viewModel.accept(request.id) }) { Text(stringResource(Res.string.coop_accept)) }
+                }
             }
         }
     }
+    if (accepted.isNotEmpty()) {
+        SettingsCard(Res.string.coop_friends) {
+            accepted.forEach { friend ->
+                val here = ui.room?.members?.any { it.id == friend.id } == true
+                PersonRow(
+                    name = friend.displayName,
+                    trailing = if (inRoom && !here) {
+                        {
+                            val invited = friend.id in ui.invited
+                            TextButton(onClick = { viewModel.inviteFriend(friend.id) }, enabled = !invited) {
+                                Text(stringResource(if (invited) Res.string.coop_invited else Res.string.coop_invite))
+                            }
+                        }
+                    } else {
+                        null
+                    },
+                    actions = listOf(
+                        Res.string.coop_remove_friend to { viewModel.removeFriend(friend.id) },
+                        Res.string.coop_report to { viewModel.report(friend.id) },
+                        Res.string.coop_block to { viewModel.block(friend.id) }
+                    ),
+                    blockName = friend.displayName
+                )
+            }
+        }
+    }
+    MyLink(link = FRIEND_LINK + me.inviteCode, empty = accepted.isEmpty(), busy = ui.busy, onNewLink = viewModel::newLink)
+    AddFriend(ui, viewModel)
+    Text(stringResource(Res.string.coop_account_in_settings), color = MaterialTheme.colorScheme.onSurfaceVariant)
+}
 
-    Text(stringResource(Res.string.coop_friends), style = MaterialTheme.typography.titleMedium)
-    val accepted = ui.friends.filter { it.status == "accepted" }
-    if (accepted.isEmpty()) Text(stringResource(Res.string.coop_no_friends), color = MaterialTheme.colorScheme.onSurfaceVariant)
-    accepted.forEach { friend ->
-        val here = ui.room?.members?.any { it.id == friend.id } == true
-        PersonRow(
-            name = friend.displayName,
-            trailing = if (inRoom && !here) {
-                {
-                    val invited = friend.id in ui.invited
-                    TextButton(onClick = { viewModel.inviteFriend(friend.id) }, enabled = !invited) {
-                        Text(stringResource(if (invited) Res.string.coop_invited else Res.string.coop_invite))
+@Composable
+private fun MyLink(link: String, empty: Boolean, busy: Boolean, onNewLink: () -> Unit) {
+    val share = rememberShareText()
+    val shareText = stringResource(Res.string.coop_share_link_text, link)
+    var showQr by rememberSaveable { mutableStateOf(false) }
+    var confirmNew by remember { mutableStateOf(false) }
+    SettingsCard(Res.string.coop_my_link) {
+        if (empty) Text(stringResource(Res.string.coop_no_friends), color = MaterialTheme.colorScheme.onSurfaceVariant)
+        SelectionContainer(Modifier.padding(top = 4.dp)) {
+            Text(link, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 8.dp)) {
+            FilledTonalButton(onClick = { share(shareText) }) { Text(stringResource(Res.string.coop_share_my_link)) }
+            TextButton(onClick = { showQr = !showQr }) { Text(stringResource(Res.string.coop_show_qr)) }
+        }
+        if (showQr) {
+            Box(Modifier.fillMaxWidth().padding(vertical = 8.dp), contentAlignment = Alignment.Center) { Qr(link) }
+        }
+        TextButton(onClick = { confirmNew = true }, enabled = !busy) { Text(stringResource(Res.string.coop_new_link)) }
+    }
+    if (confirmNew) {
+        AlertDialog(
+            onDismissRequest = { confirmNew = false },
+            title = { Text(stringResource(Res.string.coop_new_link)) },
+            text = { Text(stringResource(Res.string.coop_new_link_text)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onNewLink()
+                        confirmNew = false
                     }
-                }
-            } else {
-                null
+                ) { Text(stringResource(Res.string.coop_new_link)) }
             },
-            actions = listOf(
-                Res.string.coop_remove_friend to { viewModel.removeFriend(friend.id) },
-                Res.string.coop_report to { viewModel.report(friend.id) },
-                Res.string.coop_block to { viewModel.block(friend.id) }
-            ),
-            blockName = friend.displayName
+            dismissButton = { TextButton(onClick = { confirmNew = false }) { Text(stringResource(Res.string.coop_cancel)) } }
         )
-    }
-
-    Text(stringResource(Res.string.coop_my_link), style = MaterialTheme.typography.titleMedium)
-    Text(link, color = MaterialTheme.colorScheme.onSurfaceVariant)
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        FilledTonalButton(onClick = { share(shareText) }) { Text(stringResource(Res.string.coop_share_room)) }
-        TextButton(onClick = { showQr = !showQr }) { Text("QR") }
-        TextButton(onClick = viewModel::newLink, enabled = !ui.busy) { Text(stringResource(Res.string.coop_new_link)) }
-    }
-    if (showQr) Qr(link)
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        OutlinedTextField(
-            value = friendLink,
-            onValueChange = { friendLink = it },
-            label = { Text(stringResource(Res.string.coop_friend_link_label)) },
-            singleLine = true,
-            modifier = Modifier.weight(1f)
-        )
-        FilledTonalButton(
-            onClick = {
-                viewModel.addFriend(friendLink)
-                friendLink = ""
-            },
-            enabled = !ui.busy && friendLink.isNotBlank()
-        ) { Text(stringResource(Res.string.coop_add)) }
     }
 }
 
-/** Nombre, cerrar sesión y borrar la cuenta (Apple 5.1.1(v)): siempre a mano dentro de Coop. */
+/** El enlace de otra persona: el campo solo se vacia si salio bien, y la respuesta se lee aqui mismo. */
+@Composable
+private fun AddFriend(ui: CoopUi, viewModel: CoopViewModel) {
+    var friendLink by rememberSaveable { mutableStateOf("") }
+    val send = { viewModel.addFriend(friendLink) { friendLink = "" } }
+    SettingsCard(Res.string.coop_add_friend) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(top = 8.dp)
+        ) {
+            OutlinedTextField(
+                value = friendLink,
+                onValueChange = { friendLink = it },
+                label = { Text(stringResource(Res.string.coop_friend_link_label)) },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { if (friendLink.isNotBlank() && !ui.busy) send() }),
+                modifier = Modifier.weight(1f)
+            )
+            FilledTonalButton(onClick = send, enabled = !ui.busy && friendLink.isNotBlank()) {
+                Text(stringResource(Res.string.coop_add))
+            }
+        }
+        ui.friendMessage?.let { message ->
+            LaunchedEffect(message) {
+                delay(6_000)
+                viewModel.onFriendMessageShown()
+            }
+            Text(
+                text = stringResource(message),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 8.dp).semantics { liveRegion = LiveRegionMode.Polite }
+            )
+        }
+    }
+}
+
+/**
+ * Ajustes > Coop: nombre, bloqueados, cerrar sesion y borrar la cuenta (Apple 5.1.1(v)). Solo con la
+ * cuenta lista; sin ella no ocupa sitio. La hoja de Coop queda para estudiar juntos.
+ */
+@Composable
+fun CoopAccountCard(viewModel: CoopViewModel = koinViewModel()) {
+    val ui by viewModel.ui.collectAsStateWithLifecycle()
+    if (ui.stage != CoopStage.READY) return
+    Column {
+        SettingsCard(Res.string.coop_settings_title) { Account(ui, viewModel) }
+        Spacer(Modifier.height(24.dp))
+    }
+}
+
 @Composable
 private fun Account(ui: CoopUi, viewModel: CoopViewModel) {
     var renaming by remember { mutableStateOf(false) }
     var deleting by remember { mutableStateOf(false) }
-    Text(stringResource(Res.string.coop_account), style = MaterialTheme.typography.titleMedium)
-    ui.me?.let { Text(it.displayName, color = MaterialTheme.colorScheme.onSurfaceVariant) }
-    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+    ui.me?.let { Text(it.displayName, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 4.dp)) }
+    Row(modifier = Modifier.padding(top = 4.dp)) {
         TextButton(onClick = { renaming = true }) { Text(stringResource(Res.string.coop_rename)) }
         TextButton(onClick = viewModel::loadBlocked) { Text(stringResource(Res.string.coop_blocked)) }
     }
-    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        TextButton(onClick = viewModel::signOut) { Text(stringResource(Res.string.coop_sign_out)) }
-        TextButton(onClick = { deleting = true }) {
-            Text(stringResource(Res.string.coop_delete_account), color = MaterialTheme.colorScheme.error)
-        }
+    TextButton(onClick = viewModel::signOut) { Text(stringResource(Res.string.coop_sign_out)) }
+    // Separado del resto y sin color de alarma: el dialogo ya avisa, y es lo ultimo que se busca.
+    TextButton(onClick = { deleting = true }, modifier = Modifier.padding(top = 8.dp)) {
+        Text(stringResource(Res.string.coop_delete_account), color = MaterialTheme.colorScheme.error)
     }
 
     if (renaming) {
@@ -395,12 +480,12 @@ private fun PersonRow(
     var menu by remember { mutableStateOf(false) }
     var confirm by remember { mutableStateOf<(() -> Unit)?>(null) }
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-        Text(name, modifier = Modifier.weight(1f))
+        Text(name, modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
         trailing?.invoke()
         if (actions.isNotEmpty()) {
             Box {
                 IconButton(onClick = { menu = true }) {
-                    Icon(Icons.Default.MoreVert, contentDescription = name, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Icon(Icons.Default.MoreVert, contentDescription = stringResource(Res.string.coop_person_menu, name), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
                     actions.forEach { (label, action) ->

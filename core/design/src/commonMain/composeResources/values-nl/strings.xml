@@ -261,7 +261,7 @@
     <string name="pro_restore_nothing">Pro is niet gevonden in dit Google-account. Controleer je verbinding.</string>
     <string name="pro_thanks_text">Je hebt FlowTime Pro: alles van Pro is ontgrendeld. Bedankt dat je FlowTime steunt.</string>
     <string name="pro_see">Pro bekijken</string>
-    <string name="pro_settings_text">Geavanceerde statistieken, CSV-export, onbeperkt labels, taken en mixen, 6 nieuwe geluiden, 6 nieuwe thema's en iconen en automatisch Niet storen. Eenmalige betaling, geen abonnement.</string>
+    <string name="pro_settings_text">Geavanceerde statistieken, CSV-export, onbeperkt labels, taken en mixen, 6 nieuwe geluiden, 6 nieuwe thema's en iconen en automatisch Niet storen. Betaal één keer en houd Pro voor altijd, of betaal maand per maand.</string>
     <string name="pro_settings_owned">Je hebt Pro. Bedankt dat je FlowTime steunt.</string>
     <string name="pro_card_text">Met Pro zie je op welke tijden en waaraan je het best focust.</string>
     <string name="pro_card_dismiss">Niet nu</string>
@@ -326,7 +326,7 @@
     <string name="alert_app_store">Fout bij verbinden met de App Store</string>
     <string name="restore_nothing_ios">Geen aankopen gevonden. Controleer je verbinding en of je hetzelfde Apple-account gebruikt.</string>
     <string name="pro_restore_nothing_ios">Pro is niet gevonden in dit Apple-account. Controleer je verbinding.</string>
-    <string name="pro_settings_text_ios">Geavanceerde statistieken, CSV-export, onbeperkt labels, taken en mixen, 6 nieuwe geluiden en 6 nieuwe thema's en iconen. Eenmalige betaling, geen abonnement.</string>
+    <string name="pro_settings_text_ios">Geavanceerde statistieken, CSV-export, onbeperkt labels, taken en mixen, 6 nieuwe geluiden en 6 nieuwe thema's en iconen. Betaal één keer en houd Pro voor altijd, of betaal maand per maand.</string>
     <string name="notifications_title_ios">Een melding als elke fase eindigt?</string>
     <string name="notifications_text_ios">Je weet wanneer het tijd is voor pauze en wanneer je weer gaat focussen, ook als de app gesloten is.</string>
     <string name="notifications_off_ios">Meldingen staan uit. Zet ze aan om meldingen te krijgen als de app gesloten is.</string>
@@ -418,4 +418,20 @@
     <string name="coop_cancel">Annuleren</string>
     <string name="coop_qr">QR-code van je link</string>
     <string name="coop_new_link">Nieuwe link</string>
+    <string name="pro_plan_forever">Voor altijd</string>
+    <string name="pro_plan_monthly">Maandelijks</string>
+    <string name="pro_best_value">Beste waarde</string>
+    <string name="pro_forever_note">Betaal één keer en het is voor altijd van jou. Dat is slechts twee maanden van het maandabonnement.</string>
+    <string name="pro_per_month">%1$s / maand</string>
+    <string name="pro_subscribe">Abonneer voor %1$s / maand</string>
+    <string name="pro_subscription_terms">Het maandabonnement wordt elke maand automatisch verlengd totdat je opzegt. Zeg op elk moment op in de instellingen van je App Store- of Google Play-account, minstens 24 uur voor de verlengingsdatum. De betaling wordt via je storeaccount in rekening gebracht. Pro is ontgrendeld zolang het abonnement actief is; je gegevens worden nooit verwijderd.</string>
+    <string name="pro_terms_of_use">Gebruiksvoorwaarden</string>
+    <string name="pro_subscription_ended">Je maandabonnement is afgelopen, dus Pro is weer vergrendeld. Je gegevens zijn veilig. Abonneer je opnieuw of koop Pro voor altijd.</string>
+    <string name="coop_share_my_link">Deel je link</string>
+    <string name="coop_show_qr">QR-code</string>
+    <string name="coop_person_menu">Meer opties voor %1$s</string>
+    <string name="coop_new_link_text">Je huidige link werkt niet meer. Wie hem nog niet heeft gebruikt, heeft de nieuwe nodig.</string>
+    <string name="coop_add_friend">Een vriend toevoegen</string>
+    <string name="coop_account_in_settings">Je Coop-naam, geblokkeerde personen en het verwijderen van je account staan in Instellingen.</string>
+    <string name="coop_settings_title">Coop-account</string>
 </resources>

@@ -14,8 +14,14 @@ import com.baltajmn.flowtime.data.pro.PurchaseHost
 
 data class ProUiState(
     val loading: Boolean = true,
-    /** Pro con el precio de la tienda para el país del usuario, o null si la tienda no responde. */
+    /** El vitalicio con el precio de la tienda para el país del usuario, o null si la tienda no responde. */
     val product: CatalogItem? = null,
+    /** El mensual, o null si la tienda no lo ofrece: entonces la pantalla es la de siempre. */
+    val monthly: CatalogItem? = null,
+    /** Lo que se compra al pulsar: el vitalicio, salvo que se haya elegido el mensual. */
+    val monthlyPicked: Boolean = false,
+    /** Tuvo un mensual y caducó. */
+    val ended: Boolean = false,
     val busy: Boolean = false,
     val failed: Boolean = false,
     val nothingToRestore: Boolean = false,
@@ -33,19 +39,27 @@ class ProViewModel(private val purchases: PurchasesRepository) : ViewModel() {
         viewModelScope.launch {
             purchases.isPro.collect { pro -> _state.update { it.copy(isPro = pro) } }
         }
+        viewModelScope.launch {
+            purchases.proEnded.collect { ended -> _state.update { it.copy(ended = ended) } }
+        }
     }
 
     /** Cada vez que se abre, y con "Reintentar": si la tienda no respondió, puede que ahora sí. */
     fun load() {
         viewModelScope.launch {
             _state.update { it.copy(loading = true, failed = false, nothingToRestore = false) }
-            val product = purchases.catalog()?.pro
-            _state.update { it.copy(loading = false, product = product) }
+            val catalog = purchases.catalog()
+            _state.update {
+                it.copy(loading = false, product = catalog?.pro ?: catalog?.proMonthly, monthly = catalog?.proMonthly.takeIf { catalog?.pro != null })
+            }
         }
     }
 
+    fun pick(monthly: Boolean) = _state.update { it.copy(monthlyPicked = monthly) }
+
     fun buy(host: PurchaseHost) {
-        val product = _state.value.product ?: return
+        val current = _state.value
+        val product = (if (current.monthlyPicked) current.monthly else current.product) ?: return
         viewModelScope.launch {
             _state.update { it.copy(busy = true, failed = false, nothingToRestore = false) }
             val outcome = purchases.purchase(host, product)

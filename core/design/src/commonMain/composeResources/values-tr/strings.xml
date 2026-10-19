@@ -261,7 +261,7 @@
     <string name="pro_restore_nothing">Bu Google hesabında Pro bulunamadı. Bağlantını kontrol et.</string>
     <string name="pro_thanks_text">FlowTime Pro sende: Pro'daki her şey açık. FlowTime'ı desteklediğin için teşekkürler.</string>
     <string name="pro_see">Pro'yu gör</string>
-    <string name="pro_settings_text">Gelişmiş istatistikler, CSV'ye aktarma, sınırsız etiket, görev ve miks, 6 yeni ses, 6 yeni tema ve simge ve otomatik Rahatsız Etmeyin. Tek seferlik ödeme, abonelik yok.</string>
+    <string name="pro_settings_text">Gelişmiş istatistikler, CSV'ye aktarma, sınırsız etiket, görev ve miks, 6 yeni ses, 6 yeni tema ve simge ve otomatik Rahatsız Etmeyin. Bir kez öde ve Pro'yu sonsuza dek kullan, ya da ay ay öde.</string>
     <string name="pro_settings_owned">Pro sende. FlowTime'ı desteklediğin için teşekkürler.</string>
     <string name="pro_card_text">Pro ile hangi saatlerde ve neye en iyi odaklandığını görebilirsin.</string>
     <string name="pro_card_dismiss">Şimdi değil</string>
@@ -326,7 +326,7 @@
     <string name="alert_app_store">App Store'a bağlanırken hata oluştu</string>
     <string name="restore_nothing_ios">Satın alım bulunamadı. Bağlantını ve aynı Apple Hesabını kullandığını kontrol et.</string>
     <string name="pro_restore_nothing_ios">Bu Apple Hesabında Pro bulunamadı. Bağlantını kontrol et.</string>
-    <string name="pro_settings_text_ios">Gelişmiş istatistikler, CSV'ye aktarma, sınırsız etiket, görev ve miks, 6 yeni ses ve 6 yeni tema ve simge. Tek seferlik ödeme, abonelik yok.</string>
+    <string name="pro_settings_text_ios">Gelişmiş istatistikler, CSV'ye aktarma, sınırsız etiket, görev ve miks, 6 yeni ses ve 6 yeni tema ve simge. Bir kez öde ve Pro'yu sonsuza dek kullan, ya da ay ay öde.</string>
     <string name="notifications_title_ios">Her aşama bittiğinde haber verilsin mi?</string>
     <string name="notifications_text_ios">Uygulama kapalıyken bile mola zamanını ve odaklanmaya dönme zamanını bilirsin.</string>
     <string name="notifications_off_ios">Bildirimler kapalı. Uygulama kapalıyken uyarı almak için aç.</string>
@@ -418,4 +418,20 @@
     <string name="coop_cancel">İptal</string>
     <string name="coop_qr">Bağlantının QR kodu</string>
     <string name="coop_new_link">Yeni bağlantı</string>
+    <string name="pro_plan_forever">Sonsuza dek</string>
+    <string name="pro_plan_monthly">Aylık</string>
+    <string name="pro_best_value">En iyi değer</string>
+    <string name="pro_forever_note">Bir kez öde, sonsuza dek senin olsun. Bu, aylık planın yalnızca iki ayına denk geliyor.</string>
+    <string name="pro_per_month">%1$s / ay</string>
+    <string name="pro_subscribe">%1$s / ay karşılığında abone ol</string>
+    <string name="pro_subscription_terms">Aylık plan, sen iptal edene kadar her ay otomatik olarak yenilenir. App Store veya Google Play hesap ayarlarından yenileme tarihinden en az 24 saat önce istediğin zaman iptal edebilirsin. Ödeme mağaza hesabından tahsil edilir. Pro, plan etkin olduğu sürece açıktır; verilerin asla silinmez.</string>
+    <string name="pro_terms_of_use">Kullanım koşulları</string>
+    <string name="pro_subscription_ended">Aylık planın sona erdi, bu yüzden Pro yeniden kilitlendi. Verilerin güvende. Tekrar abone ol veya Pro'yu sonsuza dek satın al.</string>
+    <string name="coop_share_my_link">Bağlantını paylaş</string>
+    <string name="coop_show_qr">QR kodu</string>
+    <string name="coop_person_menu">%1$s için diğer seçenekler</string>
+    <string name="coop_new_link_text">Mevcut bağlantın çalışmayı durduracak. Henüz kullanmamış olanların yeni bağlantıya ihtiyacı olacak.</string>
+    <string name="coop_add_friend">Arkadaş ekle</string>
+    <string name="coop_account_in_settings">Coop adın, engellediğin kişiler ve hesap silme Ayarlar'da.</string>
+    <string name="coop_settings_title">Coop hesabı</string>
 </resources>

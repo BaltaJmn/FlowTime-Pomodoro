@@ -271,7 +271,7 @@
     <string name="pro_restore_nothing">Nie znaleziono Pro na tym koncie Google. Sprawdź połączenie.</string>
     <string name="pro_thanks_text">Masz FlowTime Pro: wszystko z Pro jest odblokowane. Dziękuję za wspieranie FlowTime.</string>
     <string name="pro_see">Zobacz Pro</string>
-    <string name="pro_settings_text">Zaawansowane statystyki, eksport do CSV, bez limitu etykiet, zadań i miksów, 6 nowych dźwięków, 6 nowych motywów i ikon oraz automatyczny tryb Nie przeszkadzać. Jednorazowa płatność, bez subskrypcji.</string>
+    <string name="pro_settings_text">Zaawansowane statystyki, eksport do CSV, bez limitu etykiet, zadań i miksów, 6 nowych dźwięków, 6 nowych motywów i ikon oraz automatyczny tryb Nie przeszkadzać. Zapłać raz i zachowaj Pro na zawsze albo płać miesiąc po miesiącu.</string>
     <string name="pro_settings_owned">Masz Pro. Dziękuję za wspieranie FlowTime.</string>
     <string name="pro_card_text">Z Pro zobaczysz, o jakich porach i nad czym skupiasz się najlepiej.</string>
     <string name="pro_card_dismiss">Nie teraz</string>
@@ -336,7 +336,7 @@
     <string name="alert_app_store">Błąd połączenia z App Store</string>
     <string name="restore_nothing_ios">Nie znaleziono zakupów. Sprawdź połączenie i czy używasz tego samego konta Apple.</string>
     <string name="pro_restore_nothing_ios">Nie znaleziono Pro na tym koncie Apple. Sprawdź połączenie.</string>
-    <string name="pro_settings_text_ios">Zaawansowane statystyki, eksport do CSV, bez limitu etykiet, zadań i miksów, 6 nowych dźwięków oraz 6 nowych motywów i ikon. Jednorazowa płatność, bez subskrypcji.</string>
+    <string name="pro_settings_text_ios">Zaawansowane statystyki, eksport do CSV, bez limitu etykiet, zadań i miksów, 6 nowych dźwięków oraz 6 nowych motywów i ikon. Zapłać raz i zachowaj Pro na zawsze albo płać miesiąc po miesiącu.</string>
     <string name="notifications_title_ios">Powiadamiać o końcu każdej fazy?</string>
     <string name="notifications_text_ios">Dowiesz się, kiedy czas na przerwę, a kiedy wrócić do skupienia, nawet przy zamkniętej aplikacji.</string>
     <string name="notifications_off_ios">Powiadomienia są wyłączone. Włącz je, aby dostawać powiadomienia przy zamkniętej aplikacji.</string>
@@ -428,4 +428,20 @@
     <string name="coop_cancel">Anuluj</string>
     <string name="coop_qr">Kod QR Twojego linku</string>
     <string name="coop_new_link">Nowy link</string>
+    <string name="pro_plan_forever">Na zawsze</string>
+    <string name="pro_plan_monthly">Miesięcznie</string>
+    <string name="pro_best_value">Najlepsza wartość</string>
+    <string name="pro_forever_note">Zapłać raz i zostaje na zawsze. To tylko dwa miesiące planu miesięcznego.</string>
+    <string name="pro_per_month">%1$s / miesiąc</string>
+    <string name="pro_subscribe">Subskrybuj za %1$s / miesiąc</string>
+    <string name="pro_subscription_terms">Plan miesięczny odnawia się automatycznie co miesiąc, dopóki go nie anulujesz. Możesz anulować w dowolnym momencie w ustawieniach konta App Store lub Google Play, co najmniej 24 godziny przed datą odnowienia. Płatność jest pobierana z konta w sklepie. Pro jest odblokowane, dopóki plan jest aktywny; Twoje dane nigdy nie są usuwane.</string>
+    <string name="pro_terms_of_use">Warunki korzystania</string>
+    <string name="pro_subscription_ended">Twój plan miesięczny wygasł, więc Pro jest znowu zablokowane. Twoje dane są bezpieczne. Subskrybuj ponownie lub kup Pro na zawsze.</string>
+    <string name="coop_share_my_link">Udostępnij swój link</string>
+    <string name="coop_show_qr">Kod QR</string>
+    <string name="coop_person_menu">Więcej opcji dla %1$s</string>
+    <string name="coop_new_link_text">Twój obecny link przestanie działać. Osoby, które jeszcze z niego nie korzystały, będą potrzebować nowego.</string>
+    <string name="coop_add_friend">Dodaj znajomego</string>
+    <string name="coop_account_in_settings">Nazwa w Coop, zablokowane osoby i usuwanie konta są w Ustawieniach.</string>
+    <string name="coop_settings_title">Konto Coop</string>
 </resources>

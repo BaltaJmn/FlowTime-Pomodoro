@@ -114,6 +114,30 @@ class PurchasesRepositoryTest {
     }
 
     @Test
+    fun `el vitalicio y el mensual activo son el mismo Pro, y uno caducado no lo es`() = runTest {
+        val purchases = DefaultPurchasesRepository(store, prefs)
+
+        // Mensual activo y vitalicio llegan igual: el derecho pro activo.
+        store.listener!!(setOf(Entitlements.PRO))
+        assertTrue(purchases.isPro.value)
+        assertFalse(purchases.proEnded.value)
+
+        // El mensual caduca: la tienda lo dice con pro_ended y Pro se cierra.
+        store.listener!!(setOf(Entitlements.PRO_ENDED))
+        assertFalse(purchases.isPro.value)
+        assertTrue(purchases.proEnded.value)
+
+        // Volver a pagar lo reabre y quita el aviso.
+        store.listener!!(setOf(Entitlements.PRO))
+        assertTrue(purchases.isPro.value)
+        assertFalse(purchases.proEnded.value)
+
+        // Quien nunca tuvo Pro no ve "caducado".
+        store.listener!!(emptySet())
+        assertFalse(purchases.proEnded.value)
+    }
+
+    @Test
     fun `sin clave de RevenueCat todo es gratis`() = runTest {
         val purchases = DefaultPurchasesRepository(null, prefs)
         purchases.refresh()

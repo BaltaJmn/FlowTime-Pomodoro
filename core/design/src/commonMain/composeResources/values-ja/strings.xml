@@ -256,7 +256,7 @@
     <string name="pro_restore_nothing">この Google アカウントに Pro が見つかりません。接続を確認してください。</string>
     <string name="pro_thanks_text">FlowTime Pro をお持ちです。Pro のすべてが使えます。FlowTime を応援してくれてありがとう。</string>
     <string name="pro_see">Pro を見る</string>
-    <string name="pro_settings_text">詳細な統計、CSV 書き出し、タグ・タスク・ミックス無制限、6 つの新しいサウンド、6 つの新しいテーマとアイコン、自動おやすみモード。買い切り、サブスクなし。</string>
+    <string name="pro_settings_text">詳細な統計、CSV 書き出し、タグ・タスク・ミックス無制限、6 つの新しいサウンド、6 つの新しいテーマとアイコン、自動おやすみモード。一度支払えばProをずっと使えます。月ごとの支払いも選べます。</string>
     <string name="pro_settings_owned">Pro をお持ちです。FlowTime を応援してくれてありがとう。</string>
     <string name="pro_card_text">Pro なら、何時に何にいちばん集中できているかがわかります。</string>
     <string name="pro_card_dismiss">あとで</string>
@@ -321,7 +321,7 @@
     <string name="alert_app_store">App Store に接続できません</string>
     <string name="restore_nothing_ios">購入が見つかりません。接続と、同じ Apple アカウントを使っているか確認してください。</string>
     <string name="pro_restore_nothing_ios">この Apple アカウントに Pro が見つかりません。接続を確認してください。</string>
-    <string name="pro_settings_text_ios">詳細な統計、CSV 書き出し、タグ・タスク・ミックス無制限、6 つの新しいサウンド、6 つの新しいテーマとアイコン。買い切り、サブスクなし。</string>
+    <string name="pro_settings_text_ios">詳細な統計、CSV 書き出し、タグ・タスク・ミックス無制限、6 つの新しいサウンド、6 つの新しいテーマとアイコン。一度支払えばProをずっと使えます。月ごとの支払いも選べます。</string>
     <string name="notifications_title_ios">各フェーズの終わりにお知らせしますか？</string>
     <string name="notifications_text_ios">アプリを閉じていても、休憩の時間と集中に戻る時間がわかります。</string>
     <string name="notifications_off_ios">通知がオフです。アプリを閉じていてもお知らせを受け取るには、通知をオンにしてください。</string>
@@ -413,4 +413,20 @@
     <string name="coop_cancel">キャンセル</string>
     <string name="coop_qr">あなたのリンクの QR コード</string>
     <string name="coop_new_link">新しいリンク</string>
+    <string name="pro_plan_forever">買い切り</string>
+    <string name="pro_plan_monthly">月額</string>
+    <string name="pro_best_value">いちばんお得</string>
+    <string name="pro_forever_note">一度の支払いでずっと使えます。月額プランのわずか2か月分です。</string>
+    <string name="pro_per_month">%1$s / 月</string>
+    <string name="pro_subscribe">月額 %1$s で登録する</string>
+    <string name="pro_subscription_terms">月額プランは、解約するまで毎月自動的に更新されます。更新日の24時間前までに、App StoreまたはGoogle Playのアカウント設定からいつでも解約できます。料金はストアのアカウントに請求されます。Proはプランが有効な間は利用でき、データが削除されることはありません。</string>
+    <string name="pro_terms_of_use">利用規約</string>
+    <string name="pro_subscription_ended">月額プランが終了したため、Proは再びロックされました。データは安全に保たれています。もう一度登録するか、Proを買い切りで購入できます。</string>
+    <string name="coop_share_my_link">リンクを共有</string>
+    <string name="coop_show_qr">QRコード</string>
+    <string name="coop_person_menu">%1$s のその他のオプション</string>
+    <string name="coop_new_link_text">現在のリンクは使えなくなります。まだ使っていない人は新しいリンクが必要です。</string>
+    <string name="coop_add_friend">友だちを追加</string>
+    <string name="coop_account_in_settings">Coop の名前、ブロックした相手、アカウントの削除は設定にあります。</string>
+    <string name="coop_settings_title">Coop アカウント</string>
 </resources>

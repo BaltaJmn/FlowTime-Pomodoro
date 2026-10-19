@@ -107,7 +107,7 @@ actual val hasWallpaperColors: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_
 
 actual val hasFocusMode: Boolean = true
 
-actual val hasGoogleSignIn: Boolean = true
+actual val hasAppleSignIn: Boolean = false
 
 actual val automaticBackupText: StringResource = Res.string.backup_automatic
 

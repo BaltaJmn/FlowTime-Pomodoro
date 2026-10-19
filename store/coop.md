@@ -15,7 +15,7 @@ eu-central-1, plan Free), con el esquema `flowtime`. Diseno: `docs/coop.md`.
 - Tarea `flowtime-report-retry` de `pg_cron`, minuto 43 de cada hora.
 - URL y clave anon en `core/data/.../coop/SupabaseConfig.kt`.
 
-## Falta, en el panel (usuario)
+## Panel, Google y Apple (hecho el 19-10-2026, por la API de gestion y el navegador)
 
 1. *Integrations > Data API > Settings > Exposed schemas*: anadir `flowtime`. Sin esto la app recibe
    406 en todo lo de Coop.
@@ -34,6 +34,23 @@ eu-central-1, plan Free), con el esquema `flowtime`. Diseno: `docs/coop.md`.
    Domains* (#72): hecho el 19-10-2026 por la API de App Store Connect (`APPLE_ID_AUTH` y
    `ASSOCIATED_DOMAINS` en `/v1/bundleIdCapabilities`). Los perfiles los rehace
    `-allowProvisioningUpdates` en el siguiente archive.
+
+## Prueba entre dos dispositivos (#75, 19-10-2026)
+
+iPhone fisico (Apple, build de desarrollo) y emulator-5554 (Google), sala VG2VC5. Bien: crear sala y
+entrar por codigo, empezar, pausar y reanudar desde los dos lados (mismo tiempo en los dos), salir y
+entrar (la lista de miembros cambia en vivo), solicitud y aceptacion de amistad, invitacion a sala
+que aparece sola con la hoja abierta, parar (los dos vuelven a cero y cada uno guarda sus minutos).
+
+Arreglado durante la prueba: un aviso perdido cuando el canal fallaba al unirse (MissingPartition)
+ahora se recupera al volver a estar suscrito; amistades e invitaciones llegan en vivo por el canal
+`user:<id>` (antes hacia falta reabrir Coop).
+
+Visto una vez y sin repetirse: en el iPhone, Salir no llego a llamar a `leave_room`. Si vuelve, mirar
+el registro con `xcrun devicectl device process launch --console`.
+
+Sin probar: notificaciones con la app cerrada (no las hay; propuesta en `docs/coop-push.md`, rama
+aparte), bloquear y reportar entre los dos, borrar la cuenta.
 
 ## Actuar sobre un reporte
 

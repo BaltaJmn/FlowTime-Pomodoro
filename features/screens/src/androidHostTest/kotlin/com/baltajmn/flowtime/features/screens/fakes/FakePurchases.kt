@@ -19,13 +19,14 @@ class FakePurchases(
 ) : PurchasesRepository {
     override val isPro = MutableStateFlow(pro)
     override val isSupporter = MutableStateFlow(supporter)
+    override val proEnded = MutableStateFlow(false)
 
     override suspend fun refresh() = Unit
 
     override suspend fun catalog() = CATALOG.takeIf { online }
 
     override suspend fun purchase(activity: Activity, item: CatalogItem): PurchaseOutcome {
-        if (outcome == PurchaseOutcome.Success && item.id == Products.PRO) isPro.value = true
+        if (outcome == PurchaseOutcome.Success && (item.id == Products.PRO || item.id == Products.PRO_MONTHLY)) isPro.value = true
         return outcome
     }
 
@@ -37,6 +38,7 @@ class FakePurchases(
     companion object {
         val CATALOG = Catalog(
             pro = CatalogItem(Products.PRO, "$1.99"),
+            proMonthly = CatalogItem(Products.PRO_MONTHLY, "$0.99"),
             tips = Products.TIPS.zip(listOf("$1.99", "$3.99", "$8.99"), ::CatalogItem)
         )
     }

@@ -35,7 +35,11 @@ class RevenueCatStore(context: Context, apiKey: String) : Store {
     override suspend fun catalog(): Catalog {
         val packages = packages()
         fun item(id: String) = packages[id]?.let { CatalogItem(id, it.product.price.formatted) }
-        return Catalog(pro = item(Products.PRO), tips = Products.TIPS.mapNotNull(::item))
+        return Catalog(
+            pro = item(Products.PRO),
+            tips = Products.TIPS.mapNotNull(::item),
+            proMonthly = item(Products.PRO_MONTHLY)
+        )
     }
 
     override suspend fun purchase(host: PurchaseHost, item: CatalogItem): Set<String>? {
@@ -58,5 +62,10 @@ class RevenueCatStore(context: Context, apiKey: String) : Store {
         purchases.awaitOfferings().current?.availablePackages.orEmpty()
             .associateBy { it.product.id.substringBefore(':') }
 
-    private fun CustomerInfo.active(): Set<String> = entitlements.active.keys
+    private fun CustomerInfo.active(): Set<String> {
+        val ended = Entitlements.PRO_ENDED.takeIf {
+            Entitlements.PRO in entitlements.all && Entitlements.PRO !in entitlements.active
+        }
+        return entitlements.active.keys + listOfNotNull(ended)
+    }
 }

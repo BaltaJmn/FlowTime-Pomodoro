@@ -15,4 +15,7 @@ object SupabaseConfig {
 
     /** El cliente OAuth web de Google, que pide el inicio de sesión nativo en Android. */
     val googleServerClientId: String? = "682890414578-3kmkv8rjqkl6pk9obqq6jisbpl0e1q5q.apps.googleusercontent.com"
+
+    /** El cliente OAuth iOS de Google (proyecto flowtime-baltajmn): Google en el iPhone, GoogleSignInIos.kt. */
+    val googleIosClientId: String? = "682890414578-c8b44p72e3d4ju51lpbvl3d9t3eakd0o.apps.googleusercontent.com"
 }
