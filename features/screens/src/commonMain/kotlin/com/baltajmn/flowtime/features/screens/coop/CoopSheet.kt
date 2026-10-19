@@ -65,6 +65,7 @@ import com.baltajmn.flowtime.data.coop.qrEncode
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusState
 import com.baltajmn.flowtime.data.timer.Phase
+import com.baltajmn.flowtime.features.screens.platform.hasGoogleSignIn
 import com.baltajmn.flowtime.features.screens.platform.rememberShareText
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Apple
@@ -127,7 +128,7 @@ fun CoopSheet(onDismiss: () -> Unit, viewModel: CoopViewModel = koinViewModel())
 private fun Intro(onFailed: () -> Unit, account: CoopAccount = koinInject()) {
     val auth = account.client.composeAuth
     val onResult = { r: NativeSignInResult -> if (r is NativeSignInResult.Error || r is NativeSignInResult.NetworkError) onFailed() }
-    // Nativo donde la plataforma lo tiene (Apple en iPhone, Google en Android) y por la web en el otro.
+    // Nativo donde la plataforma lo tiene (Apple en iPhone, Google en Android); Apple en Android, por la web.
     val apple = auth.rememberSignInWithApple(onResult = onResult, fallback = { account.client.auth.signInWith(Apple) })
     val google = auth.rememberSignInWithGoogle(onResult = onResult, fallback = { account.client.auth.signInWith(Google) })
 
@@ -137,8 +138,10 @@ private fun Intro(onFailed: () -> Unit, account: CoopAccount = koinInject()) {
     OutlinedButton(onClick = { apple.startFlow() }, modifier = Modifier.fillMaxWidth()) {
         Text(stringResource(Res.string.coop_sign_in_apple))
     }
-    OutlinedButton(onClick = { google.startFlow() }, modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(Res.string.coop_sign_in_google))
+    if (hasGoogleSignIn) {
+        OutlinedButton(onClick = { google.startFlow() }, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(Res.string.coop_sign_in_google))
+        }
     }
 }
 

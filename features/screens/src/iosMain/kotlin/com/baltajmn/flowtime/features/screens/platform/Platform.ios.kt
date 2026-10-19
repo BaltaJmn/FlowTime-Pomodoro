@@ -135,6 +135,8 @@ actual val hasWallpaperColors: Boolean = false
 
 actual val hasFocusMode: Boolean = false
 
+actual val hasGoogleSignIn: Boolean = false
+
 actual val automaticBackupText: StringResource = Res.string.backup_automatic_ios
 
 actual val storeUnavailableText: StringResource = Res.string.alert_app_store
