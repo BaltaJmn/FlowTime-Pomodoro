@@ -213,7 +213,8 @@ motor se para con `stop()` (guarda lo trabajado).
 4. **Sala**: el anillo de siempre con la fase de la sala, los miembros (nombre y, al mantener
    pulsado, reportar o bloquear), compartir enlace o código, invitar amigos, salir. Los cambios de
    otros salen como una línea breve ("Ana ha pausado").
-5. **Ajustes > Coop**, solo con cuenta: nombre, bloqueados, cerrar sesión, borrar cuenta.
+5. **Cuenta**, al final de la hoja de Coop: nombre, bloqueados, cerrar sesión, borrar cuenta. Iba a ir en
+   Ajustes, pero la cuenta solo existe para Coop y así está siempre a un toque de donde se usa.
 
 Enlaces: `https://flowtime.baltajmn.dev/r/<código>` (sala) y `/f/<código>` (amistad), en la web que ya
 sirve la política (`BaltaJmn/flowtime-privacy`), con `assetlinks.json`,
@@ -260,12 +261,13 @@ Cada una, un commit. Builds con el target mínimo del modulo tocado; el completo
 1. Servidor: esquema `flowtime`, perfiles, amistades, bloqueos, reportes, `aplicar.sh`, tests de RLS.
 2. Servidor: salas, miembros, invitaciones, `room_control`, canal privado de Realtime, tests.
 3. Servidor: `flowtime-delete-account` y `flowtime-report-notify`.
-4. Modulo `core:coop`: cliente de Supabase, sesión, perfil y `SupabaseConfig` (nulo hasta tener ref).
+4. Cliente de Supabase, sesión, perfil y `SupabaseConfig`, en `core:data/coop` (no hizo falta un módulo:
+   el motor que sigue a la sala vive en `core:data`).
 5. Motor: `FocusState.coop` y la cuenta de la sección 4, con tests.
 6. Pantallas: entrada, inicio de sesión, nombre y edad.
 7. Pantallas: amigos, enlace y QR, solicitudes, bloquear, reportar.
 8. Pantallas: sala, crear, unirse, invitar, salir, con Realtime.
-9. Ajustes > Coop y borrar cuenta.
+9. Cuenta y borrar cuenta (dentro de Coop).
 10. Enlaces universales (web, `assetlinks.json`, AASA) y entitlements de iPhone.
 11. Textos en los 14 idiomas.
 12. Politica, Data Safety, App Privacy y edad (borradores; publicar, con el si del usuario).
