@@ -36,7 +36,11 @@ class RevenueCatStore(apiKey: String) : Store {
     override suspend fun catalog(): Catalog {
         val packages = packages()
         fun item(id: String) = packages[id]?.let { CatalogItem(id, it.storeProduct.price.formatted) }
-        return Catalog(pro = item(Products.PRO), tips = Products.TIPS.mapNotNull(::item))
+        return Catalog(
+            pro = item(Products.PRO),
+            tips = Products.TIPS.mapNotNull(::item),
+            proMonthly = item(Products.PRO_MONTHLY)
+        )
     }
 
     // La tienda del iPhone pone su propia hoja encima de lo que haya: no necesita la pantalla.
@@ -72,5 +76,10 @@ class RevenueCatStore(apiKey: String) : Store {
         purchases.awaitOfferings().current?.availablePackages.orEmpty()
             .associateBy { it.storeProduct.id.substringAfterLast('.') }
 
-    private fun CustomerInfo.active(): Set<String> = entitlements.active.keys
+    private fun CustomerInfo.active(): Set<String> {
+        val ended = Entitlements.PRO_ENDED.takeIf {
+            Entitlements.PRO in entitlements.all && Entitlements.PRO !in entitlements.active
+        }
+        return entitlements.active.keys + listOfNotNull(ended)
+    }
 }

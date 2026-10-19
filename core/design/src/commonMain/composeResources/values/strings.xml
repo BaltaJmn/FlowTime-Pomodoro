@@ -264,7 +264,7 @@
     <string name="pro_restore_nothing">Pro wasn't found on this Google account. Check your connection.</string>
     <string name="pro_thanks_text">You have FlowTime Pro: everything in Pro is unlocked. Thanks for supporting FlowTime.</string>
     <string name="pro_see">See Pro</string>
-    <string name="pro_settings_text">Advanced stats, CSV export, unlimited tags, tasks and mixes, 6 new sounds, 6 new themes and icons, and automatic Do Not Disturb. One-time payment, no subscription.</string>
+    <string name="pro_settings_text">Advanced stats, CSV export, unlimited tags, tasks and mixes, 6 new sounds, 6 new themes and icons, and automatic Do Not Disturb. Pay once and keep Pro forever, or pay month to month.</string>
     <string name="pro_settings_owned">You have Pro. Thanks for supporting FlowTime.</string>
     <string name="pro_card_text">With Pro you can see at what times and on what you focus best.</string>
     <string name="pro_card_dismiss">Not now</string>
@@ -329,7 +329,7 @@
     <string name="alert_app_store">Error connecting to the App Store</string>
     <string name="restore_nothing_ios">No purchases found. Check your connection and that you are using the same Apple Account.</string>
     <string name="pro_restore_nothing_ios">Pro wasn't found on this Apple Account. Check your connection.</string>
-    <string name="pro_settings_text_ios">Advanced stats, CSV export, unlimited tags, tasks and mixes, 6 new sounds and 6 new themes and icons. One-time payment, no subscription.</string>
+    <string name="pro_settings_text_ios">Advanced stats, CSV export, unlimited tags, tasks and mixes, 6 new sounds and 6 new themes and icons. Pay once and keep Pro forever, or pay month to month.</string>
     <string name="notifications_title_ios">Get an alert when each phase ends?</string>
     <string name="notifications_text_ios">You'll hear when it's time for a break and when it's time to get back to focus, even with the app closed.</string>
     <string name="notifications_off_ios">Notifications are off. Turn them on to get alerts with the app closed.</string>
@@ -421,4 +421,13 @@
     <string name="coop_cancel">Cancel</string>
     <string name="coop_qr">QR code of your link</string>
     <string name="coop_new_link">New link</string>
+    <string name="pro_plan_forever">Forever</string>
+    <string name="pro_plan_monthly">Monthly</string>
+    <string name="pro_best_value">Best value</string>
+    <string name="pro_forever_note">Pay once and it's yours for good. That's just two months of the monthly plan.</string>
+    <string name="pro_per_month">%1$s / month</string>
+    <string name="pro_subscribe">Subscribe for %1$s / month</string>
+    <string name="pro_subscription_terms">The monthly plan renews automatically every month until you cancel. Cancel any time in your App Store or Google Play account settings, at least 24 hours before the renewal date. Payment is charged to your store account. Pro is unlocked while it is active; your data is never deleted.</string>
+    <string name="pro_terms_of_use">Terms of use</string>
+    <string name="pro_subscription_ended">Your monthly plan has ended, so Pro is locked again. Your data is safe. Subscribe again or buy Pro forever.</string>
 </resources>

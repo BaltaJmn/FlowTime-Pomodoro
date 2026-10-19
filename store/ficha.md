@@ -11,7 +11,7 @@ Todo lo que se ve en la tienda sale de este repo (#54), en los 6 idiomas de la a
 | Gráfico destacado e icono | `store/play/feature-1024x500.png` y `icon-512.png` | `tools/store/cabecera.py`, con los colores de `design/icon.svg` |
 
 La descripción larga tiene que cuadrar con la pantalla de Pro (#57): lo que es gratis y lo que añade
-el pago único. Si cambia una, cambia la otra en el mismo commit.
+el pago único o el mensual (0,99 EUR). Si cambia una, cambia la otra en el mismo commit.
 
 ## Regenerar
 

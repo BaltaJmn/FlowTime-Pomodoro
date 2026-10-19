@@ -61,3 +61,7 @@ servicio de publicar para Play. Cómo se hace cada paso: `~/keys/LEEME.md`.
 ## Cuando la versión nueva esté publicada
 
 - Desactivar `support_developer` en Play Console. Se desactiva, no se borra.
+
+## Mensual (19-10-2026)
+
+Suscripcion `pro_monthly` (plan base `monthly` en Play, `com.baltajmn.flowtime.pro_monthly` en Apple), 0,99 EUR en las dos tiendas, mismo derecho `pro`, en el paquete `$rc_monthly` de la oferta `default` junto a `$rc_lifetime`. Creada con `ci/tienda/compra.py --suscripcion` y `ci/tienda/revenuecat.py`. El codigo toma `offering.lifetime` y `offering.monthly`, no los ids. Apple pide captura de revision de la suscripcion antes de enviarla con una version.
