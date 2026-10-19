@@ -49,7 +49,8 @@ data class RoomEvent(val action: String, val byName: String)
 class CoopRooms(
     private val account: CoopAccount,
     private val engine: FocusEngine,
-    private val time: TimeSource
+    private val time: TimeSource,
+    private val friends: CoopFriends
 ) {
     private val scope: CoroutineScope = MainScope()
     private val json = Json { ignoreUnknownKeys = true }
@@ -66,6 +67,10 @@ class CoopRooms(
     private var channel: RealtimeChannel? = null
     private var listening: Job? = null
 
+    /** El canal `user:<id>`: avisa de solicitudes de amistad e invitaciones a sala mientras hay sesión. */
+    private var inbox: RealtimeChannel? = null
+    private var inboxJob: Job? = null
+
     init {
         engine.coopControl = { action -> scope.launch { runCatching { control(action) } } }
         // Tras reiniciar la app con una sala a medias: en cuanto la sesión esté viva, se relee.
@@ -75,6 +80,11 @@ class CoopRooms(
                 runCatching { refresh() }
             }
         }
+        if (account.available) {
+            scope.launch {
+                account.status.collect { if (it is SessionStatus.Authenticated) listenInbox() else if (it is SessionStatus.NotAuthenticated) stopInbox() }
+            }
+        }
     }
 
     /** Lo relee todo: al abrir Coop, al volver de segundo plano y con cada aviso del canal. */
@@ -82,7 +92,7 @@ class CoopRooms(
         val sentAt = time.wallMillis()
         val raw = account.client.postgrest.rpc("my_room").decodeAs<JsonElement>()
         apply(raw, sentAt)
-        _invites.value = account.client.postgrest.rpc("my_room_invites").decodeList<RoomInvite>()
+        refreshInvites()
     }
 
     /** Devuelve el código de la sala nueva. */
@@ -184,6 +194,37 @@ class CoopRooms(
             }
             runCatching { ch.subscribe(blockUntilSubscribed = true) }
         }
+    }
+
+    private fun listenInbox() {
+        val id = account.userId() ?: return
+        if (inbox?.topic?.endsWith(id) == true) return
+        stopInbox()
+        val ch = account.client.channel("user:$id") { isPrivate = true }
+        inbox = ch
+        inboxJob = scope.launch {
+            launch { ch.broadcastFlow<JsonObject>("friends").collect { runCatching { friends.refresh() } } }
+            launch { ch.broadcastFlow<JsonObject>("invites").collect { runCatching { refreshInvites() } } }
+            // Como en la sala: lo que llegó con el canal caído se recupera al volver a estar suscrito.
+            launch {
+                ch.status.collect {
+                    if (it == RealtimeChannel.Status.SUBSCRIBED) runCatching { friends.refresh(); refreshInvites() }
+                }
+            }
+            runCatching { ch.subscribe() }
+        }
+    }
+
+    private fun stopInbox() {
+        inboxJob?.cancel()
+        inboxJob = null
+        val ch = inbox ?: return
+        inbox = null
+        scope.launch { runCatching { account.client.realtime.removeChannel(ch) } }
+    }
+
+    private suspend fun refreshInvites() {
+        _invites.value = account.client.postgrest.rpc("my_room_invites").decodeList<RoomInvite>()
     }
 
     private fun stopListening() {

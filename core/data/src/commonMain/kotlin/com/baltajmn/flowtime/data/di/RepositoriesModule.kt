@@ -55,5 +55,5 @@ internal val RepositoriesModule = module {
     singleOf(::CoopAccount)
     singleOf(::CoopFriends)
     // Al arrancar: con una sala a medias, los botones del temporizador ya tienen que ir a la sala.
-    single(createdAtStart = true) { CoopRooms(get(), get(), get()) }
+    single(createdAtStart = true) { CoopRooms(get(), get(), get(), get()) }
 }
