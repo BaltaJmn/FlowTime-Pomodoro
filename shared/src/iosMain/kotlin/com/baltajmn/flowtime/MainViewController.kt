@@ -21,6 +21,11 @@ import com.baltajmn.flowtime.core.persistence.di.PersistenceModule
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.DataProvider
 import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreferencesItem.SHOW_SOUND
 import com.baltajmn.flowtime.data.di.DataModule
+import com.baltajmn.flowtime.data.coop.CoopAccount
+import com.baltajmn.flowtime.data.coop.CoopFriends
+import com.baltajmn.flowtime.data.coop.LOGIN_SCHEME
+import io.github.jan.supabase.auth.handleDeeplinks
+import platform.Foundation.NSURL
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.tag.TagRepository
 import com.baltajmn.flowtime.data.timer.DoNotDisturb
@@ -89,6 +94,21 @@ suspend fun perform(action: String) {
     koin.get<SessionActivity>().update(state)
     val goals = koin.get<GoalRepository>()
     koin.get<HomeWidgetUpdater>().update(state, goals.today.first(), goals.streak.first())
+}
+
+/**
+ * Una URL que abre la app (iosApp, onOpenURL): la vuelta del inicio de sesión por la web, que recoge el
+ * cliente de Supabase, o un enlace de Coop, que abre su hoja en Concentración.
+ */
+fun openUrl(url: String) {
+    val coop = koin.get<CoopAccount>()
+    when {
+        url.startsWith("$LOGIN_SCHEME://") -> if (coop.available) NSURL.URLWithString(url)?.let { coop.client.handleDeeplinks(it) }
+        url.startsWith("https://flowtime.baltajmn.dev/") -> {
+            koin.get<CoopFriends>().pendingLink.value = url
+            openFocus.trySend(Unit)
+        }
+    }
 }
 
 // Antes que Koin, que las necesita al arrancar.

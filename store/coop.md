@@ -35,3 +35,15 @@ El correo trae nombre e id de las dos personas. Apple da 24 h. Desde el panel: c
 `display_name` en `flowtime.profiles`, o borrar la fila (cae todo lo de FlowTime en cascada). Para
 borrar la cuenta entera, ademas el usuario en *Authentication > Users*, solo si no usa Chroma
 (`select public.used_by_other_app('<id>')` en Chroma no sirve aqui: mirar `public.profiles`).
+
+## La web de los enlaces (#72)
+
+`store/web-coop/` lleva lo que va en el repo publico `BaltaJmn/flowtime-privacy`, junto a la politica:
+`.nojekyll` (sin el, GitHub Pages no sirve `.well-known`), `.well-known/assetlinks.json` (SHA-256 de la
+clave de firma de apps de Play, leido de la API el 19-10-2026), `.well-known/apple-app-site-association`
+(Team ID `BR5ZH8XYP6`) y `404.html`, que GitHub Pages sirve para `/f/<codigo>` y `/r/<codigo>` sin la
+app instalada y lleva a las tiendas (App Store `6819302003`). Publicarlo es un cambio de la web: con el
+si del usuario.
+
+Comprobar: `adb shell pm verify-app-links --re-verify com.baltajmn.flowtime` y despues
+`adb shell pm get-app-links com.baltajmn.flowtime` dice `verified`.

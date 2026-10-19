@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>FlowTime</title>
+<style>
+  :root { --bg: #F3F3F3; --surface: #FFFFFF; --ink: #111111; --muted: #595959; --line: #D0D0D0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #121212; --surface: #1C1C1C; --ink: #F2F2F2; --muted: #A8A8A8; --line: #333333; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 40px 20px; background: var(--bg); color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  main { max-width: 420px; width: 100%; }
+  h1 { font-size: 1.6rem; font-weight: 600; margin: 0 0 10px; }
+  p { color: var(--muted); margin: 0 0 28px; }
+  .stores { display: flex; flex-direction: column; gap: 10px; }
+  .stores a {
+    display: block; text-align: center; padding: 14px; border-radius: 26px; text-decoration: none;
+    font-weight: 500; color: var(--ink); background: var(--surface); border: 1px solid var(--line);
+  }
+  .home { color: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title"></h1>
+  <p id="text"></p>
+  <div class="stores" id="stores" hidden>
+    <a href="https://play.google.com/store/apps/details?id=com.baltajmn.flowtime">Google Play</a>
+    <a href="https://apps.apple.com/app/id6819302003">App Store</a>
+  </div>
+</main>
+<script>
+  // GitHub Pages sirve esta pagina para cualquier ruta que no conoce, asi que es tambien la de los
+  // enlaces de Coop: con la app instalada el enlace no llega aqui, abre la app.
+  var T = {
+    en: ["Study together on FlowTime", "Install FlowTime, then open this link again.", "This page does not exist."],
+    es: ["Estudia en compañía con FlowTime", "Instala FlowTime y vuelve a abrir este enlace.", "Esta página no existe."],
+    pt: ["Estude junto no FlowTime", "Instale o FlowTime e abra este link de novo.", "Esta página não existe."],
+    de: ["Gemeinsam lernen mit FlowTime", "Installiere FlowTime und öffne diesen Link dann noch einmal.", "Diese Seite gibt es nicht."],
+    fr: ["Étudier ensemble avec FlowTime", "Installe FlowTime, puis rouvre ce lien.", "Cette page n'existe pas."]
+  };
+  var lang = (navigator.language || "en").slice(0, 2);
+  var t = T[lang] || T.en;
+  document.documentElement.lang = T[lang] ? lang : "en";
+  var link = /^\/(f\/[0-9a-f]{10}|r\/[A-HJKMNP-Z2-9]{6})\/?$/.test(location.pathname);
+  document.getElementById("title").textContent = link ? t[0] : t[2];
+  document.getElementById("text").innerHTML = link ? t[1] : '<a class="home" href="/">flowtime.baltajmn.dev</a>';
+  document.getElementById("stores").hidden = !link;
+</script>
+</body>
+</html>

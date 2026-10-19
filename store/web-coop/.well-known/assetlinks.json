@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.baltajmn.flowtime",
+      "sha256_cert_fingerprints": ["57:29:B4:82:DF:F7:83:AC:B5:2F:9C:AE:E4:67:E0:4A:F6:B8:5A:92:D8:F0:61:5A:A0:F2:A6:1C:B1:A7:7A:35"]
+    }
+  }
+]
