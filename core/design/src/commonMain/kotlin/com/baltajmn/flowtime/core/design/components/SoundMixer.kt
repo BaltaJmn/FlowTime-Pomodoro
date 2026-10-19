@@ -478,36 +478,36 @@ fun SliderItem(
         val interaction = remember { MutableInteractionSource() }
         // Con nombre: TalkBack decía solo "control deslizante, 40 %".
         Column(modifier = Modifier.weight(1f).padding(horizontal = 10.dp)) {
-        // A la vista: los iconos solos no decían qué sonaba.
-        Text(
-            text = soundName,
-            style = MaterialTheme.typography.bodySmall.copy(fontSize = 13.sp),
-            color = if (isPlaying) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.clearAndSetSemantics {}
-        )
-        Slider(
-            modifier = Modifier
-                .semantics { contentDescription = soundName },
-            value = volume,
-            onValueChange = { newVolume ->
-                onVolumeChanged(type, newVolume)
-            },
-            colors = colors,
-            interactionSource = interaction,
-            thumb = {
-                SliderDefaults.Thumb(interactionSource = interaction, colors = colors, thumbSize = DpSize(4.dp, 24.dp))
-            },
-            track = {
-                SliderDefaults.Track(
-                    sliderState = it,
-                    modifier = Modifier.height(6.dp),
-                    colors = colors,
-                    drawStopIndicator = null,
-                    thumbTrackGapSize = 4.dp
-                )
-            },
-            valueRange = 0f..1f
-        )
+            // A la vista: los iconos solos no decían qué sonaba.
+            Text(
+                text = soundName,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 13.sp),
+                color = if (isPlaying) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.clearAndSetSemantics {}
+            )
+            Slider(
+                modifier = Modifier
+                    .semantics { contentDescription = soundName },
+                value = volume,
+                onValueChange = { newVolume ->
+                    onVolumeChanged(type, newVolume)
+                },
+                colors = colors,
+                interactionSource = interaction,
+                thumb = {
+                    SliderDefaults.Thumb(interactionSource = interaction, colors = colors, thumbSize = DpSize(4.dp, 24.dp))
+                },
+                track = {
+                    SliderDefaults.Track(
+                        sliderState = it,
+                        modifier = Modifier.height(6.dp),
+                        colors = colors,
+                        drawStopIndicator = null,
+                        thumbTrackGapSize = 4.dp
+                    )
+                },
+                valueRange = 0f..1f
+            )
         }
 
         IconButton(

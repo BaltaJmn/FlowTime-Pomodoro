@@ -159,21 +159,21 @@ fun StatsScreen(
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-    StatsContent(
-        state = state,
-        onPeriod = viewModel::selectPeriod,
-        onPrevious = viewModel::previousPeriod,
-        onNext = viewModel::nextPeriod,
-        onUnlock = proLauncher::open,
-        onDismissProCard = viewModel::dismissProCard,
-        onCopyHistory = { viewModel.exportStudyTime { clipboard.setText(AnnotatedString(it)) } },
-        onPasteHistory = { viewModel.importStudyTime(clipboard.getText()?.text.orEmpty()) },
-        onExportCsv = { csvFile("flowtime-${today()}.csv") },
-        onDeleteSession = viewModel::deleteSession,
-        onSessionMinutes = viewModel::setSessionMinutes,
-        onAddMinutes = viewModel::addMinutes
-    )
-    SnackbarHost(hostState = snackbar, modifier = Modifier.align(Alignment.BottomCenter))
+        StatsContent(
+            state = state,
+            onPeriod = viewModel::selectPeriod,
+            onPrevious = viewModel::previousPeriod,
+            onNext = viewModel::nextPeriod,
+            onUnlock = proLauncher::open,
+            onDismissProCard = viewModel::dismissProCard,
+            onCopyHistory = { viewModel.exportStudyTime { clipboard.setText(AnnotatedString(it)) } },
+            onPasteHistory = { viewModel.importStudyTime(clipboard.getText()?.text.orEmpty()) },
+            onExportCsv = { csvFile("flowtime-${today()}.csv") },
+            onDeleteSession = viewModel::deleteSession,
+            onSessionMinutes = viewModel::setSessionMinutes,
+            onAddMinutes = viewModel::addMinutes
+        )
+        SnackbarHost(hostState = snackbar, modifier = Modifier.align(Alignment.BottomCenter))
     }
 }
 
