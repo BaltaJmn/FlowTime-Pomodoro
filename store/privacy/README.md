@@ -74,8 +74,8 @@ Si cambia lo que sale del móvil, se cambian las tres: Play, App Store Connect y
 ## Coop (#74): lo que cambia, en borrador
 
 Con Coop sale del movil algo mas, solo para quien lo abre (docs/coop.md). La politica ya lo cuenta
-(`index.html`, 19-10-2026, sin publicar). Nada de esto se publica ni se cambia en las consolas sin el
-si del usuario, y conviene hacerlo con la version que lleve Coop, no antes.
+(`index.html`, 19-10-2026). Politica y `delete.html` publicadas el 20-10-2026 en flowtime.baltajmn.dev.
+Lo de las consolas se cambia con la version que lleve Coop, no antes.
 
 **Play Console, seguridad de los datos.** Cambian:
 
@@ -83,7 +83,7 @@ si del usuario, y conviene hacerlo con la version que lleve Coop, no antes.
 |---|---|
 | ¿Permite crear una cuenta? | Si, con OAuth (Apple y Google) |
 | ¿Se puede iniciar sesion con cuentas de fuera? | Si |
-| ¿Ofreces una forma de pedir que se borren los datos? | Si: desde la app (Coop > Cuenta > Borrar cuenta). Play pide ademas una URL de borrado: hace falta una pagina, como `delete.html` de Chroma |
+| ¿Ofreces una forma de pedir que se borren los datos? | Si: desde la app (Ajustes > Cuenta de Coop > Borrar cuenta) y en `https://flowtime.baltajmn.dev/delete.html` |
 
 | Tipo | Recogido | Compartido | Efimero | Obligatorio | Finalidad |
 |---|---|---|---|---|---|
