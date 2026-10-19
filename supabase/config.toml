@@ -14,3 +14,9 @@ additional_redirect_urls = ["com.baltajmn.flowtime://login"]
 
 [auth.email]
 enable_signup = false
+
+[functions.flowtime-report-notify]
+verify_jwt = false
+
+[functions.flowtime-delete-account]
+verify_jwt = true
