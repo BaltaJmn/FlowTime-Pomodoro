@@ -120,3 +120,32 @@ fichero.
 
 Migracion con test pgTAP en verde, Android e iOS registrando token, y un aviso real recibido en el
 iPhone del usuario y en `emulator-5554` con la app cerrada.
+
+## Estado y lo que falta (19-10-2026)
+
+Hecho: migracion aplicada y apuntada (pgTAP 12/12), `flowtime-push` desplegada (`verify_jwt` off),
+Push activado en el App ID, valores publicos de Firebase (`flowtime-pomodoro`) en `CoopPush.kt`,
+token de `emulator-5554` (BaltaAnd) ya en `flowtime.push_tokens`. Credenciales en `~/keys`:
+`apns.p8` (Key ID `R33CWTQ635`), `flowtime-fcm.json`, `flowtime-google-services.json`.
+
+Falta, solo el usuario (Claude no escribe secretos en un formulario):
+
+1. https://supabase.com/dashboard/project/djfbmvagflfptqhabdln/functions/secrets, tres secretos:
+   - `APNS_KEY_ID` = `R33CWTQ635`
+   - `APNS_KEY`: `pbcopy < ~/keys/apns.p8` y pegar
+   - `FCM_SERVICE_ACCOUNT`: `pbcopy < ~/keys/flowtime-fcm.json` y pegar
+   - despues `pbcopy < /dev/null`
+2. Rotar las dos claves privadas, que pasaron por el chat: en Firebase (Cuentas de servicio) una
+   clave nueva y borrar la `3fb86116...`; en developer.apple.com > Keys una nueva y revocar
+   `R33CWTQ635`. Mover los ficheros nuevos a `~/keys` con `mv` y repetir el paso 1.
+
+Prueba (Claude, con los secretos puestos): app en segundo plano y, en SQL,
+
+```sql
+select flowtime.push(a.id, 'friend_request', b.id) from flowtime.profiles a, flowtime.profiles b
+where a.display_name = 'BaltaAnd' and b.display_name = 'BaltaJmn';
+```
+
+Para el iPhone, igual con los nombres cambiados, tras instalar desde Xcode (`ios-sandbox`) la build
+de esta rama y abrir la app una vez con la sesion de Coop. Si falla, los logs de `flowtime-push`
+en el panel (Edge Functions > Logs) dicen `fcm ...` o `apns <estado> <motivo>`.
