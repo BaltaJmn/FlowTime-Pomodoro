@@ -350,6 +350,11 @@
     <string name="coop_no_account_needed">アカウントが必要なのは Coop だけです。FlowTime のほかの部分はいつも通り使えます。</string>
     <string name="coop_sign_in_apple">Apple で続ける</string>
     <string name="coop_sign_in_google">Google で続ける</string>
+    <string name="coop_sign_in_email">メールでサインイン</string>
+    <string name="coop_email_label">メールアドレス</string>
+    <string name="coop_password_label">パスワード</string>
+    <string name="coop_email_submit">サインイン</string>
+    <string name="coop_email_failed">メールアドレスまたはパスワードが違います。Apple か Google をお使いください。</string>
     <string name="coop_sign_in_failed">サインインできませんでした。もう一度お試しください。</string>
     <string name="coop_name_title">Coop でのあなたの名前</string>
     <string name="coop_name_hint">友だちとルームにいる人には、この名前が表示されます。</string>

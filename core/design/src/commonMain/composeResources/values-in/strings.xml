@@ -351,6 +351,11 @@
     <string name="coop_no_account_needed">Hanya Coop yang perlu akun. Bagian FlowTime lainnya tetap berjalan seperti biasa.</string>
     <string name="coop_sign_in_apple">Lanjut dengan Apple</string>
     <string name="coop_sign_in_google">Lanjut dengan Google</string>
+    <string name="coop_sign_in_email">Masuk dengan email</string>
+    <string name="coop_email_label">Email</string>
+    <string name="coop_password_label">Kata sandi</string>
+    <string name="coop_email_submit">Masuk</string>
+    <string name="coop_email_failed">Email atau kata sandi salah. Gunakan Apple atau Google.</string>
     <string name="coop_sign_in_failed">Gagal masuk. Coba lagi.</string>
     <string name="coop_name_title">Namamu di Coop</string>
     <string name="coop_name_hint">Teman-temanmu dan orang di ruanganmu melihat nama ini.</string>

@@ -4,6 +4,7 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.FlowType
 import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.compose.auth.ComposeAuth
 import io.github.jan.supabase.compose.auth.appleNativeLogin
@@ -78,6 +79,17 @@ class CoopAccount {
                 SupabaseConfig.googleServerClientId?.let { googleNativeLogin(serverClientId = it) }
                 appleNativeLogin()
             }
+        }
+    }
+
+    /**
+     * Solo para la cuenta de App Review, que no puede usar Apple ni Google en un dispositivo ajeno
+     * (docs/coop.md 5). Nunca da de alta: el servidor rechaza cualquier otro correo. Lanza si falla.
+     */
+    suspend fun signInWithEmail(email: String, password: String) {
+        client.auth.signInWith(Email) {
+            this.email = email.trim()
+            this.password = password
         }
     }
 

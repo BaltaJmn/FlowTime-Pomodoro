@@ -364,6 +364,11 @@
     <string name="coop_no_account_needed">Аккаунт нужен только для Coop. Остальная часть FlowTime работает как обычно.</string>
     <string name="coop_sign_in_apple">Продолжить с Apple</string>
     <string name="coop_sign_in_google">Продолжить с Google</string>
+    <string name="coop_sign_in_email">Войти по почте</string>
+    <string name="coop_email_label">Почта</string>
+    <string name="coop_password_label">Пароль</string>
+    <string name="coop_email_submit">Войти</string>
+    <string name="coop_email_failed">Неверная почта или пароль. Используйте Apple или Google.</string>
     <string name="coop_sign_in_failed">Не удалось войти. Попробуйте еще раз.</string>
     <string name="coop_name_title">Ваше имя в Coop</string>
     <string name="coop_name_hint">Его видят ваши друзья и люди в вашей комнате.</string>

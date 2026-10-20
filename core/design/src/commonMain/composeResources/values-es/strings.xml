@@ -357,6 +357,11 @@
     <string name="coop_no_account_needed">Solo Coop necesita cuenta. El resto de FlowTime sigue como siempre.</string>
     <string name="coop_sign_in_apple">Continuar con Apple</string>
     <string name="coop_sign_in_google">Continuar con Google</string>
+    <string name="coop_sign_in_email">Iniciar sesión con correo</string>
+    <string name="coop_email_label">Correo</string>
+    <string name="coop_password_label">Contraseña</string>
+    <string name="coop_email_submit">Iniciar sesión</string>
+    <string name="coop_email_failed">Correo o contraseña incorrectos. Usa Apple o Google.</string>
     <string name="coop_sign_in_failed">No se pudo iniciar sesión. Inténtalo otra vez.</string>
     <string name="coop_name_title">Tu nombre en Coop</string>
     <string name="coop_name_hint">Es lo que ven tus amigos y quien esté en tu sala.</string>

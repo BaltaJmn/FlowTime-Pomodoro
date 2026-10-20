@@ -355,6 +355,11 @@
     <string name="coop_no_account_needed">Yalnızca Coop hesap gerektirir. FlowTime'ın geri kalanı her zamanki gibi çalışır.</string>
     <string name="coop_sign_in_apple">Apple ile devam et</string>
     <string name="coop_sign_in_google">Google ile devam et</string>
+    <string name="coop_sign_in_email">E-posta ile giriş yap</string>
+    <string name="coop_email_label">E-posta</string>
+    <string name="coop_password_label">Şifre</string>
+    <string name="coop_email_submit">Giriş yap</string>
+    <string name="coop_email_failed">E-posta veya şifre hatalı. Apple ya da Google ile devam et.</string>
     <string name="coop_sign_in_failed">Giriş yapılamadı. Tekrar dene.</string>
     <string name="coop_name_title">Coop'taki adın</string>
     <string name="coop_name_hint">Arkadaşların ve odandaki kişiler bu adı görür.</string>

@@ -358,6 +358,11 @@
     <string name="coop_no_account_needed">Only Coop needs an account. The rest of FlowTime works as always.</string>
     <string name="coop_sign_in_apple">Continue with Apple</string>
     <string name="coop_sign_in_google">Continue with Google</string>
+    <string name="coop_sign_in_email">Sign in with email</string>
+    <string name="coop_email_label">Email</string>
+    <string name="coop_password_label">Password</string>
+    <string name="coop_email_submit">Sign in</string>
+    <string name="coop_email_failed">Wrong email or password. Use Apple or Google.</string>
     <string name="coop_sign_in_failed">Could not sign in. Try again.</string>
     <string name="coop_name_title">Your name in Coop</string>
     <string name="coop_name_hint">Your friends and the people in your room see this name.</string>

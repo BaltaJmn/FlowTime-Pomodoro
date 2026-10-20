@@ -4,6 +4,8 @@ import androidx.compose.foundation.Canvas
 import com.baltajmn.flowtime.features.screens.settings.SettingsCard
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -47,6 +49,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -85,6 +88,7 @@ import io.github.jan.supabase.compose.auth.composable.rememberSignInWithGoogle
 import io.github.jan.supabase.compose.auth.composeAuth
 import kotlin.math.floor
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -158,6 +162,68 @@ private fun Intro(onFailed: () -> Unit, account: CoopAccount = koinInject()) {
     }
     OutlinedButton(onClick = { google.startFlow() }, modifier = Modifier.fillMaxWidth()) {
         Text(stringResource(Res.string.coop_sign_in_google))
+    }
+    // Para la cuenta de App Review, que no puede usar Apple ni Google en un dispositivo ajeno. A la vista
+    // y no un gesto oculto (Apple 2.3.1); discreto porque nadie mas lo necesita.
+    var showEmail by rememberSaveable { mutableStateOf(false) }
+    if (showEmail) {
+        EmailForm(account = account, onCancel = { showEmail = false })
+    } else {
+        TextButton(onClick = { showEmail = true }, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(Res.string.coop_sign_in_email), color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+}
+
+/** Correo y contraseña, solo para entrar: no hay alta (docs/coop.md 5). Al entrar, la hoja sigue como tras Apple o Google. */
+@Composable
+private fun EmailForm(account: CoopAccount, onCancel: () -> Unit) {
+    var email by rememberSaveable { mutableStateOf("") }
+    // Sin rememberSaveable: la contraseña no se guarda en el estado de la pantalla.
+    var password by remember { mutableStateOf("") }
+    var busy by remember { mutableStateOf(false) }
+    var failed by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val canSubmit = !busy && email.isNotBlank() && password.isNotEmpty()
+    val submit = {
+        busy = true
+        failed = false
+        scope.launch {
+            runCatching { account.signInWithEmail(email, password) }.onFailure { failed = true }
+            busy = false
+        }
+        Unit
+    }
+    OutlinedTextField(
+        value = email,
+        onValueChange = { email = it },
+        label = { Text(stringResource(Res.string.coop_email_label)) },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
+        modifier = Modifier.fillMaxWidth()
+    )
+    OutlinedTextField(
+        value = password,
+        onValueChange = { password = it },
+        label = { Text(stringResource(Res.string.coop_password_label)) },
+        singleLine = true,
+        visualTransformation = PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { if (canSubmit) submit() }),
+        modifier = Modifier.fillMaxWidth()
+    )
+    if (failed) {
+        Text(
+            text = stringResource(Res.string.coop_email_failed),
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }
+        )
+    }
+    Button(onClick = { submit() }, enabled = canSubmit, modifier = Modifier.fillMaxWidth()) {
+        Text(stringResource(Res.string.coop_email_submit))
+    }
+    TextButton(onClick = onCancel, enabled = !busy, modifier = Modifier.fillMaxWidth()) {
+        Text(stringResource(Res.string.coop_cancel))
     }
 }
 

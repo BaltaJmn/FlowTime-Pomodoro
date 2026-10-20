@@ -9,7 +9,8 @@ código, o porque un amigo te invita. Se ve quien está y si la sala está conce
 
 Fuera de v1: chat, salas públicas, reacciones, rankings, contadores, notificaciones push.
 
-**La app entera sigue sin cuenta.** Iniciar sesión (Apple o Google) solo se pide al abrir Coop. Sin
+**La app entera sigue sin cuenta.** Iniciar sesión (Apple o Google) solo se pide al abrir Coop. El
+correo con contraseña existe únicamente para la cuenta de App Review (sección 5). Sin
 proyecto de Supabase configurado (`SupabaseConfig.url` nulo) la entrada a Coop no existe, igual que
 Amigos en Chroma.
 
@@ -206,7 +207,14 @@ motor se para con `stop()` (guarda lo trabajado).
 ## 5. Pantallas
 
 1. **Entrada**: boton en Enfoque. Sin cuenta, abre la presentación de Coop con los dos botones de
-   inicio de sesión y una línea: "El resto de la app sigue sin cuenta".
+   inicio de sesión y una línea: "El resto de la app sigue sin cuenta". Debajo, un enlace discreto
+   "Iniciar sesión con correo" (20-10-2026) que abre correo y contraseña. **Existe solo para la cuenta
+   de App Review**, que no puede usar Apple ni Google en un dispositivo ajeno (pide SMS o un segundo
+   correo). Solo entra, nunca da de alta (`CoopAccount.signInWithEmail`), y el servidor rechaza
+   cualquier otro alta por correo: un hook de Supabase (Before User Created, en el repo de Chroma)
+   deja pasar solo el correo de revisión, que se crea a mano en el panel. Un fallo dice "correo o
+   contraseña incorrectos, usa Apple o Google". El enlace está a la vista y no es un gesto oculto
+   (Apple 2.3.1). No recoge datos nuevos: la política de privacidad no cambia.
 2. **Primera vez**: nombre visible (1 a 30) y casilla de 16 años o mÃ¡s, obligatoria (la de Chroma).
 3. **Coop sin sala**: "Crear sala", "Unirme con código", invitaciones recibidas, y la lista de amigos
    con "Añadir amigo" (enlace y QR, como Chroma).

@@ -354,6 +354,11 @@
     <string name="coop_no_account_needed">सिर्फ़ Coop को खाते की ज़रूरत है। FlowTime का बाकी हिस्सा हमेशा की तरह चलता है।</string>
     <string name="coop_sign_in_apple">Apple से जारी रखें</string>
     <string name="coop_sign_in_google">Google से जारी रखें</string>
+    <string name="coop_sign_in_email">ईमेल से साइन इन करें</string>
+    <string name="coop_email_label">ईमेल</string>
+    <string name="coop_password_label">पासवर्ड</string>
+    <string name="coop_email_submit">साइन इन करें</string>
+    <string name="coop_email_failed">ईमेल या पासवर्ड गलत है। Apple या Google का उपयोग करें।</string>
     <string name="coop_sign_in_failed">साइन इन नहीं हो सका। फिर से कोशिश करें।</string>
     <string name="coop_name_title">Coop में आपका नाम</string>
     <string name="coop_name_hint">आपके दोस्त और आपके कमरे के लोग यह नाम देखते हैं।</string>
