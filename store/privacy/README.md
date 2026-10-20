@@ -71,41 +71,77 @@ cuatro apps de la familia, publicado en App Store Connect el 05-10-2026.
 
 Si cambia lo que sale del móvil, se cambian las tres: Play, App Store Connect y el manifiesto.
 
-## Coop (#74): lo que cambia, en borrador
+## Coop (#74): respuestas para la 2.4.0
 
 Con Coop sale del movil algo mas, solo para quien lo abre (docs/coop.md). La politica ya lo cuenta
 (`index.html`, 19-10-2026). Politica y `delete.html` publicadas el 20-10-2026 en flowtime.baltajmn.dev.
-Lo de las consolas se cambia con la version que lleve Coop, no antes.
+Lo de las consolas se cambia con la version que lleve Coop (2.4.0), no antes: la 2.2.2 de iOS se
+reenvia sin tocar App Privacy.
+
+**Revisado contra el codigo el 20-10-2026** (`main` de la 2.4.0, push incluido). Lo que sale del
+movil con Coop, y solo con sesion de Coop:
+
+- A Supabase (`baltajmn-social`, UE): el ID y el correo que dan Apple o Google al entrar (con Apple
+  puede ser el de reenvio privado), el nombre elegido, el codigo de invitacion, amigos y solicitudes,
+  bloqueados, la sala en la que estas, las invitaciones, los reportes (motivo cerrado, sin texto
+  libre) y el token de avisos con el idioma de la app.
+- A Google (FCM, Android) o Apple (APNs, iPhone): el token y el texto de cada aviso.
+- A Resend: el correo de un reporte, con los dos nombres, solo hacia nosotros.
+- Lo que no sale: sesiones, tareas, etiquetas y estadisticas (el temporizador de la sala es de la
+  sala, y cada uno guarda sus minutos en su movil).
+
+Corregido el 20-10-2026: en Android el SDK de FCM pedia su token al abrir la app a todo el mundo (y
+con eso el ID de instalacion de Firebase llegaba a Google aunque no se usara Coop). Desde `bddea97`
+arranca solo con sesion de Coop. En el iPhone el token de APNs lo da Apple a todos, pero solo se
+sube al servidor con sesion.
 
 **Play Console, seguridad de los datos.** Cambian:
 
 | Pregunta | Respuesta |
 |---|---|
-| ¿Permite crear una cuenta? | Si, con OAuth (Apple y Google) |
+| ¿Se cifran en transito todos los datos recogidos? | Si (HTTPS de Supabase, FCM y RevenueCat) |
+| ¿Permite crear una cuenta? | Si, con *OAuth* (en Android solo Google; en iPhone Apple y Google) |
 | ¿Se puede iniciar sesion con cuentas de fuera? | Si |
-| ¿Ofreces una forma de pedir que se borren los datos? | Si: desde la app (Ajustes > Cuenta de Coop > Borrar cuenta) y en `https://flowtime.baltajmn.dev/delete.html` |
+| URL para borrar la cuenta | `https://flowtime.baltajmn.dev/delete.html` |
+| ¿Ofreces una forma de pedir que se borren los datos? | Si: desde la app (Ajustes > Cuenta de Coop > Borrar cuenta) y en la misma URL |
 
 | Tipo | Recogido | Compartido | Efimero | Obligatorio | Finalidad |
 |---|---|---|---|---|---|
 | Informacion personal > Nombre | Si | No | No | No (solo Coop) | Funcionalidad de la app |
 | Informacion personal > Direccion de correo | Si | No | No | No (solo Coop) | Funcionalidad de la app, gestion de la cuenta |
 | Informacion personal > ID de usuario | Si | No | No | No (solo Coop) | Funcionalidad de la app, gestion de la cuenta |
-| Identificadores de dispositivo u otros identificadores | Si | No | No | No (solo Coop) | Funcionalidad de la app. El token de push y el ID de instalacion de Firebase que genera el SDK de FCM (docs/coop-push.md); la fila ya esta marcada por RevenueCat, solo cambia la nota |
-| Mensajes > Otro contenido generado por el usuario | No | | | | Los reportes no llevan texto libre |
+| Contactos | Si | No | No | No (solo Coop) | Funcionalidad de la app. La lista de amigos y solicitudes: Play cuenta como contactos el "grafo social" (nombres de usuario de tus contactos). No se lee la agenda del movil |
+| Identificadores de dispositivo u otros identificadores | Si | No | No | **Si** (no cambia) | Funcionalidad de la app. Ya estaba marcada por RevenueCat como obligatoria, y Play pide una sola respuesta por tipo: se queda en obligatoria. Ahora cubre tambien el token de FCM y el ID de instalacion de Firebase, solo con Coop |
+| Informacion financiera > Historial de compras | Si | No | No | Si | Sin cambios (RevenueCat) |
+| Actividad en apps > Otro contenido generado por el usuario | No | | | | Lo unico que escribe el usuario es su nombre (ya en Nombre). Los reportes son un motivo cerrado |
+| Actividad en apps > Otras acciones | No | | | | Quien empieza o pausa la sala es estado de la sala, no un registro de uso: se borra con la sala |
 
-Supabase, Resend, Google (FCM) y Apple (APNs) tratan por cuenta nuestra: no es compartir.
+Supabase, Resend, Google (FCM) y Apple (APNs) tratan por cuenta nuestra: no es compartir. Que tus
+amigos y tu sala vean tu nombre tampoco: lo provoca el usuario y lo espera (excepcion de Play para
+lo que el usuario comparte a proposito).
+
+**Play Console, acceso a la aplicacion.** *Toda o parte de la funcionalidad esta restringida*. Una
+instruccion, con la cuenta de Google de prueba (la crea el usuario: hueco en `store/formularios.md`,
+"Para enviar por la manana").
 
 **App Store Connect, App Privacy.** Se anaden, vinculados al usuario, sin rastreo, finalidad
 *Funcionalidad de la app*: *Informacion de contacto > Nombre*, *Informacion de contacto > Correo
-electronico*, *Identificadores > ID de usuario* e *Identificadores > ID de dispositivo* (el token de
-APNs de los avisos de Coop, docs/coop-push.md). El manifiesto `PrivacyInfo.xcprivacy` declara los
-mismos cuatro tipos (`NSPrivacyCollectedDataTypeName`, `...EmailAddress`, `...UserID`, `...DeviceID`,
-vinculados, sin rastreo, `NSPrivacyCollectedDataTypePurposeAppFunctionality`). La sesion de Supabase se guarda en
+electronico*, *Contactos* (la lista de amigos: Apple pone el "grafo social" como ejemplo),
+*Identificadores > ID de usuario* e *Identificadores > ID de dispositivo* (el token de APNs de los
+avisos de Coop, docs/coop-push.md). *Compras > Historial de compras* sigue igual: sin vincular,
+porque RevenueCat sigue con su ID anonimo (la app no llama a `logIn` con el ID de Coop). El
+manifiesto `PrivacyInfo.xcprivacy` declara los mismos cinco tipos (`NSPrivacyCollectedDataTypeName`,
+`...EmailAddress`, `...Contacts`, `...UserID`, `...DeviceID`, vinculados, sin rastreo,
+`NSPrivacyCollectedDataTypePurposeAppFunctionality`). La sesion de Supabase se guarda en
 `NSUserDefaults`, que ya esta declarado (`CA92.1`).
 
 **Clasificacion por edad.** Play (cuestionario IARC): *Los usuarios pueden interactuar* = Si (nombres
-visibles entre usuarios, sin chat). App Store: *Contenido generado por usuarios / interaccion* y la
-casilla de 16 anos en la app. Apple 1.2 pide reportar, bloquear y actuar en 24 h: hecho
-(`store/coop.md`, "Actuar sobre un reporte").
+visibles entre usuarios, solicitudes de amistad e invitaciones, sin chat); *Comparte la ubicacion* =
+No; *Compras digitales* = Si. App Store: *Contenido generado por usuarios* = Si (el nombre visible),
+*Mensajeria y chat* = No, el resto igual que en la 2.2.2; la app pide 16 anos o mas para Coop. Apple
+1.2 pide reportar, bloquear y actuar en 24 h: hecho (`store/coop.md`, "Actuar sobre un reporte").
 
 **Iniciar sesion con Apple (4.8).** Google como opcion obliga a ofrecer Apple, igual de visible: hecho.
+
+Pendiente fuera de FlowTime: Chroma tiene amigos y grupos con el mismo modelo y no declara
+*Contactos* en ninguna de las dos tiendas. Si se acepta aqui, conviene igualarlo alli.
