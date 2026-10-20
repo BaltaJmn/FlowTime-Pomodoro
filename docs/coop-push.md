@@ -147,10 +147,9 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST -H @<(printf 'Authorization: Be
 Prueba del mismo dia: `flowtime.push` a BaltaAnd (Android) y a BaltaJmn (iPhone, token `ios` de
 TestFlight), 200 y sin `fcm ...` ni `apns ...` en los logs: FCM y APNs aceptaron los dos.
 
-Falta, solo el usuario: rotar las dos claves privadas, que pasaron por el chat. Siguen puestas las
-viejas. En Firebase (Cuentas de servicio) una clave nueva y borrar la `3fb86116...`; en
-developer.apple.com > Keys una nueva y revocar `R33CWTQ635`. Mover los ficheros nuevos a `~/keys` con
-`mv` (`apns.p8`, `flowtime-fcm.json`) y decir el Key ID nuevo: Claude repite la orden de arriba.
+Las dos claves privadas pasaron por el chat y el usuario decidio el 20-10-2026 no rotarlas: se usan
+estas. Si algun dia se cambian (Firebase `3fb86116...`, APNs `R33CWTQ635`), ficheros nuevos a
+`~/keys` con los mismos nombres y la orden de arriba con el Key ID nuevo.
 
 Prueba (Claude, con los secretos puestos): app en segundo plano y, en SQL,
 
