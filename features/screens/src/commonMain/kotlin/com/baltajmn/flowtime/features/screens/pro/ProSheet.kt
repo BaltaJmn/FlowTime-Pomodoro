@@ -248,21 +248,22 @@ private fun ColumnScope.Purchase(
             )
         }
     }
+    // Apple 3.1.2: renovación y cómo cancelar cuando se ofrece el mes, y los dos documentos siempre,
+    // aunque la tienda no devuelva algún producto (MoodTraker 1.1 se rechazó por no verlos, 20-10-2026).
     if (monthly != null && state.product != null) {
-        // Apple 3.1.2: renovación, cómo cancelar y los dos documentos, junto a la compra.
-        val uriHandler = LocalUriHandler.current
         Text(
             text = stringResource(Res.string.pro_subscription_terms, storeName),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            TextButton(onClick = { runCatching { uriHandler.openUri(TERMS_URL) } }) {
-                Text(text = stringResource(Res.string.pro_terms_of_use))
-            }
-            TextButton(onClick = { runCatching { uriHandler.openUri(PRIVACY_URL) } }) {
-                Text(text = stringResource(Res.string.settings_privacy))
-            }
+    }
+    val uriHandler = LocalUriHandler.current
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        TextButton(onClick = { runCatching { uriHandler.openUri(TERMS_URL) } }) {
+            Text(text = stringResource(Res.string.pro_terms_of_use))
+        }
+        TextButton(onClick = { runCatching { uriHandler.openUri(PRIVACY_URL) } }) {
+            Text(text = stringResource(Res.string.settings_privacy))
         }
     }
     val problem = when {
