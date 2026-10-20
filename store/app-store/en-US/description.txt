@@ -35,3 +35,5 @@ Advanced stats (the whole year, comparison with the previous period, by hour, by
 
 YOUR DATA IS YOURS
 Everything stays on your iPhone, with no tracking. An account is optional and only for Coop.
+
+Terms of use: https://flowtime.baltajmn.dev/terms.html

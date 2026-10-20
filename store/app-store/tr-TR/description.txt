@@ -35,3 +35,5 @@ Gelişmiş istatistikler (yılın tamamı, önceki dönemle karşılaştırma, s
 
 VERİLERİN SENİN
 Her şey iPhone'unda kalır, izleme yok. Hesap isteğe bağlıdır ve yalnızca Coop için gereklidir.
+
+Kullanım koşulları: https://flowtime.baltajmn.dev/terms.html

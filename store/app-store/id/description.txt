@@ -35,3 +35,5 @@ Statistik lanjutan (setahun penuh, perbandingan dengan periode sebelumnya, per j
 
 DATAMU MILIKMU
 Semuanya tetap di iPhone-mu, tanpa pelacakan. Akun bersifat opsional dan hanya untuk Coop.
+
+Ketentuan penggunaan: https://flowtime.baltajmn.dev/terms.html

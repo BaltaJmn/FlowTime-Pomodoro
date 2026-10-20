@@ -35,3 +35,5 @@ Zaawansowane statystyki (cały rok, porównanie z poprzednim okresem, według go
 
 TWOJE DANE NALEŻĄ DO CIEBIE
 Wszystko zostaje na Twoim iPhonie, bez śledzenia. Konto jest opcjonalne i służy tylko do Coop.
+
+Warunki korzystania: https://flowtime.baltajmn.dev/terms.html

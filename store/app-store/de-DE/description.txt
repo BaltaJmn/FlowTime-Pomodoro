@@ -35,3 +35,5 @@ Erweiterte Statistiken (das ganze Jahr, Vergleich mit dem Vorzeitraum, nach Uhrz
 
 DEINE DATEN GEHÖREN DIR
 Alles bleibt auf deinem iPhone, ohne Tracking. Ein Konto ist optional und nur für Coop.
+
+Nutzungsbedingungen: https://flowtime.baltajmn.dev/terms.html

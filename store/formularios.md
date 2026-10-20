@@ -345,6 +345,7 @@ Lo que cambia en el resto de la ficha de App Store con la 2.4.0 (antes de enviar
 | Clasificacion por edad | *Contenido generado por usuarios* = Si; *Mensajeria y chat* = No; el resto igual |
 | Compras en el envio | Anadir `com.baltajmn.flowtime.pro_monthly` (primera suscripcion: va con la version) |
 | Novedades | Las de `store/whatsnew/whatsnew-<idioma>`, mas una linea solo de iPhone: "Los sonidos salen en la pantalla de bloqueo y el Centro de control, con pausa" |
+| Descripcion | La del repo ya acaba con el enlace a los terminos (`https://flowtime.baltajmn.dev/terms.html`, guia 3.1.2 por la suscripcion) en los 14 idiomas. Se sube con `python3 ~/AndroidStudioProjects/ci/tienda/appstore.py ficha com.baltajmn.flowtime .` cuando exista la version 2.4.0. La 2.2.2 no lo lleva a proposito: su descripcion dice "not a subscription", como su build |
 
 ## Para enviar por la manana (20-10-2026)
 

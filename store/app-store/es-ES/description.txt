@@ -35,3 +35,5 @@ Estadísticas avanzadas (el año entero, la comparación con el periodo anterior
 
 TUS DATOS SON TUYOS
 Todo se guarda en tu iPhone, sin seguimiento. La cuenta es opcional y solo para Coop.
+
+Términos de uso: https://flowtime.baltajmn.dev/terms.html

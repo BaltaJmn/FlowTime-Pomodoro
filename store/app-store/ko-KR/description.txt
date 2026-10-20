@@ -35,3 +35,5 @@ Pro, 원하는 방식으로
 
 내 데이터는 내 것
 모든 것이 iPhone에만 저장되며 추적도 없습니다. 계정은 선택 사항이며 Coop에만 필요합니다.
+
+이용 약관: https://flowtime.baltajmn.dev/terms.html
