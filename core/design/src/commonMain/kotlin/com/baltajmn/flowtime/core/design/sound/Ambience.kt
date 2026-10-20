@@ -83,6 +83,9 @@ class Ambience(
         SoundState(s.soundMap.mapValues { (type, p) -> p.copy(isPlaying = p.isPlaying || type in s.paused) })
     }
 
+    /** El botón de reproducir/pausa de los auriculares y de "En reproducción". */
+    fun toggle() = if (_state.value.playing.isEmpty()) resume() else pause()
+
     fun stop() {
         edit { SoundState(it.soundMap.stopped()) }
         _sleep.value = null
@@ -119,6 +122,9 @@ data class SoundState(
     val paused: Set<PlayerType> = emptySet()
 ) {
     val playing: Set<PlayerType> get() = soundMap.filterValues { it.isPlaying }.keys
+
+    /** Lo que enseñan la notificación y "En reproducción": lo que suena, o lo que quedó en pausa. */
+    val shown: Set<PlayerType> get() = playing.ifEmpty { paused }
 }
 
 data class PlayerState(

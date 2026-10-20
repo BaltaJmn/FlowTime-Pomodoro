@@ -131,7 +131,7 @@ class AmbientService : Service() {
                 .build()
         )
         val paused = state.playing.isEmpty()
-        val sounds = (if (paused) state.paused else state.playing).joinToString { getString(it.label) }
+        val sounds = state.shown.joinToString { getString(it.label) }
         return NotificationCompat.Builder(this, CHANNEL)
             .setSmallIcon(R.drawable.ic_music)
             .setContentTitle(getString(if (paused) R.string.time_title_paused else R.string.channel_sounds))
