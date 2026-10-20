@@ -34,11 +34,13 @@ import com.baltajmn.flowtime.session.FocusTileService
 import com.baltajmn.flowtime.session.PhaseAlarm
 import com.baltajmn.flowtime.session.SessionNotification
 import com.baltajmn.flowtime.widget.FocusWidget
+import io.github.jan.supabase.auth.status.SessionStatus
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
@@ -68,7 +70,11 @@ class App : Application() {
         val scope = MainScope()
         val coop = get<CoopAccount>()
         coop.watchPush(scope)
-        CoopPush.start(this, coop)
+        // Firebase solo con sesión de Coop: sin ella no sale nada hacia Google, como dice la política.
+        scope.launch {
+            coop.status.first { it is SessionStatus.Authenticated }
+            CoopPush.start(this@App, coop)
+        }
         engine.runIn(scope)
         scope.launch {
             engine.state.collect { state ->
