@@ -1,5 +1,8 @@
 # Formularios de Play Console para la 2.1.0
 
+> Lo de hoy, 20-10-2026: "Para enviar por la manana", al final. Antes, "Respuesta a Apple 2.5.4" y
+> "2.4.0 (62): notas para el revisor de App Store".
+
 La 2.0.3 solo pedía `INTERNET` y `BILLING`. La 2.1.0 añade permisos que Play hace declarar en
 *Política y programas > Contenido de la aplicación* antes de enviar la versión a revisión.
 
@@ -235,3 +238,193 @@ así que hay que crearlas o la hoja sale vacía y la revisión lo verá. Son tre
 6. **Build:** resuelto el 06-10-2026. La 60 (2.2.2, con Ajustes arreglado en iOS) está en la versión; la 59 se
    cerraba al abrir Ajustes. Las capturas de revisión de las cuatro compras son de esa fecha, a precio de EE. UU.
    (`store/screenshots/iphone/revision-compra.png` y `revision-propinas.png`, 1320x2868).
+
+## Respuesta a Apple 2.5.4 (2.2.2, build 60)
+
+Rechazo del 08-10-2026: el revisor, en un iPad, no encontro audio que justifique `UIBackgroundModes =
+audio`. Lo hay (los sonidos ambientales), pero en la 2.2.2 se abren con un boton de solo icono.
+
+**Ojo con el icono:** en la 2.2.2 el boton de sonidos parado es un **ecualizador** (tres barras
+verticales, gris), a la izquierda del icono de ajustes (tres deslizadores). La nota musical llego con
+la 2.3.0. El texto y el video de abajo son de la 2.2.2, que es la build que se revisa.
+
+**Texto para la respuesta** (App Store Connect > FlowTime > App Review, responder al mensaje):
+
+```
+Hello,
+
+Thank you for reviewing FlowTime.
+
+FlowTime declares the audio background mode for one feature: its ambient sounds (rain, coffee house, fire, waves, wind, brown, pink and white noise, and more). They are generated on the device and are meant to keep playing for the whole study or work session, while the user is in other apps or has the screen locked, until they stop them in the app or the sleep timer they chose ends. This is persistent audio: without the audio background mode it would stop as soon as the user leaves the app.
+
+How to hear it:
+1. Open FlowTime. On the Focus tab (the first tab), tap the sounds button at the top right of the screen: the equalizer icon (three vertical bars), just to the left of the sliders icon.
+2. The Sounds sheet opens with one row per sound: its icon, a volume slider and a play button. Tap the play button on the first row (Rain, the rain cloud icon), or on any row without a lock. Please make sure the device volume is up.
+3. Go to the Home Screen, open another app, or lock the device: Rain keeps playing.
+4. Come back to FlowTime, tap the sounds button again and tap the same button on the Rain row, now a pause button, to stop it.
+
+FlowTime is an iPhone app. On iPad it runs in iPhone compatibility mode, in a phone-sized window, so the button is small; it is in the same place, at the top right of the Focus tab.
+
+The attached screen recording, made on an iPhone with sound, shows these steps: opening the sounds, starting Rain, going to the Home Screen and to another app while it keeps playing, and coming back to stop it.
+
+Best regards,
+Baltasar Jimenez
+```
+
+**Guion del video** (iPhone, unos 40 s, con la **2.2.2 (60) de TestFlight**, no con una build de Xcode
+de `main`: esa ya trae Coop y la nota musical y no coincide con el texto):
+
+1. Volumen alto. Centro de control > Grabacion de pantalla (mantener pulsado: microfono apagado; el
+   audio de la app se graba igual). Esperar la cuenta atras.
+2. Abrir FlowTime en la pestana Enfoque. Quieto 2 s para que se vea la pantalla.
+3. Tocar el ecualizador de arriba a la derecha. En la hoja de Sonidos, tocar el play de la primera fila
+   (Lluvia, la nube; las filas no llevan nombre, solo icono). Esperar 3 s: se oye y el ecualizador se
+   mueve.
+4. Deslizar hacia arriba al Home Screen. Quieto 5 s (sigue sonando).
+5. Abrir otra app (Notas o Safari) y moverse un poco, 5 s.
+6. Volver a FlowTime, tocar el ecualizador y la pausa de la primera fila: deja de sonar.
+7. Parar la grabacion. No bloquear el movil durante la grabacion: la grabacion de pantalla se corta.
+
+**Revisado el 20-10-2026 en el simulador** (iPad Air 13", `main`): en iPad la app sale en una ventana
+de iPhone a tamano real en el centro de la pantalla, y la fila de iconos de arriba a la derecha
+(grupo, nota, deslizadores) queda pequena y sin texto. Se ve, pero quien no conoce la app no tiene por
+que adivinar que la nota son los sonidos. **Mejora apuntada para despues de la 2.4.0:** poner texto al
+boton ("Sonidos" debajo del icono, como "Empezar" bajo el play) o un acceso con nombre en la pantalla
+de Enfoque. No va en la 2.4.0 porque ya esta etiquetada; la 2.4.0 si lleva los sonidos en "En
+reproduccion" de la pantalla de bloqueo (`27c6196`), que es lo que un revisor busca para el audio en
+segundo plano.
+
+## 2.4.0 (62): notas para el revisor de App Store
+
+Para cuando la 2.2.2 este aprobada y se cree la version 2.4.0 en App Store Connect (no antes). Van en
+*Informacion para la revision > Notas*. El hueco `<<...>>` es la cuenta de prueba que crea el usuario.
+
+```
+1. Screen recording
+Attached: a recording made on a physical iPhone: a focus session, ambient sounds playing in the background and in Now Playing on the Lock Screen, Coop (signing in, creating a room, a second device joining, the shared timer, friends, reporting and blocking from a person's menu, and Settings > Coop account > Delete account), and the purchase sheet with its two options.
+
+2. Purpose and audience
+FlowTime is a focus timer for studying and working. It offers three techniques: Pomodoro (fixed work and break intervals), FlowTime (work while you are focused, then rest) and Percentage (the break is a fixed percentage of the time worked). It is for students and professionals who want to manage focus and breaks, organise sessions with tasks and tags, and see how they spend their time. New in 2.4.0, Coop (optional): a private room where friends study with the same Pomodoro timer. The rest of the app needs no account, and sessions, tasks and stats stay on the device.
+
+3. How to use it
+The app needs no login. Only Coop asks to sign in.
+- Focus tab: pick a mode (Pomodoro, FlowTime or Percentage) and tap Start. The first time a session starts, the app asks for notification permission; it is used for the alerts at the end of each phase, the optional daily reminder and, with a Coop account, friend requests and room invitations. The session also shows on the Lock Screen as a Live Activity, and the Home Screen widget can start, pause and resume it.
+- Ambient sounds: the music note icon at the top right of the Focus tab. The sounds are generated on the device and keep playing in other apps and with the screen locked until they are stopped; while they play they appear in Now Playing on the Lock Screen and in Control Center, with play and pause. This is why the audio background mode is declared.
+- Coop: the people icon at the top right of the Focus tab, to the left of the music note. Sign in with Apple or Google, choose a name and confirm you are 16 or older. Then create a room (anyone in it can start, pause or stop the shared Pomodoro) or join one with its code or link, and add friends by sharing your link or QR code or pasting a friend's link. Friends can be invited to your room.
+- Reporting and blocking (Guideline 1.2): the three-dot menu next to each person, in the room and in the Friends list, has Report name and Block. A report reaches us by email and we act within 24 hours. The only content users create is their chosen name (1 to 30 characters): there is no chat, no photos and no free text.
+- Account deletion (Guideline 5.1.1(v)): Settings > Coop account > Delete account, which deletes the Coop account and its data from our server at once. Also explained at https://flowtime.baltajmn.dev/delete.html.
+- Tasks and tags organise the sessions; the Stats tab shows the history.
+- Settings: durations, themes and icons, reminder, Coop account, Pro, and Support FlowTime (tips and Restore purchases).
+
+Demo account: Sign in with Apple works with any Apple ID. To see Coop with a friend already added, sign in with Google using the account in Sign-In Information (<<CORREO DE LA CUENTA DE PRUEBA>>); it has the Coop name <<NOMBRE EN COOP>> and one accepted friend. Creating a room and sharing its code is enough to try the shared timer from a second device.
+
+4. External services
+- Apple In-App Purchase (StoreKit), for the purchases.
+- RevenueCat (revenuecat.com), to validate those purchases and know whether FlowTime Pro is active. It receives the purchases and an anonymous ID, never a name or an email.
+- Only for Coop: Supabase (supabase.com, servers in the EU) for the account, chosen name, friends, rooms and reports; Sign in with Apple and Google Sign-In to sign in; Apple Push Notification service for friend requests and room invitations; and Resend (resend.com), which emails us when a name is reported.
+Nothing else: no analytics, no ads and no AI services.
+
+5. Regions
+The app works the same in every region. It is available in every App Store country except mainland China, in 14 languages. FlowTime Pro costs $1.99 once (1.99 EUR in Spain) or 0.99 EUR per month in Spain, with Apple's regional pricing elsewhere; the optional tips are $1.99, $3.99 and $8.99.
+
+6. Regulated industries and third-party material
+Not applicable: FlowTime is not in a regulated industry and includes no protected third-party material. The ambient sounds are generated by the app.
+
+7. In-App Purchase
+- FlowTime Pro has two ways to buy, both unlocking the same: com.baltajmn.flowtime.pro_lifetime (non-consumable, the highlighted option) and com.baltajmn.flowtime.pro_monthly (auto-renewing subscription, 0.99 EUR per month, cancel any time in the App Store settings). The purchase sheet shows both prices, the renewal and cancellation terms, and links to the terms of use and privacy policy. Without Pro the app is fully usable with some limits (4 tags, 15 pending tasks, 3 saved sound mixes). Pro removes those limits and unlocks Pro themes and icons, Pro sounds, advanced stats in the Stats tab and CSV export. The purchase sheet opens from Settings > Pro > See Pro, or by tapping any locked item.
+- Tips (consumable): small, medium and large (com.baltajmn.flowtime.tip_small, tip_medium, tip_large), in Settings > Support FlowTime > Leave a tip. They do not unlock Pro; they only give a Supporter badge and theme.
+- Restore purchases: Settings > Support FlowTime > Restore purchases, and on the Pro purchase sheet itself.
+```
+
+Lo que cambia en el resto de la ficha de App Store con la 2.4.0 (antes de enviarla):
+
+| Campo | 2.4.0 |
+|---|---|
+| Inicio de sesion para la revision | Marcar *Se requiere inicio de sesion*: usuario y contrasena de la cuenta de Google de prueba |
+| Privacidad de la app | La de `store/privacy/README.md`, "Coop (#74): respuestas para la 2.4.0" |
+| Clasificacion por edad | *Contenido generado por usuarios* = Si; *Mensajeria y chat* = No; el resto igual |
+| Compras en el envio | Anadir `com.baltajmn.flowtime.pro_monthly` (primera suscripcion: va con la version) |
+| Novedades | Las de `store/whatsnew/whatsnew-<idioma>`, mas una linea solo de iPhone: "Los sonidos salen en la pantalla de bloqueo y el Centro de control, con pausa" |
+
+## Para enviar por la manana (20-10-2026)
+
+En este orden. Lo que va entre `<<...>>` lo pones tu. Nada de esto lo he enviado yo.
+
+### A. App Store: reenviar la 2.2.2 (60)
+
+1. En el iPhone, app TestFlight > FlowTime > *Builds anteriores* > **2.2.2 (60)** > Instalar. Esta
+   noche ha subido la 2.4.0 (62) y TestFlight ensena esa primero: para el video hace falta la 60.
+2. Grabar el video con el guion de "Respuesta a Apple 2.5.4" (arriba). Pasarlo al Mac por AirDrop.
+3. (Opcional, mejor hacerlo) Adjuntarlo tambien a la version, en *Informacion para la revision*:
+
+   ```bash
+   python3 ~/AndroidStudioProjects/ci/tienda/appstore.py adjunto com.baltajmn.flowtime ~/Downloads/<<VIDEO>>.MP4
+   ```
+
+4. (Opcional) App Store Connect > FlowTime > 2.2.2 > *Informacion para la revision > Notas*: cambiar la
+   linea que empieza por `- Sounds panel on the Focus tab` por esta:
+
+   ```
+   - Ambient sounds: the equalizer icon (three vertical bars) at the top right of the Focus tab, to the left of the sliders icon. The sounds are generated on the device and keep playing in other apps and with the screen locked until they are stopped (this is why the audio background mode is declared).
+   ```
+
+   y Guardar.
+5. App Store Connect > FlowTime > *App Review* (menu de la izquierda) > el envio con *Problemas sin
+   resolver* > el mensaje de Apple > *Responder*: pegar el texto de "Respuesta a Apple 2.5.4", adjuntar
+   el video y Enviar.
+6. En ese mismo envio, *Reenviar a App Review*. Comprobar que lleva la version 2.2.2 y las 4 compras
+   (`pro_lifetime`, `tip_small`, `tip_medium`, `tip_large`). **No anadir `pro_monthly`:** la build 60
+   no la ofrece; va con la 2.4.0.
+
+### B. Google Play: la 2.4.0 (62) en prueba cerrada (alpha)
+
+La etiqueta `v2.4.0` sube la 62 a alpha con las novedades en 14 idiomas (si el release de GitHub
+Actions fallo, lo dice el resumen de la sesion). Google la revisa al subirla: rellenar los formularios
+cuanto antes, porque la ficha de datos todavia no habla de Coop.
+
+1. **Consentimiento de Google publicado.** console.cloud.google.com > proyecto `flowtime-baltajmn` >
+   *Google Auth Platform > Publico*. Si dice *Prueba*, pulsar *Publicar app* (solo pide email y
+   perfil: sin verificacion). Si no, solo los usuarios de prueba pueden entrar a Coop con Google, el
+   revisor tampoco (`store/coop.md`, punto 4 de "Panel").
+2. **Cuenta de prueba.** Crear una cuenta de Google nueva para revisores (`<<CORREO>>`,
+   `<<CONTRASENA>>`). En un Android con la 2.4.0: Enfoque > icono de grupo > *Continuar con Google* con
+   esa cuenta > nombre `<<NOMBRE EN COOP>>` > casilla de 16 anos > Continuar. Desde tu cuenta de Coop,
+   hacerte amigo de ella (comparte tu enlace y acepta). Asi el revisor ve un amigo.
+3. Play Console > FlowTime > *Politica y programas > Contenido de la aplicacion*:
+   1. *Acceso a la aplicacion* > Gestionar > *Toda o parte de la funcionalidad esta restringida* >
+      Anadir instrucciones. Nombre: `Coop (study together)`. Usuario: `<<CORREO>>`. Contrasena:
+      `<<CONTRASENA>>`. Otra informacion:
+
+      ```
+      Coop is the only part of FlowTime that needs an account. Open it with the people icon at the top right of the Focus tab, tap Continue with Google and sign in with this account. It already has a Coop name and one friend. You can create a room and share its code to try the shared timer from a second device. Report and Block are in the three-dot menu next to each person; account deletion is in Settings > Coop account > Delete account. The rest of the app works without signing in.
+      ```
+
+      Guardar.
+   2. *Seguridad de los datos* > Editar, con la tabla de `store/privacy/README.md`, "Coop (#74):
+      respuestas para la 2.4.0". Resumen de clics: creacion de cuenta *OAuth*; URL de borrar la cuenta
+      `https://flowtime.baltajmn.dev/delete.html`; tipos nuevos *Nombre*, *Direccion de correo*, *ID de
+      usuario* y *Contactos*, cada uno recogido, no compartido, no efimero, opcional, finalidad
+      *Funcionalidad de la app* (correo e ID de usuario, tambien *Gestion de la cuenta*);
+      *Identificadores de dispositivo u otros* e *Historial de compras* como estaban. Guardar.
+   3. *Clasificacion de contenido* > Editar el cuestionario: *Los usuarios pueden interactuar* = Si
+      (solo nombres, solicitudes de amistad e invitaciones; sin chat, voz ni imagenes); *Comparte la
+      ubicacion* = No; *Compras digitales* = Si. Guardar y enviar.
+4. *Vista general de la publicacion*: si sale *Enviar cambios para revision*, pulsarlo (manda los tres
+   formularios con la 62 de alpha).
+5. **Antes de produccion** (no es para esta manana, pero va antes del paso 6):
+   - Rotar las claves de FCM y APNs y poner los tres secretos en Supabase (`docs/coop-push.md`,
+     "Estado y lo que falta"). Sin ellos Coop funciona, pero los avisos con la app cerrada no salen.
+   - Probar entre dos moviles lo que quedo sin probar en `store/coop.md`: bloquear, reportar (llega el
+     correo), borrar la cuenta y un aviso real.
+6. **Promocionar cuando quieras:** *Pruebas > Prueba cerrada > alpha* > la 2.4.0 (62) > *Promocionar
+   version > Produccion* > Revisar > *Iniciar lanzamiento a produccion*. (Por la API, produccion
+   decia 2.2.2 (59) a las 03:00; si la 2.3.0 sigue en revision, esta la sustituye.)
+
+### C. iPhone: la 2.4.0 (62) en TestFlight
+
+1. Instalar la 62 desde TestFlight, poner un sonido y bloquear: en la pantalla de bloqueo tiene que
+   salir el reproductor con el nombre del sonido, "Ambient sounds" (o su idioma) y pausa. Pausar y
+   reanudar desde ahi. No lo he podido ver en el simulador: no tenia permiso para tocarlo.
+2. La version 2.4.0 de App Store solo cuando la 2.2.2 este aprobada (Apple solo admite una en
+   revision). Entonces: crearla, build 62, y lo de "2.4.0 (62): notas para el revisor de App Store"
+   (notas, cuenta de prueba, App Privacy, edad, `pro_monthly` en el envio, novedades).
