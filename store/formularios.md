@@ -294,14 +294,41 @@ de Enfoque. No va en la 2.4.0 porque ya esta etiquetada; la 2.4.0 si lleva los s
 reproduccion" de la pantalla de bloqueo (`27c6196`), que es lo que un revisor busca para el audio en
 segundo plano.
 
-## 2.4.0 (62): Notas para el revisor de App Store
+## Respuesta a Apple 2.5.4 con la 2.4.0 (63)
+
+El 20-10-2026 la 2.2.2 rechazada se convirtio en la 2.4.0 (63): el video se grabo con la 2.4.0 (nota
+musical, filas con nombre, icono de Coop) y asi coinciden video, texto y build revisada. Video:
+`ScreenRecording_10-20-2026 09-46-18_1.MP4` (48 s, la lluvia suena del segundo 8 al final).
+
+```
+Hello,
+
+Thank you for reviewing FlowTime. We have replaced build 2.2.2 (60) with version 2.4.0 (63), which also adds Coop, an optional study-together feature (the sign-in details are in App Review Information).
+
+FlowTime declares the audio background mode for one feature: its ambient sounds (rain, coffee house, fire, waves, wind, brown, pink and white noise, and more). They are generated on the device and are meant to keep playing for the whole study or work session, while the user is in other apps or has the screen locked, until they stop them in the app or the sleep timer they chose ends. This is persistent audio: without the audio background mode it would stop as soon as the user leaves the app. In 2.4.0 the sounds also appear in Now Playing on the Lock Screen and in Control Center, with play and pause.
+
+How to hear it:
+1. Open FlowTime. On the Focus tab (the first tab), tap the music note icon at the top right of the screen, between the people icon and the sliders icon.
+2. The Sounds sheet opens with one row per sound: its name, a volume slider and a play button. Tap the play button on the first row (Rain), or on any row without a lock. Please make sure the device volume is up.
+3. Press the Home Button or swipe up to go to the Home Screen, open another app, or lock the device: Rain keeps playing.
+4. Come back to FlowTime, tap the music note icon again and tap the pause button on the Rain row to stop it.
+
+FlowTime is an iPhone app. On iPad it runs in iPhone compatibility mode, in a phone-sized window; the icon is in the same place, at the top right of the Focus tab.
+
+The attached screen recording, made on a physical iPhone with sound, shows these steps: opening the sounds, starting Rain and Coffee house, going to the Home Screen, the App Library and another app while they keep playing, and coming back to stop them.
+
+Best regards,
+Baltasar Jimenez
+```
+
+## 2.4.0 (63): Notas para el revisor de App Store
 
 Para cuando la 2.2.2 este aprobada y se cree la version 2.4.0 en App Store Connect (no antes). Van en
 *Informacion para la revision > Notas*, o con `appstore.py notas com.baltajmn.flowtime .` cuando la 2.4.0 sea la version en preparacion (no antes: pisaria las de la 2.2.2). El bloque ya no lleva huecos: la cuenta de prueba va en *Informacion de inicio de sesion* (usuario y contrasena de B.2).
 
 ```
 1. Screen recording
-Attached: a recording on a physical iPhone: a focus session, ambient sounds in the background and in Now Playing on the Lock Screen, Coop (sign in, create a room, a second device joining, the shared timer, friends, report and block from a person's menu, Settings > Coop account > Delete account) and the purchase sheet with its two options.
+Attached: a recording on a physical iPhone with sound, for Guideline 2.5.4: the ambient sounds opened from the music note icon at the top right of the Focus tab, Rain and Coffee house started, then the Home Screen, the App Library and another app while they keep playing, and back in FlowTime to stop them.
 
 2. Purpose and audience
 FlowTime is a focus timer for studying and working, with three techniques: Pomodoro (fixed work and break intervals), FlowTime (work while focused, then rest) and Percentage (the break is a fixed percentage of the time worked). It is for students and professionals. New in 2.4.0, Coop (optional): a private room where friends study with the same Pomodoro timer. The rest of the app needs no account; sessions, tasks and stats stay on the device.
