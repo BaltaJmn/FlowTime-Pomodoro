@@ -82,7 +82,13 @@ class CoopRooms(
         }
         if (account.available) {
             scope.launch {
-                account.status.collect { if (it is SessionStatus.Authenticated) listenInbox() else if (it is SessionStatus.NotAuthenticated) stopInbox() }
+                account.status.collect {
+                    if (it is SessionStatus.Authenticated) {
+                        listenInbox()
+                    } else if (it is SessionStatus.NotAuthenticated) {
+                        stopInbox()
+                    }
+                }
             }
         }
     }
@@ -208,7 +214,12 @@ class CoopRooms(
             // Como en la sala: lo que llegó con el canal caído se recupera al volver a estar suscrito.
             launch {
                 ch.status.collect {
-                    if (it == RealtimeChannel.Status.SUBSCRIBED) runCatching { friends.refresh(); refreshInvites() }
+                    if (it == RealtimeChannel.Status.SUBSCRIBED) {
+                        runCatching {
+                            friends.refresh()
+                            refreshInvites()
+                        }
+                    }
                 }
             }
             runCatching { ch.subscribe() }

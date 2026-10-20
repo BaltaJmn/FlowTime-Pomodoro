@@ -102,7 +102,9 @@ private suspend fun authenticate(url: String, scheme: String): NSURL? = suspendC
     session.start()
 }
 
-private class Anchor : NSObject(), ASWebAuthenticationPresentationContextProvidingProtocol {
+private class Anchor :
+    NSObject(),
+    ASWebAuthenticationPresentationContextProvidingProtocol {
     override fun presentationAnchorForWebAuthenticationSession(session: ASWebAuthenticationSession): ASPresentationAnchor =
         UIApplication.sharedApplication.keyWindow ?: UIWindow()
 }
