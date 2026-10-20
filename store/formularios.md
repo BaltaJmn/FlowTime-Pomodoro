@@ -314,7 +314,7 @@ The app needs no login. Only Coop asks to sign in.
 - Reporting and blocking (Guideline 1.2): the three-dot menu next to each person, in the room and in Friends, has Report name and Block. A report reaches us by email and we act within 24 hours. The only content users create is their chosen name (1 to 30 characters): no chat, no photos, no free text.
 - Account deletion (5.1.1(v)): Settings > Coop account > Delete account removes the Coop account and its data from our server at once. Also at https://flowtime.baltajmn.dev/delete.html.
 
-Demo account: Sign in with Apple works with any Apple ID. To see Coop with a friend already added, sign in with Google using the account in Sign-In Information; it has a Coop name and one accepted friend.
+Demo account: any Apple ID works with Sign in with Apple. For a friend and a room already set up, tap "Sign in with email" (below Apple and Google) with the Sign-In Information account; email sign-in exists only for it.
 
 4. External services
 - Apple In-App Purchase (StoreKit) and RevenueCat (revenuecat.com), to validate purchases and know whether Pro is active. RevenueCat gets the purchases and an anonymous ID, never a name or an email.
@@ -383,20 +383,23 @@ cuanto antes, porque la ficha de datos todavia no habla de Coop.
    *Google Auth Platform > Publico*. Si dice *Prueba*, pulsar *Publicar app* (solo pide email y
    perfil: sin verificacion). Si no, solo los usuarios de prueba pueden entrar a Coop con Google, el
    revisor tampoco (`store/coop.md`, punto 4 de "Panel").
-2. **Cuenta de prueba.** Crear una cuenta de Google nueva para revisores (`<<CORREO>>`,
-   `<<CONTRASENA>>`). En un Android con la 2.4.0: Enfoque > icono de grupo > *Continuar con Google* con
-   esa cuenta > nombre `<<NOMBRE EN COOP>>` > casilla de 16 anos > Continuar. Desde tu cuenta de Coop,
-   hacerte amigo de ella (comparte tu enlace y acepta). Asi el revisor ve un amigo.
+2. **Cuenta de prueba (hecha el 20-10).** Una cuenta de Google de prueba pide SMS o un segundo correo
+   en un dispositivo desconocido, asi que el revisor entra por email: `review@baltajmn.dev`, creada a
+   mano en Supabase (contrasena tuya, fuera del repositorio), la unica alta por email que admite el
+   servidor (repo `color`, `docs/tecnico.md` 8). La build 63 trae *Sign in with email* en Coop. Ya
+   tiene nombre `Alex`, amistad aceptada con BaltaAnd (Ana, `baltax.75`) y esta en su sala `VG2VC5`.
+   Con email no hace falta el consentimiento de Google para el revisor, pero el punto 1 sigue siendo
+   necesario para los usuarios.
 3. Play Console > FlowTime > *Politica y programas > Contenido de la aplicacion*:
    1. *Acceso a la aplicacion* > Gestionar > *Toda o parte de la funcionalidad esta restringida* >
-      Anadir instrucciones. Nombre: `Coop (study together)`. Usuario: `<<CORREO>>`. Contrasena:
-      `<<CONTRASENA>>`. Otra informacion:
+      Anadir instrucciones. Nombre: `Coop (study together)`. Usuario: `review@baltajmn.dev`.
+      Contrasena: la de Supabase. Otra informacion (ya puesto en el dialogo el 20-10):
 
       ```
-      Coop is the only part of FlowTime that needs an account. Open it with the people icon at the top right of the Focus tab, tap Continue with Google and sign in with this account. It already has a Coop name and one friend. You can create a room and share its code to try the shared timer from a second device. Report and Block are in the three-dot menu next to each person; account deletion is in Settings > Coop account > Delete account. The rest of the app works without signing in.
+      Coop is the only part of FlowTime that needs an account. Open it with the people icon at the top right of the Focus tab, tap Sign in with email (below the Google button) and use this email and password. It already has a Coop name (Alex), one friend and a room. You can start the room timer, or create a room and share its code to try the shared timer from a second device. Report and Block are in the three-dot menu next to each person; account deletion is in Settings > Coop account > Delete account. The rest of the app works without signing in.
       ```
 
-      Guardar.
+      Guardar, con la 63 ya en alpha (la 62 no tiene el enlace de email).
    2. *Seguridad de los datos* > Editar, con la tabla de `store/privacy/README.md`, "Coop (#74):
       respuestas para la 2.4.0". Resumen de clics: creacion de cuenta *OAuth*; URL de borrar la cuenta
       `https://flowtime.baltajmn.dev/delete.html`; tipos nuevos *Nombre*, *Direccion de correo*, *ID de
