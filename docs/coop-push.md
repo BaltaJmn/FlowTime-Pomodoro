@@ -128,16 +128,29 @@ Push activado en el App ID, valores publicos de Firebase (`flowtime-pomodoro`) e
 token de `emulator-5554` (BaltaAnd) ya en `flowtime.push_tokens`. Credenciales en `~/keys`:
 `apns.p8` (Key ID `R33CWTQ635`), `flowtime-fcm.json`, `flowtime-google-services.json`.
 
-Falta, solo el usuario (Claude no escribe secretos en un formulario):
+**Secretos puestos el 20-10-2026** (`APNS_KEY_ID`, `APNS_KEY`, `FCM_SERVICE_ACCOUNT`), por la API de
+gestion de Supabase con el token de la CLI que hay en el Llavero (servicio `Supabase CLI`, valor
+`go-keyring-base64:` + base64). Los ficheros se leen dentro de la orden; nada pasa por pantalla ni por
+un formulario:
 
-1. https://supabase.com/dashboard/project/djfbmvagflfptqhabdln/functions/secrets, tres secretos:
-   - `APNS_KEY_ID` = `R33CWTQ635`
-   - `APNS_KEY`: `pbcopy < ~/keys/apns.p8` y pegar
-   - `FCM_SERVICE_ACCOUNT`: `pbcopy < ~/keys/flowtime-fcm.json` y pegar
-   - despues `pbcopy < /dev/null`
-2. Rotar las dos claves privadas, que pasaron por el chat: en Firebase (Cuentas de servicio) una
-   clave nueva y borrar la `3fb86116...`; en developer.apple.com > Keys una nueva y revocar
-   `R33CWTQ635`. Mover los ficheros nuevos a `~/keys` con `mv` y repetir el paso 1.
+```bash
+tok() { v=$(security find-generic-password -s "Supabase CLI" -w); print -rn -- "${v#go-keyring-base64:}" | base64 -D; }
+python3 -c 'import json,os; k=os.path.expanduser("~/keys/"); print(json.dumps([
+ {"name":"APNS_KEY_ID","value":"<KEY_ID>"},
+ {"name":"APNS_KEY","value":open(k+"apns.p8").read()},
+ {"name":"FCM_SERVICE_ACCOUNT","value":open(k+"flowtime-fcm.json").read()}]))' |
+curl -s -o /dev/null -w '%{http_code}\n' -X POST -H @<(printf 'Authorization: Bearer %s\n' "$(tok)") \
+  -H 'Content-Type: application/json' --data-binary @- \
+  https://api.supabase.com/v1/projects/djfbmvagflfptqhabdln/secrets
+```
+
+Prueba del mismo dia: `flowtime.push` a BaltaAnd (Android) y a BaltaJmn (iPhone, token `ios` de
+TestFlight), 200 y sin `fcm ...` ni `apns ...` en los logs: FCM y APNs aceptaron los dos.
+
+Falta, solo el usuario: rotar las dos claves privadas, que pasaron por el chat. Siguen puestas las
+viejas. En Firebase (Cuentas de servicio) una clave nueva y borrar la `3fb86116...`; en
+developer.apple.com > Keys una nueva y revocar `R33CWTQ635`. Mover los ficheros nuevos a `~/keys` con
+`mv` (`apns.p8`, `flowtime-fcm.json`) y decir el Key ID nuevo: Claude repite la orden de arriba.
 
 Prueba (Claude, con los secretos puestos): app en segundo plano y, en SQL,
 
