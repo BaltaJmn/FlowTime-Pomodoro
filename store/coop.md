@@ -68,5 +68,24 @@ clave de firma de apps de Play, leido de la API el 19-10-2026), `.well-known/app
 app instalada y lleva a las tiendas (App Store `6819302003`). Publicarlo es un cambio de la web: con el
 si del usuario.
 
+### Cada movil a su tienda (#84, 21-10-2026)
+
+Antes la pagina ensenaba las dos tiendas a todos. Ahora `404.html` mira el movil:
+
+- Android: redirige a Play (`com.baltajmn.flowtime`).
+- iPhone y iPad (tambien el iPad que pide el sitio de escritorio: se hace pasar por Mac, pero con
+  pantalla tactil): pregunta a la busqueda de iTunes (`lookup?id=6819302003`, con CORS abierto) si la
+  app esta a la venta. Si resultCount > 0, redirige a la App Store. Si no, ensena "FlowTime llega
+  pronto al iPhone" en el idioma del movil (en, es, pt, de, fr) y no redirige a una pagina de Apple que
+  diria que no existe. Si la busqueda falla (sin red), va a la App Store igualmente. La busqueda se
+  cachea un dia en Apple: la hora va en la direccion (`&t=`), asi que el aviso se va en una hora
+  desde que la app se publica, sin tocar la web.
+- Ordenador: las dos tiendas, sin redirigir.
+- Una ruta que no es de enlace: "Esta pagina no existe", sin tiendas.
+
+Comprobar sin movil: `node store/web-coop.test.mjs` (ejecuta el script de la pagina con un navegador de
+mentira para cada caso). Tras publicar, `curl -sL https://flowtime.baltajmn.dev/r/ABCDEF` debe traer
+`id="apple"`. Los enlaces de la app, abiertos con la app instalada, nunca pasan por aqui.
+
 Comprobar: `adb shell pm verify-app-links --re-verify com.baltajmn.flowtime` y despues
 `adb shell pm get-app-links com.baltajmn.flowtime` dice `verified`.

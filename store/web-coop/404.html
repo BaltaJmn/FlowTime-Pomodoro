@@ -11,6 +11,8 @@
     :root { --bg: #121212; --surface: #1C1C1C; --ink: #F2F2F2; --muted: #A8A8A8; --line: #333333; }
   }
   * { box-sizing: border-box; }
+  /* Sin esto, el display de .stores y .stores a gana al atributo hidden. */
+  [hidden] { display: none !important; }
   body {
     margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
     padding: 40px 20px; background: var(--bg); color: var(--ink);
@@ -32,27 +34,75 @@
   <h1 id="title"></h1>
   <p id="text"></p>
   <div class="stores" id="stores" hidden>
-    <a href="https://play.google.com/store/apps/details?id=com.baltajmn.flowtime">Google Play</a>
-    <a href="https://apps.apple.com/app/id6819302003">App Store</a>
+    <a id="play" href="https://play.google.com/store/apps/details?id=com.baltajmn.flowtime">Google Play</a>
+    <a id="apple" href="https://apps.apple.com/app/id6819302003">App Store</a>
   </div>
 </main>
 <script>
   // GitHub Pages sirve esta pagina para cualquier ruta que no conoce, asi que es tambien la de los
-  // enlaces de Coop: con la app instalada el enlace no llega aqui, abre la app.
+  // enlaces de Coop: con la app instalada el enlace no llega aqui, abre la app. Sin ella, cada movil va
+  // a su tienda: Play en Android, la App Store en iPhone y iPad. Mientras la app no este en la App
+  // Store (la busqueda de iTunes no la devuelve), el iPhone ve un aviso en vez de una pagina de Apple
+  // que dice que no existe. En un ordenador salen las dos.
+  var PLAY = "https://play.google.com/store/apps/details?id=com.baltajmn.flowtime";
+  var APPLE = "https://apps.apple.com/app/id6819302003";
+  var LOOKUP = "https://itunes.apple.com/lookup?id=6819302003";
   var T = {
-    en: ["Study together on FlowTime", "Install FlowTime, then open this link again.", "This page does not exist."],
-    es: ["Estudia en compañía con FlowTime", "Instala FlowTime y vuelve a abrir este enlace.", "Esta página no existe."],
-    pt: ["Estude junto no FlowTime", "Instale o FlowTime e abra este link de novo.", "Esta página não existe."],
-    de: ["Gemeinsam lernen mit FlowTime", "Installiere FlowTime und öffne diesen Link dann noch einmal.", "Diese Seite gibt es nicht."],
-    fr: ["Étudier ensemble avec FlowTime", "Installe FlowTime, puis rouvre ce lien.", "Cette page n'existe pas."]
+    en: ["Study together on FlowTime", "Install FlowTime, then open this link again.", "This page does not exist.",
+      "FlowTime is coming to iPhone", "It is not on the App Store yet. Open this link again in a few days."],
+    es: ["Estudia en compañía con FlowTime", "Instala FlowTime y vuelve a abrir este enlace.", "Esta página no existe.",
+      "FlowTime llega pronto al iPhone", "Aún no está en la App Store. Vuelve a abrir este enlace en unos días."],
+    pt: ["Estude junto no FlowTime", "Instale o FlowTime e abra este link de novo.", "Esta página não existe.",
+      "O FlowTime chega em breve ao iPhone", "Ainda não está na App Store. Abra este link de novo em alguns dias."],
+    de: ["Gemeinsam lernen mit FlowTime", "Installiere FlowTime und öffne diesen Link dann noch einmal.", "Diese Seite gibt es nicht.",
+      "FlowTime kommt bald aufs iPhone", "Es ist noch nicht im App Store. Öffne diesen Link in ein paar Tagen noch einmal."],
+    fr: ["Étudier ensemble avec FlowTime", "Installe FlowTime, puis rouvre ce lien.", "Cette page n'existe pas.",
+      "FlowTime arrive bientôt sur iPhone", "L'app n'est pas encore sur l'App Store. Rouvre ce lien dans quelques jours."]
   };
   var lang = (navigator.language || "en").slice(0, 2);
   var t = T[lang] || T.en;
   document.documentElement.lang = T[lang] ? lang : "en";
   var link = /^\/(f\/[0-9a-f]{10}|r\/[A-HJKMNP-Z2-9]{6})\/?$/.test(location.pathname);
-  document.getElementById("title").textContent = link ? t[0] : t[2];
-  document.getElementById("text").innerHTML = link ? t[1] : '<a class="home" href="/">flowtime.baltajmn.dev</a>';
-  document.getElementById("stores").hidden = !link;
+  var ua = navigator.userAgent || "";
+  var android = /Android/i.test(ua);
+  // iPadOS pide el sitio de escritorio: se hace pasar por un Mac, pero con pantalla tactil.
+  var ios = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+
+  function show(title, text, play, apple) {
+    document.getElementById("title").textContent = title;
+    document.getElementById("text").innerHTML = text;
+    document.getElementById("play").hidden = !play;
+    document.getElementById("apple").hidden = !apple;
+    document.getElementById("stores").hidden = !(play || apple);
+  }
+  function go(url) { location.replace(url); }
+  // Si la busqueda falla (sin red, bloqueada), se va a la App Store igualmente.
+  function onAppStore() {
+    // La busqueda se guarda un dia: la hora en la direccion la renueva y el aviso se va al publicarse.
+    return fetch(LOOKUP + "&t=" + Math.floor(Date.now() / 3600000))
+      .then(function (r) { return r.json(); })
+      .then(function (j) { return j.resultCount > 0; })
+      .catch(function () { return true; });
+  }
+
+  if (!link) {
+    show(t[2], '<a class="home" href="/">flowtime.baltajmn.dev</a>', false, false);
+  } else if (android) {
+    show(t[0], t[1], true, false);
+    go(PLAY);
+  } else if (ios) {
+    show(t[0], "", false, false);
+    onAppStore().then(function (live) {
+      if (live) {
+        show(t[0], t[1], false, true);
+        go(APPLE);
+      } else {
+        show(t[3], t[4], false, false);
+      }
+    });
+  } else {
+    show(t[0], t[1], true, true);
+  }
 </script>
 </body>
 </html>
