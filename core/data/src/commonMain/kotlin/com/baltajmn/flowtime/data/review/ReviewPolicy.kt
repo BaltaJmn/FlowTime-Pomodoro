@@ -5,17 +5,24 @@ import com.baltajmn.flowtime.core.persistence.sharedpreferences.SharedPreference
 import com.baltajmn.flowtime.data.repository.SessionRepository
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Instant
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 /**
  * A quién pedir la valoración: a quien ya lleva unos días con la app y varias sesiones, y como mucho
- * una vez cada 120 días. Sin diálogo propio: Play decide si enseña el suyo.
+ * una vez cada 120 días. Y solo tras un buen momento: con al menos 15 minutos trabajados hoy, para que
+ * parar a los pocos segundos de empezar no sea el momento. Sin diálogo propio: Play decide si enseña
+ * el suyo.
  */
 class ReviewPolicy(
     private val dataProvider: DataProvider,
@@ -30,6 +37,8 @@ class ReviewPolicy(
         if (now - installedAt() <= MIN_INSTALLED_MILLIS) return false
         val askedAt = dataProvider.getLong(REVIEW_ASKED_AT)
         if (askedAt != 0L && now - askedAt <= MIN_BETWEEN_MILLIS) return false
+        val today = Instant.fromEpochMilliseconds(now).toLocalDateTime(TimeZone.currentSystemDefault()).date
+        if (sessions.secondsOn(today).first() < MIN_TODAY_SECONDS) return false
         return sessions.countSessions(FIRST_DAY, LAST_DAY) >= MIN_SESSIONS
     }
 
@@ -38,6 +47,7 @@ class ReviewPolicy(
 
     companion object {
         const val MIN_SESSIONS = 3
+        val MIN_TODAY_SECONDS = 15.minutes.inWholeSeconds
         val MIN_INSTALLED_MILLIS = 2.days.inWholeMilliseconds
         val MIN_BETWEEN_MILLIS = 120.days.inWholeMilliseconds
         private val FIRST_DAY = LocalDate(1970, 1, 1)

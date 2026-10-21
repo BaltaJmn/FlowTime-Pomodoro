@@ -19,7 +19,10 @@ class ReviewPolicyTest {
     private val installed = 1_000_000_000_000L
     private var now = installed + 10 * day
     private var running = false
-    private val sessions = FakeSessionRepository().apply { sessionCount = 3 }
+    private val sessions = FakeSessionRepository().apply {
+        sessionCount = 3
+        secondsEveryDay = 30 * 60L
+    }
     private val policy = ReviewPolicy(
         dataProvider = FakeDataProvider(),
         sessions = sessions,
@@ -58,6 +61,15 @@ class ReviewPolicyTest {
         assertFalse(policy.shouldAsk())
 
         now += 2 * day
+        assertTrue(policy.shouldAsk())
+    }
+
+    @Test
+    fun `con menos de 15 minutos trabajados hoy no pide`() = runTest {
+        sessions.secondsEveryDay = 15 * 60L - 1
+        assertFalse(policy.shouldAsk())
+
+        sessions.secondsEveryDay = 15 * 60L
         assertTrue(policy.shouldAsk())
     }
 

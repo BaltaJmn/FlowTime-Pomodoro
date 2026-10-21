@@ -41,6 +41,6 @@ Pomodoro | Flowtime es una aplicación Android diseñada para ayudarte a gestion
 Dentro de la app, con el diálogo del sistema (Play In-App Review en Android, `SKStoreReviewController` en iOS); la tienda decide si lo enseña.
 
 - Momento: al terminar una sesión o cerrar la celebración del objetivo, sin sesión en marcha (`calmMoments`).
-- Regla: 3 sesiones, 2 días instalada y 120 días desde la última petición (`ReviewPolicy`, con tests).
+- Regla: 3 sesiones, 2 días instalada, 15 minutos trabajados hoy (parar a los pocos segundos no es un buen momento) y 120 días desde la última petición (`ReviewPolicy`, con tests).
 - Nunca tras un error, en el paywall ni sobre otra capa; se marca como pedida aunque la tienda no la enseñe.
 

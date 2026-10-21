@@ -27,7 +27,10 @@ class FakeSessionRepository : SessionRepository {
         taskId: Long?
     ) = Unit
 
-    override fun secondsOn(day: LocalDate): Flow<Long> = days.map { it[day] ?: 0L }
+    /** Segundos que se suman a todos los días, para quien solo mira "hoy" sin saber qué día es. */
+    var secondsEveryDay = 0L
+
+    override fun secondsOn(day: LocalDate): Flow<Long> = days.map { (it[day] ?: 0L) + secondsEveryDay }
 
     override suspend fun secondsByDay(from: LocalDate, to: LocalDate) =
         days.value.filterKeys { it in from..to }
