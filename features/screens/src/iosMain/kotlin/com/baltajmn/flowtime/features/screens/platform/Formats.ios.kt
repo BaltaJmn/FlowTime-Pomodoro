@@ -37,6 +37,9 @@ actual object Formats {
     actual fun shortWeekday(day: DayOfWeek): String =
         NSDateFormatter().shortStandaloneWeekdaySymbols.symbol(day.isoDayNumber % 7)
 
+    actual fun weekday(day: DayOfWeek): String =
+        NSDateFormatter().standaloneWeekdaySymbols.symbol(day.isoDayNumber % 7)
+
     actual fun narrowWeekday(day: DayOfWeek): String =
         NSDateFormatter().veryShortStandaloneWeekdaySymbols.symbol(day.isoDayNumber % 7)
 

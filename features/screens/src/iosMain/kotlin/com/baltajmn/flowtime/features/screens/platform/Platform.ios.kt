@@ -42,9 +42,21 @@ import platform.UIKit.UIDocumentPickerDelegateProtocol
 import platform.UIKit.UIAlertControllerStyleAlert
 import platform.UIKit.UIAlertController
 import platform.UIKit.UIActivityViewController
+import platform.UIKit.UIViewController
 import platform.UIKit.popoverPresentationController
 import platform.Foundation.NSTemporaryDirectory
 import platform.Foundation.NSFileManager
+import platform.Foundation.NSData
+import platform.Foundation.create
+import platform.UIKit.UIImage
+import kotlinx.cinterop.BetaInteropApi
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.addressOf
+import kotlinx.cinterop.usePinned
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asSkiaBitmap
+import org.jetbrains.skia.EncodedImageFormat
+import org.jetbrains.skia.Image
 import com.baltajmn.flowtime.core.design.resources.Res
 import com.baltajmn.flowtime.core.design.resources.alert_app_store
 import com.baltajmn.flowtime.core.design.resources.backup_automatic_ios
@@ -177,13 +189,30 @@ private const val MESSAGE_NANOS = 2_000_000_000L
 actual fun rememberShareText(): (String) -> Unit {
     val controller = LocalUIViewController.current
     return remember(controller) {
-        { text ->
-            val sheet = UIActivityViewController(activityItems = listOf(text), applicationActivities = null)
-            // En iPad sale como popover: sin un ancla, en una esquina fuera de la pantalla.
-            sheet.popoverPresentationController?.sourceView = controller.view
-            controller.presentViewController(sheet, animated = true, completion = null)
-        }
+        { text -> present(controller, listOf(text)) }
     }
+}
+
+/** La imagen y el texto juntos: Mensajes, Instagram y el resto cogen lo que les sirve. */
+@Composable
+actual fun rememberShareImage(): (png: ByteArray, text: String) -> Unit {
+    val controller = LocalUIViewController.current
+    return remember(controller) {
+        { png, text -> present(controller, listOfNotNull(UIImage.imageWithData(png.toNSData()), text)) }
+    }
+}
+
+actual fun ImageBitmap.toPng(): ByteArray =
+    Image.makeFromBitmap(asSkiaBitmap()).encodeToData(EncodedImageFormat.PNG)?.bytes ?: ByteArray(0)
+
+@OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
+private fun ByteArray.toNSData(): NSData = usePinned { NSData.create(bytes = it.addressOf(0), length = size.toULong()) }
+
+private fun present(controller: UIViewController, items: List<Any>) {
+    val sheet = UIActivityViewController(activityItems = items, applicationActivities = null)
+    // En iPad sale como popover: sin un ancla, en una esquina fuera de la pantalla.
+    sheet.popoverPresentationController?.sourceView = controller.view
+    controller.presentViewController(sheet, animated = true, completion = null)
 }
 
 /**

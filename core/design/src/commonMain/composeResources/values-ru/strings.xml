@@ -448,4 +448,13 @@
     <string name="coop_add_friend">Добавить друга</string>
     <string name="coop_account_in_settings">Ваше имя в Coop, заблокированные пользователи и удаление аккаунта находятся в Настройках.</string>
     <string name="coop_settings_title">Аккаунт Coop</string>
+    <string name="app_search_name">FlowTime: Помодоро-таймер</string>
+    <string name="share">Поделиться</string>
+    <string name="share_focus">фокуса</string>
+    <string name="recap_title">Ваш %1$d год в FlowTime</string>
+    <string name="recap_text">Часы фокуса, лучшая серия и самый продуктивный день: всё готово, чтобы поделиться.</string>
+    <string name="recap_see">Смотреть мой год</string>
+    <string name="recap_days">Дни с фокусом</string>
+    <string name="recap_best_streak">Лучшая серия</string>
+    <string name="recap_best_weekday">Самый продуктивный день недели</string>
 </resources>

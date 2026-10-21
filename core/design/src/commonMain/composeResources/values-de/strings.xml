@@ -438,4 +438,13 @@
     <string name="coop_add_friend">Freund hinzufügen</string>
     <string name="coop_account_in_settings">Dein Coop-Name, blockierte Personen und das Löschen des Kontos findest du in den Einstellungen.</string>
     <string name="coop_settings_title">Coop-Konto</string>
+    <string name="app_search_name">FlowTime: Pomodoro Fokus-Timer</string>
+    <string name="share">Teilen</string>
+    <string name="share_focus">Fokuszeit</string>
+    <string name="recap_title">Dein %1$d mit FlowTime</string>
+    <string name="recap_text">Deine Fokusstunden, deine beste Serie und dein produktivster Tag, bereit zum Teilen.</string>
+    <string name="recap_see">Mein Jahr ansehen</string>
+    <string name="recap_days">Tage mit Fokus</string>
+    <string name="recap_best_streak">Beste Serie</string>
+    <string name="recap_best_weekday">Produktivster Wochentag</string>
 </resources>

@@ -441,4 +441,13 @@
     <string name="coop_add_friend">Añadir un amigo</string>
     <string name="coop_account_in_settings">Tu nombre de Coop, las personas bloqueadas y borrar la cuenta están en Ajustes.</string>
     <string name="coop_settings_title">Cuenta de Coop</string>
+    <string name="app_search_name">FlowTime: Pomodoro y estudio</string>
+    <string name="share">Compartir</string>
+    <string name="share_focus">de enfoque</string>
+    <string name="recap_title">Tu %1$d en FlowTime</string>
+    <string name="recap_text">Tus horas de enfoque, tu mejor racha y tu día más productivo, listos para compartir.</string>
+    <string name="recap_see">Ver mi año</string>
+    <string name="recap_days">Días con enfoque</string>
+    <string name="recap_best_streak">Mejor racha</string>
+    <string name="recap_best_weekday">Día de la semana más productivo</string>
 </resources>

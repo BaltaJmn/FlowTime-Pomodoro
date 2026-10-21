@@ -442,4 +442,13 @@
     <string name="coop_add_friend">Add a friend</string>
     <string name="coop_account_in_settings">Your Coop name, blocked people and account deletion are in Settings.</string>
     <string name="coop_settings_title">Coop account</string>
+    <string name="app_search_name">FlowTime: Pomodoro Focus Timer</string>
+    <string name="share">Share</string>
+    <string name="share_focus">of focus</string>
+    <string name="recap_title">Your %1$d in FlowTime</string>
+    <string name="recap_text">Your hours of focus, best streak and most productive day, ready to share.</string>
+    <string name="recap_see">See my year</string>
+    <string name="recap_days">Days with focus</string>
+    <string name="recap_best_streak">Best streak</string>
+    <string name="recap_best_weekday">Most productive weekday</string>
 </resources>

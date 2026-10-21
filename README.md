@@ -52,3 +52,9 @@ Pro se ofrece una sola vez, sin bloquear nada: se abre la hoja de Pro de siempre
 - Cuándo: **5 sesiones de trabajo** hechas en total, **15 minutos hoy** (el mismo buen momento que la valoración) y en un momento tranquilo (`calmMoments`: al terminar una sesión o cerrar la celebración, nunca al abrir ni con una en marcha). Va después de la petición de valoración y no a la vez: si esa acaba de salir (menos de una hora), espera al siguiente momento.
 - A quién: a quien no es Pro, no lo fue (mensual caducado) y tiene Pro a la venta. Quien ya tiene 5 sesiones al actualizar lo ve una vez, en su próximo buen momento.
 - Dónde vive: `ProOfferPolicy` (con tests), `ProLauncher.offerIfDue`, y `PRO_OFFERED_AT` en las preferencias. Para cambiar el número: `ProOfferPolicy.MIN_SESSIONS`.
+
+## Tarjetas para compartir (D7, #83)
+
+Estadísticas, periodo "Hoy", botón Compartir: una tarjeta 4:5 con los minutos de foco, las sesiones y la racha, que se comparte como imagen con la hoja nativa (Android: `FileProvider` `<applicationId>.share`; iPhone: `UIActivityViewController`). La imagen sale de la propia tarjeta dibujada (`ShareCardSheet`, `GraphicsLayer`), no hay una copia aparte.
+
+La firma de cada tarjeta, y el texto que la acompaña, es la búsqueda completa de la app en el idioma del móvil: la cadena `app_search_name`, que es el `store/listings/<idioma>/title.txt` de ese idioma. `SearchNameTest` falla si una y otro se separan; al cambiar el título de una ficha, cambiar también `app_search_name`.

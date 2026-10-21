@@ -439,4 +439,13 @@
     <string name="coop_add_friend">Een vriend toevoegen</string>
     <string name="coop_account_in_settings">Je Coop-naam, geblokkeerde personen en het verwijderen van je account staan in Instellingen.</string>
     <string name="coop_settings_title">Coop-account</string>
+    <string name="app_search_name">FlowTime: Pomodoro-timer</string>
+    <string name="share">Delen</string>
+    <string name="share_focus">focus</string>
+    <string name="recap_title">Jouw %1$d in FlowTime</string>
+    <string name="recap_text">Je uren focus, je beste reeks en je productiefste dag, klaar om te delen.</string>
+    <string name="recap_see">Bekijk mijn jaar</string>
+    <string name="recap_days">Dagen met focus</string>
+    <string name="recap_best_streak">Beste reeks</string>
+    <string name="recap_best_weekday">Productiefste weekdag</string>
 </resources>

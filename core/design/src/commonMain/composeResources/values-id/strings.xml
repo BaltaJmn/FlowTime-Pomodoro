@@ -434,4 +434,13 @@
     <string name="coop_add_friend">Tambahkan teman</string>
     <string name="coop_account_in_settings">Nama Coop, orang yang diblokir, dan penghapusan akun ada di Pengaturan.</string>
     <string name="coop_settings_title">Akun Coop</string>
+    <string name="app_search_name">FlowTime: Timer Pomodoro</string>
+    <string name="share">Bagikan</string>
+    <string name="share_focus">waktu fokus</string>
+    <string name="recap_title">Tahun %1$d-mu di FlowTime</string>
+    <string name="recap_text">Jam fokus, streak terbaik, dan hari paling produktifmu, siap dibagikan.</string>
+    <string name="recap_see">Lihat tahunku</string>
+    <string name="recap_days">Hari dengan fokus</string>
+    <string name="recap_best_streak">Streak terbaik</string>
+    <string name="recap_best_weekday">Hari paling produktif dalam seminggu</string>
 </resources>

@@ -23,7 +23,10 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.app.NotificationManagerCompat
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.baltajmn.flowtime.data.backup.PickedFile
 import com.baltajmn.flowtime.data.pro.PurchaseHost
 import com.baltajmn.flowtime.core.design.resources.Res
@@ -35,6 +38,8 @@ import com.baltajmn.flowtime.core.design.resources.notifications_title
 import com.baltajmn.flowtime.core.design.resources.pro_restore_nothing
 import com.baltajmn.flowtime.core.design.resources.pro_settings_text
 import com.baltajmn.flowtime.core.design.resources.restore_nothing
+import java.io.ByteArrayOutputStream
+import java.io.File
 import org.jetbrains.compose.resources.StringResource
 
 @Composable
@@ -143,6 +148,29 @@ actual fun rememberShareText(): (String) -> Unit {
         }
     }
 }
+
+/** La imagen va a la caché y se comparte con el FileProvider del manifiesto (`<applicationId>.share`). */
+@Composable
+actual fun rememberShareImage(): (png: ByteArray, text: String) -> Unit {
+    val context = LocalContext.current
+    return remember(context) {
+        { png, text ->
+            val dir = File(context.cacheDir, "share").apply { mkdirs() }
+            val file = File(dir, "flowtime.png").apply { writeBytes(png) }
+            val uri = FileProvider.getUriForFile(context, "${context.packageName}.share", file)
+            val send = Intent(Intent.ACTION_SEND)
+                .setType("image/png")
+                .putExtra(Intent.EXTRA_STREAM, uri)
+                .putExtra(Intent.EXTRA_TEXT, text)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            context.startActivity(Intent.createChooser(send, null))
+        }
+    }
+}
+
+actual fun ImageBitmap.toPng(): ByteArray = ByteArrayOutputStream().also {
+    asAndroidBitmap().compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it)
+}.toByteArray()
 
 @Composable
 actual fun rememberCreateFile(mime: String, onPicked: (PickedFile) -> Unit): (suggestedName: String) -> Unit {

@@ -32,6 +32,8 @@ actual object Formats {
 
     actual fun shortWeekday(day: DayOfWeek): String = day.toJavaDayOfWeek().getDisplayName(TextStyle.SHORT, locale)
 
+    actual fun weekday(day: DayOfWeek): String = day.toJavaDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, locale)
+
     actual fun narrowWeekday(day: DayOfWeek): String = day.toJavaDayOfWeek().getDisplayName(TextStyle.NARROW, locale)
 
     actual fun shortTime(time: LocalTime): String =

@@ -434,4 +434,13 @@
     <string name="coop_add_friend">친구 추가</string>
     <string name="coop_account_in_settings">Coop 이름, 차단한 사람, 계정 삭제는 설정에 있어요.</string>
     <string name="coop_settings_title">Coop 계정</string>
+    <string name="app_search_name">FlowTime: 포모도로 타이머</string>
+    <string name="share">공유</string>
+    <string name="share_focus">집중한 시간</string>
+    <string name="recap_title">FlowTime에서 보낸 %1$d년</string>
+    <string name="recap_text">집중한 시간, 최고 연속 기록, 가장 생산적인 요일을 공유할 수 있어요.</string>
+    <string name="recap_see">내 한 해 보기</string>
+    <string name="recap_days">집중한 날</string>
+    <string name="recap_best_streak">최고 연속 기록</string>
+    <string name="recap_best_weekday">가장 생산적인 요일</string>
 </resources>

@@ -25,6 +25,9 @@ expect object Formats {
 
     fun shortWeekday(day: DayOfWeek): String
 
+    /** "jueves". */
+    fun weekday(day: DayOfWeek): String
+
     fun narrowWeekday(day: DayOfWeek): String
 
     /** "18:00" o "6:00 PM", según el idioma. */

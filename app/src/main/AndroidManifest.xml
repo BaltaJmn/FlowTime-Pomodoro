@@ -58,6 +58,17 @@
             </intent-filter>
         </activity>
 
+        <!-- Las tarjetas para compartir (#83): la imagen se guarda en la caché y se comparte por aquí. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.share"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/share_paths" />
+        </provider>
+
         <!-- El icono de la app (#56): uno solo de estos alias está activo, y es el que enseña el lanzador.
              El de siempre se llama como la actividad de antes: quien actualiza no pierde el icono de la
              pantalla de inicio. Los nombres, en AppIcon. -->

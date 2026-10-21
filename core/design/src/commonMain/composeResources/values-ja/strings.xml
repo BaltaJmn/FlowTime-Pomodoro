@@ -434,4 +434,13 @@
     <string name="coop_add_friend">友だちを追加</string>
     <string name="coop_account_in_settings">Coop の名前、ブロックした相手、アカウントの削除は設定にあります。</string>
     <string name="coop_settings_title">Coop アカウント</string>
+    <string name="app_search_name">FlowTime: ポモドーロタイマー</string>
+    <string name="share">共有</string>
+    <string name="share_focus">集中した時間</string>
+    <string name="recap_title">FlowTime で振り返る %1$d 年</string>
+    <string name="recap_text">集中した時間、最長の連続記録、いちばん生産的な日を共有できます。</string>
+    <string name="recap_see">1 年を見る</string>
+    <string name="recap_days">集中した日数</string>
+    <string name="recap_best_streak">最長の連続記録</string>
+    <string name="recap_best_weekday">いちばん生産的な曜日</string>
 </resources>

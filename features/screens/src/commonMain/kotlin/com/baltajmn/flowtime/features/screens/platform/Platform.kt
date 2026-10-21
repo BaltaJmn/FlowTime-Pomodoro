@@ -1,6 +1,7 @@
 package com.baltajmn.flowtime.features.screens.platform
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.ImageBitmap
 import com.baltajmn.flowtime.data.backup.PickedFile
 import com.baltajmn.flowtime.data.pro.PurchaseHost
 import org.jetbrains.compose.resources.StringResource
@@ -89,6 +90,13 @@ expect fun rememberShowMessage(): (String) -> Unit
 /** La hoja de compartir del sistema con un texto: los enlaces de Coop. */
 @Composable
 expect fun rememberShareText(): (String) -> Unit
+
+/** La hoja de compartir del sistema con una imagen PNG y un texto: las tarjetas del día y del año. */
+@Composable
+expect fun rememberShareImage(): (png: ByteArray, text: String) -> Unit
+
+/** El PNG de una imagen ya dibujada. */
+expect fun ImageBitmap.toPng(): ByteArray
 
 /** Abre el selector para guardar un fichero nuevo, con [mime] y el nombre que se le pase. */
 @Composable

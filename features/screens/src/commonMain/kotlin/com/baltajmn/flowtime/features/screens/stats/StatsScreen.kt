@@ -3,6 +3,9 @@ package com.baltajmn.flowtime.features.screens.stats
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Share
+import com.baltajmn.flowtime.features.screens.share.DayShareCard
+import com.baltajmn.flowtime.features.screens.share.ShareCardSheet
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -124,6 +127,7 @@ fun StatsScreen(
     val showMessage = rememberShowMessage()
     val clipboard = LocalClipboardManager.current
     val csvFile = rememberCreateFile("text/csv", viewModel::exportCsv)
+    var sharingDay by rememberSaveable { mutableStateOf(false) }
 
     // Cada vez que se entra: puede haber sesiones nuevas.
     LaunchedEffect(openToday) {
@@ -158,6 +162,21 @@ fun StatsScreen(
         if (result == SnackbarResult.ActionPerformed) viewModel.undoDeleteSession() else viewModel.onSessionDeletedShown()
     }
 
+    if (sharingDay) {
+        ShareCardSheet(
+            onDismiss = { sharingDay = false },
+            cards = listOf {
+                DayShareCard(
+                    day = state.range.start,
+                    seconds = state.summary.totalSeconds,
+                    sessions = state.summary.sessions,
+                    // La racha es la de hoy: en un día pasado no dice nada.
+                    streak = state.streak.current.takeIf { state.period.offset == 0 } ?: 0
+                )
+            }
+        )
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         StatsContent(
             state = state,
@@ -171,7 +190,8 @@ fun StatsScreen(
             onExportCsv = { csvFile("flowtime-${today()}.csv") },
             onDeleteSession = viewModel::deleteSession,
             onSessionMinutes = viewModel::setSessionMinutes,
-            onAddMinutes = viewModel::addMinutes
+            onAddMinutes = viewModel::addMinutes,
+            onShareDay = { sharingDay = true }
         )
         SnackbarHost(hostState = snackbar, modifier = Modifier.align(Alignment.BottomCenter))
     }
@@ -190,7 +210,8 @@ fun StatsContent(
     onExportCsv: () -> Unit,
     onDeleteSession: (Long) -> Unit = {},
     onSessionMinutes: (Long, Long) -> Unit = { _, _ -> },
-    onAddMinutes: (Long) -> Unit = {}
+    onAddMinutes: (Long) -> Unit = {},
+    onShareDay: () -> Unit = {}
 ) {
     val unlockStats = { onUnlock(ProFeature.STATS) }
     val summary: LazyListScope.() -> Unit = summary@{
@@ -210,7 +231,7 @@ fun StatsContent(
             return@summary
         }
         item {
-            PeriodCard(state, onPeriod, onPrevious, onNext, unlockStats) {
+            PeriodCard(state, onPeriod, onPrevious, onNext, unlockStats, onShareDay) {
                 DaySessions(state.daySessions, state.tags, onDeleteSession, onSessionMinutes, onAddMinutes)
             }
         }
@@ -560,6 +581,7 @@ private fun PeriodCard(
     onPrevious: () -> Unit,
     onNext: () -> Unit,
     onUnlock: () -> Unit,
+    onShareDay: () -> Unit,
     dayContent: @Composable () -> Unit = {}
 ) {
     val period = state.period
@@ -621,7 +643,8 @@ private fun PeriodCard(
                 PeriodBody(
                     state,
                     changeAccess = if (yearLocked) ProAccess.OPEN else state.pro,
-                    onUnlock
+                    onUnlock,
+                    onShareDay
                 )
             }
             if (period.kind == PeriodKind.DAY) dayContent()
@@ -773,7 +796,7 @@ private fun clockTime(millis: Long): String =
     Formats.shortTime(Instant.fromEpochMilliseconds(millis).toLocalDateTime(TimeZone.currentSystemDefault()).time)
 
 @Composable
-private fun PeriodBody(state: StatsUiState, changeAccess: ProAccess, onUnlock: () -> Unit) {
+private fun PeriodBody(state: StatsUiState, changeAccess: ProAccess, onUnlock: () -> Unit, onShareDay: () -> Unit) {
     val summary = state.summary
     val kind = state.period.kind
     if (summary.totalSeconds == 0L) {
@@ -809,6 +832,13 @@ private fun PeriodBody(state: StatsUiState, changeAccess: ProAccess, onUnlock: (
                     Res.string.stats_change,
                     signedPercent(change)
                 )
+            }
+        }
+        if (kind == PeriodKind.DAY) {
+            TextButton(onClick = onShareDay, modifier = Modifier.align(Alignment.End)) {
+                Icon(imageVector = Icons.Filled.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = stringResource(Res.string.share))
             }
         }
     }

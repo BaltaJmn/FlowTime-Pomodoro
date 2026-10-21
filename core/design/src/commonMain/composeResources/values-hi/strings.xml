@@ -438,4 +438,13 @@
     <string name="coop_add_friend">एक दोस्त जोड़ें</string>
     <string name="coop_account_in_settings">आपका Coop नाम, ब्लॉक किए गए लोग और खाता हटाना सेटिंग्स में हैं।</string>
     <string name="coop_settings_title">Coop खाता</string>
+    <string name="app_search_name">FlowTime: पोमोडोरो टाइमर</string>
+    <string name="share">साझा करें</string>
+    <string name="share_focus">फ़ोकस का समय</string>
+    <string name="recap_title">FlowTime में आपका %1$d</string>
+    <string name="recap_text">आपके फ़ोकस के घंटे, सबसे लंबी लगातार अवधि और सबसे उत्पादक दिन, साझा करने के लिए तैयार।</string>
+    <string name="recap_see">मेरा साल देखें</string>
+    <string name="recap_days">फ़ोकस वाले दिन</string>
+    <string name="recap_best_streak">सबसे लंबी लगातार अवधि</string>
+    <string name="recap_best_weekday">सप्ताह का सबसे उत्पादक दिन</string>
 </resources>

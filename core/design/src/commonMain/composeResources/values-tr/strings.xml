@@ -439,4 +439,13 @@
     <string name="coop_add_friend">Arkadaş ekle</string>
     <string name="coop_account_in_settings">Coop adın, engellediğin kişiler ve hesap silme Ayarlar'da.</string>
     <string name="coop_settings_title">Coop hesabı</string>
+    <string name="app_search_name">FlowTime: Pomodoro Zamanlayıcı</string>
+    <string name="share">Paylaş</string>
+    <string name="share_focus">odak</string>
+    <string name="recap_title">FlowTime'da %1$d yılın</string>
+    <string name="recap_text">Odak saatlerin, en iyi serin ve en verimli günün, paylaşmaya hazır.</string>
+    <string name="recap_see">Yılımı gör</string>
+    <string name="recap_days">Odaklanılan günler</string>
+    <string name="recap_best_streak">En iyi seri</string>
+    <string name="recap_best_weekday">Haftanın en verimli günü</string>
 </resources>
