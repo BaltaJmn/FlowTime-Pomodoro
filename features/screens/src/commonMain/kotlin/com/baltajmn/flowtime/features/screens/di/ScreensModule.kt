@@ -13,6 +13,7 @@ import com.baltajmn.flowtime.features.screens.history.usecases.SetStudyTimeFromC
 import com.baltajmn.flowtime.features.screens.onboard.OnBoardViewModel
 import com.baltajmn.flowtime.features.screens.pro.ProLauncher
 import com.baltajmn.flowtime.features.screens.pro.ProViewModel
+import com.baltajmn.flowtime.features.screens.recap.RecapViewModel
 import com.baltajmn.flowtime.features.screens.settings.SettingsViewModel
 import com.baltajmn.flowtime.features.screens.splash.SplashViewModel
 import com.baltajmn.flowtime.features.screens.stats.StatsViewModel
@@ -54,6 +55,8 @@ private val ScreensPresentationModule: Module
             val engine = get<FocusEngine>()
             StatsViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), { engine.state.value.isActive })
         }
+        // A mano: el constructor tiene un parámetro opcional para los tests.
+        viewModel { RecapViewModel(get(), get()) }
         viewModelOf(::OnBoardViewModel)
         viewModelOf(::SplashViewModel)
         viewModelOf(::SupportViewModel)

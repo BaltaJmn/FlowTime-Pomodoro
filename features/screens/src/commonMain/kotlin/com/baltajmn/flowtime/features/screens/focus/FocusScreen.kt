@@ -85,6 +85,10 @@ import com.baltajmn.flowtime.features.screens.common.composable.components.advan
 import com.baltajmn.flowtime.features.screens.common.composable.components.label
 import com.baltajmn.flowtime.features.screens.edit.ModeSettingsSheet
 import com.baltajmn.flowtime.features.screens.coop.CoopSheet
+import com.baltajmn.flowtime.features.screens.recap.RecapSheet
+import com.baltajmn.flowtime.features.screens.recap.RecapViewModel
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.AssistChip
 import com.baltajmn.flowtime.data.coop.CoopAccount
 import com.baltajmn.flowtime.data.coop.CoopFriends
 import com.baltajmn.flowtime.data.pro.Limits
@@ -103,7 +107,7 @@ import org.jetbrains.compose.resources.stringResource
 import com.baltajmn.flowtime.features.screens.platform.rememberNotificationPermission
 import com.baltajmn.flowtime.features.screens.platform.KeepScreenOn
 
-private enum class FocusSheet { SOUNDS, MODE, COOP }
+private enum class FocusSheet { SOUNDS, MODE, COOP, RECAP }
 
 /** Si hay una sesión en marcha: la pestaña de Enfoque lo marca desde cualquier otra pantalla. */
 @Composable
@@ -120,10 +124,12 @@ fun FocusScreen(
     proLauncher: ProLauncher = koinInject(),
     coop: CoopAccount = koinInject(),
     coopFriends: CoopFriends = koinInject(),
+    recapViewModel: RecapViewModel = koinViewModel(),
     /** Lo de hoy en Estadísticas, para ver o corregir sus sesiones. */
     onOpenToday: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val recap by recapViewModel.recap.collectAsStateWithLifecycle()
     val sound by ambience.state.collectAsStateWithLifecycle()
     val notifications = rememberNotificationPermission()
     var explainNotifications by remember { mutableStateOf(false) }
@@ -169,6 +175,11 @@ fun FocusScreen(
             onOpenSounds = { sheet = FocusSheet.SOUNDS },
             onOpenModeSettings = { sheet = FocusSheet.MODE },
             onOpenCoop = if (coop.available) ({ sheet = FocusSheet.COOP }) else null,
+            recapYear = recap?.year,
+            onOpenRecap = {
+                recapViewModel.load()
+                sheet = FocusSheet.RECAP
+            },
             onTagSelected = viewModel::selectTag,
             onTaskSelected = viewModel::selectTask,
             onTaskDone = viewModel::completeTask,
@@ -192,6 +203,7 @@ fun FocusScreen(
         )
         FocusSheet.MODE -> ModeSettingsSheet(mode = state.mode, onDismiss = { sheet = null })
         FocusSheet.COOP -> CoopSheet(onDismiss = { sheet = null })
+        FocusSheet.RECAP -> recap?.let { RecapSheet(it, onDismiss = { sheet = null }) }
         null -> Unit
     }
 
@@ -228,6 +240,9 @@ fun FocusContent(
     onOpenModeSettings: () -> Unit,
     /** Estudiar juntos; null sin servidor configurado, y entonces no se enseña. */
     onOpenCoop: (() -> Unit)? = null,
+    /** "Tu 2026 en FlowTime", del 1-12 al 15-01; null fuera de esas fechas o sin foco en el año. */
+    recapYear: Int? = null,
+    onOpenRecap: () -> Unit = {},
     onTagSelected: (Long?) -> Unit = {},
     onTaskSelected: (Task?) -> Unit = {},
     onTaskDone: () -> Unit = {},
@@ -236,7 +251,28 @@ fun FocusContent(
     onOpenToday: () -> Unit = {}
 ) {
     val tools = @Composable {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Box(modifier = Modifier.weight(1f)) {
+                if (recapYear != null) {
+                    AssistChip(
+                        onClick = onOpenRecap,
+                        label = {
+                            Text(
+                                text = stringResource(Res.string.recap_title, recapYear),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Filled.Star,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    )
+                }
+            }
             if (onOpenCoop != null) {
                 IconButton(onClick = onOpenCoop) {
                     Icon(

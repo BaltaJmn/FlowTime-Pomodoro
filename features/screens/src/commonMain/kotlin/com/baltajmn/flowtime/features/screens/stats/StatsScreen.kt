@@ -4,6 +4,10 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Share
+import com.baltajmn.flowtime.data.stats.YearRecap
+import com.baltajmn.flowtime.features.screens.recap.RecapCard
+import com.baltajmn.flowtime.features.screens.recap.RecapSheet
+import com.baltajmn.flowtime.features.screens.recap.RecapViewModel
 import com.baltajmn.flowtime.features.screens.share.DayShareCard
 import com.baltajmn.flowtime.features.screens.share.ShareCardSheet
 import androidx.compose.material3.SnackbarDuration
@@ -128,6 +132,9 @@ fun StatsScreen(
     val clipboard = LocalClipboardManager.current
     val csvFile = rememberCreateFile("text/csv", viewModel::exportCsv)
     var sharingDay by rememberSaveable { mutableStateOf(false) }
+    var showRecap by rememberSaveable { mutableStateOf(false) }
+    val recapViewModel: RecapViewModel = koinViewModel()
+    val recap by recapViewModel.recap.collectAsStateWithLifecycle()
 
     // Cada vez que se entra: puede haber sesiones nuevas.
     LaunchedEffect(openToday) {
@@ -177,6 +184,8 @@ fun StatsScreen(
         )
     }
 
+    if (showRecap) recap?.let { RecapSheet(it, onDismiss = { showRecap = false }) }
+
     Box(modifier = Modifier.fillMaxSize()) {
         StatsContent(
             state = state,
@@ -191,7 +200,12 @@ fun StatsScreen(
             onDeleteSession = viewModel::deleteSession,
             onSessionMinutes = viewModel::setSessionMinutes,
             onAddMinutes = viewModel::addMinutes,
-            onShareDay = { sharingDay = true }
+            onShareDay = { sharingDay = true },
+            recap = recap,
+            onOpenRecap = {
+                recapViewModel.load()
+                showRecap = true
+            }
         )
         SnackbarHost(hostState = snackbar, modifier = Modifier.align(Alignment.BottomCenter))
     }
@@ -211,7 +225,9 @@ fun StatsContent(
     onDeleteSession: (Long) -> Unit = {},
     onSessionMinutes: (Long, Long) -> Unit = { _, _ -> },
     onAddMinutes: (Long) -> Unit = {},
-    onShareDay: () -> Unit = {}
+    onShareDay: () -> Unit = {},
+    recap: YearRecap? = null,
+    onOpenRecap: () -> Unit = {}
 ) {
     val unlockStats = { onUnlock(ProFeature.STATS) }
     val summary: LazyListScope.() -> Unit = summary@{
@@ -225,6 +241,7 @@ fun StatsContent(
             )
         }
         state.today?.let { today -> item { GoalProgressCard(today, state.streak) } }
+        recap?.let { item { RecapCard(it, onOpenRecap) } }
         if (state.loading) return@summary
         if (!state.hasSessions) {
             item { FirstSessionCard(onAddMinutes) }

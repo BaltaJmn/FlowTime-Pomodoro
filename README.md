@@ -58,3 +58,7 @@ Pro se ofrece una sola vez, sin bloquear nada: se abre la hoja de Pro de siempre
 Estadísticas, periodo "Hoy", botón Compartir: una tarjeta 4:5 con los minutos de foco, las sesiones y la racha, que se comparte como imagen con la hoja nativa (Android: `FileProvider` `<applicationId>.share`; iPhone: `UIActivityViewController`). La imagen sale de la propia tarjeta dibujada (`ShareCardSheet`, `GraphicsLayer`), no hay una copia aparte.
 
 La firma de cada tarjeta, y el texto que la acompaña, es la búsqueda completa de la app en el idioma del móvil: la cadena `app_search_name`, que es el `store/listings/<idioma>/title.txt` de ese idioma. `SearchNameTest` falla si una y otro se separan; al cambiar el título de una ficha, cambiar también `app_search_name`.
+
+## Tu 2026 en FlowTime (D7, #85)
+
+Del 1 de diciembre al 15 de enero (`recapYear`), con el año que se cierra: en Enfoque una pastilla con una estrella ("Tu 2026 en FlowTime") y en Estadísticas una tarjeta. Abren dos tarjetas que se pasan de lado y se comparten como las del día: horas de foco, sesiones y días con foco; y mejor racha, día de la semana más productivo y mejor día. Todo sale de la base de datos del móvil (`yearRecap`, con tests), sin servidor; sin foco en el año no sale nada. El año se calcula solo, así que sirve igual en 2027.
