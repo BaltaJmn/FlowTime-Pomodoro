@@ -61,6 +61,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.goal.GoalRepository
+import com.baltajmn.flowtime.data.pro.ProOfferPolicy
 import com.baltajmn.flowtime.data.review.ReviewPolicy
 import com.baltajmn.flowtime.data.review.calmMoments
 import com.baltajmn.flowtime.goal.GoalWatcher
@@ -238,13 +239,17 @@ private fun IosApp() {
     // una sesión o al cerrar la celebración del objetivo.
     val engine = koinInject<FocusEngine>()
     val reviews = koinInject<ReviewPolicy>()
+    val proOffer = koinInject<ProOfferPolicy>()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     LaunchedEffect(lifecycle) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             calmMoments(
                 sessionRunning = engine.state.map { it.isActive },
                 celebrating = goalWatcher.celebration.map { it != null }
-            ).collect { askForReview(reviews) }
+            ).collect {
+                askForReview(reviews)
+                proLauncher.offerIfDue(proOffer)
+            }
         }
     }
     FlowTimeApp(

@@ -21,6 +21,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import com.baltajmn.flowtime.data.pro.ProFeatures
+import com.baltajmn.flowtime.data.pro.ProOfferPolicy
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,6 +66,13 @@ class ProLauncher {
 
     fun close() {
         _request.value = null
+    }
+
+    /** El momento de Pro (D9): si toca, la hoja se abre sola, una sola vez. */
+    suspend fun offerIfDue(policy: ProOfferPolicy) {
+        if (!policy.shouldOffer()) return
+        policy.offered()
+        open(null)
     }
 }
 

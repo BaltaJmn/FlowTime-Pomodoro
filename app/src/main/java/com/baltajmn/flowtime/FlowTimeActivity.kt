@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.design.theme.AppearanceRepository
+import com.baltajmn.flowtime.data.pro.ProOfferPolicy
 import com.baltajmn.flowtime.data.review.calmMoments
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.coop.CoopAccount
@@ -47,6 +48,7 @@ class FlowTimeActivity : ComponentActivity() {
     private val engine: FocusEngine by inject()
     private val reviewPrompter: ReviewPrompter by inject()
     private val proLauncher: ProLauncher by inject()
+    private val proOffer: ProOfferPolicy by inject()
     private val appIcons: AppIcons by inject()
     private val coop: CoopAccount by inject()
     private val coopFriends: CoopFriends by inject()
@@ -98,12 +100,16 @@ class FlowTimeActivity : ComponentActivity() {
 
         // La valoración, solo con la app a la vista y en un momento tranquilo: al terminar una sesión
         // o al cerrar la celebración del objetivo. Nunca al abrir la app ni con una sesión en marcha.
+        // Después, y no a la vez, el momento de Pro (D9): una sola vez.
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 calmMoments(
                     sessionRunning = engine.state.map { it.isActive },
                     celebrating = goalWatcher.celebration.map { it != null }
-                ).collect { reviewPrompter.askIfDue(this@FlowTimeActivity) }
+                ).collect {
+                    reviewPrompter.askIfDue(this@FlowTimeActivity)
+                    proLauncher.offerIfDue(proOffer)
+                }
             }
         }
     }

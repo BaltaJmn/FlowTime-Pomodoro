@@ -44,3 +44,11 @@ Dentro de la app, con el diálogo del sistema (Play In-App Review en Android, `S
 - Regla: 3 sesiones, 2 días instalada, 15 minutos trabajados hoy (parar a los pocos segundos no es un buen momento) y 120 días desde la última petición (`ReviewPolicy`, con tests).
 - Nunca tras un error, en el paywall ni sobre otra capa; se marca como pedida aunque la tienda no la enseñe.
 
+
+## Momento de Pro (D9, #86)
+
+Pro se ofrece una sola vez, sin bloquear nada: se abre la hoja de Pro de siempre, que se cierra con la X. Coop sigue gratis y el precio no cambia (1,99 el vitalicio, 0,99 al mes).
+
+- Cuándo: **5 sesiones de trabajo** hechas en total, **15 minutos hoy** (el mismo buen momento que la valoración) y en un momento tranquilo (`calmMoments`: al terminar una sesión o cerrar la celebración, nunca al abrir ni con una en marcha). Va después de la petición de valoración y no a la vez: si esa acaba de salir (menos de una hora), espera al siguiente momento.
+- A quién: a quien no es Pro, no lo fue (mensual caducado) y tiene Pro a la venta. Quien ya tiene 5 sesiones al actualizar lo ve una vez, en su próximo buen momento.
+- Dónde vive: `ProOfferPolicy` (con tests), `ProLauncher.offerIfDue`, y `PRO_OFFERED_AT` en las preferencias. Para cambiar el número: `ProOfferPolicy.MIN_SESSIONS`.

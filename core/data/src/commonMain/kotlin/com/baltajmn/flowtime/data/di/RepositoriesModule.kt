@@ -4,6 +4,7 @@ import com.baltajmn.flowtime.data.backup.BackupRepository
 import com.baltajmn.flowtime.data.backup.DefaultBackupRepository
 import com.baltajmn.flowtime.data.goal.GoalRepository
 import com.baltajmn.flowtime.data.pro.ProGate
+import com.baltajmn.flowtime.data.pro.ProOfferPolicy
 import com.baltajmn.flowtime.data.pro.PurchasesRepository
 import com.baltajmn.flowtime.data.reminder.ReminderRepository
 import com.baltajmn.flowtime.data.repository.DefaultSessionRepository
@@ -48,6 +49,17 @@ internal val RepositoriesModule = module {
     single { ReminderRepository(get()) }
     // Mientras ProFeatures esté apagado, no hay límites aunque no se tenga Pro.
     single { ProGate(get<PurchasesRepository>().isPro) }
+    single {
+        val engine = get<FocusEngine>()
+        val purchases = get<PurchasesRepository>()
+        ProOfferPolicy(
+            dataProvider = get(),
+            sessions = get(),
+            isPro = { purchases.isPro.value },
+            proEnded = { purchases.proEnded.value },
+            sessionRunning = { engine.state.value.isActive }
+        )
+    }
     single<TagRepository> { DefaultTagRepository(get(), get(), get()) }
     single<TaskRepository> { DefaultTaskRepository(get(), get(), get()) }
     single<StatsRepository> { DefaultStatsRepository(get()) }

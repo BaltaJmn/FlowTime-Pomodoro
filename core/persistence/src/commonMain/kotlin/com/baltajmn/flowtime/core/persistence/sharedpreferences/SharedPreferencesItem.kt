@@ -30,5 +30,6 @@ enum class SharedPreferencesItem {
     FOCUS_MODE,
     DND_PREVIOUS_FILTER,
     DND_RULE_ID,
-    SOUND_MIXES
+    SOUND_MIXES,
+    PRO_OFFERED_AT
 }
