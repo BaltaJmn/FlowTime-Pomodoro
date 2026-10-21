@@ -6,6 +6,9 @@ FlowTime: Beim Arbeiten läuft kein Countdown; wenn du aufhörst, ergibt sich di
 Prozent: Die Pause ist der Prozentsatz deiner Arbeitszeit, den du wählst.
 Die Zeiten jedes Modus stellst du selbst ein.
 
+LERNE MIT DEINEN FREUNDEN
+Coop ist ein privater Raum für bis zu 8 Personen mit einem Timer für alle: Jede Person kann starten, pausieren oder die Pause überspringen. Tritt mit einem Raumcode oder Link bei oder lade deine Freunde ein, und du bekommst eine Benachrichtigung, wenn dich jemand in einen Raum einlädt oder dir eine Freundschaftsanfrage schickt. Kein Chat und keine öffentlichen Räume, und du kannst jede Person blockieren oder melden. Für Coop meldest du dich mit Apple oder Google an; der Rest der App braucht weiterhin kein Konto.
+
 ZÄHLT WEITER, AUCH WENN DU DIE APP SCHLIESST
 Der Timer richtet sich nach der Uhrzeit, nicht nach dem Bildschirm. Am Ende jeder Phase bekommst du eine Mitteilung, auch wenn die App geschlossen ist.
 
@@ -28,7 +31,7 @@ GANZ NACH DEINEM GESCHMACK
 Dunkler Modus und 11 Designs. Eine tägliche Erinnerung, wenn du willst, dazu Sicherung über das iCloud-Backup deines iPhones und Sicherung in eine Datei. In 14 Sprachen.
 
 KOSTENLOS, OHNE WERBUNG
-Alle drei Modi, die Sitzung auf dem Sperrbildschirm, das Widget, bis zu 15 offene Aufgaben, 4 Labels, alle 12 Klänge mit 3 gespeicherten Mixen, Serie, Tagesziel, Statistiken für heute, die Woche und den Monat, und die Sicherung. Ohne Werbung, ohne Testphase und kein Konto nötig.
+Alle drei Modi, die Sitzung auf dem Sperrbildschirm, das Widget, bis zu 15 offene Aufgaben, 4 Labels, alle 12 Klänge mit 3 gespeicherten Mixen, Serie, Tagesziel, Statistiken für heute, die Woche und den Monat, die Sicherung und Coop. Ohne Werbung, ohne Testphase und kein Konto nötig.
 
 PRO, DEIN WEG
 Erweiterte Statistiken (das ganze Jahr, Vergleich mit dem Vorzeitraum, nach Uhrzeit, nach Modus, nach Label und die Aufgaben mit der meisten Zeit) und CSV-Export; unbegrenzte Labels, offene Aufgaben und Mixe; 6 neue Klänge, 6 neue Designs und 6 neue App-Symbole. Einmal zahlen, für immer, oder auf Wunsch monatlich.

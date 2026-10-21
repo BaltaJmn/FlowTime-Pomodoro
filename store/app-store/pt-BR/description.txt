@@ -6,6 +6,9 @@ FlowTime: sem contagem regressiva enquanto você trabalha; quando você para, a 
 Porcentagem: a pausa é a porcentagem que você escolher do tempo trabalhado.
 Os tempos de cada modo são ajustáveis ao seu gosto.
 
+ESTUDE COM SEUS AMIGOS
+O Coop é uma sala privada de até 8 pessoas com um só timer para todos: qualquer pessoa pode iniciar, pausar ou pular o descanso. Entre com um código ou um link, ou convide seus amigos, e receba uma notificação quando alguém convidar você para uma sala ou enviar um pedido de amizade. Sem chat e sem salas públicas, e você pode bloquear ou denunciar qualquer pessoa. O Coop pede que você entre com Apple ou Google; o resto do app continua sem precisar de conta.
+
 CONTINUA CONTANDO COM O APP FECHADO
 O timer segue o relógio, não a tela. Você recebe um aviso no fim de cada fase, mesmo com o app fechado.
 
@@ -28,7 +31,7 @@ DO SEU JEITO
 Modo escuro e 11 temas. Um lembrete diário, se você quiser, além de backup pelo backup do iCloud do seu iPhone e backup em arquivo. Disponível em 14 idiomas.
 
 GRÁTIS, SEM ANÚNCIOS
-Os três modos, a sessão na tela de bloqueio, o widget, até 15 tarefas pendentes, 4 etiquetas, os 12 sons com 3 misturas salvas, a sequência, a meta, as estatísticas de hoje, da semana e do mês, e o backup. Sem anúncios, sem período de teste e sem precisar de conta.
+Os três modos, a sessão na tela de bloqueio, o widget, até 15 tarefas pendentes, 4 etiquetas, os 12 sons com 3 misturas salvas, a sequência, a meta, as estatísticas de hoje, da semana e do mês, o backup e o Coop. Sem anúncios, sem período de teste e sem precisar de conta.
 
 PRO, DO SEU JEITO
 Estatísticas avançadas (o ano inteiro, comparação com o período anterior, por hora, por modo, por etiqueta e as tarefas que mais tomaram tempo) e exportação para CSV; etiquetas, tarefas pendentes e misturas ilimitadas; 6 novos sons, 6 novos temas e 6 novos ícones do app. Pague uma vez e é seu para sempre, ou mensalmente, se preferir.

@@ -6,6 +6,9 @@ FlowTime: geen aftelling terwijl je werkt; als je stopt, volgt je pauze uit hoel
 Percentage: je pauze is het percentage van je werktijd dat jij kiest.
 De tijden van elke modus stel je zelf in.
 
+STUDEER SAMEN MET JE VRIENDEN
+Coop is een privéruimte voor maximaal 8 personen met één timer voor iedereen: elke deelnemer kan starten, pauzeren of de pauze overslaan. Neem deel met een code of een link, of nodig je vrienden uit, en krijg een melding als iemand je voor een ruimte uitnodigt of je een vriendschapsverzoek stuurt. Geen chat en geen openbare ruimtes, en je kunt iedereen blokkeren of melden. Voor Coop log je in met Apple of Google; de rest van de app heeft nog steeds geen account nodig.
+
 TELT DOOR ALS JE DE APP SLUIT
 De timer loopt op de klok, niet op het scherm. Je krijgt aan het eind van elke fase een melding, ook als de app is gesloten.
 
@@ -28,7 +31,7 @@ NAAR JE EIGEN SMAAK
 Donkere modus en 11 thema's. Een dagelijkse herinnering als je dat wilt, plus back-up via de iCloud-back-up van je iPhone en back-up naar een bestand. Beschikbaar in 14 talen.
 
 GRATIS, GEEN RECLAME
-Alle drie de modi, de sessie op het vergrendelscherm, de widget, tot 15 openstaande taken, 4 labels, alle 12 geluiden met 3 opgeslagen mixen, je reeks, je doel, statistieken voor vandaag, de week en de maand, en back-ups. Geen reclame, geen proefperiode en geen account nodig.
+Alle drie de modi, de sessie op het vergrendelscherm, de widget, tot 15 openstaande taken, 4 labels, alle 12 geluiden met 3 opgeslagen mixen, je reeks, je doel, statistieken voor vandaag, de week en de maand, back-ups en Coop. Geen reclame, geen proefperiode en geen account nodig.
 
 PRO, OP JOUW MANIER
 Uitgebreide statistieken (het hele jaar, vergelijking met de vorige periode, per uur, per modus, per label en de taken waar je de meeste tijd aan kwijt was) en CSV-export; onbeperkt labels, openstaande taken en mixen; 6 nieuwe geluiden, 6 nieuwe thema's en 6 nieuwe app-iconen. Eén keer betalen, voor altijd van jou, of maandelijks als je dat liever hebt.
