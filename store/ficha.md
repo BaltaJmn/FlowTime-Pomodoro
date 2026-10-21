@@ -72,12 +72,18 @@ Plan de crecimiento, fase 0 (`plan-apps/0-plan.md`): cada pico de trafico convie
 
 `store/events/<evento>/event.json` (fechas, insignia y los textos de los 14 idiomas: nombre 30, corta 50,
 larga 120), `card.png` (1920 x 1080) y `details.png` (1080 x 1920, vertical), sin texto porque Apple pone el
-suyo encima. Las imagenes salen de `python3 tools/store/eventos.py` y se suben, como borradores, con:
+suyo encima. Las imagenes salen de `python3 tools/store/eventos.py`. Los borradores y los textos se crean con:
 
 ```bash
 python3 ../ci/tienda/appstore.py eventos com.baltajmn.flowtime . --dry
 python3 ../ci/tienda/appstore.py eventos com.baltajmn.flowtime .
 ```
 
-Enviar a revision lo hace el titular en la web (*Anadir a revision*). Apple pide publicar hasta 14 dias antes
+La API de Apple rechaza las imagenes nuevas, asi que `card.png` y `details.png` se suben por la web (Claude in Chrome,
+`file_upload` en el evento, idioma en-US) y se colocan en el resto de idiomas con `ci/tienda/biblioteca.py`
+(`imagen_de` y `colocar_evento`). Enlace profundo de los tres: `com.baltajmn.flowtime://focus`. Nunca borrar
+`appEventScreenshots` por la API: refleja las colocaciones y las quita.
+
+Enviar a revision lo hace el titular en la web (*Anadir a revision* y luego *Enviar a revision* en el borrador); Apple
+no deja enviarlos solos con una version en revision, hace falta una version en el mismo envio. Apple pide publicar hasta 14 dias antes
 del inicio, y cada evento dura como mucho 31 dias.
