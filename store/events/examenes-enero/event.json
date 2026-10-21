@@ -1,0 +1,83 @@
+{
+ "referenceName": "FlowTime exams January",
+ "badge": "CHALLENGE",
+ "purpose": "ATTRACT_NEW_USERS",
+ "publish": "2026-12-28T08:00:00Z",
+ "start": "2027-01-11T00:00:00Z",
+ "end": "2027-01-31T23:59:00Z",
+ "excluding": [
+  "CHN"
+ ],
+ "locales": {
+  "en-US": {
+   "name": "January exams: stay focused",
+   "short": "Breaks that adapt as you study",
+   "long": "11 to 31 January: Pomodoro or FlowTime, a daily goal and friends to study with in Coop. No ads, no account needed."
+  },
+  "es-ES": {
+   "name": "Exámenes de enero: con foco",
+   "short": "Descansos que se adaptan al estudiar",
+   "long": "Del 11 al 31 de enero: Pomodoro o FlowTime, objetivo diario y amigos con quien estudiar en Coop. Sin anuncios."
+  },
+  "de-DE": {
+   "name": "Januar-Prüfungen: im Fokus",
+   "short": "Pausen, die sich beim Lernen anpassen",
+   "long": "11. bis 31. Januar: Pomodoro oder FlowTime, Tagesziel und Freunde zum Lernen in Coop. Ohne Werbung."
+  },
+  "fr-FR": {
+   "name": "Examens de janvier : focus",
+   "short": "Des pauses qui s'adaptent aux révisions",
+   "long": "Du 11 au 31 janvier : Pomodoro ou FlowTime, objectif quotidien et amis pour réviser dans Coop. Sans pub."
+  },
+  "it": {
+   "name": "Esami di gennaio: concentrati",
+   "short": "Pause che si adattano mentre studi",
+   "long": "Dall'11 al 31 gennaio: Pomodoro o FlowTime, obiettivo giornaliero e amici con cui studiare in Coop. Senza pubblicità."
+  },
+  "pt-BR": {
+   "name": "Provas de janeiro: foco total",
+   "short": "Pausas que se adaptam ao estudo",
+   "long": "De 11 a 31 de janeiro: Pomodoro ou FlowTime, meta diária e amigos para estudar no Coop. Sem anúncios."
+  },
+  "nl-NL": {
+   "name": "Januari-examens: focus",
+   "short": "Pauzes die meegaan terwijl je studeert",
+   "long": "11 tot 31 januari: Pomodoro of FlowTime, een dagdoel en vrienden om mee te studeren in Coop. Geen reclame."
+  },
+  "pl": {
+   "name": "Egzaminy w styczniu: skupienie",
+   "short": "Przerwy dopasowują się do nauki",
+   "long": "11-31 stycznia: Pomodoro lub FlowTime, cel dnia i znajomi do wspólnej nauki w Coop. Bez reklam."
+  },
+  "ru": {
+   "name": "Январские экзамены: фокус",
+   "short": "Перерывы подстраиваются под учёбу",
+   "long": "С 11 по 31 января: помодоро или FlowTime, цель дня и друзья для совместной учёбы в Coop. Без рекламы."
+  },
+  "tr": {
+   "name": "Ocak sınavları: odakta kal",
+   "short": "Çalışırken uyum sağlayan molalar",
+   "long": "11-31 Ocak: Pomodoro veya FlowTime, günlük hedef ve Coop'ta birlikte çalışacak arkadaşlar. Reklam yok."
+  },
+  "id": {
+   "name": "Ujian Januari: tetap fokus",
+   "short": "Jeda yang menyesuaikan saat belajar",
+   "long": "11-31 Januari: Pomodoro atau FlowTime, target harian, dan teman belajar di Coop. Tanpa iklan."
+  },
+  "ja": {
+   "name": "1月の試験に集中",
+   "short": "勉強に合わせて休憩が変わる",
+   "long": "1月11日から31日まで、ポモドーロかFlowTime、毎日の目標、Coopで友達と勉強。広告なし。"
+  },
+  "ko": {
+   "name": "1월 시험 대비 집중",
+   "short": "공부에 맞춰 달라지는 휴식",
+   "long": "1월 11일~31일: 포모도로 또는 FlowTime, 하루 목표, Coop에서 친구와 함께 공부. 광고 없음."
+  },
+  "hi": {
+   "name": "जनवरी की परीक्षा: फ़ोकस",
+   "short": "पढ़ाई के साथ ढलते ब्रेक",
+   "long": "11 से 31 जनवरी: पोमोडोरो या FlowTime, रोज़ का लक्ष्य और Coop में दोस्तों के साथ पढ़ाई। बिना विज्ञापन।"
+  }
+ }
+}

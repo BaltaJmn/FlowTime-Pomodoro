@@ -1,0 +1,83 @@
+{
+ "referenceName": "FlowTime new year",
+ "badge": "CHALLENGE",
+ "purpose": "ATTRACT_NEW_USERS",
+ "publish": "2026-12-18T08:00:00Z",
+ "start": "2027-01-01T00:00:00Z",
+ "end": "2027-01-31T23:59:00Z",
+ "excluding": [
+  "CHN"
+ ],
+ "locales": {
+  "en-US": {
+   "name": "New Year: build a focus habit",
+   "short": "31 days to start the year focused",
+   "long": "Set a daily goal on 1 January and keep your streak all month. No ads, no account needed."
+  },
+  "es-ES": {
+   "name": "Año nuevo, hábito de estudio",
+   "short": "31 días para empezar el año con foco",
+   "long": "Fija un objetivo diario el 1 de enero y mantén tu racha todo el mes. Sin anuncios y sin necesidad de cuenta."
+  },
+  "de-DE": {
+   "name": "Neujahr: Fokus-Gewohnheit",
+   "short": "31 Tage für einen konzentrierten Start",
+   "long": "Setz dir am 1. Januar ein Tagesziel und halte die Serie den ganzen Monat. Ohne Werbung und ohne Konto."
+  },
+  "fr-FR": {
+   "name": "Nouvel an : habitude de focus",
+   "short": "31 jours pour bien démarrer l'année",
+   "long": "Fixez un objectif quotidien le 1er janvier et gardez votre série tout le mois. Sans pub, sans compte."
+  },
+  "it": {
+   "name": "Nuovo anno: abitudine di focus",
+   "short": "31 giorni per iniziare l'anno concentrato",
+   "long": "Fissa un obiettivo giornaliero l'1 gennaio e mantieni la serie per tutto il mese. Senza pubblicità né account."
+  },
+  "pt-BR": {
+   "name": "Ano novo: hábito de foco",
+   "short": "31 dias para começar o ano com foco",
+   "long": "Defina uma meta diária em 1º de janeiro e mantenha a sequência o mês todo. Sem anúncios e sem conta."
+  },
+  "nl-NL": {
+   "name": "Nieuwjaar: focusgewoonte",
+   "short": "31 dagen om geconcentreerd te starten",
+   "long": "Stel op 1 januari een dagdoel in en houd je reeks de hele maand vast. Geen reclame en geen account nodig."
+  },
+  "pl": {
+   "name": "Nowy Rok: nawyk skupienia",
+   "short": "31 dni na skupiony początek roku",
+   "long": "Ustaw cel dnia 1 stycznia i utrzymaj passę przez cały miesiąc. Bez reklam i bez konta."
+  },
+  "ru": {
+   "name": "Новый год: привычка к фокусу",
+   "short": "31 день, чтобы начать год с фокуса",
+   "long": "Поставьте цель на день 1 января и держите серию весь месяц. Без рекламы и без аккаунта."
+  },
+  "tr": {
+   "name": "Yeni yıl: odak alışkanlığı",
+   "short": "Yıla odaklanarak başlamak için 31 gün",
+   "long": "1 Ocak'ta günlük bir hedef koy ve serini ay boyunca koru. Reklam yok, hesap gerekmez."
+  },
+  "id": {
+   "name": "Tahun baru: kebiasaan fokus",
+   "short": "31 hari untuk memulai tahun dengan fokus",
+   "long": "Tetapkan target harian pada 1 Januari dan jaga streak sebulan penuh. Tanpa iklan dan tanpa akun."
+  },
+  "ja": {
+   "name": "新年は集中する習慣づくり",
+   "short": "31日間で集中の習慣をつくる",
+   "long": "1月1日に毎日の目標を決めて、連続記録を1か月続けよう。広告なし、アカウント不要。"
+  },
+  "ko": {
+   "name": "새해, 집중 습관 만들기",
+   "short": "31일 동안 집중하는 한 해의 시작",
+   "long": "1월 1일에 하루 목표를 정하고 한 달 내내 연속 기록을 이어가세요. 광고 없음, 계정 불필요."
+  },
+  "hi": {
+   "name": "नया साल: फ़ोकस की आदत",
+   "short": "फ़ोकस के साथ साल की शुरुआत",
+   "long": "1 जनवरी को रोज़ का लक्ष्य तय करें और पूरे महीने लगातार दिन बनाए रखें। बिना विज्ञापन, बिना अकाउंट।"
+  }
+ }
+}

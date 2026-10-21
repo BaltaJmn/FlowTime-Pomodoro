@@ -1,0 +1,83 @@
+{
+ "referenceName": "FlowTime exams December",
+ "badge": "CHALLENGE",
+ "purpose": "ATTRACT_NEW_USERS",
+ "publish": "2026-11-17T08:00:00Z",
+ "start": "2026-12-01T00:00:00Z",
+ "end": "2026-12-20T23:59:00Z",
+ "excluding": [
+  "CHN"
+ ],
+ "locales": {
+  "en-US": {
+   "name": "Exam season: study sprint",
+   "short": "Keep your streak until the exams",
+   "long": "1 to 20 December: set a daily goal, keep your streak and let FlowTime adapt your breaks. Study with friends in Coop."
+  },
+  "es-ES": {
+   "name": "Exámenes: sprint de estudio",
+   "short": "Mantén tu racha hasta los exámenes",
+   "long": "Del 1 al 20 de diciembre: objetivo diario, racha y descansos que se adaptan. Estudia con amigos en Coop."
+  },
+  "de-DE": {
+   "name": "Prüfungszeit: Lern-Sprint",
+   "short": "Halte deine Serie bis zur Prüfung",
+   "long": "Vom 1. bis 20. Dezember: Tagesziel setzen, Serie halten, Pausen passen sich an. Lerne mit Freunden in Coop."
+  },
+  "fr-FR": {
+   "name": "Examens : sprint d'étude",
+   "short": "Gardez votre série jusqu'aux examens",
+   "long": "Du 1er au 20 décembre : objectif quotidien, série et pauses qui s'adaptent. Étudiez avec vos amis dans Coop."
+  },
+  "it": {
+   "name": "Esami: sprint di studio",
+   "short": "Mantieni la serie fino agli esami",
+   "long": "Dall'1 al 20 dicembre: obiettivo giornaliero, serie e pause che si adattano. Studia con gli amici in Coop."
+  },
+  "pt-BR": {
+   "name": "Provas: sprint de estudo",
+   "short": "Mantenha a sequência até as provas",
+   "long": "De 1 a 20 de dezembro: meta diária, sequência e pausas que se adaptam. Estude com amigos no Coop."
+  },
+  "nl-NL": {
+   "name": "Examentijd: studiesprint",
+   "short": "Houd je reeks vast tot de examens",
+   "long": "Van 1 tot 20 december: dagdoel, reeks en pauzes die zich aanpassen. Studeer met vrienden in Coop."
+  },
+  "pl": {
+   "name": "Sesja: sprint nauki",
+   "short": "Utrzymaj passę aż do egzaminów",
+   "long": "Od 1 do 20 grudnia: cel dnia, passa i przerwy, które się dopasowują. Ucz się ze znajomymi w Coop."
+  },
+  "ru": {
+   "name": "Сессия: учебный спринт",
+   "short": "Держите серию до самых экзаменов",
+   "long": "С 1 по 20 декабря: цель дня, серия и перерывы, которые подстраиваются. Учитесь с друзьями в Coop."
+  },
+  "tr": {
+   "name": "Sınav dönemi: çalışma sprinti",
+   "short": "Sınavlara kadar serini koru",
+   "long": "1-20 Aralık: günlük hedef, seri ve sana uyan molalar. Arkadaşlarınla Coop'ta birlikte çalış."
+  },
+  "id": {
+   "name": "Musim ujian: sprint belajar",
+   "short": "Jaga streak sampai hari ujian",
+   "long": "1-20 Desember: target harian, streak, dan jeda yang menyesuaikan. Belajar bareng teman di Coop."
+  },
+  "ja": {
+   "name": "試験期間の勉強スプリント",
+   "short": "試験まで連続記録をキープ",
+   "long": "12月1日から20日まで、毎日の目標と連続記録、作業に合わせて変わる休憩。Coopで友達と一緒に勉強。"
+  },
+  "ko": {
+   "name": "시험 기간: 공부 스프린트",
+   "short": "시험까지 연속 기록을 지키세요",
+   "long": "12월 1일~20일: 하루 목표, 연속 기록, 알아서 달라지는 휴식. Coop에서 친구들과 함께 공부하세요."
+  },
+  "hi": {
+   "name": "परीक्षा का समय: स्टडी स्प्रिंट",
+   "short": "परीक्षा तक लगातार दिन बनाए रखें",
+   "long": "1 से 20 दिसंबर: रोज़ का लक्ष्य, लगातार दिन और अपने-आप ढलते ब्रेक। Coop में दोस्तों के साथ पढ़ें।"
+  }
+ }
+}

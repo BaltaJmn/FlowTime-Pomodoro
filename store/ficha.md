@@ -33,14 +33,9 @@ gh workflow run listings.yml -f target=play
 /Users/baltajmn/keys/play.sh ficha com.baltajmn.flowtime . https://flowtime.baltajmn.dev/   # lo mismo, desde el Mac
 ```
 
-- En una sola edición: los textos de los 6 idiomas, el icono, el gráfico y las capturas de móvil.
+- En una sola edición: los textos, el icono, el gráfico y las capturas de móvil y de tablet.
 - `<correo>` es el de contacto que ya tiene la ficha. La ficha no tiene web: `""` la deja vacía.
-- Las capturas de tablet no las sube `play.sh`. Van por la API en otra edición, con el token de
-  `~/keys/LEEME.md` (subidas el 30-09-2026): por idioma, `DELETE .../edits/<id>/listings/<idioma>/tenInchScreenshots`
-  y un `POST https://androidpublisher.googleapis.com/upload/androidpublisher/v3/applications/com.baltajmn.flowtime/edits/<id>/listings/<idioma>/tenInchScreenshots?uploadType=media`
-  por imagen (`Content-Type: image/png`). Al final `POST .../edits/<id>:commit` con
-  `Content-Length: 0`: sin esa cabecera Google responde 404. En zsh, `${E}:commit` con llaves, porque
-  `$E:c` es un modificador y se come la `c`.
+- Las capturas de tablet (`store/screenshots/tablet/<idioma>/`) las sube también `play.sh ficha`, en la misma edición (`tenInchScreenshots`).
 - El gráfico va solo en el idioma por defecto (es-ES) y Play lo enseña en todos: por eso no lleva
   texto que traducir.
 
@@ -72,3 +67,17 @@ Plan de crecimiento, fase 0 (`plan-apps/0-plan.md`): cada pico de trafico convie
 - Play: los textos no cambian; las capturas nuevas se suben con el resto de la ficha cuando la version
   en produccion este aprobada. App Store: el subtitulo, las claves, la descripcion y las capturas van
   en la siguiente version (`appstore.py nueva`), porque la 2.4.0 esta en revision y no admite cambios.
+
+## In-App Events (#82)
+
+`store/events/<evento>/event.json` (fechas, insignia y los textos de los 14 idiomas: nombre 30, corta 50,
+larga 120), `card.png` (1920 x 1080) y `details.png` (1080 x 1920, vertical), sin texto porque Apple pone el
+suyo encima. Las imagenes salen de `python3 tools/store/eventos.py` y se suben, como borradores, con:
+
+```bash
+python3 ../ci/tienda/appstore.py eventos com.baltajmn.flowtime . --dry
+python3 ../ci/tienda/appstore.py eventos com.baltajmn.flowtime .
+```
+
+Enviar a revision lo hace el titular en la web (*Anadir a revision*). Apple pide publicar hasta 14 dias antes
+del inicio, y cada evento dura como mucho 31 dias.
