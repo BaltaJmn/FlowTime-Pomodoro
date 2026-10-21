@@ -6,6 +6,9 @@ FlowTime: trabajas sin cuenta atrás y, cuando paras, el descanso sale de lo que
 Porcentaje: el descanso es el porcentaje que elijas del tiempo trabajado.
 Los tiempos de cada modo se ajustan a tu gusto.
 
+ESTUDIA CON TUS AMIGOS
+Coop es una sala privada de hasta 8 personas con un solo temporizador para todos: cualquiera puede empezar, pausar o saltar el descanso. Entra con un código o un enlace, o invita a tus amigos, y recibe un aviso cuando te invitan a una sala o te mandan una solicitud de amistad. Sin chat ni salas públicas, y puedes bloquear o reportar a quien quieras. Para Coop entras con Google; el resto de la app sigue sin cuenta.
+
 SIGUE CONTANDO AUNQUE CIERRES LA APP
 El temporizador va por la hora, no por la pantalla. Una notificación te enseña el tiempo, con botones para pausar y parar, y te avisa al terminar cada fase aunque la app esté cerrada.
 
@@ -28,7 +31,7 @@ A TU GUSTO
 Modo oscuro, los colores de tu fondo de pantalla y 11 temas. Un recordatorio diario si lo quieres, y copia de seguridad automática y a fichero. En español, inglés, alemán, italiano, ruso e hindi.
 
 GRATIS, SIN ANUNCIOS
-Los tres modos, la notificación, el widget, el botón de ajustes rápidos, hasta 15 tareas pendientes, 4 etiquetas, los 12 sonidos con 3 mezclas guardadas, la racha, el objetivo, las estadísticas de hoy, la semana y el mes, y la copia de seguridad. Sin anuncios, sin periodo de prueba y sin necesidad de cuenta.
+Los tres modos, la notificación, el widget, el botón de ajustes rápidos, hasta 15 tareas pendientes, 4 etiquetas, los 12 sonidos con 3 mezclas guardadas, la racha, el objetivo, las estadísticas de hoy, la semana y el mes, la copia de seguridad y Coop. Sin anuncios, sin periodo de prueba y sin necesidad de cuenta.
 
 PRO, A TU MANERA
 Estadísticas avanzadas (el año entero, la comparación con el periodo anterior, por hora, por modo, por etiqueta y las tareas con más tiempo) y exportar a CSV; etiquetas, tareas pendientes y mezclas sin límite; 6 sonidos, 6 temas y 6 iconos nuevos; y No molestar automático mientras trabajas. Un pago único, para siempre, o mensual si lo prefieres.

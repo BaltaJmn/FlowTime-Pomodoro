@@ -6,6 +6,9 @@ FlowTime: çalışırken geri sayım yok; durduğunda mola, ne kadar çalıştı
 Yüzde: mola, çalışma sürenin seçtiğin yüzdesi kadardır.
 Her modun süreleri senin ayarına bağlı.
 
+ARKADAŞLARINLA BİRLİKTE ÇALIŞ
+Coop, herkes için tek zamanlayıcısı olan, 8 kişiye kadar özel bir odadır: odadaki herkes zamanlayıcıyı başlatabilir, duraklatabilir veya molayı atlayabilir. Bir kod ya da bağlantıyla katıl veya arkadaşlarını davet et; biri seni bir odaya davet ettiğinde ya da arkadaşlık isteği gönderdiğinde bildirim alırsın. Sohbet yok, herkese açık oda da yok; üstelik istediğin kişiyi engelleyebilir veya bildirebilirsin. Coop için Google ile giriş yapman gerekir; uygulamanın geri kalanı hâlâ hesap istemez.
+
 UYGULAMAYI KAPATSAN DA SAYMAYA DEVAM EDER
 Zamanlayıcı ekrana değil saate göre çalışır. Bir bildirim süreyi duraklat ve durdur düğmeleriyle gösterir, uygulama kapalı olsa bile her aşamanın sonunda seni uyarır.
 
@@ -28,7 +31,7 @@ SANA GÖRE
 Karanlık mod, duvar kâğıdının renkleri ve 11 tema. İstersen günlük hatırlatıcı, ayrıca otomatik yedekleme ve dosyaya yedekleme. 14 dilde kullanılabilir.
 
 ÜCRETSİZ, REKLAMSIZ
-Üç modun hepsi, bildirim, widget, hızlı ayarlar kutucuğu, 15 bekleyen göreve kadar, 4 etiket, 3 kayıtlı karışımla 12 sesin hepsi, serin, hedefin, bugünün, haftanın ve ayın istatistikleri ve yedekleme. Reklam yok, deneme süresi yok, hesap gerekmez.
+Üç modun hepsi, bildirim, widget, hızlı ayarlar kutucuğu, 15 bekleyen göreve kadar, 4 etiket, 3 kayıtlı karışımla 12 sesin hepsi, serin, hedefin, bugünün, haftanın ve ayın istatistikleri, yedekleme ve Coop. Reklam yok, deneme süresi yok, hesap gerekmez.
 
 PRO, SENİN YOLUNDAN
 Gelişmiş istatistikler (yılın tamamı, önceki dönemle karşılaştırma, saate, moda, etikete göre ve en çok zaman harcadığın görevler) ve CSV dışa aktarma; sınırsız etiket, bekleyen görev ve karışım; 6 yeni ses, 6 yeni tema ve 6 yeni simge; ve çalışırken otomatik Rahatsız Etmeyin. Bir kez öde, sonsuza dek senin; istersen aylık da ödeyebilirsin.

@@ -6,6 +6,9 @@ FlowTime: podczas pracy nie ma odliczania; gdy skończysz, długość przerwy wy
 Procent: przerwa to wybrany przez Ciebie procent czasu pracy.
 Czasy każdego trybu ustawiasz po swojemu.
 
+UCZ SIĘ RAZEM ZE ZNAJOMYMI
+Coop to prywatny pokój dla maksymalnie 8 osób z jednym timerem dla wszystkich: każdy może uruchomić, wstrzymać lub pominąć przerwę. Dołącz za pomocą kodu lub linku albo zaproś znajomych, a dostaniesz powiadomienie, gdy ktoś zaprosi Cię do pokoju lub wyśle Ci prośbę o znajomość. Bez czatu i bez publicznych pokoi, a każdego możesz zablokować lub zgłosić. Do Coop logujesz się przez Google; reszta aplikacji nadal nie wymaga konta.
+
 LICZY, NAWET GDY ZAMKNIESZ APLIKACJĘ
 Timer chodzi według zegara, a nie ekranu. Powiadomienie pokazuje czas i ma przyciski pauzy i zatrzymania, a na koniec każdej fazy dostajesz sygnał, nawet gdy aplikacja jest zamknięta.
 
@@ -28,7 +31,7 @@ DOPASUJ DO SIEBIE
 Tryb ciemny, kolory tapety i 11 motywów. Opcjonalne codzienne przypomnienie, a do tego automatyczna kopia zapasowa i kopia do pliku. Dostępna w 14 językach.
 
 ZA DARMO, BEZ REKLAM
-Wszystkie trzy tryby, powiadomienie, widżet, kafelek szybkich ustawień, do 15 otwartych zadań, 4 etykiety, wszystkie 12 dźwięków z 3 zapisanymi miksami, passa, cel, statystyki z dziś, tygodnia i miesiąca oraz kopie zapasowe. Bez reklam, bez okresu próbnego i bez potrzeby zakładania konta.
+Wszystkie trzy tryby, powiadomienie, widżet, kafelek szybkich ustawień, do 15 otwartych zadań, 4 etykiety, wszystkie 12 dźwięków z 3 zapisanymi miksami, passa, cel, statystyki z dziś, tygodnia i miesiąca, kopie zapasowe oraz Coop. Bez reklam, bez okresu próbnego i bez potrzeby zakładania konta.
 
 PRO, PO TWOJEMU
 Zaawansowane statystyki (cały rok, porównanie z poprzednim okresem, według godziny, trybu, etykiety i zadania, które zajęły najwięcej czasu) oraz eksport do CSV; nielimitowane etykiety, otwarte zadania i miksy; 6 nowych dźwięków, 6 nowych motywów i 6 nowych ikon; a także automatyczne Nie przeszkadzać podczas pracy. Płacisz raz i masz na zawsze, albo co miesiąc, jeśli wolisz.

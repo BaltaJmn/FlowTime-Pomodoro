@@ -6,6 +6,9 @@ FlowTime: mentre lavori non c'è conto alla rovescia; quando ti fermi, la pausa 
 Percentuale: la pausa è la percentuale che scegli del tempo lavorato.
 I tempi di ogni modalità si regolano come vuoi.
 
+STUDIA CON I TUOI AMICI
+Coop è una stanza privata per un massimo di 8 persone con un solo timer per tutti: chiunque può avviare, mettere in pausa o saltare la pausa. Entra con un codice o un link, oppure invita i tuoi amici, e ricevi una notifica quando qualcuno ti invita in una stanza o ti manda una richiesta di amicizia. Niente chat né stanze pubbliche, e puoi bloccare o segnalare chiunque. Per Coop accedi con Google; il resto dell'app continua a non richiedere un account.
+
 CONTINUA A CONTARE ANCHE SE CHIUDI L'APP
 Il timer segue l'orologio, non lo schermo. Una notifica mostra il tempo con i pulsanti per mettere in pausa e fermare, e ti avvisa alla fine di ogni fase anche con l'app chiusa.
 
@@ -28,7 +31,7 @@ A MODO TUO
 Tema scuro, i colori del tuo sfondo e 11 temi. Un promemoria giornaliero se lo vuoi, e backup automatico e su file. In italiano, inglese, spagnolo, tedesco, russo e hindi.
 
 GRATIS, SENZA PUBBLICITÀ
-Le tre modalità, la notifica, il widget, il riquadro delle impostazioni rapide, fino a 15 attività in sospeso, 4 etichette, tutti i 12 suoni con 3 mix salvati, la serie, l'obiettivo, le statistiche di oggi, della settimana e del mese, e il backup. Senza pubblicità, senza periodo di prova e nessun account necessario.
+Le tre modalità, la notifica, il widget, il riquadro delle impostazioni rapide, fino a 15 attività in sospeso, 4 etichette, tutti i 12 suoni con 3 mix salvati, la serie, l'obiettivo, le statistiche di oggi, della settimana e del mese, il backup e Coop. Senza pubblicità, senza periodo di prova e nessun account necessario.
 
 PRO, SCEGLI TU
 Statistiche avanzate (l'anno intero, il confronto con il periodo precedente, per ora, per modalità, per etichetta e le attività con più tempo) ed esportazione CSV; etichette, attività in sospeso e mix illimitati; 6 nuovi suoni, 6 nuovi temi e 6 nuove icone; e Non disturbare automatico mentre lavori. Un pagamento unico, per sempre, o mensile se preferisci.

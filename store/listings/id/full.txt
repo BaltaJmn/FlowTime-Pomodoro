@@ -6,6 +6,9 @@ FlowTime: tidak ada hitung mundur saat kamu bekerja; begitu berhenti, jedanya me
 Persentase: jeda adalah persentase pilihanmu dari waktu kerja.
 Waktu setiap mode bisa kamu atur sendiri.
 
+BELAJAR BARENG TEMANMU
+Coop adalah ruangan privat untuk maksimal 8 orang dengan satu timer untuk semua: siapa pun bisa memulai, menjeda, atau melewati istirahat. Gabung dengan kode atau tautan, atau undang temanmu, dan dapatkan notifikasi saat seseorang mengundangmu ke ruangan atau mengirim permintaan pertemanan. Tanpa obrolan dan tanpa ruangan publik, dan kamu bisa memblokir atau melaporkan siapa pun. Coop meminta kamu masuk dengan Google; bagian aplikasi lainnya tetap tidak perlu akun.
+
 TERUS MENGHITUNG MESKI APLIKASI DITUTUP
 Timer berjalan mengikuti jam, bukan layar. Notifikasi menampilkan timer dengan tombol jeda dan berhenti, dan kamu diberi tahu di akhir setiap fase meski aplikasi ditutup.
 
@@ -28,7 +31,7 @@ SESUAI SELERAMU
 Mode gelap, warna wallpaper-mu, dan 11 tema. Pengingat harian jika kamu mau, plus pencadangan otomatis dan pencadangan ke file. Tersedia dalam 14 bahasa.
 
 GRATIS, TANPA IKLAN
-Ketiga mode, notifikasi, widget, ubin pengaturan cepat, hingga 15 tugas tertunda, 4 label, ke-12 suara dengan 3 campuran tersimpan, streak, target, statistik hari ini, minggu ini, dan bulan ini, serta pencadangan. Tanpa iklan, tanpa masa percobaan, dan tidak perlu akun.
+Ketiga mode, notifikasi, widget, ubin pengaturan cepat, hingga 15 tugas tertunda, 4 label, ke-12 suara dengan 3 campuran tersimpan, streak, target, statistik hari ini, minggu ini, dan bulan ini, pencadangan, serta Coop. Tanpa iklan, tanpa masa percobaan, dan tidak perlu akun.
 
 PRO, CARAMU
 Statistik lanjutan (setahun penuh, perbandingan dengan periode sebelumnya, per jam, per mode, per label, dan tugas yang paling banyak menyita waktu) dan ekspor CSV; label, tugas tertunda, dan campuran tanpa batas; 6 suara baru, 6 tema baru, dan 6 ikon baru; serta Jangan Ganggu otomatis saat kamu bekerja. Bayar sekali, jadi milikmu selamanya, atau bulanan kalau kamu mau.

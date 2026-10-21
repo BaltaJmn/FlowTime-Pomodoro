@@ -6,6 +6,9 @@ FlowTime: no countdown while you work; when you stop, your break comes from how 
 Percentage: your break is the percentage you choose of the time you worked.
 Every mode's times are yours to adjust.
 
+STUDY WITH YOUR FRIENDS
+Coop is a private room for up to 8 people with one timer for everyone: anyone can start, pause or skip the break. Join with a code or a link, or invite your friends, and get a notification when someone invites you to a room or sends you a friend request. No chat and no public rooms, and you can block or report anyone. Coop asks you to sign in with Google; the rest of the app still needs no account.
+
 KEEPS COUNTING WHEN YOU CLOSE THE APP
 The timer runs on the clock, not on the screen. A notification shows the timer with buttons to pause and stop, and you get an alert at the end of each phase even if the app is closed.
 
@@ -28,7 +31,7 @@ MADE YOURS
 Dark mode, your wallpaper colors and 11 themes. An optional daily reminder, plus automatic backup and backup to a file. In English, Spanish, German, Italian, Russian and Hindi.
 
 FREE, NO ADS
-All three modes, the notification, the widget, the quick settings tile, up to 15 pending tasks, 4 tags, all 12 sounds with 3 saved mixes, your streak, your goal, stats for today, the week and the month, and backups. No ads, no trial, and no account needed.
+All three modes, the notification, the widget, the quick settings tile, up to 15 pending tasks, 4 tags, all 12 sounds with 3 saved mixes, your streak, your goal, stats for today, the week and the month, backups and Coop. No ads, no trial, and no account needed.
 
 PRO, YOUR WAY
 Advanced stats (the whole year, comparison with the previous period, by hour, by mode, by tag and the tasks you spent the most time on) and CSV export; unlimited tags, pending tasks and mixes; 6 new sounds, 6 new themes and 6 new icons; and automatic Do Not Disturb while you work. One payment for life, or monthly if you prefer.
