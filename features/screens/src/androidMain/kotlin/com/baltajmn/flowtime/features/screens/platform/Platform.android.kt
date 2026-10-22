@@ -2,6 +2,7 @@ package com.baltajmn.flowtime.features.screens.platform
 
 import android.Manifest
 import android.app.AlarmManager
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -163,6 +164,8 @@ actual fun rememberShareImage(): (png: ByteArray, text: String) -> Unit {
                 .putExtra(Intent.EXTRA_STREAM, uri)
                 .putExtra(Intent.EXTRA_TEXT, text)
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            // Con el ClipData, el selector del sistema recibe permiso para leerla y enseña la miniatura.
+            send.clipData = ClipData.newRawUri("", uri)
             context.startActivity(Intent.createChooser(send, null))
         }
     }

@@ -213,7 +213,8 @@ fun DayShareCard(day: LocalDate, seconds: Long, sessions: Int, streak: Int) {
             size = 48
         )
         Spacer(modifier = Modifier.size(32.dp))
-        BigStat(value = sessions.toString(), label = stringResource(Res.string.stats_sessions))
+        // Sin sesiones (solo tiempo añadido a mano) "0 sesiones" no dice nada que compartir.
+        if (sessions > 0) BigStat(value = sessions.toString(), label = stringResource(Res.string.stats_sessions))
         if (streak > 0) {
             Spacer(modifier = Modifier.size(24.dp))
             StreakLine(streak)
