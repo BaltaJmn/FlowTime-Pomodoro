@@ -130,6 +130,8 @@ fun FocusScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val recap by recapViewModel.recap.collectAsStateWithLifecycle()
+    // El primer foco del año, o tiempo añadido en Estadísticas, hace que aparezca sin relanzar la app.
+    LaunchedEffect(state.minutesToday) { recapViewModel.load() }
     val sound by ambience.state.collectAsStateWithLifecycle()
     val notifications = rememberNotificationPermission()
     var explainNotifications by remember { mutableStateOf(false) }

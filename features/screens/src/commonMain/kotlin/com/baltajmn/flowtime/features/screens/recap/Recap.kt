@@ -123,7 +123,8 @@ internal fun YearTotalsCard(recap: YearRecap) {
         BigStat(value = focusText(recap.totalSeconds), label = stringResource(Res.string.share_focus), size = 56)
         Spacer(modifier = Modifier.size(32.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
-            BigStat(value = recap.sessions.toString(), label = stringResource(Res.string.stats_sessions))
+            // Sin sesiones (solo tiempo añadido a mano) la línea no dice nada, como en la tarjeta del día.
+            if (recap.sessions > 0) BigStat(value = recap.sessions.toString(), label = stringResource(Res.string.stats_sessions))
             BigStat(value = recap.activeDays.toString(), label = stringResource(Res.string.recap_days))
         }
     }

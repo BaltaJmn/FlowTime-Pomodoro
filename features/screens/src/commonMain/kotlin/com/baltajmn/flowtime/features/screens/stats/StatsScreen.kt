@@ -135,6 +135,8 @@ fun StatsScreen(
     var showRecap by rememberSaveable { mutableStateOf(false) }
     val recapViewModel: RecapViewModel = koinViewModel()
     val recap by recapViewModel.recap.collectAsStateWithLifecycle()
+    // Tiempo añadido o sesiones nuevas de hoy: la tarjeta del año puede aparecer o cambiar sin salir de aquí.
+    LaunchedEffect(state.today) { recapViewModel.load() }
 
     // Cada vez que se entra: puede haber sesiones nuevas.
     LaunchedEffect(openToday) {
