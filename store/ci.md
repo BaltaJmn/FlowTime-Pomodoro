@@ -29,6 +29,12 @@ Textos, gráficos y capturas en `store/`, con la estructura del README de `ci`. 
 la comprueba; para subirla, `gh workflow run listings.yml -f target=play` (o `app-store`, `both`).
 La App Store solo acepta cambios con una versión en preparación.
 
+## Fichas de temporada
+
+El texto de la ficha de Play cambia en examenes (30-11 al 20-12) y en enero (28-12 al 31-01), y vuelve a la
+normal: `store/temporada/README.md` (ordenes, fechas y condiciones) y `temporada.yml`. Un push solo las
+comprueba; subirlas va con el si del usuario, como cualquier cambio de la ficha.
+
 ## Secretos del repositorio
 
 Los cinco de Play salen de la clave de esta app y de la cuenta de servicio que publica. Se ponen sin

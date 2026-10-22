@@ -1,0 +1,57 @@
+name: Season listing
+
+# The text of the Play listing for a season (store/temporada/), and the way back to the normal one.
+# A push only checks the texts; writing to Play is chosen by hand, and only the text of the listing
+# changes (store/ci.md). Apart from listings.yml, which is the same file in every app of the family.
+on:
+  push:
+    branches: [main]
+    paths: ['store/temporada/**', 'store/listings/**', 'tools/store/temporada.py']
+  workflow_dispatch:
+    inputs:
+      ficha:
+        description: A folder of store/temporada/ (examenes-diciembre, enero-2027), or normal to go back to store/listings
+        type: string
+        default: examenes-diciembre
+      modo:
+        description: comprobar only checks; dry has Play validate the edit and discards it; subir writes
+        type: choice
+        options: [comprobar, dry, subir]
+        default: comprobar
+
+permissions:
+  contents: read
+
+jobs:
+  temporada:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # play.py lives in BaltaJmn/ci, one copy for the whole family.
+      - uses: actions/checkout@v5
+        with:
+          repository: BaltaJmn/ci
+          path: .ci
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Comprobar
+        run: python3 tools/store/temporada.py comprobar
+
+      # The inputs go through the environment and not into the script: this repository is public.
+      - name: Subir a Play
+        if: inputs.modo == 'dry' || inputs.modo == 'subir'
+        env:
+          FICHA: ${{ inputs.ficha }}
+          MODO: ${{ inputs.modo }}
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          set -euo pipefail
+          if [ "$MODO" = dry ]; then
+            python3 tools/store/temporada.py subir "$FICHA" --dry
+          else
+            python3 tools/store/temporada.py subir "$FICHA"
+          fi
