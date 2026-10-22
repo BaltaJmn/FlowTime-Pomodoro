@@ -11,16 +11,30 @@ Igual en las cuatro apps de la familia: el proceso, los workflows y los scripts 
 | Web: contacto de Play, soporte y privacidad de Apple | https://flowtime.baltajmn.dev/ |
 | Pro | `pro_lifetime` en Play, `com.baltajmn.flowtime.pro_lifetime` en Apple; 1,99 EUR en las dos |
 
-FlowTime no tiene `androidApp`: el módulo es `:app` y la versión vive en `Config.kt`, por eso `release.yml` pasa `gradle-tasks`, `aab-path` y `version-file`. Ya está en producción en Play: la etiqueta va a `alpha` como en las demás, y se promociona a producción desde la consola. Además de Pro tiene tres propinas (`tip_small`, `tip_medium`, `tip_large`) y la compra antigua `support_developer`, fuera de RevenueCat.
+FlowTime no tiene `androidApp`: el módulo es `:app` y la versión vive en `Config.kt`, por eso `release.yml` pasa `gradle-tasks`, `aab-path` y `version-file`. Ya está en producción en Play: el tren sube a `alpha` como en las demás y el lunes la promociona a producción. Además de Pro tiene tres propinas (`tip_small`, `tip_medium`, `tip_large`) y la compra antigua `support_developer`, fuera de RevenueCat.
 
-## Publicar una versión
+## Publicar una versión: el tren de los lunes
 
-1. Subir el `versionCode` (y `versionName` si toca). Un `versionCode` no se reutiliza nunca.
-2. Si cambia algo visible, reescribir `store/whatsnew/whatsnew-<idioma>` en todos los idiomas (tope 500).
-3. Commit, y `git tag vX.Y && git push origin vX.Y`: Play `alpha` y TestFlight, la misma versión.
-4. Producción en Play y el envío a revisión de Apple, a mano en cada consola.
+Desde el 26-10-2026 las versiones salen solas con el tren semanal (`.github/workflows/tren.yml`; el
+proceso, en `BaltaJmn/ci` PUBLICAR.md sección 7):
 
-Otro canal o una sola tienda: `gh workflow run release.yml -f stores=play -f track=internal`
+- **Domingo 19:37** (hora de Madrid): si hay cambios en main desde la última versión (sin contar
+  `.md` ni `.github`), sube la minor (`X.Y+1.0`) y el `versionCode`, deja el commit y la etiqueta,
+  sube a Play `alpha` y a TestFlight y avisa por ntfy con el botón "Parar esta semana".
+- **Lunes 9:07**: producción al 100 % en Play y revisión en App Store (sale sola al aprobarse), con
+  la ficha de `store/app-store` y las capturas de iPhone si cambiaron. Una tienda con la versión
+  anterior en revisión, rechazada o sin publicar se salta la semana, y el aviso lo dice.
+- **Entre semana nadie toca la versión ni pone etiquetas.** Un arreglo urgente sube la patch
+  (`X.Y.Z+1`) a mano y solo con el sí del usuario: commit con la versión, `git tag vX.Y.Z && git
+  push origin vX.Y.Z` (alpha y TestFlight) y `gh workflow run tren.yml -f paso=lunes -f seco=false`.
+- **Novedades**: quien cambia algo visible reescribe `store/whatsnew/whatsnew-<idioma>` en todos los
+  idiomas en el mismo commit (tope 500). Valen para las dos tiendas: nada que solo exista en una, ni
+  el nombre de la otra tienda (Apple rechaza que se nombre Google Play). Si nadie las toca, salen las
+  genéricas de `store/whatsnew-generic` y el aviso del domingo lo dice.
+- Prueba sin publicar nada: `gh workflow run tren.yml -f paso=domingo` (seco por defecto) y después
+  `-f paso=lunes`.
+
+Otro canal o una sola tienda, a mano: `gh workflow run release.yml -f stores=play -f track=internal`
 (`-f status=draft` mientras la app no haya publicado nada en Play).
 
 ## Ficha

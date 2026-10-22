@@ -1,0 +1,63 @@
+name: Tren
+
+# Same file in every app of the family; only the values under `with:` change (BaltaJmn/ci README).
+# The weekly release train (BaltaJmn/ci PUBLICAR.md, section 7): Sunday 19:37 builds what is on main
+# and announces it, Monday 9:07 ships it (Play production, App Review). Nobody tags in between.
+# Odd minutes on purpose: GitHub delays, and may drop, runs scheduled at the top of the hour.
+on:
+  schedule:
+    - cron: '37 19 * * 0'
+      timezone: Europe/Madrid
+    - cron: '17 1 * * 1'
+      timezone: Europe/Madrid
+    - cron: '7 9 * * 1'
+      timezone: Europe/Madrid
+  workflow_dispatch:
+    inputs:
+      paso:
+        description: domingo (version y aviso), eco (ordenes de parar) o lunes (salir)
+        type: choice
+        options: [domingo, eco, lunes]
+        default: domingo
+      seco:
+        description: Prueba sin publicar nada
+        type: boolean
+        default: true
+
+concurrency:
+  group: tren
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  tren:
+    uses: BaltaJmn/ci/.github/workflows/tren.yml@main
+    with:
+      paso: ${{ inputs.paso || (github.event.schedule == '37 19 * * 0' && 'domingo') || (github.event.schedule == '17 1 * * 1' && 'eco') || 'lunes' }}
+      seco: ${{ inputs.seco == true }}
+      app: FlowTime
+      clave: flowtime
+      package-name: com.baltajmn.flowtime
+      bundle-id: com.baltajmn.flowtime
+      version-file: build-logic/plugins/src/main/java/Config.kt
+      signer-cn: CN=BaltaJmn
+      gradle-tasks: ':app:bundleRelease'
+      aab-path: app/build/outputs/bundle/release/app-release.aab
+    secrets:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+      APPSTORE_KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+      APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+      APPSTORE_PRIVATE_KEY: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      APPLE_DEVELOPMENT_P12: ${{ secrets.APPLE_DEVELOPMENT_P12 }}
+      APPLE_DEVELOPMENT_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_P12_PASSWORD }}
+      APPLE_DISTRIBUTION_P12: ${{ secrets.APPLE_DISTRIBUTION_P12 }}
+      APPLE_DISTRIBUTION_P12_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_P12_PASSWORD }}
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      NTFY_TOPIC_APROBAR: ${{ secrets.NTFY_TOPIC_APROBAR }}
