@@ -228,7 +228,7 @@ motor se para con `stop()` (guarda lo trabajado).
    una sala" y "Unirme con código" en una fila con su botón), Amigos (solicitudes y "Tus amigos") y
    Añadir amigo (compartir mi enlace, QR y pegar el de otra persona). Los avisos se quedan hasta la
    siguiente acción o carga, no se van solos.
-4. **Sala**: en una caja de color arriba, el código grande, compartir, la fase en una pastilla, el
+4. **Sala**: en una caja de color arriba, el código grande, compartir, la fase con un punto de color, el
    último cambio de otros en una línea breve ("Ana ha pausado"), los miembros (tú con "(tú)"; los
    demás, al mantener pulsado, reportar o bloquear) y salir. En Amigos, cada uno dice "En la sala",
    "Invitado" o lleva su botón de invitar.

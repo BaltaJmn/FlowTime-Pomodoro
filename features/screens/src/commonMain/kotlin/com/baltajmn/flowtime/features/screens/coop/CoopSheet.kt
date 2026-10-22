@@ -87,7 +87,6 @@ import com.baltajmn.flowtime.core.design.theme.SheetTitle
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.TagPalette
-import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.data.coop.CoopAccount
 import com.baltajmn.flowtime.data.coop.CoopRoom
 import com.baltajmn.flowtime.data.coop.FRIEND_LINK
@@ -302,6 +301,7 @@ private fun EmailForm(account: CoopAccount, onCancel: () -> Unit) {
         label = { Text(stringResource(Res.string.coop_email_label)) },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
+        shape = MaterialTheme.shapes.large,
         modifier = Modifier.fillMaxWidth()
     )
     OutlinedTextField(
@@ -312,6 +312,7 @@ private fun EmailForm(account: CoopAccount, onCancel: () -> Unit) {
         visualTransformation = PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { if (canSubmit) submit() }),
+        shape = MaterialTheme.shapes.large,
         modifier = Modifier.fillMaxWidth()
     )
     if (failed) {
@@ -500,12 +501,14 @@ private fun FieldWithButton(
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { if (enabled) onSubmit() }),
+            shape = MaterialTheme.shapes.large,
             modifier = Modifier.weight(1f)
         )
         OutlinedButton(onClick = onSubmit, enabled = enabled) { Text(stringResource(button)) }
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Room(room: CoopRoom, ui: CoopUi, viewModel: CoopViewModel, engine: FocusEngine = koinInject()) {
     val session by engine.state.collectAsStateWithLifecycle()
@@ -513,19 +516,29 @@ private fun Room(room: CoopRoom, ui: CoopUi, viewModel: CoopViewModel, engine: F
     val shareText = stringResource(Res.string.coop_share_room_text, ROOM_LINK + room.code)
     val colors = MaterialTheme.colorScheme
     LiveBox {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        // Si el botón no cabe al lado (letra grande), baja de línea: el código no se parte nunca.
+        FlowRow(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             // El código grande y espaciado, para dictarlo; el lector lo lee junto a su rótulo.
-            Column(Modifier.weight(1f).semantics(mergeDescendants = true) {}) {
+            Column(Modifier.padding(end = 12.dp).semantics(mergeDescendants = true) {}) {
                 Text(stringResource(Res.string.coop_section_room), style = MaterialTheme.typography.labelLarge)
-                Text(room.code, style = Title.copy(letterSpacing = 2.sp))
+                Text(
+                    room.code,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.W700, letterSpacing = 3.sp),
+                    maxLines = 1,
+                    softWrap = false
+                )
             }
-            Button(onClick = { share(shareText) }) {
+            Button(onClick = { share(shareText) }, modifier = Modifier.align(Alignment.CenterVertically)) {
                 Icon(Icons.Filled.Share, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(stringResource(Res.string.coop_share_room))
             }
         }
-        // Lo que pasa ahora en la pastilla; lo último que hizo alguien, debajo y más pequeño.
+        // Lo que pasa ahora, con su punto; lo último que hizo alguien, debajo y más pequeño.
         Column(Modifier.semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite }) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(8.dp).clip(CircleShape).background(colors.primary))
@@ -710,7 +723,9 @@ private fun Account(ui: CoopUi, viewModel: CoopViewModel) {
     // Lo que cierra o borra, aparte y al final: lo último que se busca.
     HorizontalDivider(color = colors.outlineVariant, modifier = Modifier.padding(vertical = 8.dp))
     ButtonRow(text = Res.string.coop_session_here, button = Res.string.coop_sign_out, onClick = viewModel::signOut)
-    Row(Modifier.fillMaxWidth().padding(top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+    // Borrar, con su propio filete: con letra grande, sin él se leía como parte de cerrar sesión.
+    HorizontalDivider(color = colors.outlineVariant, modifier = Modifier.padding(vertical = 8.dp))
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f).padding(end = 8.dp)) {
             Text(stringResource(Res.string.coop_delete_account), style = SubBody.copy(fontWeight = FontWeight.W600, color = colors.error))
             Text(stringResource(Res.string.coop_delete_text), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
@@ -727,7 +742,7 @@ private fun Account(ui: CoopUi, viewModel: CoopViewModel) {
         AlertDialog(
             onDismissRequest = { renaming = false },
             title = { Text(stringResource(Res.string.coop_rename)) },
-            text = { OutlinedTextField(value = name, onValueChange = { name = it.take(30) }, singleLine = true) },
+            text = { OutlinedTextField(value = name, onValueChange = { name = it.take(30) }, singleLine = true, shape = MaterialTheme.shapes.large) },
             confirmButton = {
                 TextButton(
                     onClick = {
