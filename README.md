@@ -62,3 +62,12 @@ La firma de cada tarjeta, y el texto que la acompaña, es la búsqueda completa 
 ## Tu 2026 en FlowTime (D7, #85)
 
 Del 1 de diciembre al 15 de enero (`recapYear`), con el año que se cierra: en Enfoque una pastilla con una estrella ("Tu 2026 en FlowTime") y en Estadísticas una tarjeta. Abren dos tarjetas que se pasan de lado y se comparten como las del día: horas de foco, sesiones y días con foco; y mejor racha, día de la semana más productivo y mejor día. Todo sale de la base de datos del móvil (`yearRecap`, con tests), sin servidor; sin foco en el año no sale nada. El año se calcula solo, así que sirve igual en 2027.
+
+## Barra de pestañas con letra grande
+
+Las etiquetas de la barra (`MainScreen`) crecen con el tamaño de letra del sistema hasta **1,3** y ahí se quedan: es el mayor tamaño normal en las dos plataformas (Android, escala 1,3; iPhone, el último de Texto más grande antes de los de accesibilidad). Por encima, el contenido sigue creciendo y la barra no, como hace la barra de pestañas del propio iOS, que no crece nunca.
+
+- Una sola línea siempre, sin puntos suspensivos: si una etiqueta no cabe a ese tamaño (`Einstellungen`, `Impostazioni` en un móvil de 360 dp), encoge (hasta 8 sp, con 4 dp de aire a cada lado) en vez de partirse o cortarse.
+- No se esconde ninguna etiqueta: con cuatro pestañas de ancho igual, quitar el nombre a las no elegidas no deja más sitio a la elegida.
+- El lector de pantalla lee la etiqueta entera a cualquier tamaño.
+- Para cambiar el tope: `MAX_LABEL_SCALE`.
