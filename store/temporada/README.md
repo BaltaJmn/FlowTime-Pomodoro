@@ -8,9 +8,9 @@ Chroma (`color/store/temporada/`).
 
 | Carpeta | Cuando | Que dice |
 |---|---|---|
-| `examenes-diciembre/` | Del 30-11-2026 al 20-12-2026 | Semana de examenes finales: bloques largos de estudio (modo FlowTime sin cuenta atras), descanso que se adapta, Coop para estudiar con los companeros |
-| `normal` (no es carpeta: es `store/listings/`) | Del 21-12 al 27-12-2026, y desde el 1-02-2027 | La ficha de siempre |
-| `enero-2027/` | Del 28-12-2026 al 31-01-2027 | Ano nuevo, enfoque nuevo: objetivo diario, racha, recordatorio; y examenes de enero (con Coop) |
+| `examenes-diciembre/` | Del 1-12-2026 al 21-12-2026 | Semana de examenes finales: bloques largos de estudio (modo FlowTime sin cuenta atras), descanso que se adapta, Coop para estudiar con los companeros |
+| `normal` (no es carpeta: es `store/listings/`) | Del 22-12 al 28-12-2026, y desde el 2-02-2027 | La ficha de siempre |
+| `enero-2027/` | Del 29-12-2026 al 1-02-2027 | Ano nuevo, enfoque nuevo: objetivo diario, racha, recordatorio; y examenes de enero (con Coop) |
 
 Cada idioma (los 14 de `store/listings/`) lleva dos ficheros:
 
@@ -25,30 +25,31 @@ La larga de la temporada se monta con la normal en el momento de subir, asi que 
 ## Las ordenes, una por cambio
 
 Los cambios de ficha de cara al publico los pide el usuario: la rutina de los lunes se lo recuerda la
-semana anterior (lunes 23-11, 14-12, 21-12 y 25-01) y se suben con una orden. Todas son lunes. Cada una
+semana anterior (lunes 23-11, 14-12, 21-12 y 25-01) y se suben con una orden. Todas son martes: el lunes es del tren de versiones, y Play rechaza un
+cambio de ficha con la version del tren en revision (`ci/PUBLICAR.md`). Cada una
 se ensaya antes con `modo=dry` (Play valida la edicion y la descarta, sin cambiar nada).
 
 ```bash
 # 0. Comprobar (tambien corre sola en cada push a store/ y a tools/store/temporada.py): topes, idiomas y caracteres
 python3 tools/store/temporada.py comprobar
 
-# 1. Lunes 30-11-2026: la ficha pasa a la de examenes de diciembre
+# 1. Martes 1-12-2026: la ficha pasa a la de examenes de diciembre
 gh workflow run temporada.yml -f ficha=examenes-diciembre -f modo=dry     # ensayo
 gh workflow run temporada.yml -f ficha=examenes-diciembre -f modo=subir
 
-# 2. Lunes 21-12-2026: vuelta a la normal (semana de Navidad, ya no hay examenes finales)
+# 2. Martes 22-12-2026: vuelta a la normal (semana de Navidad, ya no hay examenes finales)
 gh workflow run temporada.yml -f ficha=normal -f modo=subir
 
-# 3. Lunes 28-12-2026: la ficha de enero (propositos y examenes de enero)
+# 3. Martes 29-12-2026: la ficha de enero (propositos y examenes de enero)
 gh workflow run temporada.yml -f ficha=enero-2027 -f modo=dry
 gh workflow run temporada.yml -f ficha=enero-2027 -f modo=subir
 
-# 4. Lunes 1-02-2027: vuelta a la normal
+# 4. Martes 2-02-2027: vuelta a la normal
 gh workflow run temporada.yml -f ficha=normal -f modo=subir
 ```
 
 Desde el Mac, `python3 tools/store/temporada.py subir <ficha> [--dry]` hace lo mismo con la cuenta de
-servicio de `~/keys` (necesita el clon `../ci`). Si no se quiere el cambio del 21-12, se omite esa orden:
+servicio de `~/keys` (necesita el clon `../ci`). Si no se quiere el cambio del 22-12, se omite esa orden:
 la ficha de diciembre se queda una semana mas hablando de examenes finales.
 
 ## Condiciones antes de subir (cada vez)
