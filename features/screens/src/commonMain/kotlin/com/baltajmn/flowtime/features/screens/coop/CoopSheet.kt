@@ -85,6 +85,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baltajmn.flowtime.core.design.resources.*
 import com.baltajmn.flowtime.core.design.theme.SheetTitle
 import com.baltajmn.flowtime.core.design.theme.SmallTitle
+import com.baltajmn.flowtime.core.design.theme.Title
 import com.baltajmn.flowtime.core.design.theme.SubBody
 import com.baltajmn.flowtime.core.design.theme.TagPalette
 import com.baltajmn.flowtime.data.coop.CoopAccount
@@ -523,14 +524,9 @@ private fun Room(room: CoopRoom, ui: CoopUi, viewModel: CoopViewModel, engine: F
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // El código grande y espaciado, para dictarlo; el lector lo lee junto a su rótulo.
-            Column(Modifier.padding(end = 12.dp).semantics(mergeDescendants = true) {}) {
+            Column(Modifier.padding(end = 8.dp).semantics(mergeDescendants = true) {}) {
                 Text(stringResource(Res.string.coop_section_room), style = MaterialTheme.typography.labelLarge)
-                Text(
-                    room.code,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.W700, letterSpacing = 3.sp),
-                    maxLines = 1,
-                    softWrap = false
-                )
+                Text(room.code, style = Title.copy(letterSpacing = 2.sp), maxLines = 1, softWrap = false)
             }
             Button(onClick = { share(shareText) }, modifier = Modifier.align(Alignment.CenterVertically)) {
                 Icon(Icons.Filled.Share, contentDescription = null, modifier = Modifier.size(18.dp))
