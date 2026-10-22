@@ -24,7 +24,9 @@ proceso, en `BaltaJmn/ci` PUBLICAR.md sección 7):
 - **Lunes 9:07**: producción al 100 % en Play y revisión en App Store (sale sola al aprobarse), con
   la ficha de `store/app-store` y las capturas de iPhone si cambiaron. Una tienda con la versión
   anterior en revisión, rechazada o sin publicar se salta la semana, y el aviso lo dice.
-- **Entre semana nadie toca la versión ni pone etiquetas.** Un arreglo urgente sube la patch
+- **Entre semana nadie toca `versionName` ni pone etiquetas.** El `versionCode` solo sube para una
+  build de prueba de TestFlight sin etiqueta (`gh workflow run release.yml -f stores=app-store`); el
+  tren numera desde el que haya. Un arreglo urgente sube la patch
   (`X.Y.Z+1`) a mano y solo con el sí del usuario: commit con la versión, `git tag vX.Y.Z && git
   push origin vX.Y.Z` (alpha y TestFlight) y `gh workflow run tren.yml -f paso=lunes -f seco=false`.
 - **Novedades**: quien cambia algo visible reescribe `store/whatsnew/whatsnew-<idioma>` en todos los

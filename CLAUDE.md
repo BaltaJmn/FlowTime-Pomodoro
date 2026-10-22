@@ -5,8 +5,9 @@ proceso de publicar es el de la familia (`BaltaJmn/ci`); lo de FlowTime, en `sto
 
 ## Versiones: el tren de los lunes
 
-- Nadie toca `versionName` ni `versionCode` (`build-logic/plugins/src/main/java/Config.kt`) ni pone
-  etiquetas entre semana: el tren semanal (`.github/workflows/tren.yml`) numera y sube el domingo y
+- Nadie toca `versionName` (`build-logic/plugins/src/main/java/Config.kt`) ni pone etiquetas entre
+  semana; el `versionCode` solo sube para una build de prueba de TestFlight sin etiqueta
+  (`release.yml -f stores=app-store`). El tren semanal (`.github/workflows/tren.yml`) numera y sube el domingo y
   saca la versión el lunes en las dos tiendas (`store/ci.md`, "Publicar una versión").
 - Quien cambia algo visible reescribe `store/whatsnew/whatsnew-<idioma>` en los catorce idiomas en el
   mismo commit (tope 500). Valen para Play y App Store: nada que solo exista en una, ni el nombre de
