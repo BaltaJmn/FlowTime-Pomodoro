@@ -221,14 +221,22 @@ motor se para con `stop()` (guarda lo trabajado).
    nunca) o "Focus" con cuatro cifras (`suggestedName`). Se cambia en Ajustes > Cuenta de Coop > Cambiar nombre.
    Si hay sesion sin perfil y la casilla no esta marcada (quien entro con una version anterior y se quedo en
    el nombre), la hoja solo pide la edad.
-3. **Coop sin sala**: "Crear sala", "Unirme con código", invitaciones recibidas, y la lista de amigos
-   con "Añadir amigo" (enlace y QR, como Chroma).
-4. **Sala**: el anillo de siempre con la fase de la sala, los miembros (nombre y, al mantener
-   pulsado, reportar o bloquear), compartir enlace o código, invitar amigos, salir. Los cambios de
-   otros salen como una línea breve ("Ana ha pausado").
-5. **Cuenta**, en Ajustes > Cuenta de Coop (solo con sesion): nombre, bloqueados, cerrar sesion, borrar
-   cuenta. Primero estuvo al final de la hoja; la critica de diseno del 19-10-2026 la saco para que la
-   hoja quede para estudiar juntos. La hoja lo recuerda en una linea al final.
+   Los botones apagados dicen por qué debajo ("Marca la casilla para continuar"), y la casilla es una
+   fila entera con su texto.
+3. **Coop sin sala**: bajo el título, "Has entrado como <nombre>". Tres secciones con título,
+   separadas por un filete: la sala (invitaciones recibidas en una caja de color con No y Sí, "Crear
+   una sala" y "Unirme con código" en una fila con su botón), Amigos (solicitudes y "Tus amigos") y
+   Añadir amigo (compartir mi enlace, QR y pegar el de otra persona). Los avisos se quedan hasta la
+   siguiente acción o carga, no se van solos.
+4. **Sala**: en una caja de color arriba, el código grande, compartir, la fase en una pastilla, el
+   último cambio de otros en una línea breve ("Ana ha pausado"), los miembros (tú con "(tú)"; los
+   demás, al mantener pulsado, reportar o bloquear) y salir. En Amigos, cada uno dice "En la sala",
+   "Invitado" o lleva su botón de invitar.
+5. **Cuenta**, en Ajustes > Cuenta de Coop (solo con sesión), justo después de la copia y antes de
+   Pro: nombre con "Cambiar", bloqueados, tu enlace de amistad con "Enlace nuevo" (pide confirmación:
+   el anterior deja de valer), cerrar sesión y, aparte y en rojo, borrar cuenta. Primero estuvo al
+   final de la hoja; la crítica de diseño del 19-10-2026 la sacó para que la hoja quede para estudiar
+   juntos, y la del 22-10-2026 llevó aquí también "Enlace nuevo".
 
 Enlaces: `https://flowtime.baltajmn.dev/r/<código>` (sala) y `/f/<código>` (amistad), en la web que ya
 sirve la política (`BaltaJmn/flowtime-privacy`), con `assetlinks.json`,

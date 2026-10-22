@@ -93,6 +93,8 @@ class CoopViewModel(
     /** Al abrir la hoja, al volver la red y al pulsar reintentar. */
     fun load() = launch {
         offline.value = false
+        // Abrir la hoja empieza de cero: lo que contestó la vez anterior ya no viene a cuento.
+        local.value = local.value.copy(message = null, friendMessage = null)
         runCatching {
             account.loadMe()
             if (account.me.value != null) {
@@ -149,10 +151,6 @@ class CoopViewModel(
         local.value = local.value.copy(friendMessage = friendAnswer(answer))
     }
 
-    fun onFriendMessageShown() {
-        local.value = local.value.copy(friendMessage = null)
-    }
-
     /** Un enlace abierto desde fuera: de amistad o de sala. Sin cuenta, espera en pendingLink. */
     private fun openLink(link: String) {
         if (link == COOP_LINK) return
@@ -202,18 +200,15 @@ class CoopViewModel(
         loaded.value = false
     }
 
-    fun onMessageShown() {
-        local.value = local.value.copy(message = null)
-    }
-
     fun onSignInFailed() = say(Res.string.coop_sign_in_failed)
 
     private fun say(message: StringResource) {
         local.value = local.value.copy(message = message)
     }
 
+    /** Cada acción sustituye lo que dijo la anterior: el aviso se queda hasta entonces, no unos segundos. */
     private fun act(block: suspend () -> Unit) = launch {
-        local.value = local.value.copy(busy = true)
+        local.value = local.value.copy(busy = true, message = null, friendMessage = null)
         runCatching { block() }.onFailure { say(Res.string.coop_offline) }
         local.value = local.value.copy(busy = false)
     }

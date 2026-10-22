@@ -169,6 +169,7 @@ fun SettingsContent(
 ) {
     var showSupport by rememberSaveable { mutableStateOf(false) }
     if (showSupport) SupportSheet(onDismiss = { showSupport = false })
+    RestoreMessage(state.purchases, viewModel::onRestoreMessageShown)
 
     LazyColumn(
         state = listState,
@@ -288,11 +289,15 @@ fun SettingsContent(
             )
         }
         item { Spacer(modifier = Modifier.height(24.dp)) }
+        // La cuenta junto a tus datos; lo que se paga, después.
+        item { CoopAccountCard() }
         if (state.purchases.pro != ProAccess.HIDDEN) {
             item {
                 ProCard(
                     owned = state.purchases.pro == ProAccess.OPEN,
-                    onOpen = { onOpenPro(null) }
+                    onOpen = { onOpenPro(null) },
+                    restoring = state.purchases.restoring,
+                    onRestore = viewModel::restorePurchases
                 )
             }
             item { Spacer(modifier = Modifier.height(24.dp)) }
@@ -302,13 +307,12 @@ fun SettingsContent(
                 SupportCard(
                     state = state.purchases,
                     onTip = { showSupport = true },
-                    onRestore = viewModel::restorePurchases,
-                    onMessageShown = viewModel::onRestoreMessageShown
+                    // Restaurar va con Pro, que es lo que restaura; sin Pro a la venta, se queda aquí.
+                    onRestore = if (state.purchases.pro == ProAccess.HIDDEN) viewModel::restorePurchases else null
                 )
             }
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }
-        item { CoopAccountCard() }
         item {
             SettingsCard(Res.string.settings_about_title) {
                 Spacer(modifier = Modifier.height(4.dp))
@@ -438,7 +442,12 @@ fun ButtonRow(text: StringResource, button: StringResource, onClick: () -> Unit)
             text = stringResource(text),
             style = SubBody.copy(color = MaterialTheme.colorScheme.onSurface)
         )
-        TextButton(onClick = onClick) { Text(text = stringResource(button)) }
+        // "Ver" o "Activar" se repiten en Ajustes: el lector dice también de qué fila son.
+        val label = stringResource(button)
+        val row = stringResource(text)
+        TextButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = "$label, $row" }) {
+            Text(text = label)
+        }
     }
 }
 
@@ -467,9 +476,9 @@ fun SwitchRow(
     }
 }
 
-/** Ajustes › FlowTime Pro: lo que incluye, o las gracias a quien ya lo tiene. */
+/** Ajustes › FlowTime Pro: lo que incluye, o las gracias a quien ya lo tiene, y restaurar la compra. */
 @Composable
-fun ProCard(owned: Boolean, onOpen: () -> Unit) {
+fun ProCard(owned: Boolean, onOpen: () -> Unit, restoring: Boolean, onRestore: () -> Unit) {
     SettingsCard(Res.string.pro_title) {
         Spacer(modifier = Modifier.height(4.dp))
         Text(
@@ -478,21 +487,19 @@ fun ProCard(owned: Boolean, onOpen: () -> Unit) {
             ),
             style = SubBody.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
         )
-        if (!owned) {
-            Spacer(modifier = Modifier.height(12.dp))
-            Button(onClick = onOpen) { Text(text = stringResource(Res.string.pro_see)) }
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (!owned) Button(onClick = onOpen) { Text(text = stringResource(Res.string.pro_see)) }
+            TextButton(onClick = onRestore, enabled = !restoring) {
+                Text(text = stringResource(Res.string.restore_purchases))
+            }
         }
     }
 }
 
-/** Las propinas, la insignia de quien ya ha dejado alguna y "Restaurar compras", siempre a la vista. */
+/** El resultado de restaurar, con la lista desplazada donde esté: una tarjeta fuera de pantalla no lo diría. */
 @Composable
-fun SupportCard(
-    state: PurchasesUiState,
-    onTip: () -> Unit,
-    onRestore: () -> Unit,
-    onMessageShown: () -> Unit
-) {
+private fun RestoreMessage(state: PurchasesUiState, onMessageShown: () -> Unit) {
     val showMessage = rememberShowMessage()
     LaunchedEffect(state.message) {
         val message = state.message ?: return@LaunchedEffect
@@ -503,6 +510,15 @@ fun SupportCard(
         showMessage(getString(text))
         onMessageShown()
     }
+}
+
+/** Las propinas y la insignia de quien ya ha dejado alguna; "Restaurar compras" solo si Pro no está a la venta. */
+@Composable
+fun SupportCard(
+    state: PurchasesUiState,
+    onTip: () -> Unit,
+    onRestore: (() -> Unit)?
+) {
     SettingsCard(Res.string.support_developer_title) {
         if (state.isSupporter) {
             Spacer(modifier = Modifier.height(8.dp))
@@ -526,8 +542,10 @@ fun SupportCard(
         )
         Spacer(modifier = Modifier.height(12.dp))
         FilledTonalButton(onClick = onTip) { Text(text = stringResource(Res.string.support_developer)) }
-        TextButton(onClick = onRestore, enabled = !state.restoring) {
-            Text(text = stringResource(Res.string.restore_purchases))
+        onRestore?.let {
+            TextButton(onClick = it, enabled = !state.restoring) {
+                Text(text = stringResource(Res.string.restore_purchases))
+            }
         }
     }
 }

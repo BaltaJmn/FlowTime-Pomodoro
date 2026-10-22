@@ -42,6 +42,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.semantics.heading
@@ -120,11 +124,24 @@ fun ProContent(
                 )
             }
         }
-        // Lo que se compra se desplaza; el precio y el botón se quedan siempre a la vista.
+        // Lo que se compra se desplaza; el precio y el botón se quedan siempre a la vista. Mientras queda
+        // algo debajo, el borde se funde con la hoja: cortada en seco, la tercera ventaja parecía la última.
+        val scroll = rememberScrollState()
+        val sheet = MaterialTheme.colorScheme.surfaceContainerLow // el fondo de ModalBottomSheet
         Column(
             modifier = Modifier
                 .weight(1f, fill = false)
-                .verticalScroll(rememberScrollState())
+                .drawWithContent {
+                    drawContent()
+                    if (scroll.canScrollForward) {
+                        val fade = 48.dp.toPx()
+                        drawRect(
+                            Brush.verticalGradient(listOf(Color.Transparent, sheet), startY = size.height - fade, endY = size.height),
+                            topLeft = Offset(0f, size.height - fade)
+                        )
+                    }
+                }
+                .verticalScroll(scroll)
                 .padding(end = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
