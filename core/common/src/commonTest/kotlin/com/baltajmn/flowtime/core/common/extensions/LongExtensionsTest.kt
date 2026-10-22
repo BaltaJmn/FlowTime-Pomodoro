@@ -20,8 +20,20 @@ class LongExtensionsTest {
 
     @Test
     fun losMinutosEstudiadosSeLeenEnHorasYMinutos() {
-        assertEquals("45 min", 45L.formatMinutesStudying())
-        assertEquals("2 h", 120L.formatMinutesStudying())
-        assertEquals("1 h 5 min", 65L.formatMinutesStudying())
+        assertEquals("45 min", 45L.formatMinutesStudying("en"))
+        assertEquals("2 h", 120L.formatMinutesStudying("en"))
+        assertEquals("1 h 5 min", 65L.formatMinutesStudying("en"))
+    }
+
+    @Test
+    fun lasUnidadesSonLasDelIdioma() {
+        assertEquals("0 мин", 0L.formatMinutesStudying("ru"))
+        assertEquals("1 ч 5 мин", 65L.formatMinutesStudying("ru"))
+        assertEquals("2 Std.", 120L.formatMinutesStudying("de"))
+        assertEquals("1時間5分", 65L.formatMinutesStudying("ja"))
+        assertEquals("1시간 5분", 65L.formatMinutesStudying("ko"))
+        assertEquals(65L.formatMinutesStudying("id"), 65L.formatMinutesStudying("in"))
+        // Un idioma sin traducir, como el resto de textos: en inglés.
+        assertEquals("1 h 5 min", 65L.formatMinutesStudying("sv"))
     }
 }

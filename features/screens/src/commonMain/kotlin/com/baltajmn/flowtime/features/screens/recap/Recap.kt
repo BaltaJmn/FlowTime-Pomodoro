@@ -166,4 +166,4 @@ private fun CardTitle(year: Int) {
 
 /** "142 h"; con menos de una hora, en minutos. */
 private fun focusText(seconds: Long): String =
-    if (seconds >= 3600) "${seconds / 3600} h" else (seconds / 60).formatMinutesStudying()
+    (if (seconds >= 3600) seconds / 3600 * 60 else seconds / 60).formatMinutesStudying()
