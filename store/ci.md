@@ -26,13 +26,16 @@ proceso, en `BaltaJmn/ci` PUBLICAR.md sección 7):
   anterior en revisión, rechazada o sin publicar se salta la semana, y el aviso lo dice.
 - **Entre semana nadie toca `versionName` ni pone etiquetas.** El `versionCode` solo sube para una
   build de prueba de TestFlight sin etiqueta (`gh workflow run release.yml -f stores=app-store`); el
-  tren numera desde el que haya. Un arreglo urgente sube la patch
+  tren numera por encima del mayor usado en el fichero, Play o App Store Connect (TestFlight incluido), así que una build de prueba no bloquea nada ni hay que apuntarla. Un arreglo urgente sube la patch
   (`X.Y.Z+1`) a mano y solo con el sí del usuario: commit con la versión, `git tag vX.Y.Z && git
   push origin vX.Y.Z` (alpha y TestFlight) y `gh workflow run tren.yml -f paso=lunes -f seco=false`.
 - **Novedades**: quien cambia algo visible reescribe `store/whatsnew/whatsnew-<idioma>` en todos los
   idiomas en el mismo commit (tope 500). Valen para las dos tiendas: nada que solo exista en una, ni
   el nombre de la otra tienda (Apple rechaza que se nombre Google Play). Si nadie las toca, salen las
   genéricas de `store/whatsnew-generic` y el aviso del domingo lo dice.
+- **Avisos**: lo que sale bien llega en silencio; suenan los fallos y las tiendas que se saltan la
+  semana. Cada paso tiene una ejecución de reserva (domingo 21:37, lunes 4:17 y 11:07) que reintenta lo
+  pasajero antes de que suene.
 - Prueba sin publicar nada: `gh workflow run tren.yml -f paso=domingo` (seco por defecto) y después
   `-f paso=lunes`.
 

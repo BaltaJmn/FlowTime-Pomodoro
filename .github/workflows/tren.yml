@@ -3,14 +3,22 @@ name: Tren
 # Same file in every app of the family; only the values under `with:` change (BaltaJmn/ci README).
 # The weekly release train (BaltaJmn/ci PUBLICAR.md, section 7): Sunday 19:37 builds what is on main
 # and announces it, Monday 9:07 ships it (Play production, App Review). Nobody tags in between.
-# Odd minutes on purpose: GitHub delays, and may drop, runs scheduled at the top of the hour.
+# Odd minutes on purpose: GitHub delays, and may drop, runs scheduled at the top of the hour. Each step
+# has a reserve run (21:37, 4:17, 11:07) that does only what the first one left undone; tren.py knows these
+# crons by heart (PRIMERA), so they change together.
 on:
   schedule:
     - cron: '37 19 * * 0'
       timezone: Europe/Madrid
+    - cron: '37 21 * * 0'
+      timezone: Europe/Madrid
     - cron: '17 1 * * 1'
       timezone: Europe/Madrid
+    - cron: '17 4 * * 1'
+      timezone: Europe/Madrid
     - cron: '7 9 * * 1'
+      timezone: Europe/Madrid
+    - cron: '7 11 * * 1'
       timezone: Europe/Madrid
   workflow_dispatch:
     inputs:
@@ -35,7 +43,7 @@ jobs:
   tren:
     uses: BaltaJmn/ci/.github/workflows/tren.yml@main
     with:
-      paso: ${{ inputs.paso || (github.event.schedule == '37 19 * * 0' && 'domingo') || (github.event.schedule == '17 1 * * 1' && 'eco') || 'lunes' }}
+      paso: ${{ inputs.paso || (endsWith(github.event.schedule, ' 0') && 'domingo') || (startsWith(github.event.schedule, '17 ') && 'eco') || 'lunes' }}
       seco: ${{ inputs.seco == true }}
       app: FlowTime
       clave: flowtime
