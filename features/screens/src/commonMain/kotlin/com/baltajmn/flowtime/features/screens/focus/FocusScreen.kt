@@ -510,7 +510,9 @@ private fun SessionLine(task: String?, tag: String?, onClick: () -> Unit) {
     }
 }
 
-private val MIN_RING = 200.dp
+// Con 200, la letra al 200 % de Android (la mayor) dejaba "0 min de 1 h hoy" cortado bajo la barra de
+// un Pixel 8. A 160 el reloj aún sale a 37 sp, más grande que el texto a ese tamaño.
+private val MIN_RING = 160.dp
 
 private const val MINUTE_MILLIS = 60_000L
 
