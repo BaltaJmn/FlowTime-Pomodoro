@@ -33,8 +33,8 @@ proceso, en `BaltaJmn/ci` PUBLICAR.md sección 7):
   idiomas en el mismo commit (tope 500). Valen para las dos tiendas: nada que solo exista en una, ni
   el nombre de la otra tienda (Apple rechaza que se nombre Google Play). Si nadie las toca, salen las
   genéricas de `store/whatsnew-generic` y el aviso del domingo lo dice.
-- **Avisos**: lo que sale bien llega en silencio; suenan los fallos y las tiendas que se saltan la
-  semana. Cada paso tiene una ejecución de reserva (domingo 21:37, lunes 4:17 y 11:07) que reintenta lo
+- **Avisos**: suenan solo los rechazos de Apple o Google y los fallos; lo que sale y una tienda
+  que espera una revisión llegan en silencio. Cada paso tiene una ejecución de reserva (domingo 21:37, lunes 4:17 y 11:07) que reintenta lo
   pasajero antes de que suene.
 - Prueba sin publicar nada: `gh workflow run tren.yml -f paso=domingo` (seco por defecto) y después
   `-f paso=lunes`.
