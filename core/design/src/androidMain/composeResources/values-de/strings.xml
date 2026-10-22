@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alert_google_play">Fehler beim Verbinden mit Google Play</string>
+    <string name="backup_automatic">Wenn die Google-Sicherung aktiviert ist, speichert Android deinen Verlauf und deine Einstellungen in deinem Konto: Installierst du FlowTime auf einem neuen Handy, sind sie wieder da.</string>
+    <string name="restore_nothing">Keine Käufe gefunden. Prüfe deine Verbindung und ob du dasselbe Google-Konto verwendest.</string>
+    <string name="pro_restore_nothing">Pro wurde in diesem Google-Konto nicht gefunden. Prüfe die Verbindung.</string>
+</resources>

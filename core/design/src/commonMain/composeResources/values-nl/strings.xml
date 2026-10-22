@@ -36,8 +36,7 @@
     <string name="user_progression_level">Voortgangsniveau</string>
     <string name="show_sound">Achtergrondgeluid tonen</string>
     <string name="show_alert">Waarschuw me als een fase eindigt</string>
-    <string name="alert_google_play">Fout bij verbinden met Google Play</string>
-    <string name="alert_google_play_desc">Zorg voor een actieve internetverbinding om de benodigde gegevens op te halen.</string>
+    <string name="alert_store_desc">Zorg voor een actieve internetverbinding om de benodigde gegevens op te halen.</string>
     <string name="pomodoro_advantages">Werk en rust in vaste blokken die je zelf instelt.</string>
     <string name="flow_time_advantages">Werk zolang je gefocust blijft. Hoe langer je werkt, hoe langer de pauze.</string>
     <string name="percentage_advantages">Je pauze is een vast percentage van de tijd die je hebt gewerkt.</string>
@@ -129,7 +128,6 @@
     <string name="exact_alarms_off">Meldingen kunnen een paar minuten te laat komen. Sta wekkers en herinneringen toe om ze op tijd te horen.</string>
     <string name="channel_sounds">Achtergrondgeluiden</string>
     <string name="backup_title">Back-up</string>
-    <string name="backup_automatic">Als de Google-back-up aan staat, bewaart Android je geschiedenis en instellingen in je account: installeer FlowTime op een nieuwe telefoon en ze komen terug.</string>
     <string name="backup_automatic_ios">Als iCloud-reservekopie aan staat, bewaart je iPhone je geschiedenis en instellingen: zet de reservekopie terug op een nieuwe iPhone en ze komen terug.</string>
     <string name="backup_export_label">Alles opslaan in een bestand</string>
     <string name="backup_export">Exporteren</string>
@@ -223,7 +221,6 @@
     <string name="supporter_thanks">Bedankt dat je FlowTime steunt. Je kunt altijd nog een fooi geven.</string>
     <string name="restore_purchases">Aankopen herstellen</string>
     <string name="restore_done">Aankopen hersteld</string>
-    <string name="restore_nothing">Geen aankopen gevonden. Controleer je verbinding en of je hetzelfde Google-account gebruikt.</string>
     <string name="theme_supporter">Supporter</string>
     <string name="nav_focus">Focus</string>
     <string name="nav_stats">Statistieken</string>
@@ -258,7 +255,6 @@
     <string name="pro_free_text">De drie timers, die doortellen als de app gesloten is, de meldingen, de reeks en het dagdoel, statistieken van vandaag, de week en de maand, de geluiden, de thema's en de back-up.</string>
     <string name="pro_one_time">Eenmalige betaling · Geen abonnement</string>
     <string name="pro_buy">Pro nemen</string>
-    <string name="pro_restore_nothing">Pro is niet gevonden in dit Google-account. Controleer je verbinding.</string>
     <string name="pro_thanks_text">Je hebt FlowTime Pro: alles van Pro is ontgrendeld. Bedankt dat je FlowTime steunt.</string>
     <string name="pro_see">Pro bekijken</string>
     <string name="pro_settings_text">Geavanceerde statistieken, CSV-export, onbeperkt labels, taken en mixen, 6 nieuwe geluiden, 6 nieuwe thema's en iconen en automatisch Niet storen. Betaal één keer en houd Pro voor altijd, of betaal maand per maand.</string>
@@ -361,9 +357,6 @@
     <string name="coop_email_submit">Inloggen</string>
     <string name="coop_email_failed">E-mailadres of wachtwoord onjuist. Gebruik Apple of Google.</string>
     <string name="coop_sign_in_failed">Inloggen mislukt. Probeer het opnieuw.</string>
-    <string name="coop_name_title">Je naam in Coop</string>
-    <string name="coop_name_hint">Je vrienden en de mensen in je ruimte zien deze naam.</string>
-    <string name="coop_name_label">Naam</string>
     <string name="coop_age">Ik ben 16 of ouder</string>
     <string name="coop_continue">Doorgaan</string>
     <string name="coop_offline">Geen verbinding. Coop heeft internet nodig; de rest van de app niet.</string>

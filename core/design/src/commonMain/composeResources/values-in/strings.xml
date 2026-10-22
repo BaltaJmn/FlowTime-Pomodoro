@@ -37,8 +37,7 @@
     <string name="user_progression_level">Level progres</string>
     <string name="show_sound">Tampilkan suara latar</string>
     <string name="show_alert">Beri tahu saat setiap fase berakhir</string>
-    <string name="alert_google_play">Gagal terhubung ke Google Play</string>
-    <string name="alert_google_play_desc">Pastikan kamu terhubung ke internet untuk mengambil data yang diperlukan.</string>
+    <string name="alert_store_desc">Pastikan kamu terhubung ke internet untuk mengambil data yang diperlukan.</string>
     <string name="pomodoro_advantages">Bekerja dan istirahat dalam blok tetap yang kamu atur.</string>
     <string name="flow_time_advantages">Bekerjalah selama kamu masih fokus. Makin lama kamu bekerja, makin panjang istirahatnya.</string>
     <string name="percentage_advantages">Istirahatmu adalah persentase tetap dari waktu kerjamu.</string>
@@ -127,7 +126,6 @@
     <string name="exact_alarms_off">Pemberitahuan bisa terlambat beberapa menit. Izinkan alarm dan pengingat agar terdengar tepat waktu.</string>
     <string name="channel_sounds">Suara latar</string>
     <string name="backup_title">Cadangan</string>
-    <string name="backup_automatic">Jika cadangan Google aktif, Android menyimpan riwayat dan pengaturanmu di akunmu: pasang FlowTime di ponsel baru dan semuanya kembali.</string>
     <string name="backup_automatic_ios">Jika Cadangan iCloud aktif, iPhone-mu menyimpan riwayat dan pengaturanmu: pulihkan cadangan di iPhone baru dan semuanya kembali.</string>
     <string name="backup_export_label">Simpan semuanya ke file</string>
     <string name="backup_export">Ekspor</string>
@@ -219,7 +217,6 @@
     <string name="supporter_thanks">Terima kasih sudah mendukung FlowTime. Kamu bisa memberi tip lagi kapan saja.</string>
     <string name="restore_purchases">Pulihkan pembelian</string>
     <string name="restore_done">Pembelian dipulihkan</string>
-    <string name="restore_nothing">Tidak ada pembelian ditemukan. Periksa koneksimu dan pastikan kamu memakai akun Google yang sama.</string>
     <string name="theme_supporter">Pendukung</string>
     <string name="nav_focus">Fokus</string>
     <string name="nav_stats">Statistik</string>
@@ -254,7 +251,6 @@
     <string name="pro_free_text">Tiga timer yang tetap berjalan saat aplikasi ditutup, pemberitahuan, streak dan target harian, statistik hari ini, minggu dan bulan, suara, tema, dan cadangan.</string>
     <string name="pro_one_time">Sekali bayar · Tanpa langganan</string>
     <string name="pro_buy">Dapatkan Pro</string>
-    <string name="pro_restore_nothing">Pro tidak ditemukan di akun Google ini. Periksa koneksimu.</string>
     <string name="pro_thanks_text">Kamu punya FlowTime Pro: semua fitur Pro terbuka. Terima kasih sudah mendukung FlowTime.</string>
     <string name="pro_see">Lihat Pro</string>
     <string name="pro_settings_text">Statistik lanjutan, ekspor CSV, label, tugas dan mix tanpa batas, 6 suara baru, 6 tema dan ikon baru, serta Jangan Ganggu otomatis. Bayar sekali dan pakai Pro selamanya, atau bayar bulan demi bulan.</string>
@@ -357,9 +353,6 @@
     <string name="coop_email_submit">Masuk</string>
     <string name="coop_email_failed">Email atau kata sandi salah. Gunakan Apple atau Google.</string>
     <string name="coop_sign_in_failed">Gagal masuk. Coba lagi.</string>
-    <string name="coop_name_title">Namamu di Coop</string>
-    <string name="coop_name_hint">Teman-temanmu dan orang di ruanganmu melihat nama ini.</string>
-    <string name="coop_name_label">Nama</string>
     <string name="coop_age">Saya berusia 16 tahun atau lebih</string>
     <string name="coop_continue">Lanjut</string>
     <string name="coop_offline">Tidak ada koneksi. Coop butuh internet; bagian aplikasi lainnya tidak.</string>

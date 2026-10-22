@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alert_google_play">Ошибка подключения к Google Play</string>
+    <string name="backup_automatic">Если резервное копирование Google включено, Android сохраняет вашу историю и настройки в аккаунте: при установке FlowTime на новый телефон они вернутся.</string>
+    <string name="restore_nothing">Покупки не найдены. Проверьте подключение и то, что вы используете тот же аккаунт Google.</string>
+    <string name="pro_restore_nothing">Pro не найден в этом аккаунте Google. Проверьте подключение.</string>
+</resources>

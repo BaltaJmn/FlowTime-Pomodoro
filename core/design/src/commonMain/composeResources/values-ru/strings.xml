@@ -36,8 +36,7 @@
     <string name="user_progression_level">Уровень прогресса</string>
     <string name="show_sound">Показать фоновый звук</string>
     <string name="show_alert">Сообщать об окончании каждой фазы</string>
-    <string name="alert_google_play">Ошибка подключения к Google Play</string>
-    <string name="alert_google_play_desc">Убедитесь, что у вас есть активное интернет-соединение для получения необходимых данных.</string>
+    <string name="alert_store_desc">Убедитесь, что у вас есть активное интернет-соединение для получения необходимых данных.</string>
     <string name="pomodoro_advantages">Работа и отдых фиксированными блоками, которые вы задаёте сами.</string>
     <string name="flow_time_advantages">Работайте, пока сохраняется концентрация. Чем дольше работа, тем длиннее перерыв.</string>
     <string name="percentage_advantages">Перерыв равен заданному проценту от времени работы.</string>
@@ -134,7 +133,6 @@
     <string name="exact_alarms_off">Оповещения могут приходить с опозданием на несколько минут. Разрешите будильники и напоминания, чтобы слышать их вовремя.</string>
     <string name="channel_sounds">Фоновые звуки</string>
     <string name="backup_title">Резервная копия</string>
-    <string name="backup_automatic">Если резервное копирование Google включено, Android сохраняет вашу историю и настройки в аккаунте: при установке FlowTime на новый телефон они вернутся.</string>
     <string name="backup_automatic_ios">Если резервное копирование iCloud включено, iPhone сохраняет вашу историю и настройки: при восстановлении копии на новом iPhone они вернутся.</string>
     <string name="backup_export_label">Сохранить всё в файл</string>
     <string name="backup_export">Экспорт</string>
@@ -232,7 +230,6 @@
     <string name="supporter_thanks">Спасибо, что поддерживаете FlowTime. Вы можете оставить чаевые ещё раз в любое время.</string>
     <string name="restore_purchases">Восстановить покупки</string>
     <string name="restore_done">Покупки восстановлены</string>
-    <string name="restore_nothing">Покупки не найдены. Проверьте подключение и то, что вы используете тот же аккаунт Google.</string>
     <string name="theme_supporter">Supporter</string>
     <string name="nav_focus">Фокус</string>
     <string name="nav_stats">Статистика</string>
@@ -267,7 +264,6 @@
     <string name="pro_free_text">Три таймера, которые продолжают идти при закрытом приложении, уведомления, серия и дневная цель, статистика за сегодня, неделю и месяц, звуки, темы и резервная копия.</string>
     <string name="pro_one_time">Разовая оплата · Без подписки</string>
     <string name="pro_buy">Купить Pro</string>
-    <string name="pro_restore_nothing">Pro не найден в этом аккаунте Google. Проверьте подключение.</string>
     <string name="pro_thanks_text">У вас FlowTime Pro: всё из Pro открыто. Спасибо за поддержку FlowTime.</string>
     <string name="pro_see">Узнать о Pro</string>
     <string name="pro_settings_text">Расширенная статистика, экспорт в CSV, неограниченные метки, задачи и миксы, 6 новых звуков, 6 новых тем и значков и автоматический «Не беспокоить». Заплати один раз и пользуйся Pro всегда или плати помесячно.</string>
@@ -370,9 +366,6 @@
     <string name="coop_email_submit">Войти</string>
     <string name="coop_email_failed">Неверная почта или пароль. Используйте Apple или Google.</string>
     <string name="coop_sign_in_failed">Не удалось войти. Попробуйте еще раз.</string>
-    <string name="coop_name_title">Ваше имя в Coop</string>
-    <string name="coop_name_hint">Его видят ваши друзья и люди в вашей комнате.</string>
-    <string name="coop_name_label">Имя</string>
     <string name="coop_age">Мне 16 лет или больше</string>
     <string name="coop_continue">Продолжить</string>
     <string name="coop_offline">Нет соединения. Coop нужен интернет; остальной части приложения он не нужен.</string>

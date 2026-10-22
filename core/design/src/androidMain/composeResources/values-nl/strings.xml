@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alert_google_play">Fout bij verbinden met Google Play</string>
+    <string name="backup_automatic">Als de Google-back-up aan staat, bewaart Android je geschiedenis en instellingen in je account: installeer FlowTime op een nieuwe telefoon en ze komen terug.</string>
+    <string name="restore_nothing">Geen aankopen gevonden. Controleer je verbinding en of je hetzelfde Google-account gebruikt.</string>
+    <string name="pro_restore_nothing">Pro is niet gevonden in dit Google-account. Controleer je verbinding.</string>
+</resources>

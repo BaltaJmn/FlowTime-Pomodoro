@@ -215,7 +215,12 @@ motor se para con `stop()` (guarda lo trabajado).
    deja pasar solo el correo de revisión, que se crea a mano en el panel. Un fallo dice "correo o
    contraseña incorrectos, usa Apple o Google". El enlace está a la vista y no es un gesto oculto
    (Apple 2.3.1). No recoge datos nuevos: la política de privacidad no cambia.
-2. **Primera vez**: nombre visible (1 a 30) y casilla de 16 años o mÃ¡s, obligatoria (la de Chroma).
+2. **Primera vez**: la casilla de 16 años o mas (obligatoria, la de Chroma) esta en la entrada y activa los botones
+   de Apple, Google y correo. Despues de entrar el perfil se crea solo, sin pedir nombre ni correo (Apple 4: la
+   2.4.0 de iPhone y la 1.2 de Chroma lo pedian): el primer nombre que trae la cuenta (Google lo da; Apple casi
+   nunca) o "Focus" con cuatro cifras (`suggestedName`). Se cambia en Ajustes > Cuenta de Coop > Cambiar nombre.
+   Si hay sesion sin perfil y la casilla no esta marcada (quien entro con una version anterior y se quedo en
+   el nombre), la hoja solo pide la edad.
 3. **Coop sin sala**: "Crear sala", "Unirme con código", invitaciones recibidas, y la lista de amigos
    con "Añadir amigo" (enlace y QR, como Chroma).
 4. **Sala**: el anillo de siempre con la fase de la sala, los miembros (nombre y, al mantener

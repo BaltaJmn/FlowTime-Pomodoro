@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alert_google_play">Gagal terhubung ke Google Play</string>
+    <string name="backup_automatic">Jika cadangan Google aktif, Android menyimpan riwayat dan pengaturanmu di akunmu: pasang FlowTime di ponsel baru dan semuanya kembali.</string>
+    <string name="restore_nothing">Tidak ada pembelian ditemukan. Periksa koneksimu dan pastikan kamu memakai akun Google yang sama.</string>
+    <string name="pro_restore_nothing">Pro tidak ditemukan di akun Google ini. Periksa koneksimu.</string>
+</resources>

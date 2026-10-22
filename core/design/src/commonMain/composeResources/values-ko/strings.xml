@@ -36,8 +36,7 @@
     <string name="user_progression_level">진행 레벨</string>
     <string name="show_sound">배경 소리 표시</string>
     <string name="show_alert">각 단계가 끝나면 알리기</string>
-    <string name="alert_google_play">Google Play에 연결하는 중 오류가 발생했어요</string>
-    <string name="alert_google_play_desc">필요한 데이터를 가져오려면 인터넷에 연결되어 있는지 확인하세요.</string>
+    <string name="alert_store_desc">필요한 데이터를 가져오려면 인터넷에 연결되어 있는지 확인하세요.</string>
     <string name="pomodoro_advantages">직접 정한 고정 블록으로 일하고 쉬어요.</string>
     <string name="flow_time_advantages">집중이 이어지는 동안 일해요. 오래 일할수록 휴식도 길어져요.</string>
     <string name="percentage_advantages">휴식은 일한 시간의 일정 비율이에요.</string>
@@ -126,7 +125,6 @@
     <string name="exact_alarms_off">알림이 몇 분 늦게 올 수 있어요. 제시간에 들으려면 알람 및 리마인더를 허용하세요.</string>
     <string name="channel_sounds">배경 소리</string>
     <string name="backup_title">백업</string>
-    <string name="backup_automatic">Google 백업이 켜져 있으면 Android가 기록과 설정을 계정에 저장해요. 새 휴대전화에 FlowTime을 설치하면 그대로 돌아와요.</string>
     <string name="backup_automatic_ios">iCloud 백업이 켜져 있으면 iPhone이 기록과 설정을 저장해요. 새 iPhone에서 백업을 복원하면 그대로 돌아와요.</string>
     <string name="backup_export_label">모두 파일로 저장</string>
     <string name="backup_export">내보내기</string>
@@ -218,7 +216,6 @@
     <string name="supporter_thanks">FlowTime을 응원해 주셔서 감사해요. 언제든 다시 팁을 남길 수 있어요.</string>
     <string name="restore_purchases">구매 복원</string>
     <string name="restore_done">구매를 복원했어요</string>
-    <string name="restore_nothing">구매 내역이 없어요. 연결 상태와 같은 Google 계정을 쓰고 있는지 확인하세요.</string>
     <string name="theme_supporter">서포터</string>
     <string name="nav_focus">집중</string>
     <string name="nav_stats">통계</string>
@@ -253,7 +250,6 @@
     <string name="pro_free_text">앱을 닫아도 계속 흐르는 세 가지 타이머, 알림, 연속 기록과 하루 목표, 오늘·주·월 통계, 사운드, 테마, 백업.</string>
     <string name="pro_one_time">한 번 결제 · 구독 없음</string>
     <string name="pro_buy">Pro 구매</string>
-    <string name="pro_restore_nothing">이 Google 계정에서 Pro를 찾지 못했어요. 연결 상태를 확인하세요.</string>
     <string name="pro_thanks_text">FlowTime Pro를 갖고 있어요. Pro의 모든 기능이 열렸어요. FlowTime을 응원해 주셔서 감사해요.</string>
     <string name="pro_see">Pro 보기</string>
     <string name="pro_settings_text">고급 통계, CSV 내보내기, 태그·할 일·믹스 무제한, 새 사운드 6개, 새 테마와 아이콘 6개, 자동 방해 금지. 한 번만 결제하면 Pro를 계속 쓸 수 있고, 월 단위로 결제할 수도 있어요.</string>
@@ -356,9 +352,6 @@
     <string name="coop_email_submit">로그인</string>
     <string name="coop_email_failed">이메일 또는 비밀번호가 맞지 않아요. Apple이나 Google을 사용해 주세요.</string>
     <string name="coop_sign_in_failed">로그인하지 못했어요. 다시 시도해 주세요.</string>
-    <string name="coop_name_title">Coop에서 사용할 이름</string>
-    <string name="coop_name_hint">친구와 방에 있는 사람들에게 이 이름이 보여요.</string>
-    <string name="coop_name_label">이름</string>
     <string name="coop_age">16세 이상이에요</string>
     <string name="coop_continue">계속</string>
     <string name="coop_offline">연결이 없어요. Coop은 인터넷이 필요하고, 앱의 나머지는 필요하지 않아요.</string>

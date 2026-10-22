@@ -36,8 +36,7 @@
     <string name="user_progression_level">Nivel de progreso</string>
     <string name="show_sound">Mostrar sonido de fondo</string>
     <string name="show_alert">Avisar al terminar cada fase</string>
-    <string name="alert_google_play">Error al conectar con Google Play</string>
-    <string name="alert_google_play_desc">Asegúrate de que tienes conexión a internet para obtener los datos necesarios.</string>
+    <string name="alert_store_desc">Asegúrate de que tienes conexión a internet para obtener los datos necesarios.</string>
     <string name="pomodoro_advantages">Trabajo y descanso en bloques fijos, a tu medida.</string>
     <string name="flow_time_advantages">Trabaja mientras dure la concentración. Cuanto más trabajes, más largo el descanso.</string>
     <string name="percentage_advantages">El descanso es un porcentaje fijo del tiempo trabajado.</string>
@@ -131,7 +130,6 @@
     <string name="exact_alarms_off">Los avisos pueden llegar con unos minutos de retraso. Permite las alarmas y recordatorios para oírlos a su hora.</string>
     <string name="channel_sounds">Sonidos ambientales</string>
     <string name="backup_title">Copia de seguridad</string>
-    <string name="backup_automatic">Si tienes activada la copia de seguridad de Google, Android guarda tu historial y tus ajustes en tu cuenta: al instalar FlowTime en un móvil nuevo, vuelven.</string>
     <string name="backup_automatic_ios">Si tienes activada la copia de seguridad de iCloud, el iPhone guarda tu historial y tus ajustes: al restaurarla en un iPhone nuevo, vuelven.</string>
     <string name="backup_export_label">Guardar todo en un fichero</string>
     <string name="backup_export">Exportar</string>
@@ -225,7 +223,6 @@
     <string name="supporter_thanks">Gracias por apoyar FlowTime. Puedes dejar otra propina cuando quieras.</string>
     <string name="restore_purchases">Restaurar compras</string>
     <string name="restore_done">Compras restauradas</string>
-    <string name="restore_nothing">No se ha encontrado ninguna compra. Comprueba la conexión y que usas la misma cuenta de Google.</string>
     <string name="theme_supporter">Supporter</string>
     <string name="nav_focus">Enfoque</string>
     <string name="nav_stats">Estadísticas</string>
@@ -260,7 +257,6 @@
     <string name="pro_free_text">Los tres temporizadores, que siguen contando con la app cerrada, los avisos, la racha y el objetivo diario, las estadísticas de hoy, la semana y el mes, los sonidos, los temas y la copia de seguridad.</string>
     <string name="pro_one_time">Pago único · Sin suscripción</string>
     <string name="pro_buy">Comprar Pro</string>
-    <string name="pro_restore_nothing">No se ha encontrado Pro en esta cuenta de Google. Comprueba la conexión.</string>
     <string name="pro_thanks_text">Ya tienes FlowTime Pro: todo lo de Pro está desbloqueado. Gracias por apoyar FlowTime.</string>
     <string name="pro_see">Ver Pro</string>
     <string name="pro_settings_text">Estadísticas avanzadas, exportar a CSV, etiquetas, tareas y mezclas sin límite, 6 sonidos nuevos, 6 temas e iconos nuevos, y No molestar automático. Paga una vez y quédate con Pro para siempre, o paga mes a mes.</string>
@@ -363,9 +359,6 @@
     <string name="coop_email_submit">Iniciar sesión</string>
     <string name="coop_email_failed">Correo o contraseña incorrectos. Usa Apple o Google.</string>
     <string name="coop_sign_in_failed">No se pudo iniciar sesión. Inténtalo otra vez.</string>
-    <string name="coop_name_title">Tu nombre en Coop</string>
-    <string name="coop_name_hint">Es lo que ven tus amigos y quien esté en tu sala.</string>
-    <string name="coop_name_label">Nombre</string>
     <string name="coop_age">Tengo 16 años o más</string>
     <string name="coop_continue">Continuar</string>
     <string name="coop_offline">Sin conexión. Coop necesita internet; el resto de la app no.</string>

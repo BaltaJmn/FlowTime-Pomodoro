@@ -36,8 +36,7 @@
     <string name="user_progression_level">進捗レベル</string>
     <string name="show_sound">環境音を表示</string>
     <string name="show_alert">各フェーズの終了を知らせる</string>
-    <string name="alert_google_play">Google Play に接続できません</string>
-    <string name="alert_google_play_desc">必要なデータを取得するには、インターネットに接続してください。</string>
+    <string name="alert_store_desc">必要なデータを取得するには、インターネットに接続してください。</string>
     <string name="pomodoro_advantages">自分で決めた一定の時間で作業と休憩をくり返します。</string>
     <string name="flow_time_advantages">集中が続くかぎり作業します。長く作業するほど休憩も長くなります。</string>
     <string name="percentage_advantages">休憩は作業時間の一定割合になります。</string>
@@ -126,7 +125,6 @@
     <string name="exact_alarms_off">お知らせが数分遅れることがあります。時間どおりに鳴らすには「アラームとリマインダー」を許可してください。</string>
     <string name="channel_sounds">環境音</string>
     <string name="backup_title">バックアップ</string>
-    <string name="backup_automatic">Google バックアップがオンなら、Android が履歴と設定をアカウントに保存します。新しいスマホに FlowTime を入れると元に戻ります。</string>
     <string name="backup_automatic_ios">iCloud バックアップがオンなら、iPhone が履歴と設定を保存します。新しい iPhone でバックアップを復元すると元に戻ります。</string>
     <string name="backup_export_label">すべてをファイルに保存</string>
     <string name="backup_export">書き出す</string>
@@ -218,7 +216,6 @@
     <string name="supporter_thanks">FlowTime を応援してくれてありがとう。いつでもまたチップを送れます。</string>
     <string name="restore_purchases">購入を復元</string>
     <string name="restore_done">購入を復元しました</string>
-    <string name="restore_nothing">購入が見つかりません。接続と、同じ Google アカウントを使っているか確認してください。</string>
     <string name="theme_supporter">サポーター</string>
     <string name="nav_focus">集中</string>
     <string name="nav_stats">統計</string>
@@ -253,7 +250,6 @@
     <string name="pro_free_text">アプリを閉じても進む 3 つのタイマー、お知らせ、連続記録と1日の目標、今日・週・月の統計、サウンド、テーマ、バックアップ。</string>
     <string name="pro_one_time">買い切り · サブスクなし</string>
     <string name="pro_buy">Pro を入手</string>
-    <string name="pro_restore_nothing">この Google アカウントに Pro が見つかりません。接続を確認してください。</string>
     <string name="pro_thanks_text">FlowTime Pro をお持ちです。Pro のすべてが使えます。FlowTime を応援してくれてありがとう。</string>
     <string name="pro_see">Pro を見る</string>
     <string name="pro_settings_text">詳細な統計、CSV 書き出し、タグ・タスク・ミックス無制限、6 つの新しいサウンド、6 つの新しいテーマとアイコン、自動おやすみモード。一度支払えばProをずっと使えます。月ごとの支払いも選べます。</string>
@@ -356,9 +352,6 @@
     <string name="coop_email_submit">サインイン</string>
     <string name="coop_email_failed">メールアドレスまたはパスワードが違います。Apple か Google をお使いください。</string>
     <string name="coop_sign_in_failed">サインインできませんでした。もう一度お試しください。</string>
-    <string name="coop_name_title">Coop でのあなたの名前</string>
-    <string name="coop_name_hint">友だちとルームにいる人には、この名前が表示されます。</string>
-    <string name="coop_name_label">名前</string>
     <string name="coop_age">16歳以上です</string>
     <string name="coop_continue">次へ</string>
     <string name="coop_offline">接続がありません。Coop はインターネットが必要です。アプリのほかの部分は不要です。</string>

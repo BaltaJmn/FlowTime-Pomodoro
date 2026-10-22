@@ -30,8 +30,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
+import kotlin.random.Random
 
 /** Adonde vuelve el inicio de sesión por la web: com.baltajmn.flowtime://login. */
 const val LOGIN_SCHEME = "com.baltajmn.flowtime"
@@ -56,6 +60,17 @@ private data class Rename(@SerialName("display_name") val displayName: String)
 
 /** La regla del servidor para el nombre (de 1 a 30), para el campo y el botón. */
 fun isValidName(name: String): Boolean = name.trim().length in 1..30
+
+/**
+ * El nombre del perfil al entrar por primera vez, sin preguntarlo (Apple 4: tras Sign in with Apple no se
+ * pide nombre ni correo). El primer nombre de la cuenta si lo trae (Google lo da, Apple casi nunca) o
+ * "Focus" con un número; se cambia en Ajustes > Cuenta de Coop.
+ */
+fun suggestedName(metadata: JsonObject?, random: Int = Random.nextInt(1000, 10000)): String {
+    val full = (metadata?.get("full_name") ?: metadata?.get("name"))?.jsonPrimitive?.contentOrNull
+    val first = full?.trim()?.substringBefore(' ')?.take(30)
+    return first?.takeIf(::isValidName) ?: "Focus$random"
+}
 
 /**
  * La sesión con Supabase y quién es esta persona en Coop. Nada de aquí hace falta para usar FlowTime:
@@ -121,9 +136,10 @@ class CoopAccount {
         _needsName.value = row == null
     }
 
-    suspend fun createProfile(name: String) {
+    suspend fun createProfile() {
         val id = userId() ?: return
-        client.from("profiles").insert(NewProfile(id, name.trim()))
+        val name = suggestedName(client.auth.currentUserOrNull()?.userMetadata)
+        client.from("profiles").insert(NewProfile(id, name))
         loadMe()
     }
 

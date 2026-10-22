@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alert_google_play">Google Play에 연결하는 중 오류가 발생했어요</string>
+    <string name="backup_automatic">Google 백업이 켜져 있으면 Android가 기록과 설정을 계정에 저장해요. 새 휴대전화에 FlowTime을 설치하면 그대로 돌아와요.</string>
+    <string name="restore_nothing">구매 내역이 없어요. 연결 상태와 같은 Google 계정을 쓰고 있는지 확인하세요.</string>
+    <string name="pro_restore_nothing">이 Google 계정에서 Pro를 찾지 못했어요. 연결 상태를 확인하세요.</string>
+</resources>

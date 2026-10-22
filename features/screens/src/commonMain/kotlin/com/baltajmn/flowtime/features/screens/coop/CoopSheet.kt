@@ -72,11 +72,11 @@ import com.baltajmn.flowtime.data.coop.signInWithGoogleFallback
 import com.baltajmn.flowtime.data.coop.CoopRoom
 import com.baltajmn.flowtime.data.coop.FRIEND_LINK
 import com.baltajmn.flowtime.data.coop.ROOM_LINK
-import com.baltajmn.flowtime.data.coop.isValidName
 import com.baltajmn.flowtime.data.coop.qrEncode
 import com.baltajmn.flowtime.data.timer.FocusEngine
 import com.baltajmn.flowtime.data.timer.FocusState
 import com.baltajmn.flowtime.data.timer.Phase
+import com.baltajmn.flowtime.data.coop.isValidName
 import com.baltajmn.flowtime.features.screens.platform.hasAppleSignIn
 import com.baltajmn.flowtime.features.screens.platform.rememberShareText
 import io.github.jan.supabase.auth.auth
@@ -99,6 +99,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun CoopSheet(onDismiss: () -> Unit, viewModel: CoopViewModel = koinViewModel()) {
     val ui by viewModel.ui.collectAsStateWithLifecycle()
+    // Se marca antes de entrar y vale para crear el perfil sin pedir nada más (Apple 4).
+    var adult by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) { viewModel.load() }
 
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
@@ -127,13 +129,13 @@ fun CoopSheet(onDismiss: () -> Unit, viewModel: CoopViewModel = koinViewModel())
                 }
             }
             when (ui.stage) {
-                CoopStage.SIGNED_OUT -> Intro(onFailed = viewModel::onSignInFailed)
+                CoopStage.SIGNED_OUT -> Intro(adult = adult, onAdult = { adult = it }, onFailed = viewModel::onSignInFailed)
                 CoopStage.LOADING -> Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
                 CoopStage.OFFLINE -> {
                     Text(stringResource(Res.string.coop_offline))
                     TextButton(onClick = viewModel::load) { Text(stringResource(Res.string.retry)) }
                 }
-                CoopStage.NEEDS_NAME -> NameStep(busy = ui.busy, onDone = viewModel::createProfile)
+                CoopStage.NEEDS_NAME -> NewProfileStep(adult = adult, onAdult = { adult = it }, busy = ui.busy, onCreate = viewModel::createProfile)
                 CoopStage.READY -> Ready(ui, viewModel)
             }
             Spacer(Modifier.height(8.dp))
@@ -142,7 +144,7 @@ fun CoopSheet(onDismiss: () -> Unit, viewModel: CoopViewModel = koinViewModel())
 }
 
 @Composable
-private fun Intro(onFailed: () -> Unit, account: CoopAccount = koinInject()) {
+private fun Intro(adult: Boolean, onAdult: (Boolean) -> Unit, onFailed: () -> Unit, account: CoopAccount = koinInject()) {
     val auth = account.client.composeAuth
     val onResult = { r: NativeSignInResult -> if (r is NativeSignInResult.Error || r is NativeSignInResult.NetworkError) onFailed() }
     // Google en los dos (nativo en Android, propio en el iPhone); Apple solo en el iPhone.
@@ -154,13 +156,14 @@ private fun Intro(onFailed: () -> Unit, account: CoopAccount = koinInject()) {
 
     Text(stringResource(Res.string.coop_intro))
     Text(stringResource(Res.string.coop_no_account_needed), color = MaterialTheme.colorScheme.onSurfaceVariant)
+    AgeCheck(adult, onAdult)
     // Apple primero e igual de visible que Google donde esta: App Store 4.8.
     if (hasAppleSignIn) {
-        OutlinedButton(onClick = { apple.startFlow() }, modifier = Modifier.fillMaxWidth()) {
+        OutlinedButton(onClick = { apple.startFlow() }, enabled = adult, modifier = Modifier.fillMaxWidth()) {
             Text(stringResource(Res.string.coop_sign_in_apple))
         }
     }
-    OutlinedButton(onClick = { google.startFlow() }, modifier = Modifier.fillMaxWidth()) {
+    OutlinedButton(onClick = { google.startFlow() }, enabled = adult, modifier = Modifier.fillMaxWidth()) {
         Text(stringResource(Res.string.coop_sign_in_google))
     }
     // Para la cuenta de App Review, que no puede usar Apple ni Google en un dispositivo ajeno. A la vista
@@ -169,8 +172,9 @@ private fun Intro(onFailed: () -> Unit, account: CoopAccount = koinInject()) {
     if (showEmail) {
         EmailForm(account = account, onCancel = { showEmail = false })
     } else {
-        TextButton(onClick = { showEmail = true }, modifier = Modifier.fillMaxWidth()) {
-            Text(stringResource(Res.string.coop_sign_in_email), color = MaterialTheme.colorScheme.onSurfaceVariant)
+        TextButton(onClick = { showEmail = true }, enabled = adult, modifier = Modifier.fillMaxWidth()) {
+            val color = MaterialTheme.colorScheme.onSurfaceVariant
+            Text(stringResource(Res.string.coop_sign_in_email), color = if (adult) color else color.copy(alpha = 0.38f))
         }
     }
 }
@@ -228,24 +232,27 @@ private fun EmailForm(account: CoopAccount, onCancel: () -> Unit) {
 }
 
 @Composable
-private fun NameStep(busy: Boolean, onDone: (String) -> Unit) {
-    var name by rememberSaveable { mutableStateOf("") }
-    var adult by rememberSaveable { mutableStateOf(false) }
-    Text(stringResource(Res.string.coop_name_title), style = MaterialTheme.typography.titleMedium)
-    Text(stringResource(Res.string.coop_name_hint), color = MaterialTheme.colorScheme.onSurfaceVariant)
-    OutlinedTextField(
-        value = name,
-        onValueChange = { name = it.take(30) },
-        label = { Text(stringResource(Res.string.coop_name_label)) },
-        singleLine = true,
-        modifier = Modifier.fillMaxWidth()
-    )
+private fun AgeCheck(adult: Boolean, onAdult: (Boolean) -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Checkbox(checked = adult, onCheckedChange = { adult = it })
+        Checkbox(checked = adult, onCheckedChange = onAdult)
         Text(stringResource(Res.string.coop_age))
     }
-    Button(onClick = { onDone(name) }, enabled = !busy && adult && isValidName(name), modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(Res.string.coop_continue))
+}
+
+/**
+ * Primera vez: el perfil se crea solo, con el nombre de la cuenta o uno por defecto que se cambia en Ajustes
+ * (Apple 4: tras Sign in with Apple no se pide nombre ni correo). Solo queda la edad si no se marcó al entrar.
+ */
+@Composable
+private fun NewProfileStep(adult: Boolean, onAdult: (Boolean) -> Unit, busy: Boolean, onCreate: () -> Unit) {
+    LaunchedEffect(adult) { if (adult && !busy) onCreate() }
+    if (!adult) AgeCheck(adult, onAdult)
+    if (busy) {
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+    } else {
+        Button(onClick = onCreate, enabled = adult, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(Res.string.coop_continue))
+        }
     }
 }
 

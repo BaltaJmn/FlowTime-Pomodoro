@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alert_google_play">Błąd połączenia z Google Play</string>
+    <string name="backup_automatic">Jeśli kopia zapasowa Google jest włączona, Android zapisuje historię i ustawienia na Twoim koncie: zainstaluj FlowTime na nowym telefonie, a wrócą.</string>
+    <string name="restore_nothing">Nie znaleziono zakupów. Sprawdź połączenie i czy używasz tego samego konta Google.</string>
+    <string name="pro_restore_nothing">Nie znaleziono Pro na tym koncie Google. Sprawdź połączenie.</string>
+</resources>

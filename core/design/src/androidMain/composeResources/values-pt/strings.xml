@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alert_google_play">Erro ao conectar com o Google Play</string>
+    <string name="backup_automatic">Se o backup do Google estiver ativado, o Android salva seu histórico e seus ajustes na sua conta: instale o FlowTime em um celular novo e eles voltam.</string>
+    <string name="restore_nothing">Nenhuma compra encontrada. Verifique sua conexão e se você está usando a mesma conta do Google.</string>
+    <string name="pro_restore_nothing">O Pro não foi encontrado nesta conta do Google. Verifique sua conexão.</string>
+</resources>

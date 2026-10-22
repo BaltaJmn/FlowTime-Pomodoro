@@ -107,8 +107,8 @@ class CoopViewModel(
         }.onFailure { offline.value = true }
     }
 
-    fun createProfile(name: String) = act {
-        account.createProfile(name)
+    fun createProfile() = act {
+        account.createProfile()
         load()
     }
 

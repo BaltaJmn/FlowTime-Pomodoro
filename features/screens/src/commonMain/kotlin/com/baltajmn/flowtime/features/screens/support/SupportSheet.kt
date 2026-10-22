@@ -152,7 +152,7 @@ fun StoreUnavailable(onRetry: () -> Unit) {
             color = MaterialTheme.colorScheme.error,
             textAlign = TextAlign.Center
         )
-        Text(text = stringResource(Res.string.alert_google_play_desc), textAlign = TextAlign.Center)
+        Text(text = stringResource(Res.string.alert_store_desc), textAlign = TextAlign.Center)
         TextButton(onClick = onRetry) { Text(text = stringResource(Res.string.retry)) }
     }
 }
