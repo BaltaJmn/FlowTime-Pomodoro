@@ -206,7 +206,7 @@ actual fun ImageBitmap.toPng(): ByteArray =
     Image.makeFromBitmap(asSkiaBitmap()).encodeToData(EncodedImageFormat.PNG)?.bytes ?: ByteArray(0)
 
 @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
-private fun ByteArray.toNSData(): NSData = usePinned { NSData.create(bytes = it.addressOf(0), length = size.toULong()) }
+internal fun ByteArray.toNSData(): NSData = usePinned { NSData.create(bytes = it.addressOf(0), length = size.toULong()) }
 
 private fun present(controller: UIViewController, items: List<Any>) {
     val sheet = UIActivityViewController(activityItems = items, applicationActivities = null)
