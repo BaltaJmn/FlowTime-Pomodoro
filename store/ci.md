@@ -22,8 +22,9 @@ proceso, en `BaltaJmn/ci` PUBLICAR.md sección 7):
   `.md` ni `.github`), sube la minor (`X.Y+1.0`) y el `versionCode`, deja el commit y la etiqueta,
   sube a Play `alpha` y a TestFlight y avisa por ntfy con el botón "Parar esta semana".
 - **Lunes 9:07**: producción al 100 % en Play y revisión en App Store (sale sola al aprobarse), con
-  la ficha de `store/app-store` y las capturas de iPhone si cambiaron. Una tienda con la versión
-  anterior en revisión, rechazada o sin publicar se salta la semana, y el aviso lo dice.
+  la ficha de `store/app-store` y las capturas de iPhone si cambiaron. Las dos tiendas o ninguna:
+  si una tiene la versión anterior en revisión, rechazada o sin publicar, se salta la semana y la otra
+  la espera, y el aviso lo dice (`ci/PUBLICAR.md` 7).
 - **Entre semana nadie toca `versionName` ni pone etiquetas.** El `versionCode` solo sube para una
   build de prueba de TestFlight sin etiqueta (`gh workflow run release.yml -f stores=app-store`); el
   tren numera por encima del mayor usado en el fichero, Play o App Store Connect (TestFlight incluido), así que una build de prueba no bloquea nada ni hay que apuntarla. Un arreglo urgente sube la patch
